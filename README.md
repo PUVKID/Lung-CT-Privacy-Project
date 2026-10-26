@@ -1,6 +1,10 @@
 <div align="center">
 
-# 🔬 Lung CT Privacy Project
+# 폐암 영상 분류와 프라이버시 변환 실험
+
+**Lung-CT-Privacy-Project**
+
+**기술 분류:** 컴퓨터 비전 › 딥러닝 영상 분류 › 입력·특징 변환과 프라이버시 평가
 
 ### 폐 CT 영상 변환과 분류 성능을 비교합니다
 
@@ -10,7 +14,39 @@
 
 [빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [데이터와 평가](#data-settings) · [연구 단계](docs/RESEARCH_STAGES.md) · [하계 논문](논문/1차_EfficientNetV2-S_하계_최종.pdf) · [ResNet50 논문](논문/2차_ResNet50_최종.pdf) · [버전 기록](docs/VERSIONS.md)
 
+[예시 이미지](#preview)
+
 </div>
+
+<a name="preview"></a>
+
+## 🖼️ 예시로 보기
+
+<p align="center"><img src="assets/previews/study2-accuracy-heatmap.png" width="792" alt="논문 그림 · Lung-CT-Privacy-Project" /></p>
+
+**논문 그림** — 2차 ResNet50 공개 원고 12쪽: 블록 크기와 블러 강도에 따른 정확도 집계 그래프입니다. 의료 원영상은 포함하지 않았습니다.
+
+[근거 파일 보기](%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf)
+
+<p align="center"><img src="assets/previews/study1-blur-accuracy.png" width="900" alt="논문 그림 · Lung-CT-Privacy-Project" /></p>
+
+**논문 그림** — 1차 EfficientNetV2-S 하계 공개 원고 2쪽: 블러 강도별 정확도 비교입니다. 원고의 기존 결과를 그대로 추출했습니다.
+
+[근거 파일 보기](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf)
+
+
+
+<a name="input-processing-output"></a>
+
+## 🔄 입력·처리·출력
+
+| 단계 | 이 프로젝트에서 다루는 내용 |
+| :--- | :--- |
+| 입력 | CT 영상·클래스 라벨 |
+| 처리 | EfficientNetV2-S·ResNet50 분류, 블러·블록 변환, 구조 유사도 비교 |
+| 출력 | 조건별 분류 지표·Privacy Score·그래프 |
+
+
 
 ## ✨ 프로젝트 소개
 
