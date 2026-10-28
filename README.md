@@ -1,18 +1,13 @@
 <div align="center">
 
 <a name="폐암-영상-분류와-프라이버시-변환-실험"></a>
-
-# 🔬 폐암 영상 분류와 프라이버시 변환 실험
-
-**Lung-CT-Privacy-Project**
-
-**기술 분류:** 컴퓨터 비전 › 딥러닝 영상 분류 › 입력·특징 변환과 프라이버시 평가
-
 <a name="폐-ct-영상-변환과-분류-성능을-비교합니다"></a>
 
-### 🔎 폐 CT 영상 변환과 분류 성능을 비교합니다
+# 🫁 Lung CT Privacy Project
 
-**연구 1 · EfficientNetV2-S 하계 연구 → 연구 2 · ResNet50 정량 비교 → 후속 · 특징맵 변환과 복원 공격**
+블러·블록 변환이 폐 CT 분류 성능과 프라이버시에 미치는 영향을 비교합니다.
+
+**기술 분류:** 컴퓨터 비전 › 딥러닝 영상 분류 › 입력·특징 변환과 프라이버시 평가
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white) ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white) ![Paper](https://img.shields.io/badge/Papers-2-475569?style=flat-square)
 
@@ -21,6 +16,26 @@
 [예시 이미지](#preview)
 
 </div>
+
+<a name="overview"></a>
+
+## 🗺️ 한눈에 보는 구성
+
+<p align="center"><img src="assets/overview.png" width="960" alt="프로젝트의 입력·처리·출력을 정리한 설명도" /></p>
+보관한 프로젝트 자료의 흐름을 정리한 설명도입니다.
+
+## ✨ 최신 자료에서 살펴볼 점
+
+입력 영상 대신 ResNet50의 pool1_pool 특징에 블러를 넣고 복원 가능성을 살펴보는 후속 코드입니다.
+
+공격 코드의 존재가 공격 실행 완료를 뜻하지 않습니다. 학습이나 공격을 이번 작업에서 실행하지 않았습니다.
+
+- build_edge_model과 cloud 모델을 같은 프로세스에서 연결합니다. pool1_pool 특징 경계이며 실제 네트워크 전송 구현은 아닙니다.
+- 큰 σ에서 전역 평균 대체와 REUSE_COLLAPSED_RESULTS 기본 재사용을 합니다. 열 σ 조건의 독립 재학습 결과로 해석하지 않습니다.
+- decoder로 영상 복원을 학습하고 PSNR·SSIM을 계산하는 경로가 있지만 Conv2D import/정의 누락과 대체 가중치·예시 결과 분기를 고려해야 합니다.
+
+**자료별 안내:** [연구 1](docs/versions/stage-1.md) · [연구 2](docs/versions/stage-2.md) · [후속 특징맵](docs/versions/stage-3.md) · [전체 기록](docs/VERSIONS.md)
+
 
 <a name="preview"></a>
 
