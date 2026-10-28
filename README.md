@@ -9,20 +9,15 @@
 
 **기술 분류:** 컴퓨터 비전 › 딥러닝 영상 분류 › 입력·특징 변환과 프라이버시 평가
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white) ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white) ![Paper](https://img.shields.io/badge/Papers-2-475569?style=flat-square)
+`Python` `TensorFlow` `Jupyter` `논문·연구 자료`
 
 [빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [데이터와 평가](#data-settings) · [연구 단계](docs/RESEARCH_STAGES.md) · [하계 논문](논문/1차_EfficientNetV2-S_하계_최종.pdf) · [ResNet50 논문](논문/2차_ResNet50_최종.pdf) · [버전 기록](docs/VERSIONS.md)
 
-[예시 이미지](#preview)
+[핵심 구성](#input-processing-output)
 
 </div>
 
 <a name="overview"></a>
-
-## 🗺️ 한눈에 보는 구성
-
-<p align="center"><img src="assets/overview.png" width="960" alt="프로젝트의 입력·처리·출력을 정리한 설명도" /></p>
-보관한 프로젝트 자료의 흐름을 정리한 설명도입니다.
 
 ## ✨ 최신 자료에서 살펴볼 점
 
@@ -36,23 +31,24 @@
 
 **자료별 안내:** [연구 1](docs/versions/stage-1.md) · [연구 2](docs/versions/stage-2.md) · [후속 특징맵](docs/versions/stage-3.md) · [전체 기록](docs/VERSIONS.md)
 
-
 <a name="preview"></a>
 
-## 🖼️ 예시로 보기
+<details>
+<summary>📎 논문 도표와 출처</summary>
 
-<p align="center"><img src="assets/previews/study2-accuracy-heatmap.png" width="792" alt="논문 그림 · Lung-CT-Privacy-Project" /></p>
+[📊 원고 도표 보기](assets/previews/study2-accuracy-heatmap.png)
 
-**논문 그림** — 2차 ResNet50 공개 원고 12쪽: 블록 크기와 블러 강도에 따른 정확도 집계 그래프입니다. 이 예시 PNG에는 의료 원영상이 없습니다. 셀 숫자는 원고에서 정수로 표시한 정확도이며, 아래 표의 소수점 보고값과 표시 정밀도가 다릅니다.
+**논문 그림** — 2차 ResNet50 공개 원고 12쪽: 블록 크기와 블러 강도에 따른 정확도 집계 그래프입니다. 연결한 도표에는 의료 원영상이 없습니다. 셀 숫자는 원고에서 정수로 표시한 정확도이며, 아래 표의 소수점 보고값과 표시 정밀도가 다릅니다.
 
 [근거 파일 보기](%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf)
 
-<p align="center"><img src="assets/previews/study1-blur-accuracy.png" width="900" alt="논문 그림 · Lung-CT-Privacy-Project" /></p>
+[📊 원고 도표 보기](assets/previews/study1-blur-accuracy.png)
 
 **논문 그림** — 1차 EfficientNetV2-S 하계 공개 원고 2쪽: 블러 강도별 정확도 비교입니다. 원고의 기존 결과를 그대로 추출했습니다.
 
 [근거 파일 보기](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf)
 
+</details>
 
 <a name="input-processing-output"></a>
 
@@ -60,9 +56,9 @@
 
 | 단계 | 이 프로젝트에서 다루는 내용 |
 | :--- | :--- |
-| 입력 | CT 영상·클래스 라벨 |
-| 처리 | EfficientNetV2-S·ResNet50 분류, 블러·블록 변환, 구조 유사도 비교 |
-| 출력 | 조건별 분류 지표·Privacy Score·그래프 |
+| 📥 입력 | CT 영상·클래스 라벨 |
+| ⚙️ 처리 | EfficientNetV2-S·ResNet50 분류, 블러·블록 변환, 구조 유사도 비교 |
+| 📤 출력 | 조건별 분류 지표·Privacy Score·그래프 |
 
 
 ## ✨ 프로젝트 소개
