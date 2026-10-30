@@ -1,0 +1,18 @@
+{
+  "stage": "블록+블러 · 기본",
+  "previous": null,
+  "files": {
+    "블록+블러/block_blur_resnet50_v4_KO.ipynb": {
+      "bytes": 123969,
+      "sha256": "42d6c2bcdf41bcff53ab1d99f6687a3fb75f0bd1bf8071565ac66952111b634a"
+    },
+    "원본자료/블록+블러/block_blur_resnet50_v4_KO.ipynb": {
+      "bytes": 124546,
+      "sha256": "5eede93c16dcfb25d0fb60e1e3900ba0c883d3c4bb503ebb398343ec9709964d"
+    },
+    "원본자료/블록+블러/실험 완료/all_block_blur_results_resnet50_block_blur_all_combinations_v1.json": {
+      "bytes": 57221,
+      "sha256": "7f3cb8aa58b2aba0ac843629ea14fbe52f35ab365ee5975e27d2127165f544b2"
+    }
+  }
+}

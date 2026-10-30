@@ -1,0 +1,18 @@
+{
+  "stage": "블러 · 2차 실험",
+  "previous": null,
+  "files": {
+    "블러/2차 실험/blur_resnet50_rebuilt2_KO.ipynb": {
+      "bytes": 102127,
+      "sha256": "745bb2b539259819784a219ebde96df31797fad820af09cd183177e529986870"
+    },
+    "원본자료/블러/2차 실험/all_blur_results_resnet50_unified_v1.json": {
+      "bytes": 5326,
+      "sha256": "a1139a82300e74f5a4c66f4c4e08cce921a2245c5bd295f402a0b4e88940e8db"
+    },
+    "원본자료/블러/2차 실험/blur_resnet50_rebuilt2_KO.ipynb": {
+      "bytes": 102127,
+      "sha256": "745bb2b539259819784a219ebde96df31797fad820af09cd183177e529986870"
+    }
+  }
+}

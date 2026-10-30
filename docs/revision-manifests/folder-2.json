@@ -1,0 +1,18 @@
+{
+  "stage": "폴더 2차",
+  "previous": "폴더 1차",
+  "files": {
+    "자료차수/2차/align_experiment_methods.mjs": {
+      "bytes": 11300,
+      "sha256": "137dbb097d5821e11f17326afa3b37a3cb2f570ca010e0c2b3f81f5c517b5b22"
+    },
+    "자료차수/2차/build_block_blur_notebook.mjs": {
+      "bytes": 29388,
+      "sha256": "bd77b870fe40d0a6318b49f210ae38b533401eb0b874c253277c6f673b86d70a"
+    },
+    "자료차수/2차/rollback_original_notebooks.mjs": {
+      "bytes": 3358,
+      "sha256": "c311e74df31a801231b391e4a692cc870e31f3ec950b9eb1fedd7169bbeb5c29"
+    }
+  }
+}

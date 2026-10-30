@@ -1,0 +1,58 @@
+{
+  "stage": "연구1 · 하계 EfficientNetV2-S",
+  "previous": null,
+  "files": {
+    "논문/1차_EfficientNetV2-S_하계_최종.pdf": {
+      "bytes": 410164,
+      "sha256": "dd6309e6f6b722d6db242e9c2237584314ad7d7bdf32eb1a91d10ced5ba3fe63"
+    },
+    "연구1_하계_EfficientNetV2-S/그래프/Blur_Block_1차_그래프_white.ipynb": {
+      "bytes": 31695,
+      "sha256": "a8c2615ce407a6e49de77cbea440d236e423dd77439abeaca57697b21e928823"
+    },
+    "연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pdf": {
+      "bytes": 2156389,
+      "sha256": "22c41af0ada654bbaf8c8c5882ca1165da5e1216430af199db1fd0f560f349b3"
+    },
+    "연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pptx": {
+      "bytes": 2325109,
+      "sha256": "a95905aea2ed35a70f0e43e5f0eaf30cbb5c227fed7384f952641104b26d5193"
+    },
+    "연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.docx": {
+      "bytes": 12063,
+      "sha256": "fbe895f010f6ee875395b5486b42dcf7d07248e6b6ac98a17a21bb38eda67246"
+    },
+    "연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.pdf": {
+      "bytes": 280123,
+      "sha256": "0dad95908a9f7771703c37c882b5265162b1ea6d1a75762a96cef4d30923a598"
+    },
+    "연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.docx": {
+      "bytes": 14644,
+      "sha256": "3a66466626c76c84640e1d4284ff375708f7ba428d92fd9f7a2c686cf3bbbae8"
+    },
+    "연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.pdf": {
+      "bytes": 314134,
+      "sha256": "f7d5589105d6a714a62ebe53a264a23070941e4fd26db78ddc8a08e8efc2f62a"
+    },
+    "연구1_하계_EfficientNetV2-S/논문/원문_최종.hwp": {
+      "bytes": 527360,
+      "sha256": "f19ddfe212b9c38fd1cfdfec29f8d499e0150bd183e2d6a7992867b34720b7fc"
+    },
+    "연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_논문_심사용.hwp": {
+      "bytes": 534016,
+      "sha256": "a50590b82b4f2a37c948d267c03acdb38e2dfdb6ec1b912ad77718c50d8b9915"
+    },
+    "연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_심사용.hwp": {
+      "bytes": 50688,
+      "sha256": "218bd80c6e58efc061d4717f1e47dab5c494c748813b3e580d98660a54cb8a4b"
+    },
+    "연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_최종본.hwp": {
+      "bytes": 55296,
+      "sha256": "d8d43b6b577716c444a38c1fe258184834317b69628d469d075bc1014ba21d44"
+    },
+    "연구1_하계_EfficientNetV2-S/원문보관/그림/Blur_Block_1차_그래프_white.ipynb": {
+      "bytes": 34700,
+      "sha256": "21207ffb5200d44de6a06b908ce7171648cf3d4a2c390c834162e357d61461ec"
+    }
+  }
+}

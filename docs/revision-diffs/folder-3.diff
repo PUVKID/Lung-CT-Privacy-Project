@@ -1,0 +1,4912 @@
+# 폴더 2차 -> 폴더 3차
+# 공백·주석·개행을 무시하지 않습니다. PDF 추출 텍스트는 배치·글꼴 비교를 대신하지 않습니다. 바이너리는 크기·SHA-256으로 비교합니다. ipynb의 바이너리 이미지 출력만 크기·SHA·원문 링크로 표시하며 코드·Markdown·수치·설정·그 밖의 JSON 텍스트는 전체 비교합니다.
+# 이전 자료차수/2차/align_experiment_methods.mjs 11300 137dbb097d5821e11f17326afa3b37a3cb2f570ca010e0c2b3f81f5c517b5b22
+# 이전 자료차수/2차/build_block_blur_notebook.mjs 29388 bd77b870fe40d0a6318b49f210ae38b533401eb0b874c253277c6f673b86d70a
+# 이전 자료차수/2차/rollback_original_notebooks.mjs 3358 c311e74df31a801231b391e4a692cc870e31f3ec950b9eb1fedd7169bbeb5c29
+# 현재 자료차수/3차/tables/privacy_scores_best_conditions.csv 858 f8e160d380f0c0f41f33a8913e7739c7fe9a9f2e42081e77c16c302f5de9a529
+# 현재 자료차수/3차/tables/privacy_scores_combo_pivot.csv 92 7a31a1ae5238c3369ad5461b7806948a61eda358dae86dc87b177181df11b034
+# 현재 자료차수/3차/tables/privacy_scores_long.csv 1507 edcecf8fe6c892b0640ffe9d7d7341c9ee094ab4624cfb5d65a3d52974caff22
+# 현재 자료차수/3차/tables/privacy_scores_summary_by_method.csv 362 403ff42da2b5a21428304bb456346178734658976dfff5a0c6abb8092782d060
+# 현재 자료차수/3차/graphs/01_block_privacy_score.png 70066 2d3be7ac20d49f2e91cf4f3039fbbc8a4fd979e65025d456eb14802955783287
+# 현재 자료차수/3차/graphs/02_blur_privacy_score.png 63552 056c40e03053b9d7694877333ceb1a2019fb5080e3714355b5a0ef03c114be19
+# 현재 자료차수/3차/graphs/03_combo_privacy_score_heatmap.png 42052 6d3cc49c6d9acf6a977922e59ac140c1d3f7c181b23595f4514ad3404fae59fa
+# 현재 자료차수/3차/graphs/04_block_ssim_psnr_reference.png 64195 f2359a64da2d2a5129dd225fc3cebde956bd414e4d767ebfac9804ea0baa386e
+# 현재 자료차수/3차/graphs/05_blur_ssim_psnr_reference.png 77351 2aad1e739efc2b01a5e5b6b0acd24cba7b61e9d301fba2bfd7c19ea566435d72
+# 현재 자료차수/3차/graphs/06_top_conditions_privacy_score.png 60606 df22b8d68e003e26e65c2c236bd427538882ff750a2e473918284a90d4bef99c
+# 현재 자료차수/3차/graphs/07_method_distribution_boxplot.png 38584 ceb03b03ff92470e91a9e62b2f1151f1512f7b11bf583dec03dc07d8d2915fee
+# 현재 자료차수/3차/graphs/08_top_conditions_table.png 80715 d0e4e134df95fda8aa4fbeb0a0c17c9769aac16dc6ebf8c86c0a7765a1450ca8
+# 현재 자료차수/3차/graphs/09_best_by_method_table.png 45058 9da6f678a12bdf33915130898cc4c2d50d2ab7af13a52f9b7433590c3a0d48f1
+# 현재 자료차수/3차/create_privacy_notebook.py 28399 3809df9b5f3091f79172f0257c8eb7f2ef828bbf99da99eb41b486bb66108280
+# 현재 자료차수/3차/modify_privacy_notebook_ssim_only.py 27299 759fd7599e40b5cb25a8e7bc5f248bbb9eff2fd3328932c3c45236521345fc91
+# 현재 자료차수/3차/_smoke_privacy_score.ipynb 89274 a03f40d6eab19fb5bdd3d4d60c3f308f03c43e80387f8f71dd70624f6311a8e6
+# 현재 원본자료/3차/privacy_score_outputs/privacy_score_results.xlsx 8330 a90c2676448a700ef65836cd2f3427030c95e4864870268f1bd3d7eda144b4f1
+# 현재 원본자료/3차/privacy_score_outputs/tables/selected_images.csv 406 13a874a2d948b964c171ab3a6927e78882c262a245940933a5285454de846a71
+Binary files /dev/null and 자료차수/3차/graphs/01_block_privacy_score.png differ
+Binary files /dev/null and 자료차수/3차/graphs/02_blur_privacy_score.png differ
+Binary files /dev/null and 자료차수/3차/graphs/03_combo_privacy_score_heatmap.png differ
+Binary files /dev/null and 자료차수/3차/graphs/04_block_ssim_psnr_reference.png differ
+Binary files /dev/null and 자료차수/3차/graphs/05_blur_ssim_psnr_reference.png differ
+Binary files /dev/null and 자료차수/3차/graphs/06_top_conditions_privacy_score.png differ
+Binary files /dev/null and 자료차수/3차/graphs/07_method_distribution_boxplot.png differ
+Binary files /dev/null and 자료차수/3차/graphs/08_top_conditions_table.png differ
+Binary files /dev/null and 자료차수/3차/graphs/09_best_by_method_table.png differ
+--- /dev/null
++++ 자료차수/3차/_smoke_privacy_score.ipynb
+@@ -0,0 +1,2084 @@
++{
++  "cells": [
++    {
++      "cell_type": "markdown",
++      "id": "1bc5dcd6",
++      "metadata": {},
++      "source": [
++        "# Privacy Score Quantification\n",
++        "\n",
++        "이 노트북은 Docker/VSCode 환경에서 `/workspace/Train` 데이터셋을 자동으로 찾고, 원본 이미지와 변환 이미지의 구조적 차이를 이용해 privacy score를 정량화합니다.\n",
++        "\n",
++        "핵심 점수는 `Privacy Score = DSSIM x 100 = ((1 - SSIM) / 2) x 100`입니다. 점수가 높을수록 원본과 구조적으로 더 달라졌다는 뜻입니다. PSNR은 점수식에 섞지 않고 참고 지표로만 함께 저장합니다.\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "e8052aa5",
++      "metadata": {},
++      "source": [
++        "## 1. 환경 확인과 라이브러리\n",
++        "\n",
++        "아래 셀은 필요한 패키지를 확인합니다. Docker 컨테이너에서 `ModuleNotFoundError`가 나면 터미널에서 `pip install numpy pandas pillow scikit-image matplotlib openpyxl`을 실행한 뒤 커널을 재시작하세요.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 1,
++      "id": "b7aaf0b8",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:44:55.614968Z",
++          "iopub.status.busy": "2026-08-24T09:44:55.614825Z",
++          "iopub.status.idle": "2026-08-24T09:44:58.411080Z",
++          "shell.execute_reply": "2026-08-24T09:44:58.410630Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Python: 3.13.9\n",
++            "Working directory: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\n",
++            "Libraries loaded.\n"
++          ]
++        }
++      ],
++      "source": [
++        "from pathlib import Path\n",
++        "import os\n",
++        "import sys\n",
++        "import math\n",
++        "import time\n",
++        "import json\n",
++        "import warnings\n",
++        "\n",
++        "import numpy as np\n",
++        "import pandas as pd\n",
++        "from PIL import Image, ImageFilter, ImageOps\n",
++        "\n",
++        "import matplotlib\n",
++        "import matplotlib.pyplot as plt\n",
++        "import matplotlib.font_manager as fm\n",
++        "from matplotlib.colors import Normalize\n",
++        "\n",
++        "from skimage.metrics import structural_similarity as ssim_fn\n",
++        "from skimage.metrics import peak_signal_noise_ratio as psnr_fn\n",
++        "\n",
++        "try:\n",
++        "    from IPython.display import display\n",
++        "except Exception:\n",
++        "    display = print\n",
++        "\n",
++        "warnings.filterwarnings(\"ignore\", category=UserWarning)\n",
++        "print(\"Python:\", sys.version.split()[0])\n",
++        "print(\"Working directory:\", Path.cwd())\n",
++        "print(\"Libraries loaded.\")\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "fe8f213a",
++      "metadata": {},
++      "source": [
++        "## 2. 실험 설정\n",
++        "\n",
++        "Docker/VSCode에서 돌릴 때는 보통 `BASE_TRAIN_OVERRIDE = None` 그대로 두면 `/workspace/Train`, `/workspace`, `/workspaces/...`, 현재 VSCode 폴더를 자동으로 검사합니다. 만약 컨테이너 안 경로가 다르면 `BASE_TRAIN_OVERRIDE = \"/your/path\"`만 바꾸세요.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 2,
++      "id": "b630c44e",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:44:58.412729Z",
++          "iopub.status.busy": "2026-08-24T09:44:58.412534Z",
++          "iopub.status.idle": "2026-08-24T09:44:58.417120Z",
++          "shell.execute_reply": "2026-08-24T09:44:58.416840Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Output directory: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\n"
++          ]
++        }
++      ],
++      "source": [
++        "# Set this only if auto-detection fails inside Docker/VSCode.\n",
++        "BASE_TRAIN_OVERRIDE = None\n",
++        "\n",
++        "IMAGE_EXTENSIONS = (\".jpg\", \".jpeg\", \".png\", \".bmp\", \".webp\", \".tif\", \".tiff\")\n",
++        "IMG_SIZE = 512\n",
++        "SEED = 42\n",
++        "\n",
++        "# Full experiment from the original notebook.\n",
++        "BLOCK_SIZES = [512, 32]\n",
++        "BLUR_SIGMAS = [0, 2]\n",
++        "\n",
++        "# Leave as None for the full dataset. Set to a small integer for a quick smoke test.\n",
++        "N_SAMPLES_PER_CLASS = 1\n",
++        "MAX_IMAGES_TOTAL = None\n",
++        "\n",
++        "# Loading 1097 images at 512x512 uses roughly 0.9 GB plus overhead.\n",
++        "# If your Docker memory is tight, set this to False. It will be slower but lighter.\n",
++        "CACHE_IMAGES_IN_MEMORY = True\n",
++        "\n",
++        "# Keep True to evaluate the full block x blur grid.\n",
++        "RUN_COMBO_GRID = True\n",
++        "\n",
++        "DEFAULT_OUT_DIR = Path(\"/workspace/privacy_score_outputs\")\n",
++        "if not DEFAULT_OUT_DIR.parent.exists():\n",
++        "    DEFAULT_OUT_DIR = Path.cwd() / \"privacy_score_outputs\"\n",
++        "OUT_DIR = DEFAULT_OUT_DIR\n",
++        "GRAPH_DIR = OUT_DIR / \"graphs\"\n",
++        "TABLE_DIR = OUT_DIR / \"tables\"\n",
++        "\n",
++        "OUT_DIR.mkdir(parents=True, exist_ok=True)\n",
++        "GRAPH_DIR.mkdir(parents=True, exist_ok=True)\n",
++        "TABLE_DIR.mkdir(parents=True, exist_ok=True)\n",
++        "\n",
++        "print(\"Output directory:\", OUT_DIR)\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "8ef0311c",
++      "metadata": {},
++      "source": [
++        "## 3. 경로 자동 탐색과 데이터셋 진단\n",
++        "\n",
++        "이 셀에서 현재 커널 기준으로 실제 존재하는 이미지 루트를 찾습니다. Docker 안에서 실행 중이면 Windows의 `C:\\...` 경로가 아니라 `/workspace/Train` 같은 컨테이너 내부 경로가 기준입니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 3,
++      "id": "ffd03c9e",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:44:58.418219Z",
++          "iopub.status.busy": "2026-08-24T09:44:58.418097Z",
++          "iopub.status.idle": "2026-08-24T09:44:58.551328Z",
++          "shell.execute_reply": "2026-08-24T09:44:58.550981Z"
++        }
++      },
++      "outputs": [
++        {
++          "data": {
++            "text/html": [
++              "<div>\n",
++              "<style scoped>\n",
++              "    .dataframe tbody tr th:only-of-type {\n",
++              "        vertical-align: middle;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe tbody tr th {\n",
++              "        vertical-align: top;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe thead th {\n",
++              "        text-align: right;\n",
++              "    }\n",
++              "</style>\n",
++              "<table border=\"1\" class=\"dataframe\">\n",
++              "  <thead>\n",
++              "    <tr style=\"text-align: right;\">\n",
++              "      <th></th>\n",
++              "      <th>candidate_path</th>\n",
++              "      <th>exists</th>\n",
++              "      <th>image_count</th>\n",
++              "    </tr>\n",
++              "  </thead>\n",
++              "  <tbody>\n",
++              "    <tr>\n",
++              "      <th>0</th>\n",
++              "      <td>\\workspace\\Train</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>1</th>\n",
++              "      <td>\\workspace\\train</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>2</th>\n",
++              "      <td>\\workspace\\Images</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>3</th>\n",
++              "      <td>\\workspace\\images</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>4</th>\n",
++              "      <td>\\workspace\\data\\Train</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>5</th>\n",
++              "      <td>\\workspace\\data\\train</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>6</th>\n",
++              "      <td>\\workspace\\data\\Images</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>7</th>\n",
++              "      <td>\\workspace\\data\\images</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>8</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>9</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>10</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>11</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>12</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>13</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>14</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>15</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>16</th>\n",
++              "      <td>\\workspace</td>\n",
++              "      <td>False</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>17</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...</td>\n",
++              "      <td>True</td>\n",
++              "      <td>0</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>18</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Desktop\\Train</td>\n",
++              "      <td>True</td>\n",
++              "      <td>1097</td>\n",
++              "    </tr>\n",
++              "  </tbody>\n",
++              "</table>\n",
++              "</div>"
++            ],
++            "text/plain": [
++              "                                       candidate_path  exists  image_count\n",
++              "0                                    \\workspace\\Train   False            0\n",
++              "1                                    \\workspace\\train   False            0\n",
++              "2                                   \\workspace\\Images   False            0\n",
++              "3                                   \\workspace\\images   False            0\n",
++              "4                               \\workspace\\data\\Train   False            0\n",
++              "5                               \\workspace\\data\\train   False            0\n",
++              "6                              \\workspace\\data\\Images   False            0\n",
++              "7                              \\workspace\\data\\images   False            0\n",
++              "8   C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "9   C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "10  C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "11  C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "12  C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "13  C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "14  C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "15  C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...   False            0\n",
++              "16                                         \\workspace   False            0\n",
++              "17  C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\fil...    True            0\n",
++              "18                      C:\\Users\\PUVKID\\Desktop\\Train    True         1097"
++            ]
++          },
++          "metadata": {},
++          "output_type": "display_data"
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Selected BASE_TRAIN: C:\\Users\\PUVKID\\Desktop\\Train\n"
++          ]
++        }
++      ],
++      "source": [
++        "def path_exists(path_like):\n",
++        "    try:\n",
++        "        return Path(path_like).exists()\n",
++        "    except Exception:\n",
++        "        return False\n",
++        "\n",
++        "\n",
++        "def candidate_train_dirs():\n",
++        "    candidates = []\n",
++        "    if BASE_TRAIN_OVERRIDE:\n",
++        "        candidates.append(Path(BASE_TRAIN_OVERRIDE))\n",
++        "\n",
++        "    candidates.extend([\n",
++        "        Path(\"/workspace/Train\"),\n",
++        "        Path(\"/workspace/train\"),\n",
++        "        Path(\"/workspace/Images\"),\n",
++        "        Path(\"/workspace/images\"),\n",
++        "        Path(\"/workspace/data/Train\"),\n",
++        "        Path(\"/workspace/data/train\"),\n",
++        "        Path(\"/workspace/data/Images\"),\n",
++        "        Path(\"/workspace/data/images\"),\n",
++        "        Path.cwd() / \"Train\",\n",
++        "        Path.cwd() / \"train\",\n",
++        "        Path.cwd() / \"Images\",\n",
++        "        Path.cwd() / \"images\",\n",
++        "        Path.cwd() / \"data\" / \"Train\",\n",
++        "        Path.cwd() / \"data\" / \"train\",\n",
++        "        Path.cwd() / \"data\" / \"Images\",\n",
++        "        Path.cwd() / \"data\" / \"images\",\n",
++        "    ])\n",
++        "\n",
++        "    # VSCode Dev Containers often mount projects under /workspaces/<project>.\n",
++        "    workspaces = Path(\"/workspaces\")\n",
++        "    if workspaces.exists():\n",
++        "        for project_dir in sorted([p for p in workspaces.iterdir() if p.is_dir()]):\n",
++        "            candidates.extend([\n",
++        "                project_dir / \"Train\",\n",
++        "                project_dir / \"train\",\n",
++        "                project_dir / \"Images\",\n",
++        "                project_dir / \"images\",\n",
++        "                project_dir / \"data\" / \"Train\",\n",
++        "                project_dir / \"data\" / \"train\",\n",
++        "                project_dir / \"data\" / \"Images\",\n",
++        "                project_dir / \"data\" / \"images\",\n",
++        "                project_dir,\n",
++        "            ])\n",
++        "\n",
++        "    # Fallbacks: useful when opening this notebook outside Docker.\n",
++        "    candidates.extend([\n",
++        "        Path(\"/workspace\"),\n",
++        "        Path.cwd(),\n",
++        "        Path(r\"C:\\Users\\PUVKID\\Desktop\\Train\"),\n",
++        "    ])\n",
++        "\n",
++        "    unique = []\n",
++        "    seen = set()\n",
++        "    for p in candidates:\n",
++        "        key = str(p)\n",
++        "        if key not in seen:\n",
++        "            unique.append(p)\n",
++        "            seen.add(key)\n",
++        "    return unique\n",
++        "\n",
++        "\n",
++        "IGNORE_DIR_NAMES = {\n",
++        "    \".git\",\n",
++        "    \".ipynb_checkpoints\",\n",
++        "    \"__pycache__\",\n",
++        "    \"privacy_score_outputs\",\n",
++        "    \"graphs\",\n",
++        "    \"tables\",\n",
++        "}\n",
++        "\n",
++        "\n",
++        "def should_ignore(path):\n",
++        "    return any(part in IGNORE_DIR_NAMES for part in path.parts)\n",
++        "\n",
++        "\n",
++        "def count_images_under(path):\n",
++        "    if not path.exists():\n",
++        "        return 0\n",
++        "    return sum(\n",
++        "        1\n",
++        "        for p in path.rglob(\"*\")\n",
++        "        if p.is_file() and not should_ignore(p) and p.suffix.lower() in IMAGE_EXTENSIONS\n",
++        "    )\n",
++        "\n",
++        "\n",
++        "diagnosis_rows = []\n",
++        "for p in candidate_train_dirs():\n",
++        "    diagnosis_rows.append({\n",
++        "        \"candidate_path\": str(p),\n",
++        "        \"exists\": p.exists(),\n",
++        "        \"image_count\": count_images_under(p) if p.exists() else 0,\n",
++        "    })\n",
++        "\n",
++        "path_diagnosis = pd.DataFrame(diagnosis_rows)\n",
++        "display(path_diagnosis)\n",
++        "\n",
++        "valid_candidates = [Path(r[\"candidate_path\"]) for r in diagnosis_rows if r[\"exists\"] and r[\"image_count\"] > 0]\n",
++        "if not valid_candidates:\n",
++        "    raise FileNotFoundError(\n",
++        "        \"No image dataset was found. In Docker/VSCode, make sure your Train folder is mounted \"\n",
++        "        \"to /workspace/Train, or set BASE_TRAIN_OVERRIDE to the container path.\"\n",
++        "    )\n",
++        "\n",
++        "BASE_TRAIN = valid_candidates[0]\n",
++        "print(\"Selected BASE_TRAIN:\", BASE_TRAIN)\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "fa85bc1e",
++      "metadata": {},
++      "source": [
++        "## 4. 이미지 목록 만들기\n",
++        "\n",
++        "클래스 폴더 구조가 있으면 부모 폴더명을 클래스명으로 사용합니다. 예: `Train/Normal cases/*.jpg`.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 4,
++      "id": "bf4c84f4",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:44:58.552626Z",
++          "iopub.status.busy": "2026-08-24T09:44:58.552487Z",
++          "iopub.status.idle": "2026-08-24T09:44:58.708971Z",
++          "shell.execute_reply": "2026-08-24T09:44:58.708685Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Total images: 1097\n"
++          ]
++        },
++        {
++          "data": {
++            "text/html": [
++              "<div>\n",
++              "<style scoped>\n",
++              "    .dataframe tbody tr th:only-of-type {\n",
++              "        vertical-align: middle;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe tbody tr th {\n",
++              "        vertical-align: top;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe thead th {\n",
++              "        text-align: right;\n",
++              "    }\n",
++              "</style>\n",
++              "<table border=\"1\" class=\"dataframe\">\n",
++              "  <thead>\n",
++              "    <tr style=\"text-align: right;\">\n",
++              "      <th></th>\n",
++              "      <th>label</th>\n",
++              "      <th>n_images</th>\n",
++              "    </tr>\n",
++              "  </thead>\n",
++              "  <tbody>\n",
++              "    <tr>\n",
++              "      <th>0</th>\n",
++              "      <td>Bengin cases</td>\n",
++              "      <td>120</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>1</th>\n",
++              "      <td>Malignant cases</td>\n",
++              "      <td>561</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>2</th>\n",
++              "      <td>Normal cases</td>\n",
++              "      <td>416</td>\n",
++              "    </tr>\n",
++              "  </tbody>\n",
++              "</table>\n",
++              "</div>"
++            ],
++            "text/plain": [
++              "             label  n_images\n",
++              "0     Bengin cases       120\n",
++              "1  Malignant cases       561\n",
++              "2     Normal cases       416"
++            ]
++          },
++          "metadata": {},
++          "output_type": "display_data"
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Selected images: 3\n"
++          ]
++        },
++        {
++          "name": "stderr",
++          "output_type": "stream",
++          "text": [
++            "C:\\Users\\PUVKID\\AppData\\Local\\Temp\\ipykernel_41668\\3551468261.py:38: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.\n",
++            "  .apply(lambda x: x.sample(n=min(len(x), N_SAMPLES_PER_CLASS), random_state=SEED))\n"
++          ]
++        },
++        {
++          "data": {
++            "text/html": [
++              "<div>\n",
++              "<style scoped>\n",
++              "    .dataframe tbody tr th:only-of-type {\n",
++              "        vertical-align: middle;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe tbody tr th {\n",
++              "        vertical-align: top;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe thead th {\n",
++              "        text-align: right;\n",
++              "    }\n",
++              "</style>\n",
++              "<table border=\"1\" class=\"dataframe\">\n",
++              "  <thead>\n",
++              "    <tr style=\"text-align: right;\">\n",
++              "      <th></th>\n",
++              "      <th>path</th>\n",
++              "      <th>relative_path</th>\n",
++              "      <th>label</th>\n",
++              "      <th>suffix</th>\n",
++              "    </tr>\n",
++              "  </thead>\n",
++              "  <tbody>\n",
++              "    <tr>\n",
++              "      <th>0</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Desktop\\Train\\Bengin cases\\Ben...</td>\n",
++              "      <td>Bengin cases\\Bengin case (30).jpg</td>\n",
++              "      <td>Bengin cases</td>\n",
++              "      <td>.jpg</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>1</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Desktop\\Train\\Malignant cases\\...</td>\n",
++              "      <td>Malignant cases\\Malignant case (561).jpg</td>\n",
++              "      <td>Malignant cases</td>\n",
++              "      <td>.jpg</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>2</th>\n",
++              "      <td>C:\\Users\\PUVKID\\Desktop\\Train\\Normal cases\\Nor...</td>\n",
++              "      <td>Normal cases\\Normal case (236).jpg</td>\n",
++              "      <td>Normal cases</td>\n",
++              "      <td>.jpg</td>\n",
++              "    </tr>\n",
++              "  </tbody>\n",
++              "</table>\n",
++              "</div>"
++            ],
++            "text/plain": [
++              "                                                path  \\\n",
++              "0  C:\\Users\\PUVKID\\Desktop\\Train\\Bengin cases\\Ben...   \n",
++              "1  C:\\Users\\PUVKID\\Desktop\\Train\\Malignant cases\\...   \n",
++              "2  C:\\Users\\PUVKID\\Desktop\\Train\\Normal cases\\Nor...   \n",
++              "\n",
++              "                              relative_path            label suffix  \n",
++              "0         Bengin cases\\Bengin case (30).jpg     Bengin cases   .jpg  \n",
++              "1  Malignant cases\\Malignant case (561).jpg  Malignant cases   .jpg  \n",
++              "2        Normal cases\\Normal case (236).jpg     Normal cases   .jpg  "
++            ]
++          },
++          "metadata": {},
++          "output_type": "display_data"
++        }
++      ],
++      "source": [
++        "def collect_image_table(base_dir):\n",
++        "    rows = []\n",
++        "    for p in sorted(base_dir.rglob(\"*\")):\n",
++        "        if should_ignore(p) or not p.is_file() or p.suffix.lower() not in IMAGE_EXTENSIONS:\n",
++        "            continue\n",
++        "        rel = p.relative_to(base_dir)\n",
++        "        label = rel.parts[0] if len(rel.parts) > 1 else \"root\"\n",
++        "        rows.append({\n",
++        "            \"path\": str(p),\n",
++        "            \"relative_path\": str(rel),\n",
++        "            \"label\": label,\n",
++        "            \"suffix\": p.suffix.lower(),\n",
++        "        })\n",
++        "    return pd.DataFrame(rows)\n",
++        "\n",
++        "\n",
++        "image_df = collect_image_table(BASE_TRAIN)\n",
++        "if image_df.empty:\n",
++        "    raise RuntimeError(f\"No images found under {BASE_TRAIN}\")\n",
++        "\n",
++        "class_counts = (\n",
++        "    image_df.groupby(\"label\")\n",
++        "    .size()\n",
++        "    .rename(\"n_images\")\n",
++        "    .reset_index()\n",
++        "    .sort_values(\"label\")\n",
++        ")\n",
++        "print(\"Total images:\", len(image_df))\n",
++        "display(class_counts)\n",
++        "\n",
++        "rng = np.random.default_rng(SEED)\n",
++        "selected_df = image_df.copy()\n",
++        "\n",
++        "if N_SAMPLES_PER_CLASS is not None:\n",
++        "    selected_df = (\n",
++        "        selected_df\n",
++        "        .groupby(\"label\", group_keys=False)\n",
++        "        .apply(lambda x: x.sample(n=min(len(x), N_SAMPLES_PER_CLASS), random_state=SEED))\n",
++        "        .reset_index(drop=True)\n",
++        "    )\n",
++        "\n",
++        "if MAX_IMAGES_TOTAL is not None and len(selected_df) > MAX_IMAGES_TOTAL:\n",
++        "    selected_df = selected_df.sample(n=MAX_IMAGES_TOTAL, random_state=SEED).reset_index(drop=True)\n",
++        "\n",
++        "selected_df = selected_df.sort_values([\"label\", \"relative_path\"]).reset_index(drop=True)\n",
++        "selected_df.to_csv(TABLE_DIR / \"selected_images.csv\", index=False, encoding=\"utf-8-sig\")\n",
++        "\n",
++        "print(\"Selected images:\", len(selected_df))\n",
++        "display(selected_df.head())\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "bcf9949a",
++      "metadata": {},
++      "source": [
++        "## 5. 한글 폰트와 이미지 변환 함수\n",
++        "\n",
++        "그래프 라벨은 호환성을 위해 대부분 영어로 저장합니다. 한글 폰트가 있으면 자동 적용됩니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 5,
++      "id": "430acbaf",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:44:58.710361Z",
++          "iopub.status.busy": "2026-08-24T09:44:58.710219Z",
++          "iopub.status.idle": "2026-08-24T09:44:58.722617Z",
++          "shell.execute_reply": "2026-08-24T09:44:58.722260Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Font: C:\\Windows\\Fonts\\malgun.ttf\n",
++            "Transform functions ready.\n"
++          ]
++        }
++      ],
++      "source": [
++        "def setup_matplotlib_font():\n",
++        "    candidates = [\n",
++        "        \"/usr/share/fonts/truetype/nanum/NanumGothic.ttf\",\n",
++        "        \"/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf\",\n",
++        "        \"/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc\",\n",
++        "        r\"C:\\Windows\\Fonts\\malgun.ttf\",\n",
++        "    ]\n",
++        "    font_path = next((Path(p) for p in candidates if Path(p).exists()), None)\n",
++        "    if font_path is None:\n",
++        "        for p in fm.findSystemFonts(fontpaths=None, fontext=\"ttf\"):\n",
++        "            low = p.lower()\n",
++        "            if any(name in low for name in [\"nanum\", \"noto\", \"malgun\", \"gulim\"]):\n",
++        "                font_path = Path(p)\n",
++        "                break\n",
++        "    if font_path is not None:\n",
++        "        fm.fontManager.addfont(str(font_path))\n",
++        "        matplotlib.rcParams[\"font.family\"] = fm.FontProperties(fname=str(font_path)).get_name()\n",
++        "\n",
++        "    matplotlib.rcParams[\"axes.unicode_minus\"] = False\n",
++        "    matplotlib.rcParams.update({\n",
++        "        \"figure.facecolor\": \"white\",\n",
++        "        \"axes.facecolor\": \"white\",\n",
++        "        \"axes.edgecolor\": \"#333333\",\n",
++        "        \"axes.labelcolor\": \"#222222\",\n",
++        "        \"xtick.color\": \"#222222\",\n",
++        "        \"ytick.color\": \"#222222\",\n",
++        "        \"text.color\": \"#222222\",\n",
++        "        \"grid.color\": \"#dddddd\",\n",
++        "        \"grid.linestyle\": \"--\",\n",
++        "        \"grid.alpha\": 0.45,\n",
++        "        \"savefig.bbox\": \"tight\",\n",
++        "    })\n",
++        "    return font_path\n",
++        "\n",
++        "\n",
++        "font_path = setup_matplotlib_font()\n",
++        "print(\"Font:\", font_path if font_path else \"default\")\n",
++        "\n",
++        "RESAMPLE_LANCZOS = getattr(getattr(Image, \"Resampling\", Image), \"LANCZOS\")\n",
++        "\n",
++        "\n",
++        "def load_rgb_image(path, img_size=IMG_SIZE):\n",
++        "    with Image.open(path) as img:\n",
++        "        img = ImageOps.exif_transpose(img).convert(\"RGB\")\n",
++        "        img = img.resize((img_size, img_size), RESAMPLE_LANCZOS)\n",
++        "        return np.asarray(img, dtype=np.uint8)\n",
++        "\n",
++        "\n",
++        "def block_scramble(img_array, seed=SEED, block_size=32):\n",
++        "    h, w, c = img_array.shape\n",
++        "    block_size = int(block_size)\n",
++        "    if block_size >= min(h, w):\n",
++        "        return img_array.copy()\n",
++        "    if block_size < 1:\n",
++        "        raise ValueError(\"block_size must be >= 1\")\n",
++        "\n",
++        "    pad_h = (block_size - h % block_size) % block_size\n",
++        "    pad_w = (block_size - w % block_size) % block_size\n",
++        "    if pad_h or pad_w:\n",
++        "        padded = np.pad(img_array, ((0, pad_h), (0, pad_w), (0, 0)), mode=\"reflect\")\n",
++        "    else:\n",
++        "        padded = img_array\n",
++        "\n",
++        "    ph, pw = padded.shape[:2]\n",
++        "    n_h, n_w = ph // block_size, pw // block_size\n",
++        "    blocks = padded.reshape(n_h, block_size, n_w, block_size, c).swapaxes(1, 2)\n",
++        "    flat_blocks = blocks.reshape(n_h * n_w, block_size, block_size, c)\n",
++        "\n",
++        "    rng = np.random.default_rng(seed)\n",
++        "    order = rng.permutation(n_h * n_w)\n",
++        "    scrambled = flat_blocks[order].reshape(n_h, n_w, block_size, block_size, c)\n",
++        "    scrambled = scrambled.swapaxes(1, 2).reshape(ph, pw, c)\n",
++        "    return scrambled[:h, :w].astype(np.uint8)\n",
++        "\n",
++        "\n",
++        "def apply_gaussian_blur(img_array, sigma=0):\n",
++        "    sigma = float(sigma)\n",
++        "    if sigma <= 0:\n",
++        "        return img_array.copy()\n",
++        "    pil_img = Image.fromarray(img_array.astype(np.uint8))\n",
++        "    blurred = pil_img.filter(ImageFilter.GaussianBlur(radius=sigma))\n",
++        "    return np.asarray(blurred, dtype=np.uint8)\n",
++        "\n",
++        "\n",
++        "def apply_transform(img_array, method, block_size=None, sigma=None):\n",
++        "    if method == \"block\":\n",
++        "        return block_scramble(img_array, seed=SEED, block_size=block_size)\n",
++        "    if method == \"blur\":\n",
++        "        return apply_gaussian_blur(img_array, sigma=sigma)\n",
++        "    if method == \"combo\":\n",
++        "        x = block_scramble(img_array, seed=SEED, block_size=block_size)\n",
++        "        return apply_gaussian_blur(x, sigma=sigma)\n",
++        "    raise ValueError(f\"Unknown method: {method}\")\n",
++        "\n",
++        "print(\"Transform functions ready.\")\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "a3ce7bbd",
++      "metadata": {},
++      "source": [
++        "## 6. Privacy Score 계산 함수\n",
++        "\n",
++        "SSIM 기반 DSSIM만 privacy score로 사용합니다. PSNR은 `psnr_mean` 컬럼에 참고용으로 같이 남깁니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 6,
++      "id": "b45b57a4",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:44:58.723796Z",
++          "iopub.status.busy": "2026-08-24T09:44:58.723670Z",
++          "iopub.status.idle": "2026-08-24T09:44:58.769955Z",
++          "shell.execute_reply": "2026-08-24T09:44:58.768861Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Loaded 3 images in 0.0s\n",
++            "Metric functions ready.\n"
++          ]
++        }
++      ],
++      "source": [
++        "def compute_pair_metrics(original, transformed):\n",
++        "    ssim_value = ssim_fn(original, transformed, channel_axis=-1, data_range=255)\n",
++        "    psnr_value = psnr_fn(original, transformed, data_range=255)\n",
++        "    if not np.isfinite(psnr_value):\n",
++        "        psnr_value = 100.0\n",
++        "    dssim = np.clip((1.0 - float(ssim_value)) / 2.0, 0.0, 1.0)\n",
++        "    privacy_score = dssim * 100.0\n",
++        "    return float(ssim_value), float(psnr_value), float(dssim), float(privacy_score)\n",
++        "\n",
++        "\n",
++        "def load_image_records(selected):\n",
++        "    records = []\n",
++        "    start = time.time()\n",
++        "    for i, row in selected.iterrows():\n",
++        "        img = load_rgb_image(row[\"path\"])\n",
++        "        records.append({\n",
++        "            \"path\": row[\"path\"],\n",
++        "            \"relative_path\": row[\"relative_path\"],\n",
++        "            \"label\": row[\"label\"],\n",
++        "            \"image\": img,\n",
++        "        })\n",
++        "        if (i + 1) % 100 == 0:\n",
++        "            print(f\"Loaded {i + 1}/{len(selected)} images\")\n",
++        "    print(f\"Loaded {len(records)} images in {time.time() - start:.1f}s\")\n",
++        "    return records\n",
++        "\n",
++        "\n",
++        "if CACHE_IMAGES_IN_MEMORY:\n",
++        "    image_records = load_image_records(selected_df)\n",
++        "else:\n",
++        "    image_records = None\n",
++        "    print(\"Image cache disabled. Images will be loaded from disk for each condition.\")\n",
++        "\n",
++        "\n",
++        "def iter_records():\n",
++        "    if image_records is not None:\n",
++        "        yield from image_records\n",
++        "    else:\n",
++        "        for _, row in selected_df.iterrows():\n",
++        "            yield {\n",
++        "                \"path\": row[\"path\"],\n",
++        "                \"relative_path\": row[\"relative_path\"],\n",
++        "                \"label\": row[\"label\"],\n",
++        "                \"image\": load_rgb_image(row[\"path\"]),\n",
++        "            }\n",
++        "\n",
++        "\n",
++        "def evaluate_condition(method, block_size=None, sigma=None):\n",
++        "    ssims, psnrs, dssims, scores = [], [], [], []\n",
++        "    label_scores = {}\n",
++        "    n = 0\n",
++        "\n",
++        "    for rec in iter_records():\n",
++        "        original = rec[\"image\"]\n",
++        "        transformed = apply_transform(original, method=method, block_size=block_size, sigma=sigma)\n",
++        "        ssim_value, psnr_value, dssim_value, score_value = compute_pair_metrics(original, transformed)\n",
++        "        ssims.append(ssim_value)\n",
++        "        psnrs.append(psnr_value)\n",
++        "        dssims.append(dssim_value)\n",
++        "        scores.append(score_value)\n",
++        "        label_scores.setdefault(rec[\"label\"], []).append(score_value)\n",
++        "        n += 1\n",
++        "\n",
++        "    row = {\n",
++        "        \"condition\": condition_name(method, block_size, sigma),\n",
++        "        \"method\": method,\n",
++        "        \"block_size\": np.nan if block_size is None else int(block_size),\n",
++        "        \"sigma\": np.nan if sigma is None else float(sigma),\n",
++        "        \"n_images\": n,\n",
++        "        \"ssim_mean\": float(np.mean(ssims)),\n",
++        "        \"ssim_std\": float(np.std(ssims)),\n",
++        "        \"psnr_mean\": float(np.mean(psnrs)),\n",
++        "        \"psnr_std\": float(np.std(psnrs)),\n",
++        "        \"dssim_mean\": float(np.mean(dssims)),\n",
++        "        \"privacy_score\": float(np.mean(scores)),\n",
++        "        \"privacy_score_std\": float(np.std(scores)),\n",
++        "    }\n",
++        "\n",
++        "    for label, values in label_scores.items():\n",
++        "        safe_label = str(label).replace(\" \", \"_\").replace(\"/\", \"_\").replace(\"\\\\\", \"_\")\n",
++        "        row[f\"privacy_score_{safe_label}\"] = float(np.mean(values))\n",
++        "    return row\n",
++        "\n",
++        "\n",
++        "def condition_name(method, block_size=None, sigma=None):\n",
++        "    if method == \"block\":\n",
++        "        return f\"block_B{int(block_size)}\"\n",
++        "    if method == \"blur\":\n",
++        "        return f\"blur_S{format_sigma(sigma)}\"\n",
++        "    if method == \"combo\":\n",
++        "        return f\"combo_B{int(block_size)}_S{format_sigma(sigma)}\"\n",
++        "    return method\n",
++        "\n",
++        "\n",
++        "def format_sigma(sigma):\n",
++        "    sigma = float(sigma)\n",
++        "    return str(int(sigma)) if sigma.is_integer() else str(sigma).replace(\".\", \"p\")\n",
++        "\n",
++        "\n",
++        "print(\"Metric functions ready.\")\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "8e9cd559",
++      "metadata": {},
++      "source": [
++        "## 7. 실험 실행\n",
++        "\n",
++        "전체 조건은 블록 단독 10개, 블러 단독 10개, 조합 100개입니다. Docker 메모리나 시간이 부족하면 위 설정에서 `N_SAMPLES_PER_CLASS`를 먼저 작게 잡아 테스트하세요.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 7,
++      "id": "471eee98",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:44:58.771696Z",
++          "iopub.status.busy": "2026-08-24T09:44:58.771469Z",
++          "iopub.status.idle": "2026-08-24T09:45:01.151190Z",
++          "shell.execute_reply": "2026-08-24T09:45:01.150867Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Number of conditions: 8\n"
++          ]
++        },
++        {
++          "name": "stderr",
++          "output_type": "stream",
++          "text": [
++            "C:\\ProgramData\\anaconda3\\Lib\\site-packages\\skimage\\metrics\\simple_metrics.py:168: RuntimeWarning: divide by zero encountered in scalar divide\n",
++            "  return 10 * np.log10((data_range**2) / err)\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[001/8] block_B512: score=0.00, ssim=1.0000, psnr=100.00 dB, time=0.3s\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[002/8] block_B32: score=35.37, ssim=0.2927, psnr=7.82 dB, time=0.3s\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[003/8] blur_S0: score=0.00, ssim=1.0000, psnr=100.00 dB, time=0.3s\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[004/8] blur_S2: score=10.05, ssim=0.7989, psnr=26.91 dB, time=0.3s\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[005/8] combo_B512_S0: score=0.00, ssim=1.0000, psnr=100.00 dB, time=0.3s\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[006/8] combo_B512_S2: score=10.05, ssim=0.7989, psnr=26.91 dB, time=0.3s\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[007/8] combo_B32_S0: score=35.37, ssim=0.2927, psnr=7.82 dB, time=0.3s\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "[008/8] combo_B32_S2: score=34.37, ssim=0.3126, psnr=8.27 dB, time=0.3s\n",
++            "Done in 0.0 minutes\n"
++          ]
++        },
++        {
++          "data": {
++            "text/html": [
++              "<div>\n",
++              "<style scoped>\n",
++              "    .dataframe tbody tr th:only-of-type {\n",
++              "        vertical-align: middle;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe tbody tr th {\n",
++              "        vertical-align: top;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe thead th {\n",
++              "        text-align: right;\n",
++              "    }\n",
++              "</style>\n",
++              "<table border=\"1\" class=\"dataframe\">\n",
++              "  <thead>\n",
++              "    <tr style=\"text-align: right;\">\n",
++              "      <th></th>\n",
++              "      <th>condition</th>\n",
++              "      <th>method</th>\n",
++              "      <th>block_size</th>\n",
++              "      <th>sigma</th>\n",
++              "      <th>n_images</th>\n",
++              "      <th>ssim_mean</th>\n",
++              "      <th>ssim_std</th>\n",
++              "      <th>psnr_mean</th>\n",
++              "      <th>psnr_std</th>\n",
++              "      <th>dssim_mean</th>\n",
++              "      <th>privacy_score</th>\n",
++              "      <th>privacy_score_std</th>\n",
++              "      <th>privacy_score_Bengin_cases</th>\n",
++              "      <th>privacy_score_Malignant_cases</th>\n",
++              "      <th>privacy_score_Normal_cases</th>\n",
++              "    </tr>\n",
++              "  </thead>\n",
++              "  <tbody>\n",
++              "    <tr>\n",
++              "      <th>0</th>\n",
++              "      <td>block_B512</td>\n",
++              "      <td>block</td>\n",
++              "      <td>512.0</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>3</td>\n",
++              "      <td>1.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>100.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.00000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.00000</td>\n",
++              "      <td>0.000000</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>1</th>\n",
++              "      <td>block_B32</td>\n",
++              "      <td>block</td>\n",
++              "      <td>32.0</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>3</td>\n",
++              "      <td>0.292664</td>\n",
++              "      <td>0.102583</td>\n",
++              "      <td>7.817432</td>\n",
++              "      <td>0.501403</td>\n",
++              "      <td>0.353668</td>\n",
++              "      <td>35.366798</td>\n",
++              "      <td>5.12917</td>\n",
++              "      <td>40.000397</td>\n",
++              "      <td>28.21679</td>\n",
++              "      <td>37.883206</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>2</th>\n",
++              "      <td>blur_S0</td>\n",
++              "      <td>blur</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>1.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>100.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.00000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.00000</td>\n",
++              "      <td>0.000000</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>3</th>\n",
++              "      <td>blur_S2</td>\n",
++              "      <td>blur</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>2.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>0.798932</td>\n",
++              "      <td>0.079218</td>\n",
++              "      <td>26.907255</td>\n",
++              "      <td>1.511857</td>\n",
++              "      <td>0.100534</td>\n",
++              "      <td>10.053400</td>\n",
++              "      <td>3.96092</td>\n",
++              "      <td>13.211239</td>\n",
++              "      <td>4.46769</td>\n",
++              "      <td>12.481271</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>4</th>\n",
++              "      <td>combo_B512_S0</td>\n",
++              "      <td>combo</td>\n",
++              "      <td>512.0</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>1.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>100.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.00000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.00000</td>\n",
++              "      <td>0.000000</td>\n",
++              "    </tr>\n",
++              "  </tbody>\n",
++              "</table>\n",
++              "</div>"
++            ],
++            "text/plain": [
++              "       condition method  block_size  sigma  n_images  ssim_mean  ssim_std  \\\n",
++              "0     block_B512  block       512.0    NaN         3   1.000000  0.000000   \n",
++              "1      block_B32  block        32.0    NaN         3   0.292664  0.102583   \n",
++              "2        blur_S0   blur         NaN    0.0         3   1.000000  0.000000   \n",
++              "3        blur_S2   blur         NaN    2.0         3   0.798932  0.079218   \n",
++              "4  combo_B512_S0  combo       512.0    0.0         3   1.000000  0.000000   \n",
++              "\n",
++              "    psnr_mean  psnr_std  dssim_mean  privacy_score  privacy_score_std  \\\n",
++              "0  100.000000  0.000000    0.000000       0.000000            0.00000   \n",
++              "1    7.817432  0.501403    0.353668      35.366798            5.12917   \n",
++              "2  100.000000  0.000000    0.000000       0.000000            0.00000   \n",
++              "3   26.907255  1.511857    0.100534      10.053400            3.96092   \n",
++              "4  100.000000  0.000000    0.000000       0.000000            0.00000   \n",
++              "\n",
++              "   privacy_score_Bengin_cases  privacy_score_Malignant_cases  \\\n",
++              "0                    0.000000                        0.00000   \n",
++              "1                   40.000397                       28.21679   \n",
++              "2                    0.000000                        0.00000   \n",
++              "3                   13.211239                        4.46769   \n",
++              "4                    0.000000                        0.00000   \n",
++              "\n",
++              "   privacy_score_Normal_cases  \n",
++              "0                    0.000000  \n",
++              "1                   37.883206  \n",
++              "2                    0.000000  \n",
++              "3                   12.481271  \n",
++              "4                    0.000000  "
++            ]
++          },
++          "metadata": {},
++          "output_type": "display_data"
++        }
++      ],
++      "source": [
++        "experiment_plan = []\n",
++        "for bs in BLOCK_SIZES:\n",
++        "    experiment_plan.append((\"block\", bs, None))\n",
++        "for sg in BLUR_SIGMAS:\n",
++        "    experiment_plan.append((\"blur\", None, sg))\n",
++        "if RUN_COMBO_GRID:\n",
++        "    for bs in BLOCK_SIZES:\n",
++        "        for sg in BLUR_SIGMAS:\n",
++        "            experiment_plan.append((\"combo\", bs, sg))\n",
++        "\n",
++        "print(\"Number of conditions:\", len(experiment_plan))\n",
++        "\n",
++        "rows = []\n",
++        "start_all = time.time()\n",
++        "for idx, (method, bs, sg) in enumerate(experiment_plan, start=1):\n",
++        "    started = time.time()\n",
++        "    row = evaluate_condition(method, block_size=bs, sigma=sg)\n",
++        "    rows.append(row)\n",
++        "    print(\n",
++        "        f\"[{idx:03d}/{len(experiment_plan)}] {row['condition']}: \"\n",
++        "        f\"score={row['privacy_score']:.2f}, ssim={row['ssim_mean']:.4f}, \"\n",
++        "        f\"psnr={row['psnr_mean']:.2f} dB, time={time.time() - started:.1f}s\"\n",
++        "    )\n",
++        "\n",
++        "df = pd.DataFrame(rows)\n",
++        "print(f\"Done in {(time.time() - start_all) / 60:.1f} minutes\")\n",
++        "display(df.head())\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "8e374658",
++      "metadata": {},
++      "source": [
++        "## 8. 결과 표 저장\n",
++        "\n",
++        "CSV와 Excel 파일을 모두 저장합니다. Excel 저장이 실패해도 CSV는 저장됩니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 8,
++      "id": "0cd8bba7",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:45:01.152294Z",
++          "iopub.status.busy": "2026-08-24T09:45:01.152179Z",
++          "iopub.status.idle": "2026-08-24T09:45:01.723142Z",
++          "shell.execute_reply": "2026-08-24T09:45:01.722814Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Excel saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\privacy_score_results.xlsx\n",
++            "CSV saved:\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\\privacy_scores_long.csv\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\\privacy_scores_summary_by_method.csv\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\\privacy_scores_best_conditions.csv\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\\privacy_scores_combo_pivot.csv\n"
++          ]
++        },
++        {
++          "data": {
++            "text/html": [
++              "<div>\n",
++              "<style scoped>\n",
++              "    .dataframe tbody tr th:only-of-type {\n",
++              "        vertical-align: middle;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe tbody tr th {\n",
++              "        vertical-align: top;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe thead th {\n",
++              "        text-align: right;\n",
++              "    }\n",
++              "</style>\n",
++              "<table border=\"1\" class=\"dataframe\">\n",
++              "  <thead>\n",
++              "    <tr style=\"text-align: right;\">\n",
++              "      <th></th>\n",
++              "      <th>method</th>\n",
++              "      <th>n_conditions</th>\n",
++              "      <th>mean_privacy_score</th>\n",
++              "      <th>max_privacy_score</th>\n",
++              "      <th>min_privacy_score</th>\n",
++              "      <th>mean_ssim</th>\n",
++              "      <th>mean_psnr</th>\n",
++              "    </tr>\n",
++              "  </thead>\n",
++              "  <tbody>\n",
++              "    <tr>\n",
++              "      <th>2</th>\n",
++              "      <td>combo</td>\n",
++              "      <td>4</td>\n",
++              "      <td>19.947796</td>\n",
++              "      <td>35.366798</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>0.601044</td>\n",
++              "      <td>35.749124</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>0</th>\n",
++              "      <td>block</td>\n",
++              "      <td>2</td>\n",
++              "      <td>17.683399</td>\n",
++              "      <td>35.366798</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>0.646332</td>\n",
++              "      <td>53.908716</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>1</th>\n",
++              "      <td>blur</td>\n",
++              "      <td>2</td>\n",
++              "      <td>5.026700</td>\n",
++              "      <td>10.053400</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>0.899466</td>\n",
++              "      <td>63.453628</td>\n",
++              "    </tr>\n",
++              "  </tbody>\n",
++              "</table>\n",
++              "</div>"
++            ],
++            "text/plain": [
++              "  method  n_conditions  mean_privacy_score  max_privacy_score  \\\n",
++              "2  combo             4           19.947796          35.366798   \n",
++              "0  block             2           17.683399          35.366798   \n",
++              "1   blur             2            5.026700          10.053400   \n",
++              "\n",
++              "   min_privacy_score  mean_ssim  mean_psnr  \n",
++              "2                0.0   0.601044  35.749124  \n",
++              "0                0.0   0.646332  53.908716  \n",
++              "1                0.0   0.899466  63.453628  "
++            ]
++          },
++          "metadata": {},
++          "output_type": "display_data"
++        },
++        {
++          "data": {
++            "text/html": [
++              "<div>\n",
++              "<style scoped>\n",
++              "    .dataframe tbody tr th:only-of-type {\n",
++              "        vertical-align: middle;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe tbody tr th {\n",
++              "        vertical-align: top;\n",
++              "    }\n",
++              "\n",
++              "    .dataframe thead th {\n",
++              "        text-align: right;\n",
++              "    }\n",
++              "</style>\n",
++              "<table border=\"1\" class=\"dataframe\">\n",
++              "  <thead>\n",
++              "    <tr style=\"text-align: right;\">\n",
++              "      <th></th>\n",
++              "      <th>condition</th>\n",
++              "      <th>method</th>\n",
++              "      <th>block_size</th>\n",
++              "      <th>sigma</th>\n",
++              "      <th>n_images</th>\n",
++              "      <th>ssim_mean</th>\n",
++              "      <th>ssim_std</th>\n",
++              "      <th>psnr_mean</th>\n",
++              "      <th>psnr_std</th>\n",
++              "      <th>dssim_mean</th>\n",
++              "      <th>privacy_score</th>\n",
++              "      <th>privacy_score_std</th>\n",
++              "      <th>privacy_score_Bengin_cases</th>\n",
++              "      <th>privacy_score_Malignant_cases</th>\n",
++              "      <th>privacy_score_Normal_cases</th>\n",
++              "    </tr>\n",
++              "  </thead>\n",
++              "  <tbody>\n",
++              "    <tr>\n",
++              "      <th>0</th>\n",
++              "      <td>block_B32</td>\n",
++              "      <td>block</td>\n",
++              "      <td>32.0</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>3</td>\n",
++              "      <td>0.292664</td>\n",
++              "      <td>0.102583</td>\n",
++              "      <td>7.817432</td>\n",
++              "      <td>0.501403</td>\n",
++              "      <td>0.353668</td>\n",
++              "      <td>35.366798</td>\n",
++              "      <td>5.129170</td>\n",
++              "      <td>40.000397</td>\n",
++              "      <td>28.216790</td>\n",
++              "      <td>37.883206</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>1</th>\n",
++              "      <td>combo_B32_S0</td>\n",
++              "      <td>combo</td>\n",
++              "      <td>32.0</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>0.292664</td>\n",
++              "      <td>0.102583</td>\n",
++              "      <td>7.817432</td>\n",
++              "      <td>0.501403</td>\n",
++              "      <td>0.353668</td>\n",
++              "      <td>35.366798</td>\n",
++              "      <td>5.129170</td>\n",
++              "      <td>40.000397</td>\n",
++              "      <td>28.216790</td>\n",
++              "      <td>37.883206</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>2</th>\n",
++              "      <td>combo_B32_S2</td>\n",
++              "      <td>combo</td>\n",
++              "      <td>32.0</td>\n",
++              "      <td>2.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>0.312580</td>\n",
++              "      <td>0.080548</td>\n",
++              "      <td>8.271810</td>\n",
++              "      <td>0.491983</td>\n",
++              "      <td>0.343710</td>\n",
++              "      <td>34.370986</td>\n",
++              "      <td>4.027382</td>\n",
++              "      <td>38.122378</td>\n",
++              "      <td>28.783821</td>\n",
++              "      <td>36.206759</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>3</th>\n",
++              "      <td>blur_S2</td>\n",
++              "      <td>blur</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>2.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>0.798932</td>\n",
++              "      <td>0.079218</td>\n",
++              "      <td>26.907255</td>\n",
++              "      <td>1.511857</td>\n",
++              "      <td>0.100534</td>\n",
++              "      <td>10.053400</td>\n",
++              "      <td>3.960920</td>\n",
++              "      <td>13.211239</td>\n",
++              "      <td>4.467690</td>\n",
++              "      <td>12.481271</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>4</th>\n",
++              "      <td>combo_B512_S2</td>\n",
++              "      <td>combo</td>\n",
++              "      <td>512.0</td>\n",
++              "      <td>2.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>0.798932</td>\n",
++              "      <td>0.079218</td>\n",
++              "      <td>26.907255</td>\n",
++              "      <td>1.511857</td>\n",
++              "      <td>0.100534</td>\n",
++              "      <td>10.053400</td>\n",
++              "      <td>3.960920</td>\n",
++              "      <td>13.211239</td>\n",
++              "      <td>4.467690</td>\n",
++              "      <td>12.481271</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>5</th>\n",
++              "      <td>block_B512</td>\n",
++              "      <td>block</td>\n",
++              "      <td>512.0</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>3</td>\n",
++              "      <td>1.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>100.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>6</th>\n",
++              "      <td>blur_S0</td>\n",
++              "      <td>blur</td>\n",
++              "      <td>NaN</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>1.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>100.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "    </tr>\n",
++              "    <tr>\n",
++              "      <th>7</th>\n",
++              "      <td>combo_B512_S0</td>\n",
++              "      <td>combo</td>\n",
++              "      <td>512.0</td>\n",
++              "      <td>0.0</td>\n",
++              "      <td>3</td>\n",
++              "      <td>1.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>100.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "      <td>0.000000</td>\n",
++              "    </tr>\n",
++              "  </tbody>\n",
++              "</table>\n",
++              "</div>"
++            ],
++            "text/plain": [
++              "       condition method  block_size  sigma  n_images  ssim_mean  ssim_std  \\\n",
++              "0      block_B32  block        32.0    NaN         3   0.292664  0.102583   \n",
++              "1   combo_B32_S0  combo        32.0    0.0         3   0.292664  0.102583   \n",
++              "2   combo_B32_S2  combo        32.0    2.0         3   0.312580  0.080548   \n",
++              "3        blur_S2   blur         NaN    2.0         3   0.798932  0.079218   \n",
++              "4  combo_B512_S2  combo       512.0    2.0         3   0.798932  0.079218   \n",
++              "5     block_B512  block       512.0    NaN         3   1.000000  0.000000   \n",
++              "6        blur_S0   blur         NaN    0.0         3   1.000000  0.000000   \n",
++              "7  combo_B512_S0  combo       512.0    0.0         3   1.000000  0.000000   \n",
++              "\n",
++              "    psnr_mean  psnr_std  dssim_mean  privacy_score  privacy_score_std  \\\n",
++              "0    7.817432  0.501403    0.353668      35.366798           5.129170   \n",
++              "1    7.817432  0.501403    0.353668      35.366798           5.129170   \n",
++              "2    8.271810  0.491983    0.343710      34.370986           4.027382   \n",
++              "3   26.907255  1.511857    0.100534      10.053400           3.960920   \n",
++              "4   26.907255  1.511857    0.100534      10.053400           3.960920   \n",
++              "5  100.000000  0.000000    0.000000       0.000000           0.000000   \n",
++              "6  100.000000  0.000000    0.000000       0.000000           0.000000   \n",
++              "7  100.000000  0.000000    0.000000       0.000000           0.000000   \n",
++              "\n",
++              "   privacy_score_Bengin_cases  privacy_score_Malignant_cases  \\\n",
++              "0                   40.000397                      28.216790   \n",
++              "1                   40.000397                      28.216790   \n",
++              "2                   38.122378                      28.783821   \n",
++              "3                   13.211239                       4.467690   \n",
++              "4                   13.211239                       4.467690   \n",
++              "5                    0.000000                       0.000000   \n",
++              "6                    0.000000                       0.000000   \n",
++              "7                    0.000000                       0.000000   \n",
++              "\n",
++              "   privacy_score_Normal_cases  \n",
++              "0                   37.883206  \n",
++              "1                   37.883206  \n",
++              "2                   36.206759  \n",
++              "3                   12.481271  \n",
++              "4                   12.481271  \n",
++              "5                    0.000000  \n",
++              "6                    0.000000  \n",
++              "7                    0.000000  "
++            ]
++          },
++          "metadata": {},
++          "output_type": "display_data"
++        }
++      ],
++      "source": [
++        "result_csv = TABLE_DIR / \"privacy_scores_long.csv\"\n",
++        "summary_csv = TABLE_DIR / \"privacy_scores_summary_by_method.csv\"\n",
++        "best_csv = TABLE_DIR / \"privacy_scores_best_conditions.csv\"\n",
++        "pivot_csv = TABLE_DIR / \"privacy_scores_combo_pivot.csv\"\n",
++        "excel_path = OUT_DIR / \"privacy_score_results.xlsx\"\n",
++        "\n",
++        "df_sorted = df.sort_values(\"privacy_score\", ascending=False).reset_index(drop=True)\n",
++        "summary_by_method = (\n",
++        "    df.groupby(\"method\", dropna=False)\n",
++        "    .agg(\n",
++        "        n_conditions=(\"condition\", \"count\"),\n",
++        "        mean_privacy_score=(\"privacy_score\", \"mean\"),\n",
++        "        max_privacy_score=(\"privacy_score\", \"max\"),\n",
++        "        min_privacy_score=(\"privacy_score\", \"min\"),\n",
++        "        mean_ssim=(\"ssim_mean\", \"mean\"),\n",
++        "        mean_psnr=(\"psnr_mean\", \"mean\"),\n",
++        "    )\n",
++        "    .reset_index()\n",
++        "    .sort_values(\"mean_privacy_score\", ascending=False)\n",
++        ")\n",
++        "best_by_method = (\n",
++        "    df.loc[df.groupby(\"method\")[\"privacy_score\"].idxmax()]\n",
++        "    .sort_values(\"privacy_score\", ascending=False)\n",
++        "    .reset_index(drop=True)\n",
++        ")\n",
++        "\n",
++        "combo_df = df[df[\"method\"] == \"combo\"].copy()\n",
++        "if not combo_df.empty:\n",
++        "    combo_pivot = combo_df.pivot(index=\"block_size\", columns=\"sigma\", values=\"privacy_score\")\n",
++        "    combo_pivot = combo_pivot.reindex(index=sorted(BLOCK_SIZES), columns=[float(x) for x in BLUR_SIGMAS])\n",
++        "else:\n",
++        "    combo_pivot = pd.DataFrame()\n",
++        "\n",
++        "df_sorted.to_csv(result_csv, index=False, encoding=\"utf-8-sig\")\n",
++        "summary_by_method.to_csv(summary_csv, index=False, encoding=\"utf-8-sig\")\n",
++        "best_by_method.to_csv(best_csv, index=False, encoding=\"utf-8-sig\")\n",
++        "if not combo_pivot.empty:\n",
++        "    combo_pivot.to_csv(pivot_csv, encoding=\"utf-8-sig\")\n",
++        "\n",
++        "try:\n",
++        "    with pd.ExcelWriter(excel_path) as writer:\n",
++        "        df_sorted.to_excel(writer, sheet_name=\"all_scores\", index=False)\n",
++        "        summary_by_method.to_excel(writer, sheet_name=\"summary_by_method\", index=False)\n",
++        "        best_by_method.to_excel(writer, sheet_name=\"best_by_method\", index=False)\n",
++        "        if not combo_pivot.empty:\n",
++        "            combo_pivot.to_excel(writer, sheet_name=\"combo_pivot\")\n",
++        "    print(\"Excel saved:\", excel_path)\n",
++        "except Exception as e:\n",
++        "    print(\"Excel save skipped:\", repr(e))\n",
++        "\n",
++        "print(\"CSV saved:\")\n",
++        "print(\" -\", result_csv)\n",
++        "print(\" -\", summary_csv)\n",
++        "print(\" -\", best_csv)\n",
++        "if not combo_pivot.empty:\n",
++        "    print(\" -\", pivot_csv)\n",
++        "\n",
++        "display(summary_by_method)\n",
++        "display(df_sorted.head(15))\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "9b68b142",
++      "metadata": {},
++      "source": [
++        "## 9. 그래프 저장\n",
++        "\n",
++        "그래프는 `privacy_score_outputs/graphs` 폴더에 PNG로 저장됩니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 9,
++      "id": "200219e5",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:45:01.724381Z",
++          "iopub.status.busy": "2026-08-24T09:45:01.724204Z",
++          "iopub.status.idle": "2026-08-24T09:45:02.910620Z",
++          "shell.execute_reply": "2026-08-24T09:45:02.910282Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\01_block_privacy_score.png\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\02_blur_privacy_score.png\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\03_combo_privacy_score_heatmap.png\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\04_block_ssim_psnr_reference.png\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\05_blur_ssim_psnr_reference.png\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\06_top_conditions_privacy_score.png\n"
++          ]
++        },
++        {
++          "name": "stderr",
++          "output_type": "stream",
++          "text": [
++            "C:\\Users\\PUVKID\\AppData\\Local\\Temp\\ipykernel_41668\\1177026189.py:102: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n",
++            "  box = ax.boxplot(plot_data, labels=labels, patch_artist=True)\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\07_method_distribution_boxplot.png\n"
++          ]
++        },
++        {
++          "data": {
++            "text/plain": [
++              "WindowsPath('C:/Users/PUVKID/Documents/Codex/2026-08-24/files-mentioned-by-the-user-privacy/privacy_score_outputs/graphs/07_method_distribution_boxplot.png')"
++            ]
++          },
++          "execution_count": 9,
++          "metadata": {},
++          "output_type": "execute_result"
++        }
++      ],
++      "source": [
++        "PALETTE = {\n",
++        "    \"score\": \"#2f9e44\",\n",
++        "    \"ssim\": \"#1971c2\",\n",
++        "    \"psnr\": \"#e67700\",\n",
++        "    \"accent\": \"#9c36b5\",\n",
++        "    \"muted\": \"#495057\",\n",
++        "}\n",
++        "\n",
++        "\n",
++        "def save_fig(fig, filename):\n",
++        "    path = GRAPH_DIR / filename\n",
++        "    fig.tight_layout()\n",
++        "    fig.savefig(path, dpi=180)\n",
++        "    plt.show()\n",
++        "    print(\"Saved:\", path)\n",
++        "    return path\n",
++        "\n",
++        "\n",
++        "block_df = df[df[\"method\"] == \"block\"].copy().sort_values(\"block_size\", ascending=False)\n",
++        "blur_df = df[df[\"method\"] == \"blur\"].copy().sort_values(\"sigma\")\n",
++        "combo_df = df[df[\"method\"] == \"combo\"].copy()\n",
++        "\n",
++        "# 1. Block-only privacy score\n",
++        "fig, ax = plt.subplots(figsize=(8, 5))\n",
++        "ax.plot(block_df[\"block_size\"].astype(int).astype(str), block_df[\"privacy_score\"], marker=\"o\", color=PALETTE[\"score\"], linewidth=2)\n",
++        "ax.set_title(\"Privacy Score by Block Size\")\n",
++        "ax.set_xlabel(\"Block size\")\n",
++        "ax.set_ylabel(\"Privacy Score (0-100, higher is more private)\")\n",
++        "ax.grid(True)\n",
++        "ax.invert_xaxis()\n",
++        "save_fig(fig, \"01_block_privacy_score.png\")\n",
++        "\n",
++        "# 2. Blur-only privacy score\n",
++        "fig, ax = plt.subplots(figsize=(8, 5))\n",
++        "ax.plot(blur_df[\"sigma\"].astype(int).astype(str), blur_df[\"privacy_score\"], marker=\"o\", color=PALETTE[\"score\"], linewidth=2)\n",
++        "ax.set_title(\"Privacy Score by Gaussian Blur Sigma\")\n",
++        "ax.set_xlabel(\"Sigma\")\n",
++        "ax.set_ylabel(\"Privacy Score (0-100, higher is more private)\")\n",
++        "ax.grid(True)\n",
++        "save_fig(fig, \"02_blur_privacy_score.png\")\n",
++        "\n",
++        "# 3. Combo heatmap\n",
++        "if not combo_df.empty:\n",
++        "    pivot = combo_df.pivot(index=\"block_size\", columns=\"sigma\", values=\"privacy_score\")\n",
++        "    pivot = pivot.reindex(index=sorted(BLOCK_SIZES), columns=[float(x) for x in BLUR_SIGMAS])\n",
++        "    fig, ax = plt.subplots(figsize=(9, 6.8))\n",
++        "    im = ax.imshow(pivot.values, cmap=\"viridis\", aspect=\"auto\", norm=Normalize(vmin=0, vmax=max(1, np.nanmax(pivot.values))))\n",
++        "    ax.set_title(\"Block x Blur Privacy Score Heatmap\")\n",
++        "    ax.set_xlabel(\"Blur sigma\")\n",
++        "    ax.set_ylabel(\"Block size\")\n",
++        "    ax.set_xticks(range(len(pivot.columns)))\n",
++        "    ax.set_xticklabels([int(x) if float(x).is_integer() else x for x in pivot.columns])\n",
++        "    ax.set_yticks(range(len(pivot.index)))\n",
++        "    ax.set_yticklabels([int(x) for x in pivot.index])\n",
++        "    cbar = fig.colorbar(im, ax=ax)\n",
++        "    cbar.set_label(\"Privacy Score\")\n",
++        "    save_fig(fig, \"03_combo_privacy_score_heatmap.png\")\n",
++        "\n",
++        "# 4. SSIM and PSNR reference for block-only\n",
++        "fig, ax1 = plt.subplots(figsize=(8, 5))\n",
++        "ax2 = ax1.twinx()\n",
++        "x = block_df[\"block_size\"].astype(int).astype(str)\n",
++        "ax1.plot(x, block_df[\"ssim_mean\"], marker=\"o\", color=PALETTE[\"ssim\"], linewidth=2, label=\"SSIM\")\n",
++        "ax2.plot(x, block_df[\"psnr_mean\"], marker=\"s\", color=PALETTE[\"psnr\"], linewidth=2, label=\"PSNR\")\n",
++        "ax1.set_title(\"Block-only SSIM and PSNR\")\n",
++        "ax1.set_xlabel(\"Block size\")\n",
++        "ax1.set_ylabel(\"SSIM\", color=PALETTE[\"ssim\"])\n",
++        "ax2.set_ylabel(\"PSNR (dB)\", color=PALETTE[\"psnr\"])\n",
++        "ax1.invert_xaxis()\n",
++        "ax1.grid(True)\n",
++        "save_fig(fig, \"04_block_ssim_psnr_reference.png\")\n",
++        "\n",
++        "# 5. SSIM and PSNR reference for blur-only\n",
++        "fig, ax1 = plt.subplots(figsize=(8, 5))\n",
++        "ax2 = ax1.twinx()\n",
++        "x = blur_df[\"sigma\"].astype(int).astype(str)\n",
++        "ax1.plot(x, blur_df[\"ssim_mean\"], marker=\"o\", color=PALETTE[\"ssim\"], linewidth=2, label=\"SSIM\")\n",
++        "ax2.plot(x, blur_df[\"psnr_mean\"], marker=\"s\", color=PALETTE[\"psnr\"], linewidth=2, label=\"PSNR\")\n",
++        "ax1.set_title(\"Blur-only SSIM and PSNR\")\n",
++        "ax1.set_xlabel(\"Sigma\")\n",
++        "ax1.set_ylabel(\"SSIM\", color=PALETTE[\"ssim\"])\n",
++        "ax2.set_ylabel(\"PSNR (dB)\", color=PALETTE[\"psnr\"])\n",
++        "ax1.grid(True)\n",
++        "save_fig(fig, \"05_blur_ssim_psnr_reference.png\")\n",
++        "\n",
++        "# 6. Best conditions\n",
++        "top_n = min(15, len(df_sorted))\n",
++        "top_df = df_sorted.head(top_n).iloc[::-1]\n",
++        "fig, ax = plt.subplots(figsize=(9, max(5, top_n * 0.35)))\n",
++        "colors = [PALETTE[\"score\"] if m == \"combo\" else PALETTE[\"accent\"] if m == \"block\" else PALETTE[\"psnr\"] for m in top_df[\"method\"]]\n",
++        "ax.barh(top_df[\"condition\"], top_df[\"privacy_score\"], color=colors)\n",
++        "ax.set_title(f\"Top {top_n} Conditions by Privacy Score\")\n",
++        "ax.set_xlabel(\"Privacy Score\")\n",
++        "ax.set_ylabel(\"Condition\")\n",
++        "ax.grid(axis=\"x\")\n",
++        "save_fig(fig, \"06_top_conditions_privacy_score.png\")\n",
++        "\n",
++        "# 7. Method distribution\n",
++        "fig, ax = plt.subplots(figsize=(7, 5))\n",
++        "plot_data = [df[df[\"method\"] == m][\"privacy_score\"].values for m in [\"block\", \"blur\", \"combo\"] if not df[df[\"method\"] == m].empty]\n",
++        "labels = [m for m in [\"block\", \"blur\", \"combo\"] if not df[df[\"method\"] == m].empty]\n",
++        "box = ax.boxplot(plot_data, labels=labels, patch_artist=True)\n",
++        "for patch, color in zip(box[\"boxes\"], [PALETTE[\"accent\"], PALETTE[\"psnr\"], PALETTE[\"score\"]]):\n",
++        "    patch.set_facecolor(color)\n",
++        "    patch.set_alpha(0.65)\n",
++        "ax.set_title(\"Privacy Score Distribution by Method\")\n",
++        "ax.set_xlabel(\"Method\")\n",
++        "ax.set_ylabel(\"Privacy Score\")\n",
++        "ax.grid(axis=\"y\")\n",
++        "save_fig(fig, \"07_method_distribution_boxplot.png\")\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "cd8cd5ff",
++      "metadata": {},
++      "source": [
++        "## 10. 표 이미지 저장\n",
++        "\n",
++        "보고서나 발표에 바로 넣을 수 있도록 상위 조건 표를 PNG 이미지로도 저장합니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 10,
++      "id": "0ed0442b",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:45:02.912043Z",
++          "iopub.status.busy": "2026-08-24T09:45:02.911908Z",
++          "iopub.status.idle": "2026-08-24T09:45:03.281791Z",
++          "shell.execute_reply": "2026-08-24T09:45:03.281521Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\08_top_conditions_table.png\n"
++          ]
++        },
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\09_best_by_method_table.png\n"
++          ]
++        },
++        {
++          "data": {
++            "text/plain": [
++              "WindowsPath('C:/Users/PUVKID/Documents/Codex/2026-08-24/files-mentioned-by-the-user-privacy/privacy_score_outputs/graphs/09_best_by_method_table.png')"
++            ]
++          },
++          "execution_count": 10,
++          "metadata": {},
++          "output_type": "execute_result"
++        }
++      ],
++      "source": [
++        "def save_table_png(table_df, filename, title, max_rows=15):\n",
++        "    view = table_df.head(max_rows).copy()\n",
++        "    keep_cols = [\"condition\", \"method\", \"block_size\", \"sigma\", \"privacy_score\", \"ssim_mean\", \"psnr_mean\"]\n",
++        "    keep_cols = [c for c in keep_cols if c in view.columns]\n",
++        "    view = view[keep_cols].copy()\n",
++        "    for col in [\"privacy_score\", \"ssim_mean\", \"psnr_mean\"]:\n",
++        "        if col in view.columns:\n",
++        "            view[col] = view[col].map(lambda x: f\"{x:.3f}\")\n",
++        "    for col in [\"block_size\", \"sigma\"]:\n",
++        "        if col in view.columns:\n",
++        "            view[col] = view[col].map(lambda x: \"\" if pd.isna(x) else f\"{float(x):.0f}\")\n",
++        "\n",
++        "    fig_h = max(2.5, 0.38 * len(view) + 1.2)\n",
++        "    fig, ax = plt.subplots(figsize=(11, fig_h))\n",
++        "    ax.axis(\"off\")\n",
++        "    ax.set_title(title, fontsize=14, pad=12)\n",
++        "    table = ax.table(\n",
++        "        cellText=view.values,\n",
++        "        colLabels=view.columns,\n",
++        "        loc=\"center\",\n",
++        "        cellLoc=\"center\",\n",
++        "    )\n",
++        "    table.auto_set_font_size(False)\n",
++        "    table.set_fontsize(8.5)\n",
++        "    table.scale(1, 1.25)\n",
++        "    for (row, col), cell in table.get_celld().items():\n",
++        "        if row == 0:\n",
++        "            cell.set_facecolor(\"#e9ecef\")\n",
++        "            cell.set_text_props(weight=\"bold\")\n",
++        "        else:\n",
++        "            cell.set_facecolor(\"#ffffff\" if row % 2 else \"#f8f9fa\")\n",
++        "    path = GRAPH_DIR / filename\n",
++        "    fig.savefig(path, dpi=180, bbox_inches=\"tight\")\n",
++        "    plt.show()\n",
++        "    print(\"Saved:\", path)\n",
++        "    return path\n",
++        "\n",
++        "\n",
++        "save_table_png(df_sorted, \"08_top_conditions_table.png\", \"Top Conditions by Privacy Score\", max_rows=15)\n",
++        "save_table_png(best_by_method, \"09_best_by_method_table.png\", \"Best Condition by Method\", max_rows=10)\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "3dc1a9e3",
++      "metadata": {},
++      "source": [
++        "## 11. 샘플 이미지 비교 저장\n",
++        "\n",
++        "최고 privacy score 조건 하나를 골라 원본과 변환 결과를 나란히 저장합니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 11,
++      "id": "1233feac",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:45:03.282870Z",
++          "iopub.status.busy": "2026-08-24T09:45:03.282752Z",
++          "iopub.status.idle": "2026-08-24T09:45:03.556021Z",
++          "shell.execute_reply": "2026-08-24T09:45:03.555568Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Saved: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\10_sample_original_vs_best_condition.png\n"
++          ]
++        }
++      ],
++      "source": [
++        "def parse_condition(row):\n",
++        "    method = row[\"method\"]\n",
++        "    block_size = None if pd.isna(row.get(\"block_size\", np.nan)) else int(row[\"block_size\"])\n",
++        "    sigma = None if pd.isna(row.get(\"sigma\", np.nan)) else float(row[\"sigma\"])\n",
++        "    return method, block_size, sigma\n",
++        "\n",
++        "\n",
++        "sample_path = selected_df.iloc[0][\"path\"]\n",
++        "sample_original = load_rgb_image(sample_path)\n",
++        "best_row = df_sorted.iloc[0]\n",
++        "best_method, best_bs, best_sg = parse_condition(best_row)\n",
++        "sample_transformed = apply_transform(sample_original, best_method, block_size=best_bs, sigma=best_sg)\n",
++        "\n",
++        "fig, axes = plt.subplots(1, 2, figsize=(9, 4.5))\n",
++        "axes[0].imshow(sample_original)\n",
++        "axes[0].set_title(\"Original\")\n",
++        "axes[0].axis(\"off\")\n",
++        "axes[1].imshow(sample_transformed)\n",
++        "axes[1].set_title(f\"{best_row['condition']}\\nScore {best_row['privacy_score']:.2f}\")\n",
++        "axes[1].axis(\"off\")\n",
++        "fig.suptitle(\"Sample Original vs Best Privacy Condition\")\n",
++        "sample_compare_path = GRAPH_DIR / \"10_sample_original_vs_best_condition.png\"\n",
++        "fig.savefig(sample_compare_path, dpi=180, bbox_inches=\"tight\")\n",
++        "plt.show()\n",
++        "print(\"Saved:\", sample_compare_path)\n"
++      ]
++    },
++    {
++      "cell_type": "markdown",
++      "id": "f941cb0d",
++      "metadata": {},
++      "source": [
++        "## 12. 최종 출력 위치\n",
++        "\n",
++        "아래 경로의 `tables` 폴더에는 CSV/Excel 표, `graphs` 폴더에는 PNG 그래프가 저장됩니다.\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": 12,
++      "id": "a1875b15",
++      "metadata": {
++        "execution": {
++          "iopub.execute_input": "2026-08-24T09:45:03.558079Z",
++          "iopub.status.busy": "2026-08-24T09:45:03.557952Z",
++          "iopub.status.idle": "2026-08-24T09:45:03.561595Z",
++          "shell.execute_reply": "2026-08-24T09:45:03.561215Z"
++        }
++      },
++      "outputs": [
++        {
++          "name": "stdout",
++          "output_type": "stream",
++          "text": [
++            "Base train: C:\\Users\\PUVKID\\Desktop\\Train\n",
++            "Output: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\n",
++            "Tables: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\n",
++            "Graphs: C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\n",
++            "\n",
++            "Important files:\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\\privacy_scores_long.csv\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\\privacy_scores_summary_by_method.csv\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\tables\\privacy_scores_best_conditions.csv\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\privacy_score_results.xlsx\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\03_combo_privacy_score_heatmap.png\n",
++            " - C:\\Users\\PUVKID\\Documents\\Codex\\2026-08-24\\files-mentioned-by-the-user-privacy\\privacy_score_outputs\\graphs\\08_top_conditions_table.png\n"
++          ]
++        }
++      ],
++      "source": [
++        "print(\"Base train:\", BASE_TRAIN)\n",
++        "print(\"Output:\", OUT_DIR)\n",
++        "print(\"Tables:\", TABLE_DIR)\n",
++        "print(\"Graphs:\", GRAPH_DIR)\n",
++        "print(\"\\nImportant files:\")\n",
++        "for p in [\n",
++        "    TABLE_DIR / \"privacy_scores_long.csv\",\n",
++        "    TABLE_DIR / \"privacy_scores_summary_by_method.csv\",\n",
++        "    TABLE_DIR / \"privacy_scores_best_conditions.csv\",\n",
++        "    OUT_DIR / \"privacy_score_results.xlsx\",\n",
++        "    GRAPH_DIR / \"03_combo_privacy_score_heatmap.png\",\n",
++        "    GRAPH_DIR / \"08_top_conditions_table.png\",\n",
++        "]:\n",
++        "    print(\" -\", p)\n"
++      ]
++    }
++  ],
++  "metadata": {
++    "kernelspec": {
++      "display_name": "Python 3",
++      "language": "python",
++      "name": "python3"
++    },
++    "language_info": {
++      "codemirror_mode": {
++        "name": "ipython",
++        "version": 3
++      },
++      "file_extension": ".py",
++      "mimetype": "text/x-python",
++      "name": "python",
++      "nbconvert_exporter": "python",
++      "pygments_lexer": "ipython3",
++      "version": "3.13.9"
++    }
++  },
++  "nbformat": 4,
++  "nbformat_minor": 5
++}
+--- 자료차수/2차/align_experiment_methods.mjs
++++ /dev/null
+@@ -1,292 +0,0 @@
+-import { copyFile, readFile, writeFile } from "node:fs/promises";
+-import { existsSync } from "node:fs";
+-
+-const paths = {
+-  blur: "C:/Users/PUVKID/Desktop/blur_resnet50_rebuilt2_KO.ipynb",
+-  block: "C:/Users/PUVKID/Desktop/block_encryption_resnet50_rebuilt_KO.ipynb",
+-  combo: "C:/Users/PUVKID/Desktop/block_blur_resnet50_all_combinations_KO.ipynb",
+-  blockBackup: "C:/Users/PUVKID/Desktop/block_encryption_resnet50_rebuilt_KO_before_alignment.ipynb",
+-};
+-
+-const books = {};
+-for (const name of ["blur", "block", "combo"]) {
+-  books[name] = JSON.parse(await readFile(paths[name], "utf8"));
+-}
+-
+-function getSource(book, index) {
+-  const source = book.cells[index].source;
+-  return Array.isArray(source) ? source.join("") : source;
+-}
+-
+-function setSource(book, index, source) {
+-  book.cells[index].source = source.match(/.*(?:\n|$)/g).filter(Boolean);
+-}
+-
+-function replaceOrThrow(source, before, after, label) {
+-  if (!source.includes(before)) {
+-    throw new Error(`Missing replacement target: ${label}`);
+-  }
+-  return source.replace(before, after);
+-}
+-
+-function addGpuLogCompatibility(source) {
+-  if (source.includes('"used_mib": used,')) {
+-    return source;
+-  }
+-  return replaceOrThrow(
+-    source,
+-    `                GPU_LOG.append({
+-                    "sigma": self.sigma,
+-                    "fold": self.fold_idx,
+-                    "epoch": epoch + 1,
+-                    "used": used,
+-                    "total": total,
+-                    "util": util,
+-                    "temp": temp,
+-                })`,
+-    `                GPU_LOG.append({
+-                    "time": time.time(),
+-                    "sigma": self.sigma,
+-                    "fold": self.fold_idx,
+-                    "epoch": epoch + 1,
+-                    "used": used,
+-                    "total": total,
+-                    "util": util,
+-                    "temp": temp,
+-                    "used_mib": used,
+-                    "total_mib": total,
+-                    "util_pct": util,
+-                    "temp_c": temp,
+-                })`,
+-    "blur GPU log compatibility",
+-  );
+-}
+-
+-function addComboGpuLogCompatibility(source) {
+-  if (source.includes('"used_mib": used,')) {
+-    return source;
+-  }
+-  return replaceOrThrow(
+-    source,
+-    `                GPU_LOG.append({
+-                    "condition": self.condition,
+-                    "fold": self.fold_idx,
+-                    "epoch": epoch + 1,
+-                    "used": used,
+-                    "total": total,
+-                    "util": util,
+-                    "temp": temp,
+-                })`,
+-    `                GPU_LOG.append({
+-                    "time": time.time(),
+-                    "condition": self.condition,
+-                    "fold": self.fold_idx,
+-                    "epoch": epoch + 1,
+-                    "used": used,
+-                    "total": total,
+-                    "util": util,
+-                    "temp": temp,
+-                    "used_mib": used,
+-                    "total_mib": total,
+-                    "util_pct": util,
+-                    "temp_c": temp,
+-                })`,
+-    "combo GPU log compatibility",
+-  );
+-}
+-
+-function makeGpuGraphRobust(source) {
+-  const old = `    times     = [(g["time"] - _log[0]["time"]) / 60 for g in _log]
+-    used_vals = [g["used_mib"] for g in _log]
+-    util_vals = [g["util_pct"] for g in _log]
+-    temp_vals = [g["temp_c"]   for g in _log]
+-    total_mib = _log[0]["total_mib"]`;
+-  const replacement = `    if all("time" in g for g in _log):
+-        times = [(g["time"] - _log[0]["time"]) / 60 for g in _log]
+-    else:
+-        times = [i * 5 for i in range(len(_log))]
+-    used_vals = [g.get("used_mib", g.get("used", 0)) for g in _log]
+-    util_vals = [g.get("util_pct", g.get("util", 0)) for g in _log]
+-    temp_vals = [g.get("temp_c", g.get("temp", 0)) for g in _log]
+-    total_mib = _log[0].get("total_mib", _log[0].get("total", 0))`;
+-  if (source.includes(replacement)) {
+-    return source;
+-  }
+-  return replaceOrThrow(source, old, replacement, "GPU graph compatibility");
+-}
+-
+-function makeGpuSummaryRobust(source) {
+-  const old = `    used_vals = [g["used"] for g in GPU_LOG]
+-    util_vals = [g["util"] for g in GPU_LOG]
+-    temp_vals = [g["temp"] for g in GPU_LOG]`;
+-  const oldAlternate = `    used_vals = [g["used_mib"] for g in GPU_LOG]
+-    util_vals = [g["util_pct"] for g in GPU_LOG]
+-    temp_vals = [g["temp_c"]   for g in GPU_LOG]`;
+-  const replacement = `    used_vals = [g.get("used", g.get("used_mib", 0)) for g in GPU_LOG]
+-    util_vals = [g.get("util", g.get("util_pct", 0)) for g in GPU_LOG]
+-    temp_vals = [g.get("temp", g.get("temp_c", 0)) for g in GPU_LOG]`;
+-  if (source.includes(replacement)) {
+-    return source;
+-  }
+-  if (source.includes(old)) {
+-    return source.replace(old, replacement);
+-  }
+-  if (source.includes(oldAlternate)) {
+-    return source.replace(oldAlternate, replacement);
+-  }
+-  return source;
+-}
+-
+-// Keep the running blur design intact while making its monitor output compatible
+-// with its own graph cell.
+-setSource(books.blur, 22, addGpuLogCompatibility(getSource(books.blur, 22)));
+-setSource(books.blur, 30, makeGpuSummaryRobust(getSource(books.blur, 30)));
+-setSource(books.blur, 32, makeGpuGraphRobust(getSource(books.blur, 32)));
+-
+-// The combined notebook already follows the blur training method. Add the same
+-// backward-compatible GPU fields so reporting also stays aligned.
+-setSource(books.combo, 22, addComboGpuLogCompatibility(getSource(books.combo, 22)));
+-setSource(books.combo, 30, makeGpuSummaryRobust(getSource(books.combo, 30)));
+-setSource(books.combo, 32, makeGpuGraphRobust(getSource(books.combo, 32)));
+-
+-// Rebuild the block experiment's common pipeline from the blur experiment so
+-// data splitting, oversampling, steps, callbacks, TTA, and pseudo training match.
+-let blockSettings = getSource(books.block, 8);
+-blockSettings = replaceOrThrow(
+-  blockSettings,
+-  'EXPERIMENT_VERSION = "same_settings_gpu4090_v2"',
+-  'EXPERIMENT_VERSION = "same_settings_gpu4090_v3_aligned"',
+-  "block experiment version",
+-);
+-setSource(books.block, 8, blockSettings);
+-
+-setSource(books.block, 12, getSource(books.blur, 12));
+-setSource(books.block, 14, getSource(books.blur, 14));
+-
+-let blockMonitor = getSource(books.blur, 22);
+-blockMonitor = replaceOrThrow(
+-  blockMonitor,
+-  "def print_fold_result(sigma, fold_idx, combined_history, stage=\"\"):",
+-  "def print_fold_result(block_size, fold_idx, combined_history, stage=\"\"):",
+-  "block fold result signature",
+-);
+-blockMonitor = replaceOrThrow(
+-  blockMonitor,
+-  '    label = "원본(σ=0)" if sigma == 0 else f"BlurSigma σ={sigma}"',
+-  '    label = "원본" if block_size >= IMG_SIZE else f"Block{block_size}"',
+-  "block fold label",
+-);
+-blockMonitor = replaceOrThrow(
+-  blockMonitor,
+-  "    def __init__(self, sigma, fold_idx, every_n_epochs=5, overfit_gap=0.20):",
+-  "    def __init__(self, block_size, fold_idx, every_n_epochs=5, overfit_gap=0.20):",
+-  "block monitor signature",
+-);
+-blockMonitor = replaceOrThrow(
+-  blockMonitor,
+-  "        self.sigma = sigma",
+-  "        self.block_size = block_size",
+-  "block monitor field",
+-);
+-blockMonitor = replaceOrThrow(
+-  blockMonitor,
+-  '                    "sigma": self.sigma,',
+-  '                    "block_size": self.block_size,',
+-  "block GPU log key",
+-);
+-setSource(books.block, 22, blockMonitor);
+-
+-let blockRunner = getSource(books.blur, 24);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  `# Cell 11: 단일 블러 Sigma 실험 함수 (누수 없는 올바른 순서)
+-def run_experiment(sigma, blur_dir):
+-    exp_idx  = BLUR_SIGMAS.index(sigma) if sigma in BLUR_SIGMAS else 0
+-    exp_seed = SEED + exp_idx * 1000
+-    set_reproducible(exp_seed)
+-
+-    label = "원본(σ=0)" if sigma == 0 else f"BlurSigma σ={sigma}"
+-    print(f"\\n{'='*60}\\n🌫️ {label}  (seed={exp_seed})\\n{'='*60}")
+-
+-    split_dir = (ORIGINAL_SPLIT_DIR if sigma == 0 else
+-                 os.path.join(WORKSPACE,
+-                              f"AllExp_Split_BlurSigma{sigma}_{EXPERIMENT_VERSION}_seed{SEED}"))`,
+-  `# Cell 11: 단일 블록 크기 실험 함수 (누수 없는 올바른 순서)
+-def run_experiment(block_size, block_dir):
+-    exp_idx  = BLOCK_SIZES.index(block_size) if block_size in BLOCK_SIZES else 0
+-    exp_seed = SEED + exp_idx * 1000
+-    set_reproducible(exp_seed)
+-
+-    label = "원본" if block_size >= IMG_SIZE else f"Block{block_size}"
+-    print(f"\\n{'='*60}\\n🧩 {label}  (seed={exp_seed})\\n{'='*60}")
+-
+-    split_dir = (ORIGINAL_SPLIT_DIR if block_size >= IMG_SIZE else
+-                 os.path.join(WORKSPACE,
+-                              f"AllExp_Split_Block{block_size}_{EXPERIMENT_VERSION}_seed{SEED}"))`,
+-  "block runner prelude",
+-);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  "    prepare_split(blur_dir, split_dir, TEST_RATIO, seed=SEED)",
+-  "    prepare_split(block_dir, split_dir, TEST_RATIO, seed=SEED)",
+-  "block split input",
+-);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  "    if sigma not in ALL_HISTORIES:\n        ALL_HISTORIES[sigma] = {}",
+-  "    if block_size not in ALL_HISTORIES:\n        ALL_HISTORIES[block_size] = {}",
+-  "block history init",
+-);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  '        prefix = f"blur_sigma{sigma}_resnet50_f{fold}"',
+-  '        prefix = f"block{block_size}_resnet50_f{fold}"',
+-  "block model prefix",
+-);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  "        monitor_cb = AdvancedMonitorCallback(sigma, fold, every_n_epochs=5)",
+-  "        monitor_cb = AdvancedMonitorCallback(block_size, fold, every_n_epochs=5)",
+-  "block monitor call",
+-);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  "        ALL_HISTORIES[sigma][fold] = combined\n        print_fold_result(sigma, fold, combined)",
+-  "        ALL_HISTORIES[block_size][fold] = combined\n        print_fold_result(block_size, fold, combined)",
+-  "block history save",
+-);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  "    print(f\"\\n  ✅ Sigma={sigma}: {test_acc*100:.2f}% | ROC-AUC={roc_auc:.4f}\")\n\n    return {\n        \"sigma\": sigma,",
+-  "    print(f\"\\n  ✅ Block{block_size}: {test_acc*100:.2f}% | ROC-AUC={roc_auc:.4f}\")\n\n    return {\n        \"block_size\": block_size,",
+-  "block result payload",
+-);
+-blockRunner = replaceOrThrow(
+-  blockRunner,
+-  "print(\"✅ Cell 11: run_experiment() 정의 완료\")",
+-  "print(\"✅ Cell 11: run_experiment() 블록 버전 정의 완료\")",
+-  "block runner completion",
+-);
+-setSource(books.block, 24, blockRunner);
+-setSource(books.block, 30, makeGpuSummaryRobust(getSource(books.block, 30)));
+-setSource(books.block, 32, makeGpuGraphRobust(getSource(books.block, 32)));
+-
+-for (const [name, book] of Object.entries(books)) {
+-  book.metadata = book.metadata || {};
+-  book.metadata.experiment_method_alignment = {
+-    canonical_method: "blur_resnet50_rebuilt2_KO.ipynb leak-free pipeline",
+-    split_order: "transform -> split original-only test/kfold -> oversample train-only",
+-    training: "ResNet50 + Focal Loss + MixUp/CutMix + Cosine LR + SWA + 7-Fold + TTA20 + pseudo labeling",
+-    aligned_at: "2026-06-02",
+-  };
+-}
+-
+-if (!existsSync(paths.blockBackup)) {
+-  await copyFile(paths.block, paths.blockBackup);
+-}
+-
+-for (const name of ["blur", "block", "combo"]) {
+-  await writeFile(paths[name], `${JSON.stringify(books[name], null, 1)}\n`, "utf8");
+-  console.log(`UPDATED ${paths[name]}`);
+-}
+-console.log(`BACKUP ${paths.blockBackup}`);
+--- 자료차수/2차/build_block_blur_notebook.mjs
++++ /dev/null
+@@ -1,734 +0,0 @@
+-import { readFile, writeFile } from "node:fs/promises";
+-
+-const sourcePath = "C:/Users/PUVKID/Desktop/blur_resnet50_rebuilt2_KO.ipynb";
+-const outputPath = "C:/Users/PUVKID/Desktop/block_blur_resnet50_all_combinations_KO.ipynb";
+-
+-const notebook = JSON.parse(await readFile(sourcePath, "utf8"));
+-
+-function getSource(index) {
+-  const source = notebook.cells[index].source;
+-  return Array.isArray(source) ? source.join("") : source;
+-}
+-
+-function setSource(index, source) {
+-  notebook.cells[index].source = source.match(/.*(?:\n|$)/g).filter(Boolean);
+-}
+-
+-function replaceOrThrow(source, before, after, label) {
+-  if (!source.includes(before)) {
+-    throw new Error(`Missing replacement target: ${label}`);
+-  }
+-  return source.replace(before, after);
+-}
+-
+-let header = getSource(0);
+-header = replaceOrThrow(
+-  header,
+-  "🌫️ 지표 매칭 블러 실험 — ResNet50 기반 폐암 분류",
+-  "🧩🌫️ 블록 암호화 + 블러 순차 조합 실험 — ResNet50 기반 폐암 분류",
+-  "header title",
+-);
+-header = replaceOrThrow(
+-  header,
+-  "Metric-Matched Gaussian Blur Experiment · Privacy-Preserving Lung Cancer Classification",
+-  "Sequential Block Encryption + Gaussian Blur Experiment · Privacy-Preserving Lung Cancer Classification",
+-  "header subtitle",
+-);
+-header = replaceOrThrow(
+-  header,
+-  '🌫️ <b>블러 Sigma</b></td><td style="padding: 6px;">블록 SSIM/PSNR 기준 자동 매칭',
+-  '🧩🌫️ <b>조합 순서</b></td><td style="padding: 6px;">블록 원본 → 블러 원본부터 100개 순차 실행',
+-  "header combination row",
+-);
+-header = replaceOrThrow(
+-  header,
+-  "| 5 | Cell 5 | 블러 처리 및 지표 매칭 함수 |",
+-  "| 5 | Cell 5 | 블록 암호화 + 블러 순차 처리 함수 |",
+-  "toc processing",
+-);
+-header = replaceOrThrow(
+-  header,
+-  "| 12 | Cell 11 | 단일 Sigma 실험 함수 |",
+-  "| 12 | Cell 11 | 단일 블록 + 블러 조합 실험 함수 |",
+-  "toc runner",
+-);
+-setSource(0, header);
+-
+-setSource(8, `# Cell 4: 실험 설정
+-BLOCK_SIZES  = [512, 256, 128, 64, 32, 16, 8, 4, 2, 1]
+-BLUR_SIGMAS  = [0, 1, 2, 4, 8, 16, 32, 64, 128, 256]
+-COMBINATIONS = [(block_size, sigma)
+-                for block_size in BLOCK_SIZES
+-                for sigma in BLUR_SIGMAS]
+-
+-BASE_TRAIN   = "/workspace/Train"
+-WORKSPACE    = "/workspace"
+-IMG_SIZE     = 512
+-BATCH_SIZE   = 8
+-EPOCHS_S1    = 80
+-EPOCHS_S2    = 200
+-NUM_CLASSES  = 3
+-SEED         = 42
+-N_FOLDS      = 7
+-TTA_STEPS    = 20
+-SWA_START    = 40
+-TARGET_COUNT = 1000
+-TEST_RATIO   = 0.10
+-AUTOTUNE     = tf.data.AUTOTUNE
+-
+-EXPERIMENT_VERSION = "block_blur_all_combinations_v1"
+-ORIGINAL_SPLIT_DIR = os.path.join(
+-    WORKSPACE, f"AllExp_Split_ORIGINAL_seed{SEED}_{EXPERIMENT_VERSION}"
+-)
+-IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp")
+-
+-ALL_HISTORIES = {}   # { condition_key: { fold: history_dict } }
+-
+-def condition_key(block_size, sigma):
+-    sigma_label = str(sigma).replace(".", "p")
+-    return f"B{block_size}_S{sigma_label}"
+-
+-def condition_label(block_size, sigma):
+-    block_label = "블록 원본" if block_size >= IMG_SIZE else f"Block{block_size}"
+-    blur_label  = "블러 원본" if sigma == 0 else f"BlurSigma σ={sigma}"
+-    return f"{block_label} + {blur_label}"
+-
+-def condition_short_label(block_size, sigma):
+-    block_label = "원본" if block_size >= IMG_SIZE else f"B{block_size}"
+-    blur_label  = "원본" if sigma == 0 else f"σ{sigma}"
+-    return f"{block_label}·{blur_label}"
+-
+-CONDITION_META = {
+-    condition_key(block_size, sigma): (block_size, sigma)
+-    for block_size, sigma in COMBINATIONS
+-}
+-
+-def condition_label_from_key(key):
+-    block_size, sigma = CONDITION_META[key]
+-    return condition_label(block_size, sigma)
+-
+-def set_reproducible(seed=SEED):
+-    os.environ["PYTHONHASHSEED"] = str(seed)
+-    os.environ["TF_DETERMINISTIC_OPS"] = "1"
+-    random.seed(seed)
+-    np.random.seed(seed)
+-    try:
+-        tf.keras.utils.set_random_seed(seed)
+-    except AttributeError:
+-        tf.random.set_seed(seed)
+-    try:
+-        tf.config.experimental.enable_op_determinism()
+-    except Exception:
+-        pass
+-
+-def list_class_dirs(directory):
+-    return sorted([d for d in os.listdir(directory)
+-                   if os.path.isdir(os.path.join(directory, d))])
+-
+-def list_image_files(directory):
+-    if not os.path.exists(directory):
+-        return []
+-    return sorted([f for f in os.listdir(directory)
+-                   if f.lower().endswith(IMAGE_EXTENSIONS)])
+-
+-set_reproducible(SEED)
+-
+-print("┌" + "─" * 62 + "┐")
+-print("│          ✅ 실험 설정 완료                                  │")
+-print("├" + "─" * 62 + "┤")
+-print(f"│ 이미지 크기     : {IMG_SIZE}×{IMG_SIZE} (고정){' '*31}│")
+-print(f"│ 블록 크기       : {str(BLOCK_SIZES)[:42]:<42}│")
+-print(f"│ 블러 Sigma      : {str(BLUR_SIGMAS)[:42]:<42}│")
+-print(f"│ 전체 조합       : {len(COMBINATIONS):<42}│")
+-print(f"│ 클래스별 목표   : {TARGET_COUNT}장{' '*42}│")
+-print(f"│ K-Fold         : {N_FOLDS}{' '*45}│")
+-print(f"│ TTA 횟수       : {TTA_STEPS}회{' '*43}│")
+-print(f"│ 배치 크기      : {BATCH_SIZE}{' '*46}│")
+-print(f"│ 공통 원본 split: {os.path.basename(ORIGINAL_SPLIT_DIR)[:42]:<42}│")
+-print(f"│ 실험 버전      : {EXPERIMENT_VERSION:<42}│")
+-print("└" + "─" * 62 + "┘")
+-`);
+-
+-setSource(9, "## 5️⃣ 블록 암호화 + 블러 순차 처리 함수\n");
+-setSource(10, `# Cell 5: 블록 암호화 + 블러 순차 처리 함수
+-def block_scramble(img_array, seed, block_size):
+-    h, w, c = img_array.shape
+-    if block_size >= min(h, w):
+-        return img_array.copy()
+-
+-    pad_h = (block_size - h % block_size) % block_size
+-    pad_w = (block_size - w % block_size) % block_size
+-    if pad_h > 0 or pad_w > 0:
+-        img_array = np.pad(img_array, ((0, pad_h), (0, pad_w), (0, 0)), mode="reflect")
+-
+-    ph, pw   = img_array.shape[:2]
+-    n_h, n_w = ph // block_size, pw // block_size
+-    blocks   = [img_array[i*block_size:(i+1)*block_size, j*block_size:(j+1)*block_size]
+-                for i in range(n_h) for j in range(n_w)]
+-
+-    rng    = np.random.default_rng(seed)
+-    order  = rng.permutation(n_h * n_w)
+-    result = np.zeros_like(img_array)
+-
+-    for new_idx, old_idx in enumerate(order):
+-        i, j = new_idx // n_w, new_idx % n_w
+-        result[i*block_size:(i+1)*block_size, j*block_size:(j+1)*block_size] = blocks[old_idx]
+-
+-    return result[:h, :w]
+-
+-
+-def generate_block_dataset(block_size, seed=SEED):
+-    """
+-    block_size=512 → 원본(BASE_TRAIN) 그대로 사용 (파일 복사 없음)
+-    block_size<512 → Train_Block{block_size}/ 에 암호화 이미지 저장
+-    BASE_TRAIN 원본 파일은 절대 수정하지 않음.
+-    """
+-    if block_size >= IMG_SIZE:
+-        print(f"  Block{block_size}: 원본 사용 (원본 건드리지 않음)")
+-        return BASE_TRAIN
+-
+-    out_dir = os.path.join(WORKSPACE, f"Train_Block{block_size}")
+-    classes = list_class_dirs(BASE_TRAIN)
+-
+-    total_src = sum(len(list_image_files(os.path.join(BASE_TRAIN, c))) for c in classes)
+-    total_ex = (
+-        sum(len(list_image_files(os.path.join(out_dir, c)))
+-            for c in classes if os.path.exists(os.path.join(out_dir, c)))
+-        if os.path.exists(out_dir) else 0
+-    )
+-
+-    if total_ex >= total_src:
+-        print(f"  Block{block_size}: 이미 존재 ({total_ex}장) → 스킵")
+-        return out_dir
+-
+-    print(f"  Block{block_size}: 블록 암호화 처리 중 ({total_src}장)...")
+-    for cls in classes:
+-        os.makedirs(os.path.join(out_dir, cls), exist_ok=True)
+-        for f in list_image_files(os.path.join(BASE_TRAIN, cls)):
+-            dst = os.path.join(out_dir, cls, f)
+-            if os.path.exists(dst):
+-                continue
+-            try:
+-                img = Image.open(os.path.join(BASE_TRAIN, cls, f)).convert("RGB")
+-                img_array = np.array(img, dtype=np.uint8)
+-                Image.fromarray(block_scramble(img_array, seed, block_size)).save(
+-                    dst, "JPEG", quality=95
+-                )
+-            except Exception:
+-                pass
+-    print(f"  Block{block_size}: 완료! (원본 파일 보존됨)")
+-    return out_dir
+-
+-
+-def apply_gaussian_blur(img_array, sigma):
+-    """
+-    PIL GaussianBlur로 sigma 강도 블러 적용.
+-    sigma=0이면 원본 그대로 반환 (copy만 수행, 원본 수정 없음).
+-    """
+-    if sigma == 0:
+-        return img_array.copy()
+-    pil_img = Image.fromarray(img_array.astype(np.uint8))
+-    blurred = pil_img.filter(ImageFilter.GaussianBlur(radius=float(sigma)))
+-    return np.array(blurred, dtype=np.uint8)
+-
+-
+-def generate_blur_dataset(block_size, sigma, source_dir, seed=SEED):
+-    """
+-    sigma=0  → 직전 블록 처리 결과 그대로 사용 (파일 복사 없음)
+-    sigma>0  → Train_Block{block_size}_BlurSigma{sigma}/ 에 블러 이미지 저장
+-    블록 처리 결과에 블러를 순차 적용하며 BASE_TRAIN 원본은 절대 수정하지 않음.
+-    """
+-    if sigma == 0:
+-        print(f"  Block{block_size} + Sigma=0: 직전 블록 처리 결과 사용")
+-        return source_dir
+-
+-    sigma_label = str(sigma).replace(".", "p")
+-    out_dir     = os.path.join(WORKSPACE, f"Train_Block{block_size}_BlurSigma{sigma_label}")
+-    classes     = list_class_dirs(source_dir)
+-    total_src   = sum(len(list_image_files(os.path.join(source_dir, c))) for c in classes)
+-    total_ex    = (
+-        sum(len(list_image_files(os.path.join(out_dir, c)))
+-            for c in classes if os.path.exists(os.path.join(out_dir, c)))
+-        if os.path.exists(out_dir) else 0
+-    )
+-    if total_ex >= total_src:
+-        print(f"  Block{block_size} + BlurSigma{sigma}: 이미 존재 ({total_ex}장) → 스킵")
+-        return out_dir
+-
+-    print(f"  Block{block_size} + BlurSigma{sigma}: 블러 처리 중 ({total_src}장)...")
+-    for cls in classes:
+-        os.makedirs(os.path.join(out_dir, cls), exist_ok=True)
+-        for f in list_image_files(os.path.join(source_dir, cls)):
+-            dst = os.path.join(out_dir, cls, f)
+-            if os.path.exists(dst):
+-                continue
+-            try:
+-                img = np.array(
+-                    Image.open(os.path.join(source_dir, cls, f)).convert("RGB"),
+-                    dtype=np.uint8
+-                )
+-                Image.fromarray(apply_gaussian_blur(img, sigma)).save(
+-                    dst, "JPEG", quality=95
+-                )
+-            except Exception:
+-                pass
+-    print(f"  Block{block_size} + BlurSigma{sigma}: 완료! (원본 파일 보존됨)")
+-    return out_dir
+-
+-
+-def generate_combined_dataset(block_size, sigma, block_dir=None):
+-    if block_dir is None:
+-        block_dir = generate_block_dataset(block_size)
+-    return generate_blur_dataset(block_size, sigma, block_dir)
+-
+-
+-print("✅ block_scramble / apply_gaussian_blur / generate_combined_dataset 정의 완료")
+-print(f"   블록: {BLOCK_SIZES}")
+-print(f"   블러 Sigma: {BLUR_SIGMAS}")
+-print(f"   실행 조합: {len(COMBINATIONS)}개")
+-`);
+-
+-let monitor = getSource(22);
+-monitor = replaceOrThrow(
+-  monitor,
+-  "def print_fold_result(sigma, fold_idx, combined_history, stage=\"\"):",
+-  "def print_fold_result(condition, fold_idx, combined_history, stage=\"\"):",
+-  "monitor result signature",
+-);
+-monitor = replaceOrThrow(
+-  monitor,
+-  "    label = \"원본(σ=0)\" if sigma == 0 else f\"BlurSigma σ={sigma}\"",
+-  "    label = condition_label_from_key(condition)",
+-  "monitor result label",
+-);
+-monitor = replaceOrThrow(
+-  monitor,
+-  "    def __init__(self, sigma, fold_idx, every_n_epochs=5, overfit_gap=0.20):",
+-  "    def __init__(self, condition, fold_idx, every_n_epochs=5, overfit_gap=0.20):",
+-  "monitor callback signature",
+-);
+-monitor = replaceOrThrow(
+-  monitor,
+-  "        self.sigma = sigma",
+-  "        self.condition = condition",
+-  "monitor callback field",
+-);
+-monitor = replaceOrThrow(
+-  monitor,
+-  '                    "sigma": self.sigma,',
+-  '                    "condition": self.condition,',
+-  "monitor gpu log",
+-);
+-setSource(22, monitor);
+-
+-let runner = getSource(24);
+-runner = replaceOrThrow(
+-  runner,
+-  "# Cell 11: 단일 블러 Sigma 실험 함수 (누수 없는 올바른 순서)\ndef run_experiment(sigma, blur_dir):\n    exp_idx  = BLUR_SIGMAS.index(sigma) if sigma in BLUR_SIGMAS else 0\n    exp_seed = SEED + exp_idx * 1000\n    set_reproducible(exp_seed)\n\n    label = \"원본(σ=0)\" if sigma == 0 else f\"BlurSigma σ={sigma}\"\n    print(f\"\\n{'='*60}\\n🌫️ {label}  (seed={exp_seed})\\n{'='*60}\")\n\n    split_dir = (ORIGINAL_SPLIT_DIR if sigma == 0 else\n                 os.path.join(WORKSPACE,\n                              f\"AllExp_Split_BlurSigma{sigma}_{EXPERIMENT_VERSION}_seed{SEED}\"))",
+-  "# Cell 11: 단일 블록 + 블러 조합 실험 함수 (누수 없는 올바른 순서)\ndef run_experiment(block_size, sigma, combined_dir):\n    condition = condition_key(block_size, sigma)\n    exp_idx   = COMBINATIONS.index((block_size, sigma)) if (block_size, sigma) in COMBINATIONS else 0\n    exp_seed  = SEED + exp_idx * 1000\n    set_reproducible(exp_seed)\n\n    label = condition_label(block_size, sigma)\n    print(f\"\\n{'='*60}\\n🧩🌫️ {label}  (seed={exp_seed})\\n{'='*60}\")\n\n    sigma_label = str(sigma).replace(\".\", \"p\")\n    split_dir = (ORIGINAL_SPLIT_DIR if block_size >= IMG_SIZE and sigma == 0 else\n                 os.path.join(WORKSPACE,\n                              f\"AllExp_Split_Block{block_size}_BlurSigma{sigma_label}_{EXPERIMENT_VERSION}_seed{SEED}\"))",
+-  "runner prelude",
+-);
+-runner = replaceOrThrow(
+-  runner,
+-  "    prepare_split(blur_dir, split_dir, TEST_RATIO, seed=SEED)",
+-  "    prepare_split(combined_dir, split_dir, TEST_RATIO, seed=SEED)",
+-  "runner input directory",
+-);
+-runner = replaceOrThrow(
+-  runner,
+-  "    if sigma not in ALL_HISTORIES:\n        ALL_HISTORIES[sigma] = {}",
+-  "    if condition not in ALL_HISTORIES:\n        ALL_HISTORIES[condition] = {}",
+-  "runner history init",
+-);
+-runner = replaceOrThrow(
+-  runner,
+-  '        prefix = f"blur_sigma{sigma}_resnet50_f{fold}"',
+-  '        prefix = f"block{block_size}_blur_sigma{sigma_label}_resnet50_f{fold}"',
+-  "runner model prefix",
+-);
+-runner = replaceOrThrow(
+-  runner,
+-  "        monitor_cb = AdvancedMonitorCallback(sigma, fold, every_n_epochs=5)",
+-  "        monitor_cb = AdvancedMonitorCallback(condition, fold, every_n_epochs=5)",
+-  "runner monitor condition",
+-);
+-runner = replaceOrThrow(
+-  runner,
+-  "        ALL_HISTORIES[sigma][fold] = combined\n        print_fold_result(sigma, fold, combined)",
+-  "        ALL_HISTORIES[condition][fold] = combined\n        print_fold_result(condition, fold, combined)",
+-  "runner history save",
+-);
+-runner = replaceOrThrow(
+-  runner,
+-  "    print(f\"\\n  ✅ Sigma={sigma}: {test_acc*100:.2f}% | ROC-AUC={roc_auc:.4f}\")\n\n    return {\n        \"sigma\": sigma,",
+-  "    print(f\"\\n  ✅ {label}: {test_acc*100:.2f}% | ROC-AUC={roc_auc:.4f}\")\n\n    return {\n        \"condition\": condition,\n        \"block_size\": block_size,\n        \"sigma\": sigma,",
+-  "runner return payload",
+-);
+-runner = replaceOrThrow(
+-  runner,
+-  "print(\"✅ Cell 11: run_experiment() 정의 완료\")",
+-  "print(\"✅ Cell 11: run_experiment() 블록 + 블러 조합 버전 정의 완료\")",
+-  "runner completion",
+-);
+-setSource(23, "## 1️⃣1️⃣ 단일 블록 + 블러 조합 실험 함수\n");
+-setSource(24, runner);
+-
+-setSource(25, "## 1️⃣2️⃣ 전체 조합 순차 실험 루프\n");
+-setSource(26, `# Cell 12: 전체 블록 + 블러 조합 실험 루프 + 조합별 즉시 진단
+-print("\\n" + "=" * 60)
+-print("🔬 블록 암호화 + 블러 전체 조합 실험 시작 (ResNet50)")
+-print(f"   블록: {BLOCK_SIZES}")
+-print(f"   블러 Sigma: {BLUR_SIGMAS}")
+-print(f"   순차 조합: {len(COMBINATIONS)}개")
+-print(f"   순서: 블록 조건 바깥 루프 → 블러 조건 안쪽 루프")
+-print(f"   K={N_FOLDS} | TTA={TTA_STEPS} | BATCH={BATCH_SIZE} | IMG={IMG_SIZE}")
+-print(f"   클래스별 오버샘플링: {TARGET_COUNT}장")
+-print(f"   실험 버전: {EXPERIMENT_VERSION}")
+-print("=" * 60)
+-
+-gpu_status("실험 시작 전")
+-
+-all_results = {}
+-result_path = os.path.join(
+-    WORKSPACE, f"all_block_blur_results_resnet50_{EXPERIMENT_VERSION}.json"
+-)
+-
+-if os.path.exists(result_path):
+-    with open(result_path) as f:
+-        saved = json_module.load(f)
+-    for k, v in saved.items():
+-        all_results[k] = v
+-    print(f"\\n✅ 이전 결과: {len(all_results)}개 조합")
+-
+-condition_diagnosis = {}
+-
+-def _diagnose_condition(condition):
+-    if condition not in ALL_HISTORIES or not ALL_HISTORIES[condition]:
+-        return
+-
+-    S_EMOJI = {
+-        "good": "✅ 정상",
+-        "overfit": "🔴 과적합",
+-        "underfit": "🟡 과소적합",
+-        "unknown": "❓ 미상",
+-    }
+-
+-    fold_statuses = []
+-    lbl = condition_label_from_key(condition)
+-
+-    print(f"\\n  {'─'*54}")
+-    print(f"  📋 [{lbl}] 폴드별 과적합 진단")
+-    print(f"  {'─'*54}")
+-
+-    for fi, hist in sorted(ALL_HISTORIES[condition].items()):
+-        st, d = diagnose_fit(
+-            hist.get("loss", []),
+-            hist.get("val_loss", []),
+-            hist.get("accuracy", []),
+-            hist.get("val_accuracy", []),
+-        )
+-        fold_statuses.append(st)
+-
+-        ta = d.get("train_acc_final", 0) * 100
+-        va = d.get("val_acc_final", 0) * 100
+-        ag = d.get("acc_gap", 0) * 100
+-        lg = d.get("loss_gap", 0)
+-        ep = len(hist.get("loss", []))
+-
+-        print(f"  Fold {fi+1}: {S_EMOJI[st]:<12} "
+-              f"train={ta:.1f}% val={va:.1f}% "
+-              f"acc_gap={ag:+.1f}% loss_gap={lg:+.4f} ep={ep}")
+-
+-    cnt = {s: fold_statuses.count(s) for s in ["good", "overfit", "underfit"]}
+-    dominant = max(cnt, key=cnt.get)
+-
+-    if dominant == "overfit":
+-        comment = "→ Dropout 강화 또는 EarlyStopping patience 축소 권장"
+-    elif dominant == "underfit":
+-        comment = "→ lr 상향 또는 에포크 추가 권장"
+-    else:
+-        comment = "→ 정상 수렴"
+-
+-    print(f"  {'─'*54}")
+-    print(f"  종합: {S_EMOJI[dominant]}  "
+-          f"(정상 {cnt['good']} / 과적합 {cnt['overfit']} / 과소적합 {cnt['underfit']}폴드)")
+-    print(f"  {comment}")
+-    print(f"  {'─'*54}")
+-
+-    condition_diagnosis[condition] = {
+-        "status": dominant,
+-        "fold_statuses": fold_statuses,
+-        "counts": cnt,
+-    }
+-
+-for block_idx, block_size in enumerate(BLOCK_SIZES, start=1):
+-    print(f"\\n{'#'*60}")
+-    print(f"🧩 블록 단계 {block_idx}/{len(BLOCK_SIZES)} | Block{block_size} 준비")
+-    print(f"{'#'*60}")
+-    block_dir = generate_block_dataset(block_size)
+-
+-    for sigma_idx, sigma in enumerate(BLUR_SIGMAS, start=1):
+-        step_idx  = (block_idx - 1) * len(BLUR_SIGMAS) + sigma_idx
+-        condition = condition_key(block_size, sigma)
+-        lbl       = condition_label(block_size, sigma)
+-
+-        if condition in all_results:
+-            print(f"\\n⏭️  Step {step_idx}/{len(COMBINATIONS)} | {lbl}: "
+-                  f"완료({all_results[condition]['acc']*100:.2f}%) → 스킵")
+-            if condition in ALL_HISTORIES and ALL_HISTORIES[condition]:
+-                _diagnose_condition(condition)
+-            continue
+-
+-        print(f"\\n📦 Step {step_idx}/{len(COMBINATIONS)} | {lbl} 데이터셋 준비...")
+-
+-        combined_dir = generate_combined_dataset(block_size, sigma, block_dir)
+-        result       = run_experiment(block_size, sigma, combined_dir)
+-
+-        all_results[condition] = result
+-
+-        with open(result_path, "w") as f:
+-            json_module.dump(all_results, f, indent=2, ensure_ascii=False)
+-
+-        print("  💾 중간 저장 완료")
+-        _diagnose_condition(condition)
+-        gpu_status(f"{condition} 완료 후")
+-
+-print("\\n" + "=" * 60)
+-print("📊 전체 블록 + 블러 조합 실험 최종 요약")
+-print("=" * 60)
+-
+-if condition_diagnosis:
+-    print(f"  {'조합':>24}  {'정확도':>8}  {'ROC-AUC':>8}  {'모델상태':>12}  {'폴드분포'}")
+-    print(f"  {'-'*78}")
+-    for block_size, sigma in COMBINATIONS:
+-        condition = condition_key(block_size, sigma)
+-        if condition not in all_results:
+-            continue
+-
+-        r = all_results[condition]
+-        d = condition_diagnosis.get(condition, {})
+-        status = d.get("status", "unknown")
+-        counts = d.get("counts", {})
+-
+-        lbl = condition_short_label(block_size, sigma)
+-        acc = r["acc"] * 100
+-        auc = r["roc_auc"]
+-
+-        print(f"  {lbl:>24}  {acc:>7.2f}%  {auc:>8.4f}  "
+-              f"{status:>12}  "
+-              f"정상 {counts.get('good',0)} / 과적합 {counts.get('overfit',0)} / 과소적합 {counts.get('underfit',0)}")
+-
+-print("=" * 60)
+-`);
+-
+-setSource(27, "## 1️⃣3️⃣ 전체 블록 + 블러 조합 결과 표 출력\n");
+-setSource(28, `# Cell 13: 결과 표 출력
+-print("\\n\\n" + "=" * 108)
+-print("📊 블록 암호화 + 블러 전체 조합 실험 결과 (ResNet50)")
+-print("=" * 108)
+-print(f"  {'블록':>8}  {'블러':>10}  {'정확도(전체)':>12}  {'ROC-AUC':>8}  {'양성(Benign)':>13}  {'악성(Malig)':>12}  {'정상(Normal)':>13}  {'평가':>6}")
+-print("-" * 108)
+-
+-for block_size, sigma in COMBINATIONS:
+-    condition = condition_key(block_size, sigma)
+-    if condition not in all_results:
+-        continue
+-
+-    r   = all_results[condition]
+-    b   = r["per_class_acc"].get("Bengin cases",    0) * 100
+-    m   = r["per_class_acc"].get("Malignant cases", 0) * 100
+-    n   = r["per_class_acc"].get("Normal cases",    0) * 100
+-    acc = r["acc"] * 100
+-
+-    block_lbl = "원본" if block_size >= IMG_SIZE else str(block_size)
+-    blur_lbl  = "원본" if sigma == 0 else f"σ={sigma}"
+-    grade = ("🟢 우수" if acc >= 85 else
+-             ("🟡 양호" if acc >= 70 else
+-              ("🟠 미흡" if acc >= 55 else "🔴 불량")))
+-
+-    print(f"  {block_lbl:>8}  {blur_lbl:>10}  {acc:>11.2f}%  {r['roc_auc']:>8.4f}"
+-          f"  {b:>12.1f}%  {m:>11.1f}%  {n:>12.1f}%  {grade}")
+-
+-print("=" * 108)
+-`);
+-
+-setSource(29, `## 🆕 13b. 전체 조합 과적합 / 과소적합 진단 & GPU 타임라인
+-
+-모든 블록 크기와 블러 Sigma 조합, 폴드에 대해 최종 수렴 상태를 요약합니다.
+-
+-GPU 로그가 있으면 VRAM·활용률·온도 요약도 함께 출력합니다.
+-`);
+-setSource(30, `# Cell 13b: 전체 블록 + 블러 조합 과적합 / 과소적합 진단 요약
+-print("=" * 75)
+-print("🩺 전체 과적합 / 과소적합 진단 요약 [ResNet50 블록 + 블러]")
+-print("=" * 75)
+-
+-STATUS_EMOJI = {
+-    "good": "✅ 정상",
+-    "overfit": "🔴 과적합",
+-    "underfit": "🟡 과소적합",
+-    "unknown": "❓ 미상",
+-}
+-
+-for block_size, sigma in COMBINATIONS:
+-    condition = condition_key(block_size, sigma)
+-    if condition not in ALL_HISTORIES:
+-        continue
+-
+-    lbl = condition_label(block_size, sigma)
+-    print(f"\\n  [{lbl}]")
+-
+-    statuses = []
+-    for fold_idx, hist in sorted(ALL_HISTORIES[condition].items()):
+-        status, detail = diagnose_fit(
+-            hist.get("loss", []),
+-            hist.get("val_loss", []),
+-            hist.get("accuracy", []),
+-            hist.get("val_accuracy", []),
+-        )
+-        statuses.append(status)
+-
+-        print(f"    Fold {fold_idx+1}: {STATUS_EMOJI[status]:<12}  "
+-              f"train={detail.get('train_acc_final',0)*100:.1f}%  "
+-              f"val={detail.get('val_acc_final',0)*100:.1f}%  "
+-              f"acc_gap={detail.get('acc_gap',0)*100:+.1f}%  "
+-              f"loss_gap={detail.get('loss_gap',0):+.4f}")
+-
+-    cnt = {s: statuses.count(s) for s in ["good", "overfit", "underfit"]}
+-    dominant = max(cnt, key=cnt.get) if statuses else "unknown"
+-
+-    print(f"    → 종합: {STATUS_EMOJI[dominant]}  "
+-          f"(정상 {cnt.get('good',0)}폴드 / 과적합 {cnt.get('overfit',0)}폴드 / 과소적합 {cnt.get('underfit',0)}폴드)")
+-
+-print("=" * 75)
+-
+-if len(GPU_LOG) > 0:
+-    used_vals = [g["used"] for g in GPU_LOG]
+-    util_vals = [g["util"] for g in GPU_LOG]
+-    temp_vals = [g["temp"] for g in GPU_LOG]
+-
+-    print("\\n" + "=" * 55)
+-    print("🖥️  GPU 사용 타임라인 요약")
+-    print("=" * 55)
+-    print(f"  기록 수    : {len(GPU_LOG)}개")
+-    print(f"  VRAM 평균  : {np.mean(used_vals):.0f} MiB | 최대: {np.max(used_vals):.0f} MiB")
+-    print(f"  활용률 평균: {np.mean(util_vals):.1f}% | 최대: {np.max(util_vals):.1f}%")
+-    print(f"  온도 평균  : {np.mean(temp_vals):.1f}°C | 최대: {np.max(temp_vals):.1f}°C")
+-    print("=" * 55)
+-else:
+-    print("\\nℹ️  GPU 로그 없음 (GPU 없이 실행되었거나 nvidia-smi 미설치)")
+-`);
+-
+-setSource(31, `## 1️⃣4️⃣ 훈련 후 평가 그래프 10개
+-
+-실험 완료 후 아래 셀을 실행하면 블록 크기와 블러 Sigma 전체 조합의 정확도, 클래스별 성능, ROC-AUC, 혼동 행렬, 학습 곡선, 폴드 히트맵, 과적합 판정, 레이더 차트, GPU 타임라인, 종합 대시보드까지 총 10개 그래프를 생성합니다.
+-
+-모든 그래프는 기존 디자인과 동일하게 한글 폰트가 적용된 상태로 저장됩니다.
+-`);
+-
+-let graph = getSource(32);
+-graph = replaceOrThrow(
+-  graph,
+-  `_SIGMAS = list(BLUR_SIGMAS) if "BLUR_SIGMAS" in globals() else [0, 1, 2, 4, 8, 16, 32, 64, 128, 256]
+-_BLOCK_EQUIV = list(BLOCK_SIZES) if "BLOCK_SIZES" in globals() else [512, 256, 128, 64, 32, 16, 8, 4, 2, 1]
+-_CLASS_NAMES = ["Bengin cases", "Malignant cases", "Normal cases"]
+-_CLASS_KO    = ["양성(Benign)", "악성(Malignant)", "정상(Normal)"]
+-
+-def _label_for(idx, sigma):
+-    if sigma == 0:
+-        return "원본"
+-    if idx < len(_BLOCK_EQUIV):
+-        return f"B{_BLOCK_EQUIV[idx]}·σ{sigma}"
+-    return f"σ{sigma}"`,
+-  `_GRAPH_CONDITIONS = list(COMBINATIONS) if "COMBINATIONS" in globals() else [
+-    (block_size, sigma)
+-    for block_size in [512, 256, 128, 64, 32, 16, 8, 4, 2, 1]
+-    for sigma in [0, 1, 2, 4, 8, 16, 32, 64, 128, 256]
+-]
+-_SIGMAS = list(range(len(_GRAPH_CONDITIONS)))
+-_CLASS_NAMES = ["Bengin cases", "Malignant cases", "Normal cases"]
+-_CLASS_KO    = ["양성(Benign)", "악성(Malignant)", "정상(Normal)"]
+-
+-def _label_for(idx, sigma):
+-    if idx < len(_GRAPH_CONDITIONS):
+-        block_size, blur_sigma = _GRAPH_CONDITIONS[idx]
+-        return condition_short_label(block_size, blur_sigma)
+-    return str(sigma)`,
+-  "graph prelude",
+-);
+-graph = replaceOrThrow(
+-  graph,
+-  '            "block_size_equiv": _BLOCK_EQUIV[i] if i < len(_BLOCK_EQUIV) else None,',
+-  '            "condition": _GRAPH_CONDITIONS[i] if i < len(_GRAPH_CONDITIONS) else None,',
+-  "graph dummy condition",
+-);
+-graph = replaceOrThrow(
+-  graph,
+-  `_results   = all_results if ("all_results" in globals() and len(all_results) > 0) else _dummy_results()
+-_histories = ALL_HISTORIES if ("ALL_HISTORIES" in globals() and len(ALL_HISTORIES) > 0) else _dummy_histories()`,
+-  `_GRAPH_RESULTS = {
+-    idx: all_results[condition_key(block_size, sigma)]
+-    for idx, (block_size, sigma) in enumerate(_GRAPH_CONDITIONS)
+-    if "all_results" in globals() and condition_key(block_size, sigma) in all_results
+-}
+-_GRAPH_HISTORIES = {
+-    idx: ALL_HISTORIES[condition_key(block_size, sigma)]
+-    for idx, (block_size, sigma) in enumerate(_GRAPH_CONDITIONS)
+-    if "ALL_HISTORIES" in globals() and condition_key(block_size, sigma) in ALL_HISTORIES
+-}
+-_results   = _GRAPH_RESULTS if len(_GRAPH_RESULTS) > 0 else _dummy_results()
+-_histories = _GRAPH_HISTORIES if len(_GRAPH_HISTORIES) > 0 else _dummy_histories()`,
+-  "graph runtime maps",
+-);
+-graph = replaceOrThrow(
+-  graph,
+-  'SAVE_DIR = os.path.join(WORKSPACE, "eval_graphs_blur_metric_matched")',
+-  'SAVE_DIR = os.path.join(WORKSPACE, "eval_graphs_block_blur_all_combinations")',
+-  "graph save directory",
+-);
+-graph = replaceOrThrow(
+-  graph,
+-  '    lbl_str = "원본(σ=0)" if sigma == 0 else f"Blur σ={sigma}"',
+-  "    lbl_str = _label_for(sigma, sigma)",
+-  "graph confusion label",
+-);
+-graph = replaceOrThrow(
+-  graph,
+-  '    lbl_str = "원본(σ=0)" if sigma == 0 else f"σ={sigma}"',
+-  "    lbl_str = _label_for(sigma, sigma)",
+-  "graph radar label",
+-);
+-graph = replaceOrThrow(
+-  graph,
+-  '    lbl = "원본" if sigma == 0 else f"σ={sigma}"',
+-  "    lbl = _label_for(sigma, sigma)",
+-  "graph dashboard table label",
+-);
+-graph = graph
+-  .replaceAll("지표 매칭 블러 Sigma", "블록 암호화 + 블러 조합")
+-  .replaceAll("블록 대응 · 블러 Sigma", "블록 · 블러 조합")
+-  .replaceAll("블록 대응 · Sigma", "블록 · 블러 조합")
+-  .replaceAll("Sigma × 폴드", "조합 × 폴드")
+-  .replaceAll('ax00.set_xlabel("Sigma")', 'ax00.set_xlabel("조합")')
+-  .replaceAll('ax01.set_xlabel("Sigma")', 'ax01.set_xlabel("조합")')
+-  .replaceAll('ax11.set_xlabel("Sigma")', 'ax11.set_xlabel("조합")')
+-  .replaceAll('col_labels = ["Sigma",', 'col_labels = ["조합",')
+-  .replaceAll("지표 매칭 블러 ResNet50", "블록 암호화 + 블러 ResNet50")
+-  .replaceAll("지표 매칭 블러 종합 성능 순위", "블록 + 블러 조합 종합 성능 순위")
+-  .replaceAll("지표 매칭 블러 성능 비교", "블록 + 블러 조합 성능 비교")
+-  .replaceAll("지표 매칭 Sigma별", "블록 + 블러 조합별")
+-  .replaceAll("Sigma별", "조합별");
+-setSource(32, graph);
+-
+-notebook.metadata = notebook.metadata || {};
+-notebook.metadata.block_blur_merge = {
+-  source_notebooks: [
+-    "blur_resnet50_rebuilt2_KO.ipynb",
+-    "block_encryption_resnet50_rebuilt_KO.ipynb",
+-  ],
+-  order: "BLOCK_SIZES outer loop, BLUR_SIGMAS inner loop",
+-  combinations: 100,
+-};
+-
+-await writeFile(outputPath, `${JSON.stringify(notebook, null, 1)}\n`, "utf8");
+-console.log(outputPath);
+--- /dev/null
++++ 자료차수/3차/create_privacy_notebook.py
+@@ -0,0 +1,864 @@
++import nbformat as nbf
++from pathlib import Path
++
++
++OUT = Path(r"C:\Users\PUVKID\Desktop\privacy_score_quantitative_docker_vscode.ipynb")
++
++
++def md(text):
++    return nbf.v4.new_markdown_cell(text.strip() + "\n")
++
++
++def code(text):
++    return nbf.v4.new_code_cell(text.strip() + "\n")
++
++
++nb = nbf.v4.new_notebook()
++nb["metadata"] = {
++    "kernelspec": {
++        "display_name": "Python 3",
++        "language": "python",
++        "name": "python3",
++    },
++    "language_info": {
++        "name": "python",
++        "version": "3.x",
++    },
++}
++
++nb["cells"] = [
++    md(
++        """
++# Privacy Score Quantification
++
++이 노트북은 Docker/VSCode 환경에서 `/workspace/Train` 데이터셋을 자동으로 찾고, 원본 이미지와 변환 이미지의 구조적 차이를 이용해 privacy score를 정량화합니다.
++
++핵심 점수는 `Privacy Score = DSSIM x 100 = ((1 - SSIM) / 2) x 100`입니다. 점수가 높을수록 원본과 구조적으로 더 달라졌다는 뜻입니다. PSNR은 점수식에 섞지 않고 참고 지표로만 함께 저장합니다.
++"""
++    ),
++    md(
++        """
++## 1. 환경 확인과 라이브러리
++
++아래 셀은 필요한 패키지를 확인합니다. Docker 컨테이너에서 `ModuleNotFoundError`가 나면 터미널에서 `pip install numpy pandas pillow scikit-image matplotlib openpyxl`을 실행한 뒤 커널을 재시작하세요.
++"""
++    ),
++    code(
++        r"""
++from pathlib import Path
++import os
++import sys
++import math
++import time
++import json
++import warnings
++
++import numpy as np
++import pandas as pd
++from PIL import Image, ImageFilter, ImageOps
++
++import matplotlib
++import matplotlib.pyplot as plt
++import matplotlib.font_manager as fm
++from matplotlib.colors import Normalize
++
++from skimage.metrics import structural_similarity as ssim_fn
++from skimage.metrics import peak_signal_noise_ratio as psnr_fn
++
++try:
++    from IPython.display import display
++except Exception:
++    display = print
++
++warnings.filterwarnings("ignore", category=UserWarning)
++print("Python:", sys.version.split()[0])
++print("Working directory:", Path.cwd())
++print("Libraries loaded.")
++"""
++    ),
++    md(
++        """
++## 2. 실험 설정
++
++Docker/VSCode에서 돌릴 때는 보통 `BASE_TRAIN_OVERRIDE = None` 그대로 두면 `/workspace/Train`, `/workspace`, `/workspaces/...`, 현재 VSCode 폴더를 자동으로 검사합니다. 만약 컨테이너 안 경로가 다르면 `BASE_TRAIN_OVERRIDE = "/your/path"`만 바꾸세요.
++"""
++    ),
++    code(
++        r"""
++# Set this only if auto-detection fails inside Docker/VSCode.
++BASE_TRAIN_OVERRIDE = None
++
++IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp", ".webp", ".tif", ".tiff")
++IMG_SIZE = 512
++SEED = 42
++
++# Full experiment from the original notebook.
++BLOCK_SIZES = [512, 256, 128, 64, 32, 16, 8, 4, 2, 1]
++BLUR_SIGMAS = [0, 1, 2, 4, 8, 16, 32, 64, 128, 256]
++
++# Leave as None for the full dataset. Set to a small integer for a quick smoke test.
++N_SAMPLES_PER_CLASS = None
++MAX_IMAGES_TOTAL = None
++
++# Loading 1097 images at 512x512 uses roughly 0.9 GB plus overhead.
++# If your Docker memory is tight, set this to False. It will be slower but lighter.
++CACHE_IMAGES_IN_MEMORY = True
++
++# Keep True to evaluate the full block x blur grid.
++RUN_COMBO_GRID = True
++
++DEFAULT_OUT_DIR = Path("/workspace/privacy_score_outputs")
++if not DEFAULT_OUT_DIR.parent.exists():
++    DEFAULT_OUT_DIR = Path.cwd() / "privacy_score_outputs"
++OUT_DIR = DEFAULT_OUT_DIR
++GRAPH_DIR = OUT_DIR / "graphs"
++TABLE_DIR = OUT_DIR / "tables"
++
++OUT_DIR.mkdir(parents=True, exist_ok=True)
++GRAPH_DIR.mkdir(parents=True, exist_ok=True)
++TABLE_DIR.mkdir(parents=True, exist_ok=True)
++
++print("Output directory:", OUT_DIR)
++"""
++    ),
++    md(
++        """
++## 3. 경로 자동 탐색과 데이터셋 진단
++
++이 셀에서 현재 커널 기준으로 실제 존재하는 이미지 루트를 찾습니다. Docker 안에서 실행 중이면 Windows의 `C:\\...` 경로가 아니라 `/workspace/Train` 같은 컨테이너 내부 경로가 기준입니다.
++"""
++    ),
++    code(
++        r"""
++def path_exists(path_like):
++    try:
++        return Path(path_like).exists()
++    except Exception:
++        return False
++
++
++def candidate_train_dirs():
++    candidates = []
++    if BASE_TRAIN_OVERRIDE:
++        candidates.append(Path(BASE_TRAIN_OVERRIDE))
++
++    candidates.extend([
++        Path("/workspace/Train"),
++        Path("/workspace/train"),
++        Path("/workspace/Images"),
++        Path("/workspace/images"),
++        Path("/workspace/data/Train"),
++        Path("/workspace/data/train"),
++        Path("/workspace/data/Images"),
++        Path("/workspace/data/images"),
++        Path.cwd() / "Train",
++        Path.cwd() / "train",
++        Path.cwd() / "Images",
++        Path.cwd() / "images",
++        Path.cwd() / "data" / "Train",
++        Path.cwd() / "data" / "train",
++        Path.cwd() / "data" / "Images",
++        Path.cwd() / "data" / "images",
++    ])
++
++    # VSCode Dev Containers often mount projects under /workspaces/<project>.
++    workspaces = Path("/workspaces")
++    if workspaces.exists():
++        for project_dir in sorted([p for p in workspaces.iterdir() if p.is_dir()]):
++            candidates.extend([
++                project_dir / "Train",
++                project_dir / "train",
++                project_dir / "Images",
++                project_dir / "images",
++                project_dir / "data" / "Train",
++                project_dir / "data" / "train",
++                project_dir / "data" / "Images",
++                project_dir / "data" / "images",
++                project_dir,
++            ])
++
++    # Fallbacks: useful when opening this notebook outside Docker.
++    candidates.extend([
++        Path("/workspace"),
++        Path.cwd(),
++        Path(r"C:\Users\PUVKID\Desktop\Train"),
++    ])
++
++    unique = []
++    seen = set()
++    for p in candidates:
++        key = str(p)
++        if key not in seen:
++            unique.append(p)
++            seen.add(key)
++    return unique
++
++
++IGNORE_DIR_NAMES = {
++    ".git",
++    ".ipynb_checkpoints",
++    "__pycache__",
++    "privacy_score_outputs",
++    "graphs",
++    "tables",
++}
++
++
++def should_ignore(path):
++    return any(part in IGNORE_DIR_NAMES for part in path.parts)
++
++
++def count_images_under(path):
++    if not path.exists():
++        return 0
++    return sum(
++        1
++        for p in path.rglob("*")
++        if p.is_file() and not should_ignore(p) and p.suffix.lower() in IMAGE_EXTENSIONS
++    )
++
++
++diagnosis_rows = []
++for p in candidate_train_dirs():
++    diagnosis_rows.append({
++        "candidate_path": str(p),
++        "exists": p.exists(),
++        "image_count": count_images_under(p) if p.exists() else 0,
++    })
++
++path_diagnosis = pd.DataFrame(diagnosis_rows)
++display(path_diagnosis)
++
++valid_candidates = [Path(r["candidate_path"]) for r in diagnosis_rows if r["exists"] and r["image_count"] > 0]
++if not valid_candidates:
++    raise FileNotFoundError(
++        "No image dataset was found. In Docker/VSCode, make sure your Train folder is mounted "
++        "to /workspace/Train, or set BASE_TRAIN_OVERRIDE to the container path."
++    )
++
++BASE_TRAIN = valid_candidates[0]
++print("Selected BASE_TRAIN:", BASE_TRAIN)
++"""
++    ),
++    md(
++        """
++## 4. 이미지 목록 만들기
++
++클래스 폴더 구조가 있으면 부모 폴더명을 클래스명으로 사용합니다. 예: `Train/Normal cases/*.jpg`.
++"""
++    ),
++    code(
++        r"""
++def collect_image_table(base_dir):
++    rows = []
++    for p in sorted(base_dir.rglob("*")):
++        if should_ignore(p) or not p.is_file() or p.suffix.lower() not in IMAGE_EXTENSIONS:
++            continue
++        rel = p.relative_to(base_dir)
++        label = rel.parts[0] if len(rel.parts) > 1 else "root"
++        rows.append({
++            "path": str(p),
++            "relative_path": str(rel),
++            "label": label,
++            "suffix": p.suffix.lower(),
++        })
++    return pd.DataFrame(rows)
++
++
++image_df = collect_image_table(BASE_TRAIN)
++if image_df.empty:
++    raise RuntimeError(f"No images found under {BASE_TRAIN}")
++
++class_counts = (
++    image_df.groupby("label")
++    .size()
++    .rename("n_images")
++    .reset_index()
++    .sort_values("label")
++)
++print("Total images:", len(image_df))
++display(class_counts)
++
++rng = np.random.default_rng(SEED)
++selected_df = image_df.copy()
++
++if N_SAMPLES_PER_CLASS is not None:
++    selected_df = (
++        selected_df
++        .groupby("label", group_keys=False)
++        .apply(lambda x: x.sample(n=min(len(x), N_SAMPLES_PER_CLASS), random_state=SEED))
++        .reset_index(drop=True)
++    )
++
++if MAX_IMAGES_TOTAL is not None and len(selected_df) > MAX_IMAGES_TOTAL:
++    selected_df = selected_df.sample(n=MAX_IMAGES_TOTAL, random_state=SEED).reset_index(drop=True)
++
++selected_df = selected_df.sort_values(["label", "relative_path"]).reset_index(drop=True)
++selected_df.to_csv(TABLE_DIR / "selected_images.csv", index=False, encoding="utf-8-sig")
++
++print("Selected images:", len(selected_df))
++display(selected_df.head())
++"""
++    ),
++    md(
++        """
++## 5. 한글 폰트와 이미지 변환 함수
++
++그래프 라벨은 호환성을 위해 대부분 영어로 저장합니다. 한글 폰트가 있으면 자동 적용됩니다.
++"""
++    ),
++    code(
++        r"""
++def setup_matplotlib_font():
++    candidates = [
++        "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
++        "/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf",
++        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
++        r"C:\Windows\Fonts\malgun.ttf",
++    ]
++    font_path = next((Path(p) for p in candidates if Path(p).exists()), None)
++    if font_path is None:
++        for p in fm.findSystemFonts(fontpaths=None, fontext="ttf"):
++            low = p.lower()
++            if any(name in low for name in ["nanum", "noto", "malgun", "gulim"]):
++                font_path = Path(p)
++                break
++    if font_path is not None:
++        fm.fontManager.addfont(str(font_path))
++        matplotlib.rcParams["font.family"] = fm.FontProperties(fname=str(font_path)).get_name()
++
++    matplotlib.rcParams["axes.unicode_minus"] = False
++    matplotlib.rcParams.update({
++        "figure.facecolor": "white",
++        "axes.facecolor": "white",
++        "axes.edgecolor": "#333333",
++        "axes.labelcolor": "#222222",
++        "xtick.color": "#222222",
++        "ytick.color": "#222222",
++        "text.color": "#222222",
++        "grid.color": "#dddddd",
++        "grid.linestyle": "--",
++        "grid.alpha": 0.45,
++        "savefig.bbox": "tight",
++    })
++    return font_path
++
++
++font_path = setup_matplotlib_font()
++print("Font:", font_path if font_path else "default")
++
++RESAMPLE_LANCZOS = getattr(getattr(Image, "Resampling", Image), "LANCZOS")
++
++
++def load_rgb_image(path, img_size=IMG_SIZE):
++    with Image.open(path) as img:
++        img = ImageOps.exif_transpose(img).convert("RGB")
++        img = img.resize((img_size, img_size), RESAMPLE_LANCZOS)
++        return np.asarray(img, dtype=np.uint8)
++
++
++def block_scramble(img_array, seed=SEED, block_size=32):
++    h, w, c = img_array.shape
++    block_size = int(block_size)
++    if block_size >= min(h, w):
++        return img_array.copy()
++    if block_size < 1:
++        raise ValueError("block_size must be >= 1")
++
++    pad_h = (block_size - h % block_size) % block_size
++    pad_w = (block_size - w % block_size) % block_size
++    if pad_h or pad_w:
++        padded = np.pad(img_array, ((0, pad_h), (0, pad_w), (0, 0)), mode="reflect")
++    else:
++        padded = img_array
++
++    ph, pw = padded.shape[:2]
++    n_h, n_w = ph // block_size, pw // block_size
++    blocks = padded.reshape(n_h, block_size, n_w, block_size, c).swapaxes(1, 2)
++    flat_blocks = blocks.reshape(n_h * n_w, block_size, block_size, c)
++
++    rng = np.random.default_rng(seed)
++    order = rng.permutation(n_h * n_w)
++    scrambled = flat_blocks[order].reshape(n_h, n_w, block_size, block_size, c)
++    scrambled = scrambled.swapaxes(1, 2).reshape(ph, pw, c)
++    return scrambled[:h, :w].astype(np.uint8)
++
++
++def apply_gaussian_blur(img_array, sigma=0):
++    sigma = float(sigma)
++    if sigma <= 0:
++        return img_array.copy()
++    pil_img = Image.fromarray(img_array.astype(np.uint8))
++    blurred = pil_img.filter(ImageFilter.GaussianBlur(radius=sigma))
++    return np.asarray(blurred, dtype=np.uint8)
++
++
++def apply_transform(img_array, method, block_size=None, sigma=None):
++    if method == "block":
++        return block_scramble(img_array, seed=SEED, block_size=block_size)
++    if method == "blur":
++        return apply_gaussian_blur(img_array, sigma=sigma)
++    if method == "combo":
++        x = block_scramble(img_array, seed=SEED, block_size=block_size)
++        return apply_gaussian_blur(x, sigma=sigma)
++    raise ValueError(f"Unknown method: {method}")
++
++print("Transform functions ready.")
++"""
++    ),
++    md(
++        """
++## 6. Privacy Score 계산 함수
++
++SSIM 기반 DSSIM만 privacy score로 사용합니다. PSNR은 `psnr_mean` 컬럼에 참고용으로 같이 남깁니다.
++"""
++    ),
++    code(
++        r"""
++def compute_pair_metrics(original, transformed):
++    ssim_value = ssim_fn(original, transformed, channel_axis=-1, data_range=255)
++    psnr_value = psnr_fn(original, transformed, data_range=255)
++    if not np.isfinite(psnr_value):
++        psnr_value = 100.0
++    dssim = np.clip((1.0 - float(ssim_value)) / 2.0, 0.0, 1.0)
++    privacy_score = dssim * 100.0
++    return float(ssim_value), float(psnr_value), float(dssim), float(privacy_score)
++
++
++def load_image_records(selected):
++    records = []
++    start = time.time()
++    for i, row in selected.iterrows():
++        img = load_rgb_image(row["path"])
++        records.append({
++            "path": row["path"],
++            "relative_path": row["relative_path"],
++            "label": row["label"],
++            "image": img,
++        })
++        if (i + 1) % 100 == 0:
++            print(f"Loaded {i + 1}/{len(selected)} images")
++    print(f"Loaded {len(records)} images in {time.time() - start:.1f}s")
++    return records
++
++
++if CACHE_IMAGES_IN_MEMORY:
++    image_records = load_image_records(selected_df)
++else:
++    image_records = None
++    print("Image cache disabled. Images will be loaded from disk for each condition.")
++
++
++def iter_records():
++    if image_records is not None:
++        yield from image_records
++    else:
++        for _, row in selected_df.iterrows():
++            yield {
++                "path": row["path"],
++                "relative_path": row["relative_path"],
++                "label": row["label"],
++                "image": load_rgb_image(row["path"]),
++            }
++
++
++def evaluate_condition(method, block_size=None, sigma=None):
++    ssims, psnrs, dssims, scores = [], [], [], []
++    label_scores = {}
++    n = 0
++
++    for rec in iter_records():
++        original = rec["image"]
++        transformed = apply_transform(original, method=method, block_size=block_size, sigma=sigma)
++        ssim_value, psnr_value, dssim_value, score_value = compute_pair_metrics(original, transformed)
++        ssims.append(ssim_value)
++        psnrs.append(psnr_value)
++        dssims.append(dssim_value)
++        scores.append(score_value)
++        label_scores.setdefault(rec["label"], []).append(score_value)
++        n += 1
++
++    row = {
++        "condition": condition_name(method, block_size, sigma),
++        "method": method,
++        "block_size": np.nan if block_size is None else int(block_size),
++        "sigma": np.nan if sigma is None else float(sigma),
++        "n_images": n,
++        "ssim_mean": float(np.mean(ssims)),
++        "ssim_std": float(np.std(ssims)),
++        "psnr_mean": float(np.mean(psnrs)),
++        "psnr_std": float(np.std(psnrs)),
++        "dssim_mean": float(np.mean(dssims)),
++        "privacy_score": float(np.mean(scores)),
++        "privacy_score_std": float(np.std(scores)),
++    }
++
++    for label, values in label_scores.items():
++        safe_label = str(label).replace(" ", "_").replace("/", "_").replace("\\", "_")
++        row[f"privacy_score_{safe_label}"] = float(np.mean(values))
++    return row
++
++
++def condition_name(method, block_size=None, sigma=None):
++    if method == "block":
++        return f"block_B{int(block_size)}"
++    if method == "blur":
++        return f"blur_S{format_sigma(sigma)}"
++    if method == "combo":
++        return f"combo_B{int(block_size)}_S{format_sigma(sigma)}"
++    return method
++
++
++def format_sigma(sigma):
++    sigma = float(sigma)
++    return str(int(sigma)) if sigma.is_integer() else str(sigma).replace(".", "p")
++
++
++print("Metric functions ready.")
++"""
++    ),
++    md(
++        """
++## 7. 실험 실행
++
++전체 조건은 블록 단독 10개, 블러 단독 10개, 조합 100개입니다. Docker 메모리나 시간이 부족하면 위 설정에서 `N_SAMPLES_PER_CLASS`를 먼저 작게 잡아 테스트하세요.
++"""
++    ),
++    code(
++        r"""
++experiment_plan = []
++for bs in BLOCK_SIZES:
++    experiment_plan.append(("block", bs, None))
++for sg in BLUR_SIGMAS:
++    experiment_plan.append(("blur", None, sg))
++if RUN_COMBO_GRID:
++    for bs in BLOCK_SIZES:
++        for sg in BLUR_SIGMAS:
++            experiment_plan.append(("combo", bs, sg))
++
++print("Number of conditions:", len(experiment_plan))
++
++rows = []
++start_all = time.time()
++for idx, (method, bs, sg) in enumerate(experiment_plan, start=1):
++    started = time.time()
++    row = evaluate_condition(method, block_size=bs, sigma=sg)
++    rows.append(row)
++    print(
++        f"[{idx:03d}/{len(experiment_plan)}] {row['condition']}: "
++        f"score={row['privacy_score']:.2f}, ssim={row['ssim_mean']:.4f}, "
++        f"psnr={row['psnr_mean']:.2f} dB, time={time.time() - started:.1f}s"
++    )
++
++df = pd.DataFrame(rows)
++print(f"Done in {(time.time() - start_all) / 60:.1f} minutes")
++display(df.head())
++"""
++    ),
++    md(
++        """
++## 8. 결과 표 저장
++
++CSV와 Excel 파일을 모두 저장합니다. Excel 저장이 실패해도 CSV는 저장됩니다.
++"""
++    ),
++    code(
++        r"""
++result_csv = TABLE_DIR / "privacy_scores_long.csv"
++summary_csv = TABLE_DIR / "privacy_scores_summary_by_method.csv"
++best_csv = TABLE_DIR / "privacy_scores_best_conditions.csv"
++pivot_csv = TABLE_DIR / "privacy_scores_combo_pivot.csv"
++excel_path = OUT_DIR / "privacy_score_results.xlsx"
++
++df_sorted = df.sort_values("privacy_score", ascending=False).reset_index(drop=True)
++summary_by_method = (
++    df.groupby("method", dropna=False)
++    .agg(
++        n_conditions=("condition", "count"),
++        mean_privacy_score=("privacy_score", "mean"),
++        max_privacy_score=("privacy_score", "max"),
++        min_privacy_score=("privacy_score", "min"),
++        mean_ssim=("ssim_mean", "mean"),
++        mean_psnr=("psnr_mean", "mean"),
++    )
++    .reset_index()
++    .sort_values("mean_privacy_score", ascending=False)
++)
++best_by_method = (
++    df.loc[df.groupby("method")["privacy_score"].idxmax()]
++    .sort_values("privacy_score", ascending=False)
++    .reset_index(drop=True)
++)
++
++combo_df = df[df["method"] == "combo"].copy()
++if not combo_df.empty:
++    combo_pivot = combo_df.pivot(index="block_size", columns="sigma", values="privacy_score")
++    combo_pivot = combo_pivot.reindex(index=sorted(BLOCK_SIZES), columns=[float(x) for x in BLUR_SIGMAS])
++else:
++    combo_pivot = pd.DataFrame()
++
++df_sorted.to_csv(result_csv, index=False, encoding="utf-8-sig")
++summary_by_method.to_csv(summary_csv, index=False, encoding="utf-8-sig")
++best_by_method.to_csv(best_csv, index=False, encoding="utf-8-sig")
++if not combo_pivot.empty:
++    combo_pivot.to_csv(pivot_csv, encoding="utf-8-sig")
++
++try:
++    with pd.ExcelWriter(excel_path) as writer:
++        df_sorted.to_excel(writer, sheet_name="all_scores", index=False)
++        summary_by_method.to_excel(writer, sheet_name="summary_by_method", index=False)
++        best_by_method.to_excel(writer, sheet_name="best_by_method", index=False)
++        if not combo_pivot.empty:
++            combo_pivot.to_excel(writer, sheet_name="combo_pivot")
++    print("Excel saved:", excel_path)
++except Exception as e:
++    print("Excel save skipped:", repr(e))
++
++print("CSV saved:")
++print(" -", result_csv)
++print(" -", summary_csv)
++print(" -", best_csv)
++if not combo_pivot.empty:
++    print(" -", pivot_csv)
++
++display(summary_by_method)
++display(df_sorted.head(15))
++"""
++    ),
++    md(
++        """
++## 9. 그래프 저장
++
++그래프는 `privacy_score_outputs/graphs` 폴더에 PNG로 저장됩니다.
++"""
++    ),
++    code(
++        r"""
++PALETTE = {
++    "score": "#2f9e44",
++    "ssim": "#1971c2",
++    "psnr": "#e67700",
++    "accent": "#9c36b5",
++    "muted": "#495057",
++}
++
++
++def save_fig(fig, filename):
++    path = GRAPH_DIR / filename
++    fig.tight_layout()
++    fig.savefig(path, dpi=180)
++    plt.show()
++    print("Saved:", path)
++    return path
++
++
++block_df = df[df["method"] == "block"].copy().sort_values("block_size", ascending=False)
++blur_df = df[df["method"] == "blur"].copy().sort_values("sigma")
++combo_df = df[df["method"] == "combo"].copy()
++
++# 1. Block-only privacy score
++fig, ax = plt.subplots(figsize=(8, 5))
++ax.plot(block_df["block_size"].astype(int).astype(str), block_df["privacy_score"], marker="o", color=PALETTE["score"], linewidth=2)
++ax.set_title("Privacy Score by Block Size")
++ax.set_xlabel("Block size")
++ax.set_ylabel("Privacy Score (0-100, higher is more private)")
++ax.grid(True)
++ax.invert_xaxis()
++save_fig(fig, "01_block_privacy_score.png")
++
++# 2. Blur-only privacy score
++fig, ax = plt.subplots(figsize=(8, 5))
++ax.plot(blur_df["sigma"].astype(int).astype(str), blur_df["privacy_score"], marker="o", color=PALETTE["score"], linewidth=2)
++ax.set_title("Privacy Score by Gaussian Blur Sigma")
++ax.set_xlabel("Sigma")
++ax.set_ylabel("Privacy Score (0-100, higher is more private)")
++ax.grid(True)
++save_fig(fig, "02_blur_privacy_score.png")
++
++# 3. Combo heatmap
++if not combo_df.empty:
++    pivot = combo_df.pivot(index="block_size", columns="sigma", values="privacy_score")
++    pivot = pivot.reindex(index=sorted(BLOCK_SIZES), columns=[float(x) for x in BLUR_SIGMAS])
++    fig, ax = plt.subplots(figsize=(9, 6.8))
++    im = ax.imshow(pivot.values, cmap="viridis", aspect="auto", norm=Normalize(vmin=0, vmax=max(1, np.nanmax(pivot.values))))
++    ax.set_title("Block x Blur Privacy Score Heatmap")
++    ax.set_xlabel("Blur sigma")
++    ax.set_ylabel("Block size")
++    ax.set_xticks(range(len(pivot.columns)))
++    ax.set_xticklabels([int(x) if float(x).is_integer() else x for x in pivot.columns])
++    ax.set_yticks(range(len(pivot.index)))
++    ax.set_yticklabels([int(x) for x in pivot.index])
++    cbar = fig.colorbar(im, ax=ax)
++    cbar.set_label("Privacy Score")
++    save_fig(fig, "03_combo_privacy_score_heatmap.png")
++
++# 4. SSIM and PSNR reference for block-only
++fig, ax1 = plt.subplots(figsize=(8, 5))
++ax2 = ax1.twinx()
++x = block_df["block_size"].astype(int).astype(str)
++ax1.plot(x, block_df["ssim_mean"], marker="o", color=PALETTE["ssim"], linewidth=2, label="SSIM")
++ax2.plot(x, block_df["psnr_mean"], marker="s", color=PALETTE["psnr"], linewidth=2, label="PSNR")
++ax1.set_title("Block-only SSIM and PSNR")
++ax1.set_xlabel("Block size")
++ax1.set_ylabel("SSIM", color=PALETTE["ssim"])
++ax2.set_ylabel("PSNR (dB)", color=PALETTE["psnr"])
++ax1.invert_xaxis()
++ax1.grid(True)
++save_fig(fig, "04_block_ssim_psnr_reference.png")
++
++# 5. SSIM and PSNR reference for blur-only
++fig, ax1 = plt.subplots(figsize=(8, 5))
++ax2 = ax1.twinx()
++x = blur_df["sigma"].astype(int).astype(str)
++ax1.plot(x, blur_df["ssim_mean"], marker="o", color=PALETTE["ssim"], linewidth=2, label="SSIM")
++ax2.plot(x, blur_df["psnr_mean"], marker="s", color=PALETTE["psnr"], linewidth=2, label="PSNR")
++ax1.set_title("Blur-only SSIM and PSNR")
++ax1.set_xlabel("Sigma")
++ax1.set_ylabel("SSIM", color=PALETTE["ssim"])
++ax2.set_ylabel("PSNR (dB)", color=PALETTE["psnr"])
++ax1.grid(True)
++save_fig(fig, "05_blur_ssim_psnr_reference.png")
++
++# 6. Best conditions
++top_n = min(15, len(df_sorted))
++top_df = df_sorted.head(top_n).iloc[::-1]
++fig, ax = plt.subplots(figsize=(9, max(5, top_n * 0.35)))
++colors = [PALETTE["score"] if m == "combo" else PALETTE["accent"] if m == "block" else PALETTE["psnr"] for m in top_df["method"]]
++ax.barh(top_df["condition"], top_df["privacy_score"], color=colors)
++ax.set_title(f"Top {top_n} Conditions by Privacy Score")
++ax.set_xlabel("Privacy Score")
++ax.set_ylabel("Condition")
++ax.grid(axis="x")
++save_fig(fig, "06_top_conditions_privacy_score.png")
++
++# 7. Method distribution
++fig, ax = plt.subplots(figsize=(7, 5))
++plot_data = [df[df["method"] == m]["privacy_score"].values for m in ["block", "blur", "combo"] if not df[df["method"] == m].empty]
++labels = [m for m in ["block", "blur", "combo"] if not df[df["method"] == m].empty]
++box = ax.boxplot(plot_data, labels=labels, patch_artist=True)
++for patch, color in zip(box["boxes"], [PALETTE["accent"], PALETTE["psnr"], PALETTE["score"]]):
++    patch.set_facecolor(color)
++    patch.set_alpha(0.65)
++ax.set_title("Privacy Score Distribution by Method")
++ax.set_xlabel("Method")
++ax.set_ylabel("Privacy Score")
++ax.grid(axis="y")
++save_fig(fig, "07_method_distribution_boxplot.png")
++"""
++    ),
++    md(
++        """
++## 10. 표 이미지 저장
++
++보고서나 발표에 바로 넣을 수 있도록 상위 조건 표를 PNG 이미지로도 저장합니다.
++"""
++    ),
++    code(
++        r"""
++def save_table_png(table_df, filename, title, max_rows=15):
++    view = table_df.head(max_rows).copy()
++    keep_cols = ["condition", "method", "block_size", "sigma", "privacy_score", "ssim_mean", "psnr_mean"]
++    keep_cols = [c for c in keep_cols if c in view.columns]
++    view = view[keep_cols].copy()
++    for col in ["privacy_score", "ssim_mean", "psnr_mean"]:
++        if col in view.columns:
++            view[col] = view[col].map(lambda x: f"{x:.3f}")
++    for col in ["block_size", "sigma"]:
++        if col in view.columns:
++            view[col] = view[col].map(lambda x: "" if pd.isna(x) else f"{float(x):.0f}")
++
++    fig_h = max(2.5, 0.38 * len(view) + 1.2)
++    fig, ax = plt.subplots(figsize=(11, fig_h))
++    ax.axis("off")
++    ax.set_title(title, fontsize=14, pad=12)
++    table = ax.table(
++        cellText=view.values,
++        colLabels=view.columns,
++        loc="center",
++        cellLoc="center",
++    )
++    table.auto_set_font_size(False)
++    table.set_fontsize(8.5)
++    table.scale(1, 1.25)
++    for (row, col), cell in table.get_celld().items():
++        if row == 0:
++            cell.set_facecolor("#e9ecef")
++            cell.set_text_props(weight="bold")
++        else:
++            cell.set_facecolor("#ffffff" if row % 2 else "#f8f9fa")
++    path = GRAPH_DIR / filename
++    fig.savefig(path, dpi=180, bbox_inches="tight")
++    plt.show()
++    print("Saved:", path)
++    return path
++
++
++save_table_png(df_sorted, "08_top_conditions_table.png", "Top Conditions by Privacy Score", max_rows=15)
++save_table_png(best_by_method, "09_best_by_method_table.png", "Best Condition by Method", max_rows=10)
++"""
++    ),
++    md(
++        """
++## 11. 샘플 이미지 비교 저장
++
++최고 privacy score 조건 하나를 골라 원본과 변환 결과를 나란히 저장합니다.
++"""
++    ),
++    code(
++        r"""
++def parse_condition(row):
++    method = row["method"]
++    block_size = None if pd.isna(row.get("block_size", np.nan)) else int(row["block_size"])
++    sigma = None if pd.isna(row.get("sigma", np.nan)) else float(row["sigma"])
++    return method, block_size, sigma
++
++
++sample_path = selected_df.iloc[0]["path"]
++sample_original = load_rgb_image(sample_path)
++best_row = df_sorted.iloc[0]
++best_method, best_bs, best_sg = parse_condition(best_row)
++sample_transformed = apply_transform(sample_original, best_method, block_size=best_bs, sigma=best_sg)
++
++fig, axes = plt.subplots(1, 2, figsize=(9, 4.5))
++axes[0].imshow(sample_original)
++axes[0].set_title("Original")
++axes[0].axis("off")
++axes[1].imshow(sample_transformed)
++axes[1].set_title(f"{best_row['condition']}\nScore {best_row['privacy_score']:.2f}")
++axes[1].axis("off")
++fig.suptitle("Sample Original vs Best Privacy Condition")
++sample_compare_path = GRAPH_DIR / "10_sample_original_vs_best_condition.png"
++fig.savefig(sample_compare_path, dpi=180, bbox_inches="tight")
++plt.show()
++print("Saved:", sample_compare_path)
++"""
++    ),
++    md(
++        """
++## 12. 최종 출력 위치
++
++아래 경로의 `tables` 폴더에는 CSV/Excel 표, `graphs` 폴더에는 PNG 그래프가 저장됩니다.
++"""
++    ),
++    code(
++        r"""
++print("Base train:", BASE_TRAIN)
++print("Output:", OUT_DIR)
++print("Tables:", TABLE_DIR)
++print("Graphs:", GRAPH_DIR)
++print("\nImportant files:")
++for p in [
++    TABLE_DIR / "privacy_scores_long.csv",
++    TABLE_DIR / "privacy_scores_summary_by_method.csv",
++    TABLE_DIR / "privacy_scores_best_conditions.csv",
++    OUT_DIR / "privacy_score_results.xlsx",
++    GRAPH_DIR / "03_combo_privacy_score_heatmap.png",
++    GRAPH_DIR / "08_top_conditions_table.png",
++]:
++    print(" -", p)
++"""
++    ),
++]
++
++nbf.write(nb, OUT)
++print(OUT)
+--- /dev/null
++++ 자료차수/3차/modify_privacy_notebook_ssim_only.py
+@@ -0,0 +1,752 @@
++import copy
++import json
++import shutil
++from datetime import datetime
++from pathlib import Path
++
++import nbformat as nbf
++
++
++NOTEBOOK = Path(r"C:\Users\PUVKID\Desktop\privacy_score_ssim_psnr (1).ipynb")
++
++
++def md(text):
++    return nbf.v4.new_markdown_cell(text.strip() + "\n")
++
++
++def code(text):
++    return nbf.v4.new_code_cell(text.strip() + "\n")
++
++
++def set_cell_source(nb, index, source):
++    nb.cells[index].source = source.strip() + "\n"
++
++
++backup = NOTEBOOK.with_name(
++    NOTEBOOK.stem + "_backup_before_ssim_only_" + datetime.now().strftime("%Y%m%d_%H%M%S") + NOTEBOOK.suffix
++)
++shutil.copy2(NOTEBOOK, backup)
++
++nb = nbf.read(NOTEBOOK, as_version=4)
++
++set_cell_source(
++    nb,
++    0,
++    """
++<div style="background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%); border: 2px solid #30363d; border-radius: 12px; padding: 30px; margin-bottom: 20px;">
++
++<h1 style="color: #f0f6fc; text-align: center; font-size: 2em; margin: 0 0 12px 0;">
++  Privacy Score 정량화 실험 - SSIM 기반, PSNR 참고 지표
++</h1>
++
++<p style="color: #8b949e; text-align: center; margin: 0;">
++블록 픽셀 크기별 / 가우시안 블러별 / 블록+블러 조합별로 원본 대비 구조적 차이를 계산하고<br>
++SSIM 기반 Privacy Score를 표와 상세 그래프로 저장합니다.
++</p>
++
++</div>
++""",
++)
++
++set_cell_source(
++    nb,
++    1,
++    r"""
++## 사용한 Privacy Score 수식
++
++이 노트북의 최종 privacy score는 **SSIM만 사용**합니다. PSNR은 점수 계산에 넣지 않고, 이미지 손상 정도를 해석하기 위한 참고 지표로만 표와 그래프에 함께 표시합니다.
++
++원본 이미지 \(I\), 변환 이미지 \(I'\)에 대해:
++
++\[
++SSIM_i = SSIM(I_i, I'_i)
++\]
++
++\[
++DSSIM_i = \frac{1 - SSIM_i}{2}
++\]
++
++\[
++PrivacyScore_i = 100 \times DSSIM_i
++               = 50 \times (1 - SSIM_i)
++\]
++
++조건별 최종 점수는 이미지별 점수의 평균입니다.
++
++\[
++PrivacyScore_{condition} = \frac{1}{N}\sum_{i=1}^{N} PrivacyScore_i
++\]
++
++- 점수 범위: 이론적으로 0~100점
++- 0점에 가까움: 원본과 거의 동일
++- 100점에 가까움: 원본과 구조적으로 매우 다름
++- PSNR: `psnr_mean`, `psnr_std`로만 저장하고 참고 그래프에만 사용
++""",
++)
++
++set_cell_source(
++    nb,
++    3,
++    """
++# Cell 1: 라이브러리 임포트
++import os, glob, json, math
++import numpy as np
++import pandas as pd
++import matplotlib
++import matplotlib.font_manager as fm
++import matplotlib.pyplot as plt
++from matplotlib.gridspec import GridSpec
++from PIL import Image, ImageFilter, ImageOps
++from skimage.metrics import structural_similarity as ssim_fn
++from skimage.metrics import peak_signal_noise_ratio as psnr_fn
++
++try:
++    from IPython.display import display
++except Exception:
++    display = print
++""",
++)
++
++set_cell_source(
++    nb,
++    7,
++    """
++# Cell 3: 실험 설정 - 경로는 기존 노트북 값을 그대로 사용
++BASE_TRAIN   = "/workspace/Train"      # 원본 이미지 루트. Docker/VSCode 컨테이너 기준 경로
++IMG_SIZE     = 512
++SEED         = 42
++IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp")
++
++BLOCK_SIZES  = [512, 256, 128, 64, 32, 16, 8, 4, 2, 1]
++BLUR_SIGMAS  = [0, 1, 2, 4, 8, 16, 32, 64, 128, 256]
++
++# 속도 조절용. None이면 전체 이미지 사용, 예: 20이면 클래스별 최대 20장만 사용
++N_SAMPLES_PER_CLASS = None
++
++# 기존 출력 경로 유지
++OUT_DIR   = "./privacy_score_outputs"
++GRAPH_DIR = os.path.join(OUT_DIR, "eval_graphs_privacy_score")
++TABLE_DIR = os.path.join(OUT_DIR, "tables")
++SAMPLE_IMG_DIR = os.path.join(OUT_DIR, "sample_images")
++
++for _dir in (OUT_DIR, GRAPH_DIR, TABLE_DIR, SAMPLE_IMG_DIR):
++    os.makedirs(_dir, exist_ok=True)
++for _sub in ("block", "blur", "combo"):
++    os.makedirs(os.path.join(SAMPLE_IMG_DIR, _sub), exist_ok=True)
++
++print(f"BASE_TRAIN: {BASE_TRAIN}")
++print(f"OUT_DIR   : {OUT_DIR}")
++print(f"GRAPH_DIR : {GRAPH_DIR}")
++print(f"TABLE_DIR : {TABLE_DIR}")
++print(f"SAMPLE_IMG_DIR: {SAMPLE_IMG_DIR}")
++print(f"실험 조건: 블록 {len(BLOCK_SIZES)}개, 블러 {len(BLUR_SIGMAS)}개, 조합 {len(BLOCK_SIZES) * len(BLUR_SIGMAS)}개")
++""",
++)
++
++set_cell_source(
++    nb,
++    11,
++    """
++# Cell 5: 원본 이미지 로딩
++def _is_image_file(path):
++    return str(path).lower().endswith(IMAGE_EXTENSIONS)
++
++def _is_ignored_path(path):
++    parts = set(os.path.normpath(path).split(os.sep))
++    ignored = {"privacy_score_outputs", "eval_graphs_privacy_score", "sample_images", ".ipynb_checkpoints", "__pycache__"}
++    return bool(parts & ignored)
++
++def collect_image_files(base_dir):
++    records = []
++    for root, _, files in os.walk(base_dir):
++        if _is_ignored_path(root):
++            continue
++        for f in sorted(files):
++            if not _is_image_file(f):
++                continue
++            path = os.path.join(root, f)
++            rel = os.path.relpath(path, base_dir)
++            first_part = rel.split(os.sep)[0]
++            label = first_part if first_part != os.path.basename(rel) else "root"
++            records.append({"path": path, "relative_path": rel, "label": label})
++    return pd.DataFrame(records)
++
++def load_original_images(base_dir, n_per_class=None, seed=SEED):
++    assert os.path.exists(base_dir), f"BASE_TRAIN 경로가 없습니다: {base_dir}"
++
++    image_table = collect_image_files(base_dir)
++    assert len(image_table) > 0, f"이미지 파일을 찾을 수 없습니다: {base_dir}"
++
++    print(f"이미지 파일 발견: {len(image_table)}장")
++    class_counts = image_table.groupby("label").size().rename("n_images").reset_index()
++    display(class_counts)
++
++    if n_per_class is not None:
++        image_table = (
++            image_table.groupby("label", group_keys=False)
++            .apply(lambda x: x.sample(n=min(len(x), n_per_class), random_state=seed))
++            .reset_index(drop=True)
++        )
++        print(f"샘플링 후 이미지: {len(image_table)}장")
++
++    image_table = image_table.sort_values(["label", "relative_path"]).reset_index(drop=True)
++    image_table.to_csv(os.path.join(TABLE_DIR, "selected_images.csv"), index=False, encoding="utf-8-sig")
++
++    images = []
++    failed = []
++    for _, row in image_table.iterrows():
++        try:
++            img = Image.open(row["path"])
++            img = ImageOps.exif_transpose(img).convert("RGB").resize((IMG_SIZE, IMG_SIZE))
++            images.append(np.array(img, dtype=np.uint8))
++        except Exception as e:
++            failed.append((row["path"], str(e)))
++
++    if failed:
++        print(f"로드 실패 {len(failed)}장")
++        for path, err in failed[:10]:
++            print(f"  - {path}: {err}")
++
++    print(f"원본 이미지 {len(images)}장 로드 완료 (경로: {base_dir})")
++    return images, image_table
++
++images, image_table = load_original_images(BASE_TRAIN, n_per_class=N_SAMPLES_PER_CLASS, seed=SEED)
++assert len(images) > 0, f"원본 이미지를 찾을 수 없습니다: {BASE_TRAIN}"
++
++Image.fromarray(images[0]).save(os.path.join(SAMPLE_IMG_DIR, "00_original_sample.png"))
++print(f"원본 샘플 이미지 저장: {os.path.join(SAMPLE_IMG_DIR, '00_original_sample.png')}")
++""",
++)
++
++set_cell_source(
++    nb,
++    13,
++    r"""
++# Cell 6: SSIM 기반 Privacy Score + PSNR 참고 지표 계산
++# 최종 점수식:
++#   DSSIM_i = (1 - SSIM_i) / 2
++#   PrivacyScore_i = 100 * DSSIM_i = 50 * (1 - SSIM_i)
++# 조건별 최종 점수:
++#   PrivacyScore_condition = mean(PrivacyScore_i)
++# PSNR은 privacy_score 계산에 사용하지 않고 참고 지표로만 저장한다.
++def compute_ssim_psnr(orig, transformed):
++    s = ssim_fn(orig, transformed, channel_axis=-1, data_range=255)
++    try:
++        p = psnr_fn(orig, transformed, data_range=255)
++        if np.isinf(p):
++            p = 100.0
++    except Exception:
++        p = 100.0
++    return float(s), float(p)
++
++def privacy_score_from_ssim(ssim_value):
++    dssim = np.clip((1.0 - float(ssim_value)) / 2.0, 0.0, 1.0)
++    return float(dssim * 100.0)
++
++def evaluate_condition(images, transform_fn, **kwargs):
++    ssims, psnrs, scores = [], [], []
++    for img in images:
++        t = transform_fn(img, **kwargs)
++        s, p = compute_ssim_psnr(img, t)
++        ssims.append(s)
++        psnrs.append(p)
++        scores.append(privacy_score_from_ssim(s))
++
++    return {
++        "ssim_mean": float(np.mean(ssims)),
++        "ssim_std": float(np.std(ssims)),
++        "psnr_mean": float(np.mean(psnrs)),
++        "psnr_std": float(np.std(psnrs)),
++        "dssim_mean": float(np.mean(scores) / 100.0),
++        "privacy_score": float(np.mean(scores)),
++        "privacy_score_std": float(np.std(scores)),
++    }
++
++print("SSIM 기반 Privacy Score 함수 정의 완료")
++print("Privacy Score = 100 * ((1 - SSIM) / 2)")
++print("PSNR은 psnr_mean/psnr_std 참고 지표로만 저장")
++""",
++)
++
++set_cell_source(
++    nb,
++    15,
++    """
++# Cell 7: 블록 암호화 단독
++rows = []
++print("블록 암호화 단독 SSIM/PSNR 계산 중...")
++for bs in BLOCK_SIZES:
++    m = evaluate_condition(images, block_scramble, seed=SEED, block_size=bs)
++    rows.append({"condition": f"B{bs}_S0", "type": "block", "block_size": bs, "sigma": 0, **m})
++    print(
++        f"  Block{bs:>4}: Score={m['privacy_score']:6.2f}/100  "
++        f"SSIM={m['ssim_mean']:.4f}  PSNR(ref)={m['psnr_mean']:6.2f}dB"
++    )
++
++    sample = block_scramble(images[0], SEED, bs)
++    Image.fromarray(sample).save(os.path.join(SAMPLE_IMG_DIR, "block", f"B{bs}_sample.png"))
++
++print(f"블록 샘플 이미지 {len(BLOCK_SIZES)}장 저장: {os.path.join(SAMPLE_IMG_DIR, 'block')}")
++""",
++)
++
++set_cell_source(
++    nb,
++    17,
++    """
++# Cell 8: 가우시안 블러 단독
++print("가우시안 블러 단독 SSIM/PSNR 계산 중...")
++for sg in BLUR_SIGMAS:
++    m = evaluate_condition(images, apply_gaussian_blur, sigma=sg)
++    rows.append({"condition": f"B512_S{sg}", "type": "blur", "block_size": 512, "sigma": sg, **m})
++    print(
++        f"  Sigma{sg:>4}: Score={m['privacy_score']:6.2f}/100  "
++        f"SSIM={m['ssim_mean']:.4f}  PSNR(ref)={m['psnr_mean']:6.2f}dB"
++    )
++
++    sample = apply_gaussian_blur(images[0], sg)
++    Image.fromarray(sample).save(os.path.join(SAMPLE_IMG_DIR, "blur", f"S{sg}_sample.png"))
++
++print(f"블러 샘플 이미지 {len(BLUR_SIGMAS)}장 저장: {os.path.join(SAMPLE_IMG_DIR, 'blur')}")
++""",
++)
++
++set_cell_source(
++    nb,
++    19,
++    """
++# Cell 9: 블록+블러 조합 (10 x 10 = 100개)
++print("블록+블러 조합 SSIM/PSNR 계산 중...")
++for bs in BLOCK_SIZES:
++    for sg in BLUR_SIGMAS:
++        def combo_fn(img, block_size=bs, sigma=sg):
++            return apply_gaussian_blur(block_scramble(img, SEED, block_size), sigma)
++
++        m = evaluate_condition(images, combo_fn)
++        rows.append({"condition": f"B{bs}_S{sg}", "type": "combo", "block_size": bs, "sigma": sg, **m})
++        print(
++            f"  B{bs:>4}_S{sg:<4}: Score={m['privacy_score']:6.2f}/100  "
++            f"SSIM={m['ssim_mean']:.4f}  PSNR(ref)={m['psnr_mean']:6.2f}dB"
++        )
++
++        sample = combo_fn(images[0])
++        Image.fromarray(sample).save(os.path.join(SAMPLE_IMG_DIR, "combo", f"B{bs}_S{sg}_sample.png"))
++
++print(f"조합 샘플 이미지 {len(BLOCK_SIZES) * len(BLUR_SIGMAS)}장 저장: {os.path.join(SAMPLE_IMG_DIR, 'combo')}")
++print(f"전체 {len(rows)}개 조건 계산 완료")
++""",
++)
++
++set_cell_source(
++    nb,
++    21,
++    """
++# Cell 10: 결과 DataFrame 생성 및 저장
++df = pd.DataFrame(rows)
++
++preferred_cols = [
++    "condition", "type", "block_size", "sigma", "privacy_score", "privacy_score_std",
++    "dssim_mean", "ssim_mean", "ssim_std", "psnr_mean", "psnr_std"
++]
++df = df[[c for c in preferred_cols if c in df.columns] + [c for c in df.columns if c not in preferred_cols]]
++df_sorted = df.sort_values("privacy_score", ascending=False).reset_index(drop=True)
++
++summary_by_type = (
++    df.groupby("type")
++      .agg(
++          n_conditions=("condition", "count"),
++          score_mean=("privacy_score", "mean"),
++          score_max=("privacy_score", "max"),
++          score_min=("privacy_score", "min"),
++          ssim_mean=("ssim_mean", "mean"),
++          psnr_mean_ref=("psnr_mean", "mean"),
++      )
++      .reset_index()
++      .sort_values("score_mean", ascending=False)
++)
++
++best_by_type = (
++    df.loc[df.groupby("type")["privacy_score"].idxmax()]
++      .sort_values("privacy_score", ascending=False)
++      .reset_index(drop=True)
++)
++
++df_sorted.to_csv(os.path.join(OUT_DIR, "privacy_scores.csv"), index=False, encoding="utf-8-sig")
++df_sorted.to_json(os.path.join(OUT_DIR, "privacy_scores.json"), orient="records", force_ascii=False, indent=2)
++summary_by_type.to_csv(os.path.join(TABLE_DIR, "summary_by_type.csv"), index=False, encoding="utf-8-sig")
++best_by_type.to_csv(os.path.join(TABLE_DIR, "best_by_type.csv"), index=False, encoding="utf-8-sig")
++
++try:
++    with pd.ExcelWriter(os.path.join(OUT_DIR, "privacy_scores.xlsx")) as writer:
++        df_sorted.to_excel(writer, sheet_name="all_scores", index=False)
++        summary_by_type.to_excel(writer, sheet_name="summary_by_type", index=False)
++        best_by_type.to_excel(writer, sheet_name="best_by_type", index=False)
++    print(f"Excel 저장 완료: {os.path.join(OUT_DIR, 'privacy_scores.xlsx')}")
++except Exception as e:
++    print(f"Excel 저장은 건너뜀: {e}")
++
++print(f"프라이버시 점수 저장 완료: {os.path.join(OUT_DIR, 'privacy_scores.csv')}")
++print(f"요약표 저장 완료: {TABLE_DIR}")
++display(summary_by_type)
++display(df_sorted.head(15))
++""",
++)
++
++new_graph_cells = [
++    md(
++        """
++## 11. 상세 그래프 생성
++
++아래 그래프들은 `GRAPH_DIR`에 PNG로 저장됩니다. Privacy Score는 SSIM 기반 점수이며, PSNR은 참고 지표로만 함께 표시합니다.
++"""
++    ),
++    code(
++        """
++# Cell 11: 상세 그래프 공통 설정
++ORANGE, CYAN, GREEN, RED, GRAY, PURPLE, BLUE = "#f08c00", "#1098ad", "#2f9e44", "#e03131", "#868e96", "#7048e8", "#1971c2"
++
++def _save(fig, name):
++    path = os.path.join(GRAPH_DIR, name)
++    fig.tight_layout()
++    fig.savefig(path, dpi=220, bbox_inches="tight")
++    plt.show()
++    print(f"저장: {path}")
++
++def _annotate_bars(ax, fmt="{:.1f}", dy=0.5, fontsize=8):
++    for patch in ax.patches:
++        h = patch.get_height()
++        if np.isnan(h):
++            continue
++        ax.text(
++            patch.get_x() + patch.get_width() / 2,
++            h + dy,
++            fmt.format(h),
++            ha="center",
++            va="bottom",
++            fontsize=fontsize,
++            rotation=0,
++        )
++
++block_df = df[df["type"] == "block"].sort_values("block_size", ascending=False).copy()
++blur_df  = df[df["type"] == "blur"].sort_values("sigma").copy()
++combo_df = df[df["type"] == "combo"].copy()
++
++pivot_score = combo_df.pivot(index="block_size", columns="sigma", values="privacy_score").reindex(index=BLOCK_SIZES[::-1], columns=BLUR_SIGMAS)
++pivot_ssim  = combo_df.pivot(index="block_size", columns="sigma", values="ssim_mean").reindex(index=BLOCK_SIZES[::-1], columns=BLUR_SIGMAS)
++pivot_psnr  = combo_df.pivot(index="block_size", columns="sigma", values="psnr_mean").reindex(index=BLOCK_SIZES[::-1], columns=BLUR_SIGMAS)
++"""
++    ),
++    code(
++        """
++# 01. 블록 픽셀 크기별 Privacy Score + SSIM + PSNR 참고
++fig, ax1 = plt.subplots(figsize=(10, 5.5))
++x = np.arange(len(block_df))
++labels = block_df["block_size"].astype(int).astype(str)
++bars = ax1.bar(x, block_df["privacy_score"], color=GREEN, alpha=0.82, label="Privacy Score")
++ax1.set_xticks(x)
++ax1.set_xticklabels(labels)
++ax1.set_xlabel("Block size (pixels)")
++ax1.set_ylabel("Privacy Score (0-100, SSIM only)", color=GREEN)
++ax1.set_ylim(0, max(5, block_df["privacy_score"].max() * 1.18))
++ax1.grid(axis="y")
++_annotate_bars(ax1, "{:.1f}", dy=max(0.25, block_df["privacy_score"].max() * 0.015))
++
++ax2 = ax1.twinx()
++ax2.plot(x, block_df["ssim_mean"], "o-", color=CYAN, linewidth=2, label="SSIM")
++ax2.plot(x, block_df["psnr_mean"] / 100.0, "s--", color=ORANGE, linewidth=1.8, label="PSNR/100 ref")
++ax2.set_ylabel("SSIM / PSNR divided by 100", color=CYAN)
++ax2.set_ylim(0, max(1.05, block_df["ssim_mean"].max() * 1.1))
++
++lines1, names1 = ax1.get_legend_handles_labels()
++lines2, names2 = ax2.get_legend_handles_labels()
++ax1.legend(lines1 + lines2, names1 + names2, loc="upper left")
++ax1.set_title("01. Block Size Detail: Privacy Score from SSIM, PSNR as Reference")
++_save(fig, "01_block_detail_score_ssim_psnr_ref.png")
++"""
++    ),
++    code(
++        """
++# 02. 블러 sigma별 Privacy Score + SSIM + PSNR 참고
++fig, ax1 = plt.subplots(figsize=(10, 5.5))
++x = np.arange(len(blur_df))
++labels = blur_df["sigma"].astype(int).astype(str)
++bars = ax1.bar(x, blur_df["privacy_score"], color=GREEN, alpha=0.82, label="Privacy Score")
++ax1.set_xticks(x)
++ax1.set_xticklabels(labels)
++ax1.set_xlabel("Gaussian blur sigma")
++ax1.set_ylabel("Privacy Score (0-100, SSIM only)", color=GREEN)
++ax1.set_ylim(0, max(5, blur_df["privacy_score"].max() * 1.18))
++ax1.grid(axis="y")
++_annotate_bars(ax1, "{:.1f}", dy=max(0.25, blur_df["privacy_score"].max() * 0.015))
++
++ax2 = ax1.twinx()
++ax2.plot(x, blur_df["ssim_mean"], "o-", color=CYAN, linewidth=2, label="SSIM")
++ax2.plot(x, blur_df["psnr_mean"] / 100.0, "s--", color=ORANGE, linewidth=1.8, label="PSNR/100 ref")
++ax2.set_ylabel("SSIM / PSNR divided by 100", color=CYAN)
++ax2.set_ylim(0, max(1.05, blur_df["ssim_mean"].max() * 1.1))
++
++lines1, names1 = ax1.get_legend_handles_labels()
++lines2, names2 = ax2.get_legend_handles_labels()
++ax1.legend(lines1 + lines2, names1 + names2, loc="upper left")
++ax1.set_title("02. Blur Sigma Detail: Privacy Score from SSIM, PSNR as Reference")
++_save(fig, "02_blur_detail_score_ssim_psnr_ref.png")
++"""
++    ),
++    code(
++        """
++# 03. 블록+블러 조합 Privacy Score 히트맵 - 셀마다 점수 표시
++fig, ax = plt.subplots(figsize=(12, 8))
++im = ax.imshow(pivot_score.values, cmap="viridis", aspect="auto")
++ax.set_xticks(range(len(BLUR_SIGMAS)))
++ax.set_xticklabels(BLUR_SIGMAS)
++ax.set_yticks(range(len(BLOCK_SIZES)))
++ax.set_yticklabels(BLOCK_SIZES[::-1])
++ax.set_xlabel("Gaussian blur sigma")
++ax.set_ylabel("Block size (pixels)")
++ax.set_title("03. Block + Blur Combination Privacy Score Heatmap")
++for i in range(pivot_score.shape[0]):
++    for j in range(pivot_score.shape[1]):
++        value = pivot_score.values[i, j]
++        color = "white" if value > np.nanmax(pivot_score.values) * 0.45 else "black"
++        ax.text(j, i, f"{value:.1f}", ha="center", va="center", fontsize=7, color=color)
++cbar = fig.colorbar(im, ax=ax)
++cbar.set_label("Privacy Score (0-100, SSIM only)")
++_save(fig, "03_combo_privacy_score_heatmap_annotated.png")
++"""
++    ),
++    code(
++        """
++# 04. 조합 조건 SSIM 히트맵 - score의 원천 지표 확인
++fig, ax = plt.subplots(figsize=(12, 8))
++im = ax.imshow(pivot_ssim.values, cmap="magma_r", aspect="auto")
++ax.set_xticks(range(len(BLUR_SIGMAS)))
++ax.set_xticklabels(BLUR_SIGMAS)
++ax.set_yticks(range(len(BLOCK_SIZES)))
++ax.set_yticklabels(BLOCK_SIZES[::-1])
++ax.set_xlabel("Gaussian blur sigma")
++ax.set_ylabel("Block size (pixels)")
++ax.set_title("04. Block + Blur SSIM Mean Heatmap")
++for i in range(pivot_ssim.shape[0]):
++    for j in range(pivot_ssim.shape[1]):
++        value = pivot_ssim.values[i, j]
++        ax.text(j, i, f"{value:.3f}", ha="center", va="center", fontsize=6.5, color="white" if value < 0.45 else "black")
++cbar = fig.colorbar(im, ax=ax)
++cbar.set_label("SSIM mean")
++_save(fig, "04_combo_ssim_heatmap_annotated.png")
++"""
++    ),
++    code(
++        """
++# 05. 조합 조건 PSNR 참고 히트맵 - 점수에는 미사용
++fig, ax = plt.subplots(figsize=(12, 8))
++im = ax.imshow(pivot_psnr.values, cmap="cividis", aspect="auto")
++ax.set_xticks(range(len(BLUR_SIGMAS)))
++ax.set_xticklabels(BLUR_SIGMAS)
++ax.set_yticks(range(len(BLOCK_SIZES)))
++ax.set_yticklabels(BLOCK_SIZES[::-1])
++ax.set_xlabel("Gaussian blur sigma")
++ax.set_ylabel("Block size (pixels)")
++ax.set_title("05. Block + Blur PSNR Reference Heatmap (not used in score)")
++for i in range(pivot_psnr.shape[0]):
++    for j in range(pivot_psnr.shape[1]):
++        value = pivot_psnr.values[i, j]
++        ax.text(j, i, f"{value:.1f}", ha="center", va="center", fontsize=6.5, color="white" if value < np.nanmedian(pivot_psnr.values) else "black")
++cbar = fig.colorbar(im, ax=ax)
++cbar.set_label("PSNR mean (dB, reference only)")
++_save(fig, "05_combo_psnr_reference_heatmap_annotated.png")
++"""
++    ),
++    code(
++        """
++# 06. 전체 조건 Privacy Score 상위 랭킹
++top_n = min(20, len(df_sorted))
++top_df = df_sorted.head(top_n).iloc[::-1].copy()
++method_colors = {"block": PURPLE, "blur": ORANGE, "combo": GREEN}
++fig, ax = plt.subplots(figsize=(11, max(6, top_n * 0.36)))
++ax.barh(top_df["condition"], top_df["privacy_score"], color=[method_colors.get(t, GRAY) for t in top_df["type"]])
++ax.set_xlabel("Privacy Score (0-100, SSIM only)")
++ax.set_ylabel("Condition")
++ax.set_title(f"06. Top {top_n} Privacy Conditions")
++ax.grid(axis="x")
++for y, value in enumerate(top_df["privacy_score"]):
++    ax.text(value + max(0.2, df_sorted["privacy_score"].max() * 0.01), y, f"{value:.2f}", va="center", fontsize=8)
++_save(fig, "06_top_conditions_privacy_score.png")
++"""
++    ),
++    code(
++        """
++# 07. SSIM과 Privacy Score 관계 - SSIM만으로 점수가 정해짐
++fig, ax = plt.subplots(figsize=(8, 6))
++for t, color in method_colors.items():
++    sub = df[df["type"] == t]
++    ax.scatter(sub["ssim_mean"], sub["privacy_score"], label=t, color=color, s=60, alpha=0.78, edgecolors="white")
++ax.set_xlabel("SSIM mean")
++ax.set_ylabel("Privacy Score = 50 x (1 - SSIM)")
++ax.set_title("07. SSIM Determines Privacy Score")
++ax.grid(True)
++ax.legend(title="type")
++for _, r in df_sorted.head(8).iterrows():
++    ax.annotate(r["condition"], (r["ssim_mean"], r["privacy_score"]), fontsize=7, xytext=(4, 4), textcoords="offset points")
++_save(fig, "07_ssim_vs_privacy_score.png")
++"""
++    ),
++    code(
++        """
++# 08. PSNR 참고 지표와 Privacy Score 관계 - 점수 계산에는 미사용
++fig, ax = plt.subplots(figsize=(8, 6))
++for t, color in method_colors.items():
++    sub = df[df["type"] == t]
++    ax.scatter(sub["psnr_mean"], sub["privacy_score"], label=t, color=color, s=60, alpha=0.78, edgecolors="white")
++ax.axvline(40, color=RED, linestyle="--", linewidth=1, label="40 dB reference")
++ax.axvline(15, color=BLUE, linestyle="--", linewidth=1, label="15 dB reference")
++ax.set_xlabel("PSNR mean (dB, reference only)")
++ax.set_ylabel("Privacy Score (0-100, SSIM only)")
++ax.set_title("08. PSNR Reference vs Privacy Score")
++ax.grid(True)
++ax.legend(fontsize=8)
++_save(fig, "08_psnr_reference_vs_privacy_score.png")
++"""
++    ),
++    code(
++        """
++# 09. 변환 유형별 Privacy Score 분포
++fig, ax = plt.subplots(figsize=(8, 5.5))
++data = [df[df["type"] == t]["privacy_score"].values for t in ["block", "blur", "combo"]]
++bp = ax.boxplot(data, labels=["block", "blur", "combo"], patch_artist=True, showmeans=True)
++for patch, color in zip(bp["boxes"], [PURPLE, ORANGE, GREEN]):
++    patch.set_facecolor(color)
++    patch.set_alpha(0.55)
++ax.set_ylabel("Privacy Score (0-100, SSIM only)")
++ax.set_title("09. Privacy Score Distribution by Transform Type")
++ax.grid(axis="y")
++_save(fig, "09_type_distribution_boxplot.png")
++"""
++    ),
++    code(
++        """
++# 10. 상위 조건 표를 이미지로 저장
++table_df = df_sorted.head(15)[["condition", "type", "block_size", "sigma", "privacy_score", "ssim_mean", "psnr_mean"]].copy()
++for col, digits in [("privacy_score", 2), ("ssim_mean", 4), ("psnr_mean", 2)]:
++    table_df[col] = table_df[col].map(lambda x: f"{x:.{digits}f}")
++for col in ["block_size", "sigma"]:
++    table_df[col] = table_df[col].map(lambda x: "" if pd.isna(x) else f"{float(x):.0f}")
++
++fig, ax = plt.subplots(figsize=(12, 5.5))
++ax.axis("off")
++ax.set_title("10. Top 15 Conditions Table", fontsize=14, pad=14)
++tbl = ax.table(cellText=table_df.values, colLabels=table_df.columns, loc="center", cellLoc="center")
++tbl.auto_set_font_size(False)
++tbl.set_fontsize(8.5)
++tbl.scale(1, 1.25)
++for (r, c), cell in tbl.get_celld().items():
++    if r == 0:
++        cell.set_facecolor("#dee2e6")
++        cell.set_text_props(weight="bold")
++    else:
++        cell.set_facecolor("#ffffff" if r % 2 else "#f8f9fa")
++_save(fig, "10_top15_conditions_table.png")
++"""
++    ),
++    code(
++        """
++# 11. 원본 vs 각 유형 최고 조건 샘플 비교
++def _combo_transform(img, block_size, sigma):
++    return apply_gaussian_blur(block_scramble(img, SEED, int(block_size)), float(sigma))
++
++sample_original = images[0]
++best_rows = best_by_type.sort_values("type").reset_index(drop=True)
++
++fig, axes = plt.subplots(1, len(best_rows) + 1, figsize=(4.2 * (len(best_rows) + 1), 4.5))
++axes[0].imshow(sample_original)
++axes[0].set_title("Original")
++axes[0].axis("off")
++
++for ax, (_, r) in zip(axes[1:], best_rows.iterrows()):
++    if r["type"] == "block":
++        transformed = block_scramble(sample_original, SEED, int(r["block_size"]))
++    elif r["type"] == "blur":
++        transformed = apply_gaussian_blur(sample_original, float(r["sigma"]))
++    else:
++        transformed = _combo_transform(sample_original, r["block_size"], r["sigma"])
++    ax.imshow(transformed)
++    ax.set_title(f"{r['type']} best\\n{r['condition']}\\nScore {r['privacy_score']:.2f}")
++    ax.axis("off")
++
++fig.suptitle("11. Sample Comparison: Original vs Best Conditions", fontsize=14)
++_save(fig, "11_sample_original_vs_best_conditions.png")
++"""
++    ),
++    code(
++        """
++# 12. 종합 대시보드
++fig = plt.figure(figsize=(15, 10))
++gs = GridSpec(2, 3, figure=fig)
++
++ax = fig.add_subplot(gs[0, 0])
++ax.plot(block_df["block_size"].astype(str), block_df["privacy_score"], "o-", color=GREEN)
++ax.set_title("Block score")
++ax.set_xlabel("block size")
++ax.set_ylabel("score")
++ax.invert_xaxis()
++ax.grid(True)
++
++ax = fig.add_subplot(gs[0, 1])
++ax.plot(blur_df["sigma"].astype(str), blur_df["privacy_score"], "o-", color=GREEN)
++ax.set_title("Blur score")
++ax.set_xlabel("sigma")
++ax.set_ylabel("score")
++ax.grid(True)
++
++ax = fig.add_subplot(gs[0, 2])
++im = ax.imshow(pivot_score.values, cmap="viridis", aspect="auto")
++ax.set_title("Combo score heatmap")
++ax.set_xticks(range(len(BLUR_SIGMAS)))
++ax.set_xticklabels(BLUR_SIGMAS, fontsize=7)
++ax.set_yticks(range(len(BLOCK_SIZES)))
++ax.set_yticklabels(BLOCK_SIZES[::-1], fontsize=7)
++fig.colorbar(im, ax=ax, fraction=0.046)
++
++ax = fig.add_subplot(gs[1, 0])
++for t, color in method_colors.items():
++    sub = df[df["type"] == t]
++    ax.scatter(sub["ssim_mean"], sub["privacy_score"], label=t, color=color, s=35, alpha=0.75)
++ax.set_title("SSIM vs score")
++ax.set_xlabel("SSIM")
++ax.set_ylabel("score")
++ax.grid(True)
++ax.legend(fontsize=8)
++
++ax = fig.add_subplot(gs[1, 1])
++for t, color in method_colors.items():
++    sub = df[df["type"] == t]
++    ax.scatter(sub["psnr_mean"], sub["privacy_score"], label=t, color=color, s=35, alpha=0.75)
++ax.set_title("PSNR reference vs score")
++ax.set_xlabel("PSNR dB")
++ax.set_ylabel("score")
++ax.grid(True)
++
++ax = fig.add_subplot(gs[1, 2])
++ax.hist(combo_df["privacy_score"], bins=18, color=GRAY, edgecolor="white")
++ax.set_title("Combo score distribution")
++ax.set_xlabel("score")
++ax.set_ylabel("count")
++ax.grid(axis="y")
++
++fig.suptitle("12. Privacy Score Dashboard - SSIM Only Score, PSNR Reference", fontsize=16)
++_save(fig, "12_dashboard_detailed.png")
++
++print(f"상세 그래프 저장 완료: {GRAPH_DIR}")
++"""
++    ),
++]
++
++nb.cells = nb.cells[:22] + new_graph_cells
++
++# Clear old outputs/execution counts so the edited notebook runs cleanly.
++for cell in nb.cells:
++    if cell.cell_type == "code":
++        cell.outputs = []
++        cell.execution_count = None
++
++nbf.write(nb, NOTEBOOK)
++print(json.dumps({"notebook": str(NOTEBOOK), "backup": str(backup), "cells": len(nb.cells)}, ensure_ascii=False, indent=2))
+Binary files /dev/null and 원본자료/3차/privacy_score_outputs/privacy_score_results.xlsx differ
+--- /dev/null
++++ 자료차수/3차/tables/privacy_scores_best_conditions.csv
+@@ -0,0 +1,4 @@
++condition,method,block_size,sigma,n_images,ssim_mean,ssim_std,psnr_mean,psnr_std,dssim_mean,privacy_score,privacy_score_std,privacy_score_Bengin_cases,privacy_score_Malignant_cases,privacy_score_Normal_cases
++block_B32,block,32.0,,3,0.29266404350319014,0.10258340608476227,7.81743184827197,0.5014029577124689,0.35366797824840496,35.366797824840496,5.129170304238112,40.00039746906376,28.216790189318843,37.883205816138876
++combo_B32_S0,combo,32.0,0.0,3,0.29266404350319014,0.10258340608476227,7.81743184827197,0.5014029577124689,0.35366797824840496,35.366797824840496,5.129170304238112,40.00039746906376,28.216790189318843,37.883205816138876
++blur_S2,blur,,2.0,3,0.7989319971968495,0.07921840441875919,26.907255240659364,1.5118570294655387,0.10053400140157526,10.053400140157526,3.9609202209379597,13.211239423759885,4.467689788928647,12.481271207784046
+--- /dev/null
++++ 자료차수/3차/tables/privacy_scores_combo_pivot.csv
+@@ -0,0 +1,3 @@
++block_size,0.0,2.0
++32,35.366797824840496,34.37098586009102
++512,0.0,10.053400140157526
+--- /dev/null
++++ 자료차수/3차/tables/privacy_scores_long.csv
+@@ -0,0 +1,9 @@
++condition,method,block_size,sigma,n_images,ssim_mean,ssim_std,psnr_mean,psnr_std,dssim_mean,privacy_score,privacy_score_std,privacy_score_Bengin_cases,privacy_score_Malignant_cases,privacy_score_Normal_cases
++block_B32,block,32.0,,3,0.29266404350319014,0.10258340608476227,7.81743184827197,0.5014029577124689,0.35366797824840496,35.366797824840496,5.129170304238112,40.00039746906376,28.216790189318843,37.883205816138876
++combo_B32_S0,combo,32.0,0.0,3,0.29266404350319014,0.10258340608476227,7.81743184827197,0.5014029577124689,0.35366797824840496,35.366797824840496,5.129170304238112,40.00039746906376,28.216790189318843,37.883205816138876
++combo_B32_S2,combo,32.0,2.0,3,0.31258028279817957,0.08054764613947521,8.27180984849461,0.49198311945170475,0.3437098586009102,34.37098586009102,4.027382306973762,38.122378442560986,28.78382050136673,36.20675863634534
++blur_S2,blur,,2.0,3,0.7989319971968495,0.07921840441875919,26.907255240659364,1.5118570294655387,0.10053400140157526,10.053400140157526,3.9609202209379597,13.211239423759885,4.467689788928647,12.481271207784046
++combo_B512_S2,combo,512.0,2.0,3,0.7989319971968495,0.07921840441875919,26.907255240659364,1.5118570294655387,0.10053400140157526,10.053400140157526,3.9609202209379597,13.211239423759885,4.467689788928647,12.481271207784046
++block_B512,block,512.0,,3,1.0,0.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
++blur_S0,blur,,0.0,3,1.0,0.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
++combo_B512_S0,combo,512.0,0.0,3,1.0,0.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+--- /dev/null
++++ 자료차수/3차/tables/privacy_scores_summary_by_method.csv
+@@ -0,0 +1,4 @@
++method,n_conditions,mean_privacy_score,max_privacy_score,min_privacy_score,mean_ssim,mean_psnr
++combo,4,19.94779595627226,35.366797824840496,0.0,0.6010440808745547,35.749124234356486
++block,2,17.683398912420248,35.366797824840496,0.0,0.6463320217515951,53.90871592413598
++blur,2,5.026700070078763,10.053400140157526,0.0,0.8994659985984248,63.453627620329684
+--- 자료차수/2차/rollback_original_notebooks.mjs
++++ /dev/null
+@@ -1,96 +0,0 @@
+-import { copyFile, readFile, writeFile } from "node:fs/promises";
+-
+-const paths = {
+-  blur: "C:/Users/PUVKID/Desktop/blur_resnet50_rebuilt2_KO.ipynb",
+-  block: "C:/Users/PUVKID/Desktop/block_encryption_resnet50_rebuilt_KO.ipynb",
+-  blockBackup: "C:/Users/PUVKID/Desktop/block_encryption_resnet50_rebuilt_KO_before_alignment.ipynb",
+-};
+-
+-function getSource(book, index) {
+-  const source = book.cells[index].source;
+-  return Array.isArray(source) ? source.join("") : source;
+-}
+-
+-function setSource(book, index, source) {
+-  book.cells[index].source = source.match(/.*(?:\n|$)/g).filter(Boolean);
+-}
+-
+-function replaceOrThrow(source, before, after, label) {
+-  if (!source.includes(before)) {
+-    throw new Error(`Missing rollback target: ${label}`);
+-  }
+-  return source.replace(before, after);
+-}
+-
+-const blur = JSON.parse(await readFile(paths.blur, "utf8"));
+-
+-let monitor = getSource(blur, 22);
+-monitor = replaceOrThrow(
+-  monitor,
+-  `                GPU_LOG.append({
+-                    "time": time.time(),
+-                    "sigma": self.sigma,
+-                    "fold": self.fold_idx,
+-                    "epoch": epoch + 1,
+-                    "used": used,
+-                    "total": total,
+-                    "util": util,
+-                    "temp": temp,
+-                    "used_mib": used,
+-                    "total_mib": total,
+-                    "util_pct": util,
+-                    "temp_c": temp,
+-                })`,
+-  `                GPU_LOG.append({
+-                    "sigma": self.sigma,
+-                    "fold": self.fold_idx,
+-                    "epoch": epoch + 1,
+-                    "used": used,
+-                    "total": total,
+-                    "util": util,
+-                    "temp": temp,
+-                })`,
+-  "blur monitor log",
+-);
+-setSource(blur, 22, monitor);
+-
+-let summary = getSource(blur, 30);
+-summary = replaceOrThrow(
+-  summary,
+-  `    used_vals = [g.get("used", g.get("used_mib", 0)) for g in GPU_LOG]
+-    util_vals = [g.get("util", g.get("util_pct", 0)) for g in GPU_LOG]
+-    temp_vals = [g.get("temp", g.get("temp_c", 0)) for g in GPU_LOG]`,
+-  `    used_vals = [g["used"] for g in GPU_LOG]
+-    util_vals = [g["util"] for g in GPU_LOG]
+-    temp_vals = [g["temp"] for g in GPU_LOG]`,
+-  "blur summary log",
+-);
+-setSource(blur, 30, summary);
+-
+-let graph = getSource(blur, 32);
+-graph = replaceOrThrow(
+-  graph,
+-  `    if all("time" in g for g in _log):
+-        times = [(g["time"] - _log[0]["time"]) / 60 for g in _log]
+-    else:
+-        times = [i * 5 for i in range(len(_log))]
+-    used_vals = [g.get("used_mib", g.get("used", 0)) for g in _log]
+-    util_vals = [g.get("util_pct", g.get("util", 0)) for g in _log]
+-    temp_vals = [g.get("temp_c", g.get("temp", 0)) for g in _log]
+-    total_mib = _log[0].get("total_mib", _log[0].get("total", 0))`,
+-  `    times     = [(g["time"] - _log[0]["time"]) / 60 for g in _log]
+-    used_vals = [g["used_mib"] for g in _log]
+-    util_vals = [g["util_pct"] for g in _log]
+-    temp_vals = [g["temp_c"]   for g in _log]
+-    total_mib = _log[0]["total_mib"]`,
+-  "blur graph log",
+-);
+-setSource(blur, 32, graph);
+-
+-delete blur.metadata?.experiment_method_alignment;
+-await writeFile(paths.blur, `${JSON.stringify(blur, null, 1)}\n`, "utf8");
+-
+-await copyFile(paths.blockBackup, paths.block);
+-
+-console.log(`ROLLED_BACK ${paths.blur}`);
+-console.log(`ROLLED_BACK ${paths.block}`);
+--- /dev/null
++++ 원본자료/3차/privacy_score_outputs/tables/selected_images.csv
+@@ -0,0 +1,4 @@
++path,relative_path,label,suffix
++C:\Users\PUVKID\Desktop\Train\Bengin cases\Bengin case (30).jpg,Bengin cases\Bengin case (30).jpg,Bengin cases,.jpg
++C:\Users\PUVKID\Desktop\Train\Malignant cases\Malignant case (561).jpg,Malignant cases\Malignant case (561).jpg,Malignant cases,.jpg
++C:\Users\PUVKID\Desktop\Train\Normal cases\Normal case (236).jpg,Normal cases\Normal case (236).jpg,Normal cases,.jpg

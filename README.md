@@ -11,25 +11,60 @@
 
 `Python` `TensorFlow` `Jupyter` `논문·연구 자료`
 
-[빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [데이터와 평가](#data-settings) · [연구 단계](docs/RESEARCH_STAGES.md) · [하계 논문](논문/1차_EfficientNetV2-S_하계_최종.pdf) · [ResNet50 논문](논문/2차_ResNet50_최종.pdf) · [버전 기록](docs/VERSIONS.md)
+[빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [데이터와 평가](#data-settings) · [연구 단계](docs/RESEARCH_STAGES.md) · [하계 논문](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) · [ResNet50 논문](%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf) · [버전 기록](docs/VERSIONS.md)
 
 [핵심 구성](#input-processing-output)
 
 </div>
 
+## 📄 내 논문 PDF
+
+[현재 원문 PDF·공식 링크 교체 위치](docs/PAPERS.md) · [모든 실제 차수·최종본·전체 비교](docs/REVISION_INDEX.md)
+
+- **연구1 · 하계 EfficientNetV2-S**: [PDF 원문](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) · [편집 원본](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp)
+- **연구2 · ResNet50 후속**: [PDF 원문](%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) · [편집 원본](%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp)
+
+공식 공개 URL은 아직 등록하지 않았습니다. 추후 [논문 전용 표](docs/PAPERS.md)의 교체 칸과 이 항목을 함께 갱신합니다.
+
+## 🗂️ 모든 실제 차수와 최종본
+
+**연구 1·2는 논문 단계, 폴더 1~4차는 자료 차수입니다.** 블러·블록의 1·2차 실험도 별도 구분입니다. 각 설명에서 실제 파일과 크기·해시를, 전체 차이에서 공백·주석을 포함한 텍스트 변경을 볼 수 있습니다.
+
+| 단계 | 설명 | 파일 종류 | 전체 차이 |
+|---|---|---|---|
+| [연구1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | 하계 3쪽 논문. EfficientNetV2-S로 입력 Blur·Block을 각각 비교합니다. 정확도·ROC-AUC·혼동행렬과 발표·그래프 자료를 연결합니다. | docx·hwp·ipynb·pdf·pptx | [직전 단계 비교](docs/revision-diffs/study-1.diff) |
+| [연구2 · ResNet50 후속 원고](docs/revisions/study-2.md) | 후속 19쪽 원고. ResNet50의 단독 20조건·조합 100조건과 입력 영상 MS-SSIM 기반 Privacy Score를 비교합니다. | hwp·ipynb·pdf | [직전 단계 비교](docs/revision-diffs/study-2.diff) |
+| [폴더 1차](docs/revisions/folder-1.md) | ResNet50 단독 실험의 rebuilt·same_settings·metric_matched 노트북과 수정 보조 스크립트입니다. | ipynb·js·py | [직전 단계 비교](docs/revision-diffs/folder-1.diff) |
+| [폴더 2차](docs/revisions/folder-2.md) | Blur·Block 설정 정렬, 조합 노트북 생성, 원본 복원 스크립트입니다. 실행 경로를 별도로 맞춰야 합니다. | mjs | [직전 단계 비교](docs/revision-diffs/folder-2.diff) |
+| [폴더 3차](docs/revisions/folder-3.md) | Privacy Score 계산의 소규모 검사 자료입니다. n_images=3, 블록 2·블러 2·조합 4조건의 표와 비의료 도표를 보존합니다. | csv·ipynb·png·py·xlsx | [직전 단계 비교](docs/revision-diffs/folder-3.diff) |
+| [폴더 4차](docs/revisions/folder-4.md) | ResNet50 후속 원고 사본과 학습·지표·도표 코드를 모았습니다. 개인 검토 로그와 의료 원영상은 제외합니다. | hwp·ipynb·pdf | [직전 단계 비교](docs/revision-diffs/folder-4.diff) |
+| [블러 · 2차 실험](docs/revisions/experiment-6.md) | 입력 영상에 σ0~256의 Gaussian Blur 10조건을 적용하고 ResNet50으로 분류합니다. 테스트를 먼저 분리한 뒤 학습 자료를 증강합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-6.diff) |
+| [블록 · 2차 실험](docs/revisions/experiment-7.md) | 입력 블록을 512~1 크기로 재배열하는 ResNet50 10조건 실험입니다. 이 사본은 증강 후 테스트를 나눕니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-7.diff) |
+| [블록+블러 · 기본](docs/revisions/experiment-8.md) | 블록 재배열 뒤 입력 블러를 적용하는 ResNet50 100조합 실험입니다. 조합별 정확도·ROC-AUC·혼동행렬을 저장합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-8.diff) |
+| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | 입력 블러 10조건에 ResNet50 edge/cloud 분리를 더했습니다. pool1_pool 특징 그림과 부분 모델을 저장하며, 셀 20 문법 오류가 남아 있습니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-9.diff) |
+| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | 입력 블록 재배열 10조건을 pool1_pool 경계의 분리 모델로 학습합니다. 블록별 특징 그림과 edge·cloud 가중치를 저장합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-10.diff) |
+| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | 입력 Block→Blur 100조합을 분리 모델로 학습합니다. 특징 자체의 블러 없이 edge/cloud를 같은 프로세스에서 연결합니다. | ipynb | [직전 단계 비교](docs/revision-diffs/experiment-11.diff) |
+| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | pool1_pool 특징 자체에 블러를 적용합니다. 특징 SSIM·cosine 및 복원 PSNR/SSIM 코드가 있으며 큰 σ 결과를 재사용합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-12.diff) |
+| [원본 실험 · 기본](docs/revisions/experiment-13.md) | 224×224 조직영상 5라벨 Streamlit 앱과 MobileNetV2 3클래스 학습을 보관합니다. 두 코드의 출력 라벨·모델 파일이 다릅니다. | ipynb·md·png·py·기타 | [직전 단계 비교](docs/revision-diffs/experiment-13.diff) |
+| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | EfficientNetV2-S 변환 비교, MobileNetV2 풀링, ResNet50 사본과 SSIM/MS-SSIM 계산·도표를 모았습니다. 셀별 실험을 구분합니다. | csv·ipynb·json·py·xlsx | [직전 단계 비교](docs/revision-diffs/experiment-14.diff) |
+| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | σ0~256의 10조건 결과 JSON입니다. 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보존합니다. | json | [직전 단계 비교](docs/revision-diffs/experiment-original-blur.diff) |
+| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | 블록 512~1의 10조건 결과 JSON입니다. 블록 수와 정확도·ROC-AUC·혼동행렬을 보존합니다. | json | [직전 단계 비교](docs/revision-diffs/experiment-original-block.diff) |
+
 <a name="overview"></a>
 
 ## ✨ 연구 핵심
 
-입력 영상 대신 ResNet50의 pool1_pool 특징에 블러를 넣고 복원 가능성을 살펴보는 후속 코드입니다.
+### 🔬 연구 1 · 하계 EfficientNetV2-S
 
-복원 공격 평가는 후속 연구 과제입니다.
+**블러와 블록 재배열 중 어느 변환이 CT 분류 성능을 더 유지할까요?** 512×512 입력에서 두 변환을 각각 적용해 정확도·ROC-AUC·혼동행렬을 비교합니다. 하계 3쪽 원고의 보고 정확도는 원본 92.5%, σ32 53.3%, Block32 79.2%입니다. [연구 1 상세](docs/versions/stage-1.md)
 
-- build_edge_model과 cloud 모델을 같은 프로세스에서 연결합니다. pool1_pool 특징 경계이며 실제 네트워크 전송 구현은 아닙니다.
-- 큰 σ에서 전역 평균 대체와 REUSE_COLLAPSED_RESULTS 기본 재사용을 합니다. 열 σ 조건에는 결과를 재사용하는 조건이 포함됩니다.
-- decoder로 영상 복원을 학습하고 PSNR·SSIM을 계산하는 경로가 있지만 Conv2D import/정의 누락과 대체 가중치·예시 결과 분기를 고려해야 합니다.
+### 📊 연구 2 · ResNet50와 프라이버시·정확도 절충
 
-**자료별 안내:** [연구 1](docs/versions/stage-1.md) · [연구 2](docs/versions/stage-2.md) · [후속 특징맵](docs/versions/stage-3.md) · [전체 기록](docs/VERSIONS.md)
+**분류 성능과 영상 구조의 비유사도를 함께 보면 어떤 조건이 유리할까요?** 단독 20조건과 Block→Blur 100조합을 비교하고, 전체 1,097장의 입력 영상 MS-SSIM으로 Privacy Score를 계산한 19쪽 후속 원고입니다. 조합 Block256+σ0의 보고값은 정확도 98.17%·49.65점입니다. 점수는 복원 공격 성공률이 아니며 테스트 의사 라벨 사용 등 평가 조건을 함께 읽어야 합니다. [연구 2 상세](docs/versions/stage-2.md)
+
+### 🧠 후속 코드 · 모델 분리와 특징맵 블러
+
+입력 변환을 유지한 edge/cloud 분리 모델에서, `pool1_pool` **특징 자체**를 흐리는 Stage 1 실험으로 확장합니다. 동일 프로세스의 모델 연결이며 실제 원격 전송 구현은 아닙니다. 특징 SSIM·cosine과 decoder 복원 PSNR/SSIM을 계산하는 코드가 있지만 큰 σ 결과 재사용, `Conv2D` import 누락, 대체 가중치·예시 결과 분기가 남아 있습니다. [후속 특징맵 상세](docs/versions/stage-3.md) · [전체 기록](docs/VERSIONS.md)
 
 <a name="preview"></a>
 
@@ -83,7 +118,7 @@
 
 ### 🔬 연구 1 · EfficientNetV2-S
 
-[「EfficientNetV2-S 모델에서 개인정보 보호를 위한 영상 비식별화 기법의 성능 분석」](논문/1차_EfficientNetV2-S_하계_최종.pdf)은 512×512 CT 영상을 Benign·Malignant·Normal의 세 클래스로 분류합니다. Gaussian Blur와 시드 기반 블록 재배열을 각각 적용하여 형태 변화에 따른 분류 성능을 비교합니다.
+[「EfficientNetV2-S 모델에서 개인정보 보호를 위한 영상 비식별화 기법의 성능 분석」](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf)은 512×512 CT 영상을 Benign·Malignant·Normal의 세 클래스로 분류합니다. Gaussian Blur와 시드 기반 블록 재배열을 각각 적용하여 형태 변화에 따른 분류 성능을 비교합니다.
 
 | 원고의 조건 | 보고 정확도 |
 | :--- | ---: |
@@ -92,13 +127,13 @@
 | Block 32×32 | 79.2% |
 | Block 1×1 | 52.9% |
 
-이 결과는 해당 실험에서 블록 내부의 국소 정보를 남기는 변환이 강한 블러보다 정확도를 더 유지했음을 보여줍니다. 원고의 결론에서 ResNet50 비교와 엣지 기반 분산 처리로의 확장을 후속 방향으로 제시합니다. [하계 그래프 노트북](연구1_하계_EfficientNetV2-S/그래프/Blur_Block_1차_그래프_white.ipynb)은 결과 JSON을 읽어 도표를 만드는 자료입니다. 그래프 생성 자체가 분류 모델의 재학습이나 보고값 재현을 의미하지 않습니다.
+이 결과는 해당 실험에서 블록 내부의 국소 정보를 남기는 변환이 강한 블러보다 정확도를 더 유지했음을 보여줍니다. 원고의 결론에서 ResNet50 비교와 엣지 기반 분산 처리로의 확장을 후속 방향으로 제시합니다. [하계 그래프 노트북](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EA%B7%B8%EB%9E%98%ED%94%84/Blur_Block_1%EC%B0%A8_%EA%B7%B8%EB%9E%98%ED%94%84_white.ipynb)은 결과 JSON을 읽어 도표를 만드는 자료입니다. 그래프 생성 자체가 분류 모델의 재학습이나 보고값 재현을 의미하지 않습니다.
 
 <a name="연구-2--resnet50와-정량적-트레이드오프"></a>
 
 ### 🔬 연구 2 · ResNet50와 정량적 트레이드오프
 
-[「ResNet50 기반 폐암 CT 분류에서 Block Encryption·Gaussian Blur의 프라이버시-정확도 트레이드오프 분석」](논문/2차_ResNet50_최종.pdf)은 단독 20조건과 조합 100조건을 비교합니다. **100조합 노트북 하나가 120조건 전체를 수행하는 구조는 아닙니다.** 블록 변환은 고정 시드 순열로 블록의 위치를 바꾸며, 조합에서는 그 뒤 PIL GaussianBlur를 적용합니다.
+[「ResNet50 기반 폐암 CT 분류에서 Block Encryption·Gaussian Blur의 프라이버시-정확도 트레이드오프 분석」](%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf)은 단독 20조건과 조합 100조건을 비교합니다. **100조합 노트북 하나가 120조건 전체를 수행하는 구조는 아닙니다.** 블록 변환은 고정 시드 순열로 블록의 위치를 바꾸며, 조합에서는 그 뒤 PIL GaussianBlur를 적용합니다.
 
 | 원고의 실험·조건 | 정확도 | Privacy Score | 해석 |
 | :--- | ---: | ---: | :--- |
@@ -178,20 +213,20 @@ flowchart TD
 
 | 읽을 자료 | 목적 |
 | :--- | :--- |
-| [블록 단독](<블록/2차 실험/block_encryption_resnet50_rebuilt_KO.ipynb>) · [블러 단독](<블러/2차 실험/blur_resnet50_rebuilt2_KO.ipynb>) · [100조합](블록+블러/block_blur_resnet50_v4_KO.ipynb) | 입력 변환별 학습 흐름 |
-| [입력 변환과 모델 분리](<블록+블러 엣지/block_blur_resnet50_edge.ipynb>) | edge/cloud 부분 구성과 저장 |
-| [Stage 1 특징맵 블러](<블러 스테이지 1 엣지/stage1_edge_feature_blur_resnet50.ipynb>) | 중간 특징 변환과 복원 공격 추가 코드 |
-| [추가 Train 모음](<추가 학습모델과 실험/Train.ipynb>) | 조직 영상 5클래스 학습, EfficientNetV2-S 변환 비교, MobileNetV2 풀링 실험을 셀별로 보존 |
-| [히트맵](<추가 학습모델과 실험/heatmaps.py>) · [지표 그래프](<추가 학습모델과 실험/plot_privacy_metrics_split.py>) | 입력된 결과표를 시각화 |
-| [2×2 영상 합성](<폐암 2차 논문/코드/picture2x2.ipynb>) | 이미 만들어진 원본·변환 예시 영상 배치 |
+| [블록 단독](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/block_encryption_resnet50_rebuilt_KO.ipynb) · [블러 단독](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/blur_resnet50_rebuilt2_KO.ipynb) · [100조합](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC/block_blur_resnet50_v4_KO.ipynb) | 입력 변환별 학습 흐름 |
+| [입력 변환과 모델 분리](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80/block_blur_resnet50_edge.ipynb) | edge/cloud 부분 구성과 저장 |
+| [Stage 1 특징맵 블러](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb) | 중간 특징 변환과 복원 공격 추가 코드 |
+| [추가 Train 모음](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb) | 조직 영상 5클래스 학습, EfficientNetV2-S 변환 비교, MobileNetV2 풀링 실험을 셀별로 보존 |
+| [히트맵](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/heatmaps.py) · [지표 그래프](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/plot_privacy_metrics_split.py) | 입력된 결과표를 시각화 |
+| [2×2 영상 합성](%ED%8F%90%EC%95%94%202%EC%B0%A8%20%EB%85%BC%EB%AC%B8/%EC%BD%94%EB%93%9C/picture2x2.ipynb) | 이미 만들어진 원본·변환 예시 영상 배치 |
 
 <a name="초기-앱과-ct-연구의-구분"></a>
 
 ### 🔬 초기 앱과 CT 연구의 구분
 
-[초기 앱](<원본 실험/Lung Cancer/main.py>)은 `Model.h5`를 읽어 224×224 영상에 대해 대장 선암·대장 정상 조직·폐 선암·폐 정상 조직·폐 편평상피암의 **조직 영상 5라벨**을 표시합니다. CT의 Benign·Malignant·Normal 3클래스와 데이터 의미·출력 차원이 다릅니다.
+[초기 앱](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py)은 `Model.h5`를 읽어 224×224 영상에 대해 대장 선암·대장 정상 조직·폐 선암·폐 정상 조직·폐 편평상피암의 **조직 영상 5라벨**을 표시합니다. CT의 Benign·Malignant·Normal 3클래스와 데이터 의미·출력 차원이 다릅니다.
 
-같은 폴더의 [초기 Train](<원본 실험/Lung Cancer/Train.ipynb>)은 동결한 MobileNetV2와 GAP·Dropout 0.3·3클래스 softmax를 학습하고 `LungCancer_3Class_Model.h5`를 저장합니다. 이 가중치를 파일명만 바꾸어 5라벨 앱에 연결하면 안 됩니다. 별도 `추가 학습모델과 실험/Train.ipynb`의 첫 셀은 `lung_colon_image_set` 조직 영상 5클래스 학습이며, 이후 셀의 EfficientNetV2-S·MobileNetV2 CT 실험과도 구분해야 합니다.
+같은 폴더의 [초기 Train](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/Train.ipynb)은 동결한 MobileNetV2와 GAP·Dropout 0.3·3클래스 softmax를 학습하고 `LungCancer_3Class_Model.h5`를 저장합니다. 이 가중치를 파일명만 바꾸어 5라벨 앱에 연결하면 안 됩니다. 별도 `추가 학습모델과 실험/Train.ipynb`의 첫 셀은 `lung_colon_image_set` 조직 영상 5클래스 학습이며, 이후 셀의 EfficientNetV2-S·MobileNetV2 CT 실험과도 구분해야 합니다.
 
 <a name="data-settings"></a>
 
@@ -244,7 +279,7 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 
 ## 📄 자료와 후속 방향
 
-[연구 단계 상세](docs/RESEARCH_STAGES.md)에는 원고와 코드의 대응, 원고에서 주장하는 범위, 후속 실험을 따로 정리했습니다. 두 PDF는 연구 본문과 도표를 읽기 위한 공개본이며 연구 2 공개본은 개인 연락처와 저자 사진을 제외했습니다. 기존 하계 저장소는 [Lung CT Study 1 Archive](https://github.com/PUVKID/Lung-CT-Study-1-Archive)에서 통합 위치를 안내합니다.
+[연구 단계 상세](docs/RESEARCH_STAGES.md)에는 원고와 코드의 대응, 원고에서 주장하는 범위, 후속 실험을 따로 정리했습니다. 기존 두 PDF는 이전 공개 경로에 보존하고, 연구2의 연락처·저자사진을 포함한 전체 원문 PDF/HWP를 현재 논문 항목에 추가했습니다. 기존 하계 저장소는 [Lung CT Study 1 Archive](https://github.com/PUVKID/Lung-CT-Study-1-Archive)에서 통합 위치를 안내합니다.
 
 후속 검증에는 환자 단위 분할, 증강 원본별 fold 분리, 테스트 의사 라벨 사용 여부의 분리 비교, 조건별 다중 시드 반복, 외부 기관 데이터 검증과 실제 복원·재식별 공격 평가가 필요합니다. 특징맵 decoder 구현을 포함했다는 사실만으로 이러한 검증이 끝났다고 판단하지 않습니다.
 

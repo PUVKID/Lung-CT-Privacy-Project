@@ -1,0 +1,3162 @@
+# 비교 대상 없음 -> 연구1 · 하계 EfficientNetV2-S
+# 공백·주석·개행을 무시하지 않습니다. PDF 추출 텍스트는 배치·글꼴 비교를 대신하지 않습니다. 바이너리는 크기·SHA-256으로 비교합니다. ipynb의 바이너리 이미지 출력만 크기·SHA·원문 링크로 표시하며 코드·Markdown·수치·설정·그 밖의 JSON 텍스트는 전체 비교합니다.
+# 현재 논문/1차_EfficientNetV2-S_하계_최종.pdf 410164 dd6309e6f6b722d6db242e9c2237584314ad7d7bdf32eb1a91d10ced5ba3fe63
+# 현재 연구1_하계_EfficientNetV2-S/그래프/Blur_Block_1차_그래프_white.ipynb 31695 a8c2615ce407a6e49de77cbea440d236e423dd77439abeaca57697b21e928823
+# 현재 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pdf 2156389 22c41af0ada654bbaf8c8c5882ca1165da5e1216430af199db1fd0f560f349b3
+# 현재 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pptx 2325109 a95905aea2ed35a70f0e43e5f0eaf30cbb5c227fed7384f952641104b26d5193
+# 현재 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.docx 12063 fbe895f010f6ee875395b5486b42dcf7d07248e6b6ac98a17a21bb38eda67246
+# 현재 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.pdf 280123 0dad95908a9f7771703c37c882b5265162b1ea6d1a75762a96cef4d30923a598
+# 현재 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.docx 14644 3a66466626c76c84640e1d4284ff375708f7ba428d92fd9f7a2c686cf3bbbae8
+# 현재 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.pdf 314134 f7d5589105d6a714a62ebe53a264a23070941e4fd26db78ddc8a08e8efc2f62a
+# 현재 연구1_하계_EfficientNetV2-S/논문/원문_최종.hwp 527360 f19ddfe212b9c38fd1cfdfec29f8d499e0150bd183e2d6a7992867b34720b7fc
+# 현재 연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_논문_심사용.hwp 534016 a50590b82b4f2a37c948d267c03acdb38e2dfdb6ec1b912ad77718c50d8b9915
+# 현재 연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_심사용.hwp 50688 218bd80c6e58efc061d4717f1e47dab5c494c748813b3e580d98660a54cb8a4b
+# 현재 연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_최종본.hwp 55296 d8d43b6b577716c444a38c1fe258184834317b69628d469d075bc1014ba21d44
+# 현재 연구1_하계_EfficientNetV2-S/원문보관/그림/Blur_Block_1차_그래프_white.ipynb 34700 21207ffb5200d44de6a06b908ce7171648cf3d4a2c390c834162e357d61461ec
+--- /dev/null
++++ 논문/1차_EfficientNetV2-S_하계_최종.pdf
+@@ -0,0 +1,151 @@
++=== 1쪽 ===
++- 1 -
++1. 서론
++폐암은 높은 사망률을 보이는 대표적인 암 질환으로, 조
++기 진단이 치료 성공률 향상에 중요한 역할을 한다. 폐 CT
++(Computed Tomography) 영상은 병변의 위치와 형태를 
++확인할 수 있는 주요 진단 자료로 활용되며, 최근에는 인공
++지능 기술을 활용한 자동 진단 연구가 활발히 진행되고 있
++다. 특히 CNN 기반 딥러닝 모델은 의료 영상의 특징을 효과
++적으로 학습하여 폐암 분류 분야에서 우수한 성능을 보이고 
++있으며, EfficientNetV2와 같은 모델은 정확도와 연산 효율
++성을 동시에 고려한 구조로 주목받고 있다[1][2][3].
++한편 의료 영상은 환자와 관련된 민감한 정보를 포함하고 
++있어 활용 과정에서 개인정보 보호가 필수적으로 요구된다. 
++이에 따라 원본 영상의 활용 가치를 유지하면서 개인정보 
++노출 위험을 줄이기 위한 비식별화 기법들이 연구되고 있으
++며, 대표적으로 Gaussian Blur와 Block Encryption이 활
++용되고 있다. 그러나 이러한 기법은 개인정보 보호 효과와 
++함께 영상 정보의 손실을 유발하여 인공지능 모델의 진단 
++성능에 영향을 줄 수 있다[4][5].
++기존 연구는 주로 비식별화 기법의 보안성과 개인정보 보
++호 효과에 초점을 두고 있으며, 폐 CT 영상을 대상으로 다
++양한 비식별화 기법의 성능 영향을 비교한 연구는 부족한 
++실정이다. 따라서 본 연구에서는 폐 CT 영상에 Gaussian 
++Blur와 Block Encryption을 적용한 후 EfficientNetV2-S 
++기반 분류 모델을 이용하여 성능 변화를 비교하였다. 또한 
++Block Encryption의 블록 크기에 대응하여 Gaussian Blu
++r 강도를 조정함으로써 두 기법을 유사한 조건에서 평가하
++고, 개인정보 보호 수준에 따른 폐암 분류 성능 변화를 분석
++하였다.
++2. 연구 배경
++폐암은 조기 진단이 치료 성과에 중요한 영향을 미치는 
++질환으로, CT 영상은 폐 내부 구조와 병변을 확인하는 주요 
++진단 도구로 활용된다. 최근에는 의료 데이터의 증가와 인
++공지능 기술의 발전에 따라 CT 영상을 자동으로 분석하는 
++연구가 활발히 진행되고 있다. 딥러닝 기반 영상 분류 기법
++은 영상의 특징을 자동으로 학습할 수 있으며, 특히 CNN 계
++열 모델은 폐암 분류를 포함한 의료 영상 분석 분야에서 우
++수한 성능을 보이고 있다[2][3]. 또한 EfficientNetV2는 높
++은 정확도와 연산 효율성을 동시에 제공하는 모델로, 의료 
++환경에서 활용 가능성이 높은 것으로 평가된다[1].
++의료 영상 데이터는 환자와 관련된 민감한 정보를 포함하고 있
++어 저장, 전송 및 공유 과정에서 개인정보 보호가 중요하게 요구
++ EfficientNetV2-S 모델에서 개인정보 보호를 위한 영상 비식별화 
++기법의 성능 분석
++Performance Analysis of Video De-identification Techniques for 
++Privacy Protection in EfficientNetN2-S Model
++곽윤석† ‧ O김남기†
++†경기대학교 컴퓨터과학과
++Yunsuk Kwak† · ONamgi Kim†
++†Dept. of Computer Science, Kyonggi University
++OCorresponding author
++요   약
++폐 CT 영상은 환자의 민감한 의료정보를 포함하고 있어 활용 과정에서 개인정보 보호가 요구된다. 본 연구에서는 폐 CT 
++영상에 Gaussian Blur와 Block Encryption을 적용한 뒤 EfficientNetV2-S 기반 분류 모델을 이용하여 성능 변화를 비교하
++였다. 실험은 Block Encryption의 블록 크기 변화에 맞추어 Gaussian Blur 강도를 단계적으로 조정하는 방식으로 진행하였
++다. 분석 결과 Blur 강도가 증가할수록 분류 정확도와 ROC-AUC가 크게 감소하였으며, 높은 비식별화 수준에서는 성능 저하
++가 두드러졌다. 반면 Block Encryption은 블록 크기가 작아질수록 성능이 감소하였지만 전반적으로 더 안정적인 결과를 나타
++냈다. 
++주제어: 폐암 CT 영상, 폐암 분류, 개인정보 보호, Gaussian Blur, Block Encryption
++
++=== 2쪽 ===
++- 2 -
++된다[2][3]. 이에 따라 의료 영상의 활용 가치를 유지하면서 개인
++정보 노출 위험을 줄이기 위한 다양한 비식별화 기법이 연구되고 
++있다. 대표적인 비식별화 기법으로는 Gaussian Blur와 Block E
++ncryption이 있다. Gaussian Blur는 영상의 세부 정보를 흐리
++게 하여 식별을 어렵게 만드는 방법이며, Block Encryption은 
++영상을 블록 단위로 변환하여 원본 구조를 직접 확인하기 어렵게 
++만든다. 그러나 두 기법 모두 영상 정보의 일부 손실을 유발할 수 
++있어 인공지능 모델의 분류 성능에 영향을 줄 가능성이 존재한
++다. 따라서 의료 영상 기반 인공지능 시스템에서는 개인정보 보
++호 수준과 진단 성능을 함께 고려한 기법 선택이 필요하다.
++3. EfficientNetV2-S 모델을 활용한 영상 비식별화 
++성능 분석
++본 연구에서는 개인정보 보호 기법 적용에 따른 성능 변화를 
++분석하기 위해 EfficientNetV2-S 모델을 사용하였다. 입력 데이
++터는 512×512 크기의 폐 CT 영상이며, Benign, Malignant, No
++rmal의 세 가지 클래스로 구성하였다. 실험은 동일한 학습 조건
++에서 수행하여 개인정보 보호 기법에 따른 성능 차이만 비교할 
++수 있도록 하였다. 성능 평가는 Accuracy와 ROC-AUC를 기준
++으로 수행하였으며, Confusion Matrix를 활용하여 클래스별 분
++류 특성을 추가로 분석하였다. 이를 통해 개인정보 보호 수준 변
++화가 폐암 분류 성능에 미치는 영향을 정량적으로 평가하였다.
++[그림 1] Gaussian Blur 강도에 따른 Accuracy 변화
++Gaussian Blur 실험은 σ 값을 0부터 256까지 단계적으로 증
++가시키며 수행하였다. 실험 결과 Blur 강도가 증가할수록 Accur
++acy가 지속적으로 감소하는 경향이 확인되었다. 원본 영상에서
++는 Accuracy 92.5%을 기록하였으며, σ=1과 σ=2 구간에서는 비
++교적 작은 성능 감소가 나타났다. 그러나 σ=8 이후부터 성능 저
++하가 뚜렷하게 나타났으며, σ=32에서는 Accuracy가 53.3%까
++지 감소하였다. 또한 σ=64 이상에서는 Accuracy가 50% 내외 
++수준으로 유지되며 분류 성능이 크게 저하되는 모습을 보였다. 
++이는 Blur 강도가 증가할수록 폐암 분류에 필요한 경계 정보와 
++세부 특징이 손실되기 때문으로 판단된다.
++Block Encryption 실험은 원본 영상과 함께 256×256부
++터 1×1까지 다양한 블록 크기를 적용하여 수행하였다. 실험 
++결과 블록 크기가 작아질수록 Accuracy가 감소하는 경향
++이 나타났다. 256×256 블록에서는 Accuracy 92.5%를 기
++록하여 원본 영상과 유사한 성능을 유지하였으며, 128×128
++과 64×64 환경에서도 비교적 높은 분류 성능이 확인되었다. 
++이후 블록 크기가 감소함에 따라 성능이 점진적으로 감소하
++였으나, 32×32 블록에서는 Accuracy 79.2%를 기록하여 
++개인정보 보호와 분류 성능을 동시에 유지하는 결과를 보였
++다. 가장 작은 1×1 블록에서는 Accuracy가 52.9%까지 감
++소하였으나, 전반적으로 Gaussian Blur보다 완만한 성능 
++저하 특성을 나타냈다.
++[그림 2] Block Encryption 크기에 따른 Accuracy 변화
++4. 결론
++본 연구에서는 폐 CT 영상에 Gaussian Blur와 Block Encry
++ption을 적용한 후 EfficientNetV2-S 기반 분류 모델을 이용하
++여 개인정보 보호 수준에 따른 성능 변화를 분석하였다. 실험 결
++과, 두 기법 모두 개인정보 보호 강도가 증가할수록 분류 성능이 
++감소하였으나, Block Encryption은 Gaussian Blur보다 상대적
++으로 안정적인 성능을 유지하였다. 또한 Block Encryption은 영
++상의 구조적 정보를 유지함으로써 의료 영상 분류에 보다 적합한 
++비식별화 기법임을 확인하였다. 향후 연구에서는 ResNet50 기반 
++모델을 활용하여 결과를 추가 검증하고, 엣지 디바이스와 서버를 
++연계한 분산 추론 구조를 적용하여 개인정보 보호 의료 인공지능 
++시스템으로 확장하고자 한다.
++사사
++이 논문은 정부(과학기술정보통신부)의 재원으로 정보통신기
++획평가원-학·석사연계ICT핵심인재양성사업의 지원을 받아 수행
++된 연구임(ITTP-2024-00436954). 또한 이 논문은 2024년도 정
++부(교육부)의 재원으로 한국연구재단의 지원을 받아 수행된 기초
++연구사업임(No. RS-2020-NR049579)
++참고문헌
++[1] M. Tan and Q. V. Le, “EfficientNetV2: Smaller Models 
++and Faster Training,” Proceedings of the 38th Intern
++ational Conference on Machine Learning (ICML), pp. 
++10096-10106, 2021.
++[2] K. He, X. Zhang, S. Ren and J. Sun, “Deep Residual Le
++arning for Image Recognition,” Proceedings of the IE
++
++=== 3쪽 ===
++- 3 -
++EE Conference on Computer Vision and Pattern Reco
++gnition (CVPR), pp. 770-778, 2016.
++[3] A. Krizhevsky, I. Sutskever and G. E. Hinton, “ImageN
++et Classification with Deep Convolutional Neural Net
++works,” Advances in Neural Information Processing S
++ystems (NeurIPS), vol. 25, pp. 1097-1105, 2012.
++[4] D. A. Clunie, A. Flanders, A. Taylor, B. Erickson, F. Pr
++ior, et al., “Report of the Medical Image De-Identifica
++tion (MIDI) Task Group – Best Practices and Recomm
++endations,” arXiv preprint arXiv:2303.10473, 2023.
++[5] D. A. Clunie, A. Flanders, K. Farahani, et al., “Summa
++ry of the National Cancer Institute 2023 Virtual Work
++shop on Medical Image De-identification—Part 1: Rep
++ort of the MIDI Task Group,” Journal of Imaging Infor
++matics in Medicine, vol. 38, pp. 1-15, 2025.
+--- /dev/null
++++ 연구1_하계_EfficientNetV2-S/그래프/Blur_Block_1차_그래프_white.ipynb
+@@ -0,0 +1,612 @@
++{
++ "cells": [
++  {
++   "cell_type": "code",
++   "execution_count": null,
++   "metadata": {},
++   "outputs": [],
++   "source": [
++    "\"\"\"\n",
++    "Gaussian Blur 실험 결과 시각화 스크립트\n",
++    "all_blur_results.json → 10개 그래프 생성\n",
++    "한글/기호 깨짐 없음 (NanumGothic 사용)\n",
++    "\"\"\"\n",
++    "\n",
++    "import json\n",
++    "import numpy as np\n",
++    "import matplotlib\n",
++    "matplotlib.use('Agg')\n",
++    "import matplotlib.pyplot as plt\n",
++    "import matplotlib.font_manager as fm\n",
++    "import matplotlib.patches as mpatches\n",
++    "from matplotlib.colors import LinearSegmentedColormap\n",
++    "import matplotlib.gridspec as gridspec\n",
++    "import warnings\n",
++    "import os\n",
++    "warnings.filterwarnings('ignore')\n",
++    "\n",
++    "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++    "_CANDIDATE_PATHS = [\n",
++    "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',      # Linux\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',                     # Windows (일반 설치)\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++    "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),  # Windows (사용자별 설치)\n",
++    "]\n",
++    "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++    "\n",
++    "if _NANUM_PATH:\n",
++    "    fm.fontManager.addfont(_NANUM_PATH)\n",
++    "    fm._load_fontmanager(try_read_cache=False)\n",
++    "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++    "else:\n",
++    "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++    "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++    "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다. '\n",
++    "          f'폰트가 깨지면 나눔고딕 설치 경로를 확인하세요.')\n",
++    "\n",
++    "plt.rcParams.update({\n",
++    "    'font.family': FONT,\n",
++    "    'axes.unicode_minus': False,\n",
++    "    'figure.facecolor': 'white',\n",
++    "    'axes.facecolor':   'white',\n",
++    "    'axes.edgecolor':   'black',\n",
++    "    'axes.labelcolor':  'black',\n",
++    "    'xtick.color':      'black',\n",
++    "    'ytick.color':      'black',\n",
++    "    'text.color':       'black',\n",
++    "    'grid.color':       '#cccccc',\n",
++    "    'grid.linestyle':   '--',\n",
++    "    'grid.alpha':       0.5,\n",
++    "    'legend.facecolor': 'white',\n",
++    "    'legend.edgecolor': '#cccccc',\n",
++    "    'legend.labelcolor':'black',\n",
++    "})\n",
++    "\n",
++    "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++    "JSON_PATH = os.environ[\"EXPERIMENT_JSON_PATH_1\"]  # confirmed\n",
++    "OUT       = os.environ[\"EXPERIMENT_OUTPUT_DIR\"]\n",
++    "os.makedirs(OUT, exist_ok=True)\n",
++    "\n",
++    "# ── 데이터 로드 ────────────────────────────────────────────\n",
++    "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++    "    raw = json.load(f)\n",
++    "\n",
++    "data    = {int(k): v for k, v in raw.items()}\n",
++    "sigmas  = sorted(data.keys())\n",
++    "# 실제 sigma 값 그대로 라벨링 (0이 없으면 자동으로 첫 값이 최소 sigma로 표시됨)\n",
++    "labels  = [f'σ={s}' for s in sigmas]\n",
++    "accs    = [data[s]['acc'] * 100 for s in sigmas]\n",
++    "aucs    = [data[s]['roc_auc'] for s in sigmas]\n",
++    "benign  = [data[s]['per_class_acc']['Bengin cases'] * 100 for s in sigmas]\n",
++    "malig   = [data[s]['per_class_acc']['Malignant cases'] * 100 for s in sigmas]\n",
++    "normal  = [data[s]['per_class_acc']['Normal cases'] * 100 for s in sigmas]\n",
++    "\n",
++    "# 색상 팔레트 (정확도에 따라 green→red)\n",
++    "def acc_color(val):\n",
++    "    if val >= 85: return '#2ea043'\n",
++    "    if val >= 75: return '#7ec852'\n",
++    "    if val >= 65: return '#d4e052'\n",
++    "    if val >= 55: return '#e8a838'\n",
++    "    if val >= 45: return '#e86b38'\n",
++    "    return '#c0392b'\n",
++    "\n",
++    "BAR_COLORS = [acc_color(a) for a in accs]\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 1. 블러 강도별 AI 정확도 (막대 그래프)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(22, 11))\n",
++    "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++    "\n",
++    "for bar, val in zip(bars, accs):\n",
++    "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++    "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++    "\n",
++    "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++    "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++    "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "ax.set_xlabel('블러 Sigma (σ)', fontsize=45)\n",
++    "ax.set_ylabel('정확도 (%)',      fontsize=45)\n",
++    "ax.tick_params(labelsize=35)\n",
++    "ax.set_ylim(0, 115)\n",
++    "ax.legend(fontsize=40)\n",
++    "ax.grid(axis='y', zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph1 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 2. ROC-AUC 꺾은선\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(18, 8))\n",
++    "ax.plot(labels, aucs, color='#7ca4f4', lw=2.5, marker='o', markersize=10,\n",
++    "        markerfacecolor='white', markeredgecolor='#7ca4f4', zorder=4)\n",
++    "\n",
++    "for i, (lbl, val) in enumerate(zip(labels, aucs)):\n",
++    "    ax.annotate(f'{val:.4f}', (lbl, val), textcoords='offset points',\n",
++    "                xytext=(0, 12), ha='center', fontsize=14, color='black')\n",
++    "\n",
++    "ax.axhline(0.9, color='#2ea043', linestyle='--', lw=1.5, label='ROC 0.9 기준')\n",
++    "ax.axhline(0.8, color='#d4a017', linestyle='--', lw=1.5, label='ROC 0.8 기준')\n",
++    "\n",
++    "ax.set_title('블러 강도별 ROC-AUC (Blur Sigma vs ROC-AUC)', fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++    "ax.set_ylabel('ROC-AUC',        fontsize=17)\n",
++    "ax.tick_params(labelsize=15)\n",
++    "ax.set_ylim(0.4, 1.05)\n",
++    "ax.legend(fontsize=14)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph2_roc_auc.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph2 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 3. 클래스별 정확도 (grouped bar)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(20, 9))\n",
++    "x = np.arange(len(labels))\n",
++    "w = 0.26\n",
++    "\n",
++    "ax.bar(x - w, benign, w, label='양성 Benign',    color='#e07070', zorder=3)\n",
++    "ax.bar(x,     malig,  w, label='악성 Malignant',  color='#e0c040', zorder=3)\n",
++    "ax.bar(x + w, normal, w, label='정상 Normal',     color='#60c060', zorder=3)\n",
++    "ax.axhline(80, color='gray', linestyle='--', lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "ax.set_title('클래스별 정확도 (Per-Class Accuracy by Blur Sigma)', fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++    "ax.set_ylabel('정확도 (%)',      fontsize=17)\n",
++    "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++    "ax.tick_params(axis='y', labelsize=15)\n",
++    "ax.set_ylim(0, 115)\n",
++    "ax.legend(fontsize=14)\n",
++    "ax.grid(axis='y', zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph3_class_accuracy.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph3 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 4. 보안성 vs AI 성능 트레이드오프 (scatter)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "blur_strength = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++    "cmap = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++    "norm_vals = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++    "\n",
++    "fig, ax = plt.subplots(figsize=(13, 10))\n",
++    "for i, (bs, ac, nv, lbl) in enumerate(zip(blur_strength, accs, norm_vals, labels)):\n",
++    "    color = cmap(nv)\n",
++    "    ax.scatter(bs, ac, s=300, color=color, zorder=4, edgecolors='white', linewidths=1)\n",
++    "    ax.annotate(lbl.replace('\\n',''), (bs, ac), textcoords='offset points',\n",
++    "                xytext=(8, 4), fontsize=12, color='black')\n",
++    "\n",
++    "sm = plt.cm.ScalarMappable(cmap=cmap,\n",
++    "     norm=plt.Normalize(vmin=min(accs), vmax=max(accs)))\n",
++    "sm.set_array([])\n",
++    "cbar = plt.colorbar(sm, ax=ax)\n",
++    "cbar.set_label('AI 정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++    "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++    "\n",
++    "ax.set_title('보안성 vs AI 성능 트레이드오프 (Security vs Performance)', fontsize=20, pad=16)\n",
++    "ax.set_xlabel('블러 강도 / Blur Strength (높을수록 보안 강함) →', fontsize=15)\n",
++    "ax.set_ylabel('AI 정확도 (%)', fontsize=15)\n",
++    "ax.tick_params(labelsize=14)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph4_tradeoff.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph4 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 5. 정확도 변화 추세 (multi-line)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(20, 9))\n",
++    "x = np.arange(len(labels))\n",
++    "ax.plot(x, accs,   color='black', lw=3,   marker='o', markersize=10, label='전체 정확도', zorder=4)\n",
++    "ax.plot(x, benign, color='#e07070', lw=2,   marker='s', markersize=9,  linestyle='--', label='양성 Benign', zorder=3)\n",
++    "ax.plot(x, malig,  color='#e0c040', lw=2,   marker='^', markersize=9,  linestyle='--', label='악성 Malignant', zorder=3)\n",
++    "ax.plot(x, normal, color='#60c060', lw=2,   marker='D', markersize=9,  linestyle='--', label='정상 Normal', zorder=3)\n",
++    "ax.axhline(80, color='gray', linestyle=':', lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "for i, val in enumerate(accs):\n",
++    "    ax.annotate(f'{val:.1f}%', (x[i], val), textcoords='offset points',\n",
++    "                xytext=(0, 10), ha='center', fontsize=12, color='#ffd700')\n",
++    "\n",
++    "ax.set_title('블러 강도에 따른 정확도 변화 추세 (Accuracy Trend by Blur Sigma)', fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (왼쪽=약한 블러 / 오른쪽=강한 블러)', fontsize=16)\n",
++    "ax.set_ylabel('정확도 (%)', fontsize=16)\n",
++    "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++    "ax.tick_params(axis='y', labelsize=15)\n",
++    "ax.set_ylim(-5, 115)\n",
++    "ax.legend(fontsize=14)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph5_trend.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph5 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 6. Sigma vs Accuracy (log scale)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(18, 8))\n",
++    "ax.plot(labels, accs, color='black', lw=3, marker='o', markersize=10,\n",
++    "        markerfacecolor='white', markeredgecolor='black', zorder=4)\n",
++    "\n",
++    "for i, (lbl, val) in enumerate(zip(labels, accs)):\n",
++    "    ax.annotate(f'{val:.1f}%', (lbl, val), textcoords='offset points',\n",
++    "                xytext=(0, 12), ha='center', fontsize=15, color='black')\n",
++    "\n",
++    "ax.set_title('블러 Sigma vs AI 정확도 (log scale)',\n",
++    "             fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (log scale) →', fontsize=17)\n",
++    "ax.set_ylabel('정확도 (%)',               fontsize=17)\n",
++    "ax.tick_params(labelsize=15)\n",
++    "ax.set_ylim(0, 110)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph6_sigma_vs_acc.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph6 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 7. 클래스별 정확도 히트맵\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "heatmap_data = np.array([benign, malig, normal])\n",
++    "row_labels   = ['양성\\n(Benign)', '악성\\n(Malignant)', '정상\\n(Normal)']\n",
++    "\n",
++    "cmap_rg = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++    "fig, ax = plt.subplots(figsize=(20, 7))\n",
++    "im = ax.imshow(heatmap_data, cmap=cmap_rg, aspect='auto', vmin=0, vmax=100)\n",
++    "\n",
++    "for i in range(3):\n",
++    "    for j in range(len(labels)):\n",
++    "        val = heatmap_data[i, j]\n",
++    "        tc = 'black' if 60 < val < 90 else 'white'\n",
++    "        ax.text(j, i, f'{val:.0f}%', ha='center', va='center',\n",
++    "                fontsize=17, fontweight='bold', color=tc)\n",
++    "\n",
++    "ax.set_xticks(range(len(labels))); ax.set_xticklabels(labels, fontsize=15)\n",
++    "ax.set_yticks(range(3));           ax.set_yticklabels(row_labels, fontsize=16)\n",
++    "ax.set_title('클래스별 정확도 히트맵 (Per-Class Accuracy Heatmap)', fontsize=22, pad=16)\n",
++    "\n",
++    "cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)\n",
++    "cbar.set_label('정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++    "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph7_heatmap.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph7 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 8. 레이더 차트\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 실제 존재하는 sigma 값 중에서 4개(처음/중간1/중간2/끝)를 자동 선택\n",
++    "_n = len(sigmas)\n",
++    "_idxs = sorted(set([0, _n // 3, 2 * _n // 3, _n - 1]))\n",
++    "radar_sigmas = [sigmas[i] for i in _idxs]\n",
++    "radar_colors = ['#ffd700', '#2ea043', '#e07070', '#7ca4f4'][:len(radar_sigmas)]\n",
++    "radar_names  = [f'σ={s}' for s in radar_sigmas]\n",
++    "\n",
++    "categories     = ['Benign', '전체 정확도', 'ROC-AUC×100', 'Normal', 'Malignant']\n",
++    "N = len(categories)\n",
++    "angles = [n / float(N) * 2 * np.pi for n in range(N)]\n",
++    "angles += angles[:1]\n",
++    "\n",
++    "fig, ax = plt.subplots(figsize=(11, 10), subplot_kw={'polar': True})\n",
++    "ax.set_facecolor('white')\n",
++    "ax.set_theta_offset(np.pi / 2)\n",
++    "ax.set_theta_direction(-1)\n",
++    "plt.xticks(angles[:-1], categories, fontsize=16, color='black')\n",
++    "ax.set_rlabel_position(30)\n",
++    "plt.yticks([20,40,60,80,100], ['20','40','60','80','100'], fontsize=11, color='black')\n",
++    "ax.set_ylim(0, 100)\n",
++    "\n",
++    "for sig, color, name in zip(radar_sigmas, radar_colors, radar_names):\n",
++    "    d = data[sig]\n",
++    "    vals = [\n",
++    "        d['per_class_acc']['Bengin cases'] * 100,\n",
++    "        d['acc'] * 100,\n",
++    "        d['roc_auc'] * 100,\n",
++    "        d['per_class_acc']['Normal cases'] * 100,\n",
++    "        d['per_class_acc']['Malignant cases'] * 100,\n",
++    "    ]\n",
++    "    vals += vals[:1]\n",
++    "    ax.plot(angles, vals, color=color, lw=2.5, marker='o', markersize=6, label=name)\n",
++    "    ax.fill(angles, vals, color=color, alpha=0.08)\n",
++    "\n",
++    "ax.set_title('주요 블러 강도별 성능 레이더 차트 (Radar Chart by Blur Sigma)',\n",
++    "             fontsize=18, pad=28)\n",
++    "ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.15), fontsize=14)\n",
++    "ax.grid(color='#ccc', linestyle='--', alpha=0.6)\n",
++    "ax.spines['polar'].set_color('#999')\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph8_radar.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph8 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 9. Confusion Matrix 비교 (최소 sigma vs 최대 sigma)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "def draw_cm(ax, cm, title, acc):\n",
++    "    cm_arr = np.array(cm)\n",
++    "    cmap_b = plt.cm.Blues\n",
++    "    im = ax.imshow(cm_arr, cmap=cmap_b, aspect='auto')\n",
++    "    cl = ['Benign', 'Malignant', 'Normal']\n",
++    "    ax.set_xticks(range(3)); ax.set_xticklabels(cl, fontsize=14)\n",
++    "    ax.set_yticks(range(3)); ax.set_yticklabels(cl, fontsize=14)\n",
++    "    ax.set_xlabel('AI 예측 (Predicted)', fontsize=14)\n",
++    "    ax.set_ylabel('실제 정답 (Actual)',   fontsize=14)\n",
++    "    ax.set_title(f'{title}', fontsize=16, pad=10)\n",
++    "    thresh = cm_arr.max() / 2\n",
++    "    for i in range(3):\n",
++    "        for j in range(3):\n",
++    "            ax.text(j, i, str(cm_arr[i, j]), ha='center', va='center',\n",
++    "                    fontsize=18, fontweight='bold',\n",
++    "                    color='black' if cm_arr[i, j] > thresh else 'black')\n",
++    "    return im\n",
++    "\n",
++    "_min_sig, _max_sig = sigmas[0], sigmas[-1]\n",
++    "\n",
++    "fig, axes = plt.subplots(1, 2, figsize=(18, 8))\n",
++    "fig.patch.set_facecolor('white')\n",
++    "fig.suptitle('Confusion Matrix: 약한 블러 vs 강한 블러 비교', fontsize=22, y=1.02)\n",
++    "\n",
++    "draw_cm(axes[0], data[_min_sig]['cm'], f'약한 블러 (σ={_min_sig})', data[_min_sig]['acc']*100)\n",
++    "im2 = draw_cm(axes[1], data[_max_sig]['cm'], f'최강 블러 (σ={_max_sig})', data[_max_sig]['acc']*100)\n",
++    "\n",
++    "cbar = fig.colorbar(im2, ax=axes, fraction=0.03, pad=0.04)\n",
++    "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph9_confusion.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph9 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 10. 종합 대시보드\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig = plt.figure(figsize=(24, 16))\n",
++    "fig.patch.set_facecolor('white')\n",
++    "fig.suptitle('블러 강도별 AI 성능 종합 대시보드 (Gaussian Blur AI Performance Dashboard)',\n",
++    "    fontsize=20, y=0.99\n",
++    ")\n",
++    "gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.45, wspace=0.35,\n",
++    "                       top=0.93, bottom=0.06, left=0.06, right=0.97)\n",
++    "\n",
++    "# [0,0] 정확도 막대\n",
++    "ax1 = fig.add_subplot(gs[0, 0])\n",
++    "bars = ax1.bar(labels, accs, color=BAR_COLORS, width=0.65, zorder=3)\n",
++    "for bar, val in zip(bars, accs):\n",
++    "    ax1.text(bar.get_x()+bar.get_width()/2, bar.get_height()+0.8,\n",
++    "             f'{val:.1f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')\n",
++    "ax1.set_title('블러 강도별 정확도', fontsize=15, pad=8)\n",
++    "ax1.set_ylabel('정확도 (%)', fontsize=13)\n",
++    "ax1.tick_params(labelsize=11)\n",
++    "ax1.set_ylim(0, 110)\n",
++    "ax1.grid(axis='y', zorder=0)\n",
++    "\n",
++    "# [0,1] 실험 결론 텍스트 박스 (실제 데이터로 자동 계산)\n",
++    "ax_txt = fig.add_subplot(gs[0, 1])\n",
++    "ax_txt.set_facecolor('white')\n",
++    "ax_txt.axis('off')\n",
++    "\n",
++    "_best_idx  = int(np.argmax(accs))\n",
++    "_worst_idx = int(np.argmin(accs))\n",
++    "conclusion = (\n",
++    "    f\"▶ 실험 조건\\n\"\n",
++    "    f\"   Sigma: {len(sigmas)}개 조건 실험\\n\\n\"\n",
++    "    f\"▶ 최고 성능\\n\"\n",
++    "    f\"   {labels[_best_idx]}:  {accs[_best_idx]:.1f}%\\n\"\n",
++    "    f\"   ROC-AUC: {aucs[_best_idx]:.4f}\\n\\n\"\n",
++    "    f\"▶ 최저 성능\\n\"\n",
++    "    f\"   {labels[_worst_idx]}  정확도: {accs[_worst_idx]:.1f}%\\n\\n\"\n",
++    "    f\"▶ 핵심 관찰\\n\"\n",
++    "    f\"   악성(Malignant) 클래스\\n\"\n",
++    "    f\"   최저: {min(malig):.1f}%\"\n",
++    ")\n",
++    "ax_txt.text(0.05, 0.97, conclusion, transform=ax_txt.transAxes,\n",
++    "            fontsize=13, va='top', linespacing=1.6, color='black', family=FONT)\n",
++    "ax_txt.set_title('실험 결론', fontsize=15, pad=8)\n",
++    "\n",
++    "# [0,2] ROC-AUC\n",
++    "ax2 = fig.add_subplot(gs[0, 2])\n",
++    "ax2.plot(range(len(labels)), aucs, color='#7ca4f4', lw=2.5,\n",
++    "         marker='o', markersize=7, markerfacecolor='white', zorder=4)\n",
++    "for i, v in enumerate(aucs):\n",
++    "    ax2.annotate(f'{v:.3f}', (i, v), textcoords='offset points',\n",
++    "                 xytext=(0,8), ha='center', fontsize=10, color='black')\n",
++    "ax2.axhline(0.9, color='#2ea043', linestyle='--', lw=1.2)\n",
++    "ax2.axhline(0.8, color='#d4a017', linestyle='--', lw=1.2)\n",
++    "ax2.set_title('ROC-AUC', fontsize=15, pad=8)\n",
++    "ax2.set_ylabel('ROC-AUC', fontsize=13)\n",
++    "ax2.set_xticks(range(len(labels))); ax2.set_xticklabels(labels, fontsize=10)\n",
++    "ax2.set_ylim(0.5, 1.05)\n",
++    "ax2.grid(zorder=0)\n",
++    "\n",
++    "# [1,0] 클래스별 정확도\n",
++    "ax3 = fig.add_subplot(gs[1, 0])\n",
++    "x = np.arange(len(labels))\n",
++    "ax3.plot(x, benign, color='#e07070', lw=2, marker='s', markersize=7, linestyle='--', label='양성(Benign)')\n",
++    "ax3.plot(x, malig,  color='#e0c040', lw=2, marker='^', markersize=7, linestyle='--', label='악성(Malignant)')\n",
++    "ax3.plot(x, normal, color='#60c060', lw=2, marker='D', markersize=7, linestyle='--', label='정상(Normal)')\n",
++    "ax3.set_title('클래스별 정확도', fontsize=15, pad=8)\n",
++    "ax3.set_ylabel('정확도 (%)', fontsize=13)\n",
++    "ax3.set_xticks(x); ax3.set_xticklabels(labels, fontsize=10)\n",
++    "ax3.set_ylim(0, 110)\n",
++    "ax3.legend(fontsize=11)\n",
++    "ax3.grid(zorder=0)\n",
++    "\n",
++    "# [1,1] 히트맵\n",
++    "ax4 = fig.add_subplot(gs[1, 1])\n",
++    "cmap_rg2 = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++    "hm = np.array([benign, malig, normal])\n",
++    "im4 = ax4.imshow(hm, cmap=cmap_rg2, aspect='auto', vmin=0, vmax=100)\n",
++    "for i in range(3):\n",
++    "    for j in range(len(labels)):\n",
++    "        v = hm[i,j]\n",
++    "        tc = 'black' if 50 < v < 85 else 'white'\n",
++    "        ax4.text(j, i, f'{v:.0f}%', ha='center', va='center', fontsize=9, color=tc, fontweight='bold')\n",
++    "ax4.set_xticks(range(len(labels))); ax4.set_xticklabels(labels, fontsize=9)\n",
++    "ax4.set_yticks([0,1,2]); ax4.set_yticklabels(['양성','악성','정상'], fontsize=13)\n",
++    "ax4.set_title('클래스별 정확도 히트맵', fontsize=15, pad=8)\n",
++    "\n",
++    "# [1,2] 트레이드오프 scatter\n",
++    "ax5 = fig.add_subplot(gs[1, 2])\n",
++    "bs_vals = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++    "norm_v  = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++    "for bsv, ac, nv, lbl in zip(bs_vals, accs, norm_v, labels):\n",
++    "    color = cmap_rg2(nv)\n",
++    "    ax5.scatter(bsv, ac, s=120, color=color, zorder=4, edgecolors='white', lw=0.8)\n",
++    "    ax5.annotate(lbl.replace('\\n',''), (bsv, ac), textcoords='offset points',\n",
++    "                 xytext=(5,3), fontsize=10, color='black')\n",
++    "ax5.set_title('보안 vs 성능', fontsize=15, pad=8)\n",
++    "ax5.set_xlabel('블러 강도 →', fontsize=13)\n",
++    "ax5.set_ylabel('AI(정확도%)', fontsize=13)\n",
++    "ax5.grid(zorder=0)\n",
++    "\n",
++    "plt.savefig(f'{OUT}/graph10_dashboard.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph10 done')\n",
++    "print('\\n✅ 모든 그래프 생성 완료!')\n"
++   ]
++  },
++  {
++   "cell_type": "code",
++   "execution_count": null,
++   "metadata": {},
++   "outputs": [],
++   "source": [
++    "\"\"\"\n",
++    "Block Encryption 실험 결과 시각화 스크립트\n",
++    "all_block_results.json → graph1 (정확도 막대그래프)만 생성\n",
++    "\"\"\"\n",
++    "\n",
++    "import json\n",
++    "import matplotlib\n",
++    "matplotlib.use('Agg')\n",
++    "import matplotlib.pyplot as plt\n",
++    "import matplotlib.font_manager as fm\n",
++    "import warnings\n",
++    "import os\n",
++    "warnings.filterwarnings('ignore')\n",
++    "\n",
++    "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++    "_CANDIDATE_PATHS = [\n",
++    "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++    "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),\n",
++    "]\n",
++    "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++    "\n",
++    "if _NANUM_PATH:\n",
++    "    fm.fontManager.addfont(_NANUM_PATH)\n",
++    "    fm._load_fontmanager(try_read_cache=False)\n",
++    "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++    "else:\n",
++    "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++    "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++    "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다.')\n",
++    "\n",
++    "plt.rcParams.update({\n",
++    "    'font.family': FONT,\n",
++    "    'axes.unicode_minus': False,\n",
++    "    'figure.facecolor': 'white',\n",
++    "    'axes.facecolor':   'white',\n",
++    "    'axes.edgecolor':   'black',\n",
++    "    'axes.labelcolor':  'black',\n",
++    "    'xtick.color':      'black',\n",
++    "    'ytick.color':      'black',\n",
++    "    'text.color':       'black',\n",
++    "    'grid.color':       '#cccccc',\n",
++    "    'grid.linestyle':   '--',\n",
++    "    'grid.alpha':       0.5,\n",
++    "    'legend.facecolor': 'white',\n",
++    "    'legend.edgecolor': '#cccccc',\n",
++    "    'legend.labelcolor':'black',\n",
++    "})\n",
++    "\n",
++    "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++    "JSON_PATH = os.environ[\"EXPERIMENT_JSON_PATH_2\"]\n",
++    "OUT       = os.environ[\"EXPERIMENT_OUTPUT_DIR\"]\n",
++    "os.makedirs(OUT, exist_ok=True)\n",
++    "\n",
++    "# ── 데이터 로드 ────────────────────────────────────────────\n",
++    "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++    "    raw = json.load(f)\n",
++    "\n",
++    "data = {int(k): v for k, v in raw.items()}\n",
++    "# block size는 큰 값(원본에 가까움)부터 작은 값(강한 암호화) 순서로 정렬\n",
++    "block_sizes = sorted(data.keys(), reverse=True)\n",
++    "\n",
++    "def block_label(b):\n",
++    "    if b == max(block_sizes):\n",
++    "        return '원본'\n",
++    "    if b == 1:\n",
++    "        return '픽셀\\n1×1'\n",
++    "    return f'{b}×{b}'\n",
++    "\n",
++    "labels = [block_label(b) for b in block_sizes]\n",
++    "accs   = [data[b]['acc'] * 100 for b in block_sizes]\n",
++    "\n",
++    "# 색상 팔레트 (정확도에 따라 green→red 계열, 이미지와 동일한 룩)\n",
++    "def acc_color(val):\n",
++    "    if val >= 90: return '#e0602a'   # 진한 주황빨강\n",
++    "    if val >= 80: return '#e0602a'\n",
++    "    if val >= 75: return '#e8a838'   # 주황\n",
++    "    if val >= 65: return '#d4d838'   # 연두노랑\n",
++    "    if val >= 58: return '#8ec13a'   # 연두\n",
++    "    return '#2ea05a'                 # 초록\n",
++    "\n",
++    "BAR_COLORS = [acc_color(a) for a in accs]\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 1. 블록 크기별 AI 정확도 (막대 그래프)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(22, 11))\n",
++    "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++    "\n",
++    "for bar, val in zip(bars, accs):\n",
++    "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++    "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++    "\n",
++    "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++    "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++    "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "ax.set_xlabel('블록 크기', fontsize=45)\n",
++    "ax.set_ylabel('정확도 (%)', fontsize=45)\n",
++    "ax.tick_params(labelsize=30)\n",
++    "ax.set_ylim(0, 115)\n",
++    "ax.legend(fontsize=40)\n",
++    "ax.grid(axis='y', zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph1 done')\n"
++   ]
++  }
++ ],
++ "metadata": {
++  "kernelspec": {
++   "display_name": "base",
++   "language": "python",
++   "name": "python3"
++  },
++  "language_info": {
++   "codemirror_mode": {
++    "name": "ipython",
++    "version": 3
++   },
++   "file_extension": ".py",
++   "mimetype": "text/x-python",
++   "name": "python",
++   "nbconvert_exporter": "python",
++   "pygments_lexer": "ipython3",
++   "version": "3.13.9"
++  }
++ },
++ "nbformat": 4,
++ "nbformat_minor": 0
++}
+--- /dev/null
++++ 연구1_하계_EfficientNetV2-S/원문보관/그림/Blur_Block_1차_그래프_white.ipynb
+@@ -0,0 +1,627 @@
++{
++  "cells": [
++    {
++      "cell_type": "code",
++      "execution_count": null,
++      "metadata": {
++        "colab": {
++          "base_uri": "https://localhost:8080/"
++        },
++        "id": "QaB8lkrkrroe",
++        "outputId": "f9c0e2b0-ceb7-4599-84cc-85732f0a7028"
++      },
++      "outputs": [],
++      "source": [
++        "\"\"\"\n",
++        "Gaussian Blur 실험 결과 시각화 스크립트\n",
++        "all_blur_results.json → 10개 그래프 생성\n",
++        "한글/기호 깨짐 없음 (NanumGothic 사용)\n",
++        "\"\"\"\n",
++        "\n",
++        "import json\n",
++        "import numpy as np\n",
++        "import matplotlib\n",
++        "matplotlib.use('Agg')\n",
++        "import matplotlib.pyplot as plt\n",
++        "import matplotlib.font_manager as fm\n",
++        "import matplotlib.patches as mpatches\n",
++        "from matplotlib.colors import LinearSegmentedColormap\n",
++        "import matplotlib.gridspec as gridspec\n",
++        "import warnings\n",
++        "import os\n",
++        "warnings.filterwarnings('ignore')\n",
++        "\n",
++        "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++        "_CANDIDATE_PATHS = [\n",
++        "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',      # Linux\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',                     # Windows (일반 설치)\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++        "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),  # Windows (사용자별 설치)\n",
++        "]\n",
++        "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++        "\n",
++        "if _NANUM_PATH:\n",
++        "    fm.fontManager.addfont(_NANUM_PATH)\n",
++        "    fm._load_fontmanager(try_read_cache=False)\n",
++        "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++        "else:\n",
++        "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++        "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++        "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다. '\n",
++        "          f'폰트가 깨지면 나눔고딕 설치 경로를 확인하세요.')\n",
++        "\n",
++        "plt.rcParams.update({\n",
++        "    'font.family': FONT,\n",
++        "    'axes.unicode_minus': False,\n",
++        "    'figure.facecolor': 'white',\n",
++        "    'axes.facecolor':   'white',\n",
++        "    'axes.edgecolor':   'black',\n",
++        "    'axes.labelcolor':  'black',\n",
++        "    'xtick.color':      'black',\n",
++        "    'ytick.color':      'black',\n",
++        "    'text.color':       'black',\n",
++        "    'grid.color':       '#cccccc',\n",
++        "    'grid.linestyle':   '--',\n",
++        "    'grid.alpha':       0.5,\n",
++        "    'legend.facecolor': 'white',\n",
++        "    'legend.edgecolor': '#cccccc',\n",
++        "    'legend.labelcolor':'black',\n",
++        "})\n",
++        "\n",
++        "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++        "JSON_PATH = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\\all_blur_results.json\"  # confirmed\n",
++        "OUT       = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\"\n",
++        "os.makedirs(OUT, exist_ok=True)\n",
++        "\n",
++        "# ── 데이터 로드 ────────────────────────────────────────────\n",
++        "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++        "    raw = json.load(f)\n",
++        "\n",
++        "data    = {int(k): v for k, v in raw.items()}\n",
++        "sigmas  = sorted(data.keys())\n",
++        "# 실제 sigma 값 그대로 라벨링 (0이 없으면 자동으로 첫 값이 최소 sigma로 표시됨)\n",
++        "labels  = [f'σ={s}' for s in sigmas]\n",
++        "accs    = [data[s]['acc'] * 100 for s in sigmas]\n",
++        "aucs    = [data[s]['roc_auc'] for s in sigmas]\n",
++        "benign  = [data[s]['per_class_acc']['Bengin cases'] * 100 for s in sigmas]\n",
++        "malig   = [data[s]['per_class_acc']['Malignant cases'] * 100 for s in sigmas]\n",
++        "normal  = [data[s]['per_class_acc']['Normal cases'] * 100 for s in sigmas]\n",
++        "\n",
++        "# 색상 팔레트 (정확도에 따라 green→red)\n",
++        "def acc_color(val):\n",
++        "    if val >= 85: return '#2ea043'\n",
++        "    if val >= 75: return '#7ec852'\n",
++        "    if val >= 65: return '#d4e052'\n",
++        "    if val >= 55: return '#e8a838'\n",
++        "    if val >= 45: return '#e86b38'\n",
++        "    return '#c0392b'\n",
++        "\n",
++        "BAR_COLORS = [acc_color(a) for a in accs]\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 1. 블러 강도별 AI 정확도 (막대 그래프)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(22, 11))\n",
++        "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++        "\n",
++        "for bar, val in zip(bars, accs):\n",
++        "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++        "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++        "\n",
++        "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++        "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++        "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "ax.set_xlabel('블러 Sigma (σ)', fontsize=45)\n",
++        "ax.set_ylabel('정확도 (%)',      fontsize=45)\n",
++        "ax.tick_params(labelsize=35)\n",
++        "ax.set_ylim(0, 115)\n",
++        "ax.legend(fontsize=40)\n",
++        "ax.grid(axis='y', zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph1 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 2. ROC-AUC 꺾은선\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(18, 8))\n",
++        "ax.plot(labels, aucs, color='#7ca4f4', lw=2.5, marker='o', markersize=10,\n",
++        "        markerfacecolor='white', markeredgecolor='#7ca4f4', zorder=4)\n",
++        "\n",
++        "for i, (lbl, val) in enumerate(zip(labels, aucs)):\n",
++        "    ax.annotate(f'{val:.4f}', (lbl, val), textcoords='offset points',\n",
++        "                xytext=(0, 12), ha='center', fontsize=14, color='black')\n",
++        "\n",
++        "ax.axhline(0.9, color='#2ea043', linestyle='--', lw=1.5, label='ROC 0.9 기준')\n",
++        "ax.axhline(0.8, color='#d4a017', linestyle='--', lw=1.5, label='ROC 0.8 기준')\n",
++        "\n",
++        "ax.set_title('블러 강도별 ROC-AUC (Blur Sigma vs ROC-AUC)', fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++        "ax.set_ylabel('ROC-AUC',        fontsize=17)\n",
++        "ax.tick_params(labelsize=15)\n",
++        "ax.set_ylim(0.4, 1.05)\n",
++        "ax.legend(fontsize=14)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph2_roc_auc.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph2 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 3. 클래스별 정확도 (grouped bar)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(20, 9))\n",
++        "x = np.arange(len(labels))\n",
++        "w = 0.26\n",
++        "\n",
++        "ax.bar(x - w, benign, w, label='양성 Benign',    color='#e07070', zorder=3)\n",
++        "ax.bar(x,     malig,  w, label='악성 Malignant',  color='#e0c040', zorder=3)\n",
++        "ax.bar(x + w, normal, w, label='정상 Normal',     color='#60c060', zorder=3)\n",
++        "ax.axhline(80, color='gray', linestyle='--', lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "ax.set_title('클래스별 정확도 (Per-Class Accuracy by Blur Sigma)', fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++        "ax.set_ylabel('정확도 (%)',      fontsize=17)\n",
++        "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++        "ax.tick_params(axis='y', labelsize=15)\n",
++        "ax.set_ylim(0, 115)\n",
++        "ax.legend(fontsize=14)\n",
++        "ax.grid(axis='y', zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph3_class_accuracy.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph3 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 4. 보안성 vs AI 성능 트레이드오프 (scatter)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "blur_strength = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++        "cmap = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++        "norm_vals = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++        "\n",
++        "fig, ax = plt.subplots(figsize=(13, 10))\n",
++        "for i, (bs, ac, nv, lbl) in enumerate(zip(blur_strength, accs, norm_vals, labels)):\n",
++        "    color = cmap(nv)\n",
++        "    ax.scatter(bs, ac, s=300, color=color, zorder=4, edgecolors='white', linewidths=1)\n",
++        "    ax.annotate(lbl.replace('\\n',''), (bs, ac), textcoords='offset points',\n",
++        "                xytext=(8, 4), fontsize=12, color='black')\n",
++        "\n",
++        "sm = plt.cm.ScalarMappable(cmap=cmap,\n",
++        "     norm=plt.Normalize(vmin=min(accs), vmax=max(accs)))\n",
++        "sm.set_array([])\n",
++        "cbar = plt.colorbar(sm, ax=ax)\n",
++        "cbar.set_label('AI 정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++        "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++        "\n",
++        "ax.set_title('보안성 vs AI 성능 트레이드오프 (Security vs Performance)', fontsize=20, pad=16)\n",
++        "ax.set_xlabel('블러 강도 / Blur Strength (높을수록 보안 강함) →', fontsize=15)\n",
++        "ax.set_ylabel('AI 정확도 (%)', fontsize=15)\n",
++        "ax.tick_params(labelsize=14)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph4_tradeoff.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph4 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 5. 정확도 변화 추세 (multi-line)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(20, 9))\n",
++        "x = np.arange(len(labels))\n",
++        "ax.plot(x, accs,   color='black', lw=3,   marker='o', markersize=10, label='전체 정확도', zorder=4)\n",
++        "ax.plot(x, benign, color='#e07070', lw=2,   marker='s', markersize=9,  linestyle='--', label='양성 Benign', zorder=3)\n",
++        "ax.plot(x, malig,  color='#e0c040', lw=2,   marker='^', markersize=9,  linestyle='--', label='악성 Malignant', zorder=3)\n",
++        "ax.plot(x, normal, color='#60c060', lw=2,   marker='D', markersize=9,  linestyle='--', label='정상 Normal', zorder=3)\n",
++        "ax.axhline(80, color='gray', linestyle=':', lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "for i, val in enumerate(accs):\n",
++        "    ax.annotate(f'{val:.1f}%', (x[i], val), textcoords='offset points',\n",
++        "                xytext=(0, 10), ha='center', fontsize=12, color='#ffd700')\n",
++        "\n",
++        "ax.set_title('블러 강도에 따른 정확도 변화 추세 (Accuracy Trend by Blur Sigma)', fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (왼쪽=약한 블러 / 오른쪽=강한 블러)', fontsize=16)\n",
++        "ax.set_ylabel('정확도 (%)', fontsize=16)\n",
++        "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++        "ax.tick_params(axis='y', labelsize=15)\n",
++        "ax.set_ylim(-5, 115)\n",
++        "ax.legend(fontsize=14)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph5_trend.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph5 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 6. Sigma vs Accuracy (log scale)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(18, 8))\n",
++        "ax.plot(labels, accs, color='black', lw=3, marker='o', markersize=10,\n",
++        "        markerfacecolor='white', markeredgecolor='black', zorder=4)\n",
++        "\n",
++        "for i, (lbl, val) in enumerate(zip(labels, accs)):\n",
++        "    ax.annotate(f'{val:.1f}%', (lbl, val), textcoords='offset points',\n",
++        "                xytext=(0, 12), ha='center', fontsize=15, color='black')\n",
++        "\n",
++        "ax.set_title('블러 Sigma vs AI 정확도 (log scale)',\n",
++        "             fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (log scale) →', fontsize=17)\n",
++        "ax.set_ylabel('정확도 (%)',               fontsize=17)\n",
++        "ax.tick_params(labelsize=15)\n",
++        "ax.set_ylim(0, 110)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph6_sigma_vs_acc.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph6 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 7. 클래스별 정확도 히트맵\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "heatmap_data = np.array([benign, malig, normal])\n",
++        "row_labels   = ['양성\\n(Benign)', '악성\\n(Malignant)', '정상\\n(Normal)']\n",
++        "\n",
++        "cmap_rg = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++        "fig, ax = plt.subplots(figsize=(20, 7))\n",
++        "im = ax.imshow(heatmap_data, cmap=cmap_rg, aspect='auto', vmin=0, vmax=100)\n",
++        "\n",
++        "for i in range(3):\n",
++        "    for j in range(len(labels)):\n",
++        "        val = heatmap_data[i, j]\n",
++        "        tc = 'black' if 60 < val < 90 else 'white'\n",
++        "        ax.text(j, i, f'{val:.0f}%', ha='center', va='center',\n",
++        "                fontsize=17, fontweight='bold', color=tc)\n",
++        "\n",
++        "ax.set_xticks(range(len(labels))); ax.set_xticklabels(labels, fontsize=15)\n",
++        "ax.set_yticks(range(3));           ax.set_yticklabels(row_labels, fontsize=16)\n",
++        "ax.set_title('클래스별 정확도 히트맵 (Per-Class Accuracy Heatmap)', fontsize=22, pad=16)\n",
++        "\n",
++        "cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)\n",
++        "cbar.set_label('정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++        "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph7_heatmap.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph7 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 8. 레이더 차트\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 실제 존재하는 sigma 값 중에서 4개(처음/중간1/중간2/끝)를 자동 선택\n",
++        "_n = len(sigmas)\n",
++        "_idxs = sorted(set([0, _n // 3, 2 * _n // 3, _n - 1]))\n",
++        "radar_sigmas = [sigmas[i] for i in _idxs]\n",
++        "radar_colors = ['#ffd700', '#2ea043', '#e07070', '#7ca4f4'][:len(radar_sigmas)]\n",
++        "radar_names  = [f'σ={s}' for s in radar_sigmas]\n",
++        "\n",
++        "categories     = ['Benign', '전체 정확도', 'ROC-AUC×100', 'Normal', 'Malignant']\n",
++        "N = len(categories)\n",
++        "angles = [n / float(N) * 2 * np.pi for n in range(N)]\n",
++        "angles += angles[:1]\n",
++        "\n",
++        "fig, ax = plt.subplots(figsize=(11, 10), subplot_kw={'polar': True})\n",
++        "ax.set_facecolor('white')\n",
++        "ax.set_theta_offset(np.pi / 2)\n",
++        "ax.set_theta_direction(-1)\n",
++        "plt.xticks(angles[:-1], categories, fontsize=16, color='black')\n",
++        "ax.set_rlabel_position(30)\n",
++        "plt.yticks([20,40,60,80,100], ['20','40','60','80','100'], fontsize=11, color='black')\n",
++        "ax.set_ylim(0, 100)\n",
++        "\n",
++        "for sig, color, name in zip(radar_sigmas, radar_colors, radar_names):\n",
++        "    d = data[sig]\n",
++        "    vals = [\n",
++        "        d['per_class_acc']['Bengin cases'] * 100,\n",
++        "        d['acc'] * 100,\n",
++        "        d['roc_auc'] * 100,\n",
++        "        d['per_class_acc']['Normal cases'] * 100,\n",
++        "        d['per_class_acc']['Malignant cases'] * 100,\n",
++        "    ]\n",
++        "    vals += vals[:1]\n",
++        "    ax.plot(angles, vals, color=color, lw=2.5, marker='o', markersize=6, label=name)\n",
++        "    ax.fill(angles, vals, color=color, alpha=0.08)\n",
++        "\n",
++        "ax.set_title('주요 블러 강도별 성능 레이더 차트 (Radar Chart by Blur Sigma)',\n",
++        "             fontsize=18, pad=28)\n",
++        "ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.15), fontsize=14)\n",
++        "ax.grid(color='#ccc', linestyle='--', alpha=0.6)\n",
++        "ax.spines['polar'].set_color('#999')\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph8_radar.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph8 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 9. Confusion Matrix 비교 (최소 sigma vs 최대 sigma)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "def draw_cm(ax, cm, title, acc):\n",
++        "    cm_arr = np.array(cm)\n",
++        "    cmap_b = plt.cm.Blues\n",
++        "    im = ax.imshow(cm_arr, cmap=cmap_b, aspect='auto')\n",
++        "    cl = ['Benign', 'Malignant', 'Normal']\n",
++        "    ax.set_xticks(range(3)); ax.set_xticklabels(cl, fontsize=14)\n",
++        "    ax.set_yticks(range(3)); ax.set_yticklabels(cl, fontsize=14)\n",
++        "    ax.set_xlabel('AI 예측 (Predicted)', fontsize=14)\n",
++        "    ax.set_ylabel('실제 정답 (Actual)',   fontsize=14)\n",
++        "    ax.set_title(f'{title}', fontsize=16, pad=10)\n",
++        "    thresh = cm_arr.max() / 2\n",
++        "    for i in range(3):\n",
++        "        for j in range(3):\n",
++        "            ax.text(j, i, str(cm_arr[i, j]), ha='center', va='center',\n",
++        "                    fontsize=18, fontweight='bold',\n",
++        "                    color='black' if cm_arr[i, j] > thresh else 'black')\n",
++        "    return im\n",
++        "\n",
++        "_min_sig, _max_sig = sigmas[0], sigmas[-1]\n",
++        "\n",
++        "fig, axes = plt.subplots(1, 2, figsize=(18, 8))\n",
++        "fig.patch.set_facecolor('white')\n",
++        "fig.suptitle('Confusion Matrix: 약한 블러 vs 강한 블러 비교', fontsize=22, y=1.02)\n",
++        "\n",
++        "draw_cm(axes[0], data[_min_sig]['cm'], f'약한 블러 (σ={_min_sig})', data[_min_sig]['acc']*100)\n",
++        "im2 = draw_cm(axes[1], data[_max_sig]['cm'], f'최강 블러 (σ={_max_sig})', data[_max_sig]['acc']*100)\n",
++        "\n",
++        "cbar = fig.colorbar(im2, ax=axes, fraction=0.03, pad=0.04)\n",
++        "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph9_confusion.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph9 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 10. 종합 대시보드\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig = plt.figure(figsize=(24, 16))\n",
++        "fig.patch.set_facecolor('white')\n",
++        "fig.suptitle('블러 강도별 AI 성능 종합 대시보드 (Gaussian Blur AI Performance Dashboard)',\n",
++        "    fontsize=20, y=0.99\n",
++        ")\n",
++        "gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.45, wspace=0.35,\n",
++        "                       top=0.93, bottom=0.06, left=0.06, right=0.97)\n",
++        "\n",
++        "# [0,0] 정확도 막대\n",
++        "ax1 = fig.add_subplot(gs[0, 0])\n",
++        "bars = ax1.bar(labels, accs, color=BAR_COLORS, width=0.65, zorder=3)\n",
++        "for bar, val in zip(bars, accs):\n",
++        "    ax1.text(bar.get_x()+bar.get_width()/2, bar.get_height()+0.8,\n",
++        "             f'{val:.1f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')\n",
++        "ax1.set_title('블러 강도별 정확도', fontsize=15, pad=8)\n",
++        "ax1.set_ylabel('정확도 (%)', fontsize=13)\n",
++        "ax1.tick_params(labelsize=11)\n",
++        "ax1.set_ylim(0, 110)\n",
++        "ax1.grid(axis='y', zorder=0)\n",
++        "\n",
++        "# [0,1] 실험 결론 텍스트 박스 (실제 데이터로 자동 계산)\n",
++        "ax_txt = fig.add_subplot(gs[0, 1])\n",
++        "ax_txt.set_facecolor('white')\n",
++        "ax_txt.axis('off')\n",
++        "\n",
++        "_best_idx  = int(np.argmax(accs))\n",
++        "_worst_idx = int(np.argmin(accs))\n",
++        "conclusion = (\n",
++        "    f\"▶ 실험 조건\\n\"\n",
++        "    f\"   Sigma: {len(sigmas)}개 조건 실험\\n\\n\"\n",
++        "    f\"▶ 최고 성능\\n\"\n",
++        "    f\"   {labels[_best_idx]}:  {accs[_best_idx]:.1f}%\\n\"\n",
++        "    f\"   ROC-AUC: {aucs[_best_idx]:.4f}\\n\\n\"\n",
++        "    f\"▶ 최저 성능\\n\"\n",
++        "    f\"   {labels[_worst_idx]}  정확도: {accs[_worst_idx]:.1f}%\\n\\n\"\n",
++        "    f\"▶ 핵심 관찰\\n\"\n",
++        "    f\"   악성(Malignant) 클래스\\n\"\n",
++        "    f\"   최저: {min(malig):.1f}%\"\n",
++        ")\n",
++        "ax_txt.text(0.05, 0.97, conclusion, transform=ax_txt.transAxes,\n",
++        "            fontsize=13, va='top', linespacing=1.6, color='black', family=FONT)\n",
++        "ax_txt.set_title('실험 결론', fontsize=15, pad=8)\n",
++        "\n",
++        "# [0,2] ROC-AUC\n",
++        "ax2 = fig.add_subplot(gs[0, 2])\n",
++        "ax2.plot(range(len(labels)), aucs, color='#7ca4f4', lw=2.5,\n",
++        "         marker='o', markersize=7, markerfacecolor='white', zorder=4)\n",
++        "for i, v in enumerate(aucs):\n",
++        "    ax2.annotate(f'{v:.3f}', (i, v), textcoords='offset points',\n",
++        "                 xytext=(0,8), ha='center', fontsize=10, color='black')\n",
++        "ax2.axhline(0.9, color='#2ea043', linestyle='--', lw=1.2)\n",
++        "ax2.axhline(0.8, color='#d4a017', linestyle='--', lw=1.2)\n",
++        "ax2.set_title('ROC-AUC', fontsize=15, pad=8)\n",
++        "ax2.set_ylabel('ROC-AUC', fontsize=13)\n",
++        "ax2.set_xticks(range(len(labels))); ax2.set_xticklabels(labels, fontsize=10)\n",
++        "ax2.set_ylim(0.5, 1.05)\n",
++        "ax2.grid(zorder=0)\n",
++        "\n",
++        "# [1,0] 클래스별 정확도\n",
++        "ax3 = fig.add_subplot(gs[1, 0])\n",
++        "x = np.arange(len(labels))\n",
++        "ax3.plot(x, benign, color='#e07070', lw=2, marker='s', markersize=7, linestyle='--', label='양성(Benign)')\n",
++        "ax3.plot(x, malig,  color='#e0c040', lw=2, marker='^', markersize=7, linestyle='--', label='악성(Malignant)')\n",
++        "ax3.plot(x, normal, color='#60c060', lw=2, marker='D', markersize=7, linestyle='--', label='정상(Normal)')\n",
++        "ax3.set_title('클래스별 정확도', fontsize=15, pad=8)\n",
++        "ax3.set_ylabel('정확도 (%)', fontsize=13)\n",
++        "ax3.set_xticks(x); ax3.set_xticklabels(labels, fontsize=10)\n",
++        "ax3.set_ylim(0, 110)\n",
++        "ax3.legend(fontsize=11)\n",
++        "ax3.grid(zorder=0)\n",
++        "\n",
++        "# [1,1] 히트맵\n",
++        "ax4 = fig.add_subplot(gs[1, 1])\n",
++        "cmap_rg2 = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++        "hm = np.array([benign, malig, normal])\n",
++        "im4 = ax4.imshow(hm, cmap=cmap_rg2, aspect='auto', vmin=0, vmax=100)\n",
++        "for i in range(3):\n",
++        "    for j in range(len(labels)):\n",
++        "        v = hm[i,j]\n",
++        "        tc = 'black' if 50 < v < 85 else 'white'\n",
++        "        ax4.text(j, i, f'{v:.0f}%', ha='center', va='center', fontsize=9, color=tc, fontweight='bold')\n",
++        "ax4.set_xticks(range(len(labels))); ax4.set_xticklabels(labels, fontsize=9)\n",
++        "ax4.set_yticks([0,1,2]); ax4.set_yticklabels(['양성','악성','정상'], fontsize=13)\n",
++        "ax4.set_title('클래스별 정확도 히트맵', fontsize=15, pad=8)\n",
++        "\n",
++        "# [1,2] 트레이드오프 scatter\n",
++        "ax5 = fig.add_subplot(gs[1, 2])\n",
++        "bs_vals = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++        "norm_v  = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++        "for bsv, ac, nv, lbl in zip(bs_vals, accs, norm_v, labels):\n",
++        "    color = cmap_rg2(nv)\n",
++        "    ax5.scatter(bsv, ac, s=120, color=color, zorder=4, edgecolors='white', lw=0.8)\n",
++        "    ax5.annotate(lbl.replace('\\n',''), (bsv, ac), textcoords='offset points',\n",
++        "                 xytext=(5,3), fontsize=10, color='black')\n",
++        "ax5.set_title('보안 vs 성능', fontsize=15, pad=8)\n",
++        "ax5.set_xlabel('블러 강도 →', fontsize=13)\n",
++        "ax5.set_ylabel('AI(정확도%)', fontsize=13)\n",
++        "ax5.grid(zorder=0)\n",
++        "\n",
++        "plt.savefig(f'{OUT}/graph10_dashboard.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph10 done')\n",
++        "print('\\n✅ 모든 그래프 생성 완료!')\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": null,
++      "metadata": {
++        "colab": {
++          "base_uri": "https://localhost:8080/"
++        },
++        "id": "SVN0ofgatH2p",
++        "outputId": "dcfd31bb-be1f-49b7-8863-97d583b3f4e4"
++      },
++      "outputs": [],
++      "source": [
++        "\"\"\"\n",
++        "Block Encryption 실험 결과 시각화 스크립트\n",
++        "all_block_results.json → graph1 (정확도 막대그래프)만 생성\n",
++        "\"\"\"\n",
++        "\n",
++        "import json\n",
++        "import matplotlib\n",
++        "matplotlib.use('Agg')\n",
++        "import matplotlib.pyplot as plt\n",
++        "import matplotlib.font_manager as fm\n",
++        "import warnings\n",
++        "import os\n",
++        "warnings.filterwarnings('ignore')\n",
++        "\n",
++        "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++        "_CANDIDATE_PATHS = [\n",
++        "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++        "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),\n",
++        "]\n",
++        "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++        "\n",
++        "if _NANUM_PATH:\n",
++        "    fm.fontManager.addfont(_NANUM_PATH)\n",
++        "    fm._load_fontmanager(try_read_cache=False)\n",
++        "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++        "else:\n",
++        "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++        "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++        "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다.')\n",
++        "\n",
++        "plt.rcParams.update({\n",
++        "    'font.family': FONT,\n",
++        "    'axes.unicode_minus': False,\n",
++        "    'figure.facecolor': 'white',\n",
++        "    'axes.facecolor':   'white',\n",
++        "    'axes.edgecolor':   'black',\n",
++        "    'axes.labelcolor':  'black',\n",
++        "    'xtick.color':      'black',\n",
++        "    'ytick.color':      'black',\n",
++        "    'text.color':       'black',\n",
++        "    'grid.color':       '#cccccc',\n",
++        "    'grid.linestyle':   '--',\n",
++        "    'grid.alpha':       0.5,\n",
++        "    'legend.facecolor': 'white',\n",
++        "    'legend.edgecolor': '#cccccc',\n",
++        "    'legend.labelcolor':'black',\n",
++        "})\n",
++        "\n",
++        "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++        "JSON_PATH = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\\all_block_results.json\"\n",
++        "OUT       = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\"\n",
++        "os.makedirs(OUT, exist_ok=True)\n",
++        "\n",
++        "# ── 데이터 로드 ────────────────────────────────────────────\n",
++        "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++        "    raw = json.load(f)\n",
++        "\n",
++        "data = {int(k): v for k, v in raw.items()}\n",
++        "# block size는 큰 값(원본에 가까움)부터 작은 값(강한 암호화) 순서로 정렬\n",
++        "block_sizes = sorted(data.keys(), reverse=True)\n",
++        "\n",
++        "def block_label(b):\n",
++        "    if b == max(block_sizes):\n",
++        "        return '원본'\n",
++        "    if b == 1:\n",
++        "        return '픽셀\\n1×1'\n",
++        "    return f'{b}×{b}'\n",
++        "\n",
++        "labels = [block_label(b) for b in block_sizes]\n",
++        "accs   = [data[b]['acc'] * 100 for b in block_sizes]\n",
++        "\n",
++        "# 색상 팔레트 (정확도에 따라 green→red 계열, 이미지와 동일한 룩)\n",
++        "def acc_color(val):\n",
++        "    if val >= 90: return '#e0602a'   # 진한 주황빨강\n",
++        "    if val >= 80: return '#e0602a'\n",
++        "    if val >= 75: return '#e8a838'   # 주황\n",
++        "    if val >= 65: return '#d4d838'   # 연두노랑\n",
++        "    if val >= 58: return '#8ec13a'   # 연두\n",
++        "    return '#2ea05a'                 # 초록\n",
++        "\n",
++        "BAR_COLORS = [acc_color(a) for a in accs]\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 1. 블록 크기별 AI 정확도 (막대 그래프)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(22, 11))\n",
++        "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++        "\n",
++        "for bar, val in zip(bars, accs):\n",
++        "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++        "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++        "\n",
++        "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++        "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++        "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "ax.set_xlabel('블록 크기', fontsize=45)\n",
++        "ax.set_ylabel('정확도 (%)', fontsize=45)\n",
++        "ax.tick_params(labelsize=30)\n",
++        "ax.set_ylim(0, 115)\n",
++        "ax.legend(fontsize=40)\n",
++        "ax.grid(axis='y', zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph1 done')\n"
++      ]
++    }
++  ],
++  "metadata": {
++    "colab": {
++      "provenance": []
++    },
++    "kernelspec": {
++      "display_name": "base",
++      "language": "python",
++      "name": "python3"
++    },
++    "language_info": {
++      "codemirror_mode": {
++        "name": "ipython",
++        "version": 3
++      },
++      "file_extension": ".py",
++      "mimetype": "text/x-python",
++      "name": "python",
++      "nbconvert_exporter": "python",
++      "pygments_lexer": "ipython3",
++      "version": "3.13.9"
++    }
++  },
++  "nbformat": 4,
++  "nbformat_minor": 0
++}
+Binary files /dev/null and 연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_논문_심사용.hwp differ
+Binary files /dev/null and 연구1_하계_EfficientNetV2-S/논문/원문_최종.hwp differ
+--- /dev/null
++++ 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pdf
+@@ -0,0 +1,167 @@
++=== 1쪽 ===
++2 0 2 6 S U M M E R C O N F E R E N C E
++EfficientNetV2-S 모델에서개인정보보호를
++위한영상비식별화기법의성능분석
++Performance Analysis of Video De-identification Techniques for Privacy Protection in EfficientNetN2-S Model
++곽윤석·  김남기(교신저자)
++경기대학교컴퓨터과학과
++
++=== 2쪽 ===
++I N T R O D U C T I O N
++의료AI와보안의충돌
++생명을구하는기술, 동시에지켜야할프라이버시
++폐암조기진단을위한AI 도입은이제선택이아니라필수입니다. 
++하지만환자의민감한정보를지키기위한규제는갈수록강화되고있습니다.
++01
++데이터활용의장벽
++의료데이터는민감도가높아, 연구와서
++비스개발전과정에서법적·윤리적개인
++정보보호요구가빠르게늘고있습니다.
++02
++성능저하의딜레마
++비식별화가진단AI의정확도를얼마나
++떨어뜨리는지에대해서는아직명확한
++분석이부족한실정입니다.
++03
++연구의지향점
++보안성과진단정확도의균형점을찾아, 
++의료AI 서비스에실질적으로적용할수
++있는기준을제시하고자합니다.
++
++=== 3쪽 ===
++B A C K G R O U N D
++비식별화와인공지능
++Gaussian Blur
++픽셀을흐려정보를가리는전통적인
++방식입니다. 구현은간단하지만, 진단
++에꼭필요한경계정보까지함께지워
++질위험이있습니다.
++Block Encryption
++영상을블록단위로뒤섞어구조는유
++지한채내용만알아볼수없게만드는
++방식입니다. 맥락이남아있어AI 학습
++에도유리합니다.
++EfficientNetV2-S
++연산효율성과정확도를함께갖춘최
++신분류모델입니다. 점진적학습방식
++덕분에의료영상분류에도강점을보
++입니다.
++
++=== 4쪽 ===
++E X P E R I M E N T A L S E T U P
++정밀한비교분석
++D A T A S E T C O N F I G U R A T I O N
++폐CT 영상데이터셋
++512×512의높은해상도로촬영해, 미세한병변까지놓치지않도록구성
++했습니다.
++3개클래스분류
++Benign(양성), Malignant(악성), Normal(정상), 세가지로정밀하게분류
++했습니다.
++E X P E R I M E N T A L P A R A M E T E R S
++비식별화변수통제
++Gaussian Blur 강도와Block Encryption 크기를단계적으로조정하며, 성
++능이무너지는지점을찾았습니다.
++Sigma 0 → 256
++Block 256 → 1×1
++공정한비교환경
++EfficientNetV2-S를기준으로하이퍼파라미터를동일하게맞춰, 기법자
++체의영향만순수하게측정했습니다.
++
++=== 5쪽 ===
++Gaussian Blur 실험사진
++원본
++σ = 4
++σ = 256
++
++=== 6쪽 ===
++Gaussian Blur의한계분석
++I N I T I A L S T A B I L I T Y
++초기성능유지
++σ=1, 2 구간에서는원본과큰차이없이진단가치를유지합니다.
++C R I T I C A L P O I N T
++임계점의붕괴
++σ=8을지나면서정확도가80% 아래로급격히떨어지고, 분류능력도함
++께무너집니다.
++C O N C L U S I O N
++정보의완전소멸
++강한블러는병변의경계정보까지지워버려, AI 진단에는적합하지않
++다는것을보여줍니다.
++Figure 1. Accuracy trend by Gaussian Blur intensity (σ)
++
++=== 7쪽 ===
++
++=== 8쪽 ===
++
++=== 9쪽 ===
++
++=== 10쪽 ===
++Block Encryption 실험사진
++원본
++32 * 32
++1 * 1
++
++=== 11쪽 ===
++Block Encryption의압도적안정성
++P E R F O R M A N C E
++원본의재현
++128×128 이상에서는원본과다름없는92.5%의정확도를유지해, 진단
++가치를그대로보존합니다.
++R E S I L I E N C E
++회복탄력성
++블록이작아져도성능은완만하게떨어져, 32×32에서도79.2%를지켜
++냅니다.
++92.9%
++원본
++79.2%
++32×32
++52.9%
++1×1
++[그림2] Block Encryption 크기에따른Accuracy 변화추이
++
++=== 12쪽 ===
++
++=== 13쪽 ===
++
++=== 14쪽 ===
++
++=== 15쪽 ===
++결과고찰: 보안과성능의조화
++[그림3] 암호화강도에따른AI 정확도변화및구역분석
++궤적의차이
++지수적으로급락하는Blur와달리, Block Encryption은완만하고안
++정적인곡선을그립니다.
++보안의재정의
++고보안구역에서도성능을크게잃지않아, 의료데이터의가치를
++지켜냅니다.
++최적의솔루션
++32×32 블록이보안성과정확도를모두만족하는새로운기준점이
++될수있음을확인했습니다.
++
++=== 16쪽 ===
++
++=== 17쪽 ===
++
++=== 18쪽 ===
++C O N C L U S I O N
++안전한의료AI의미래
++Block Encryption은프라이버시보호와의료혁신, 두가치를함께지킬수있는가장현실적인대안
++입니다.
++풀링실험과지표수식화
++Pooling 기법별성능차이를실험하고, 보안성과정확도를함께나타내는
++평가지표를수식으로정립하는중입니다.
++모델범용성검증
++ResNet50, ViT 등다른모델에도적용해, 이번결과가일반적으로성립하
++는지검증할계획입니다.
++분산추론시스템
++엣지와클라우드를연계해, 민감한데이터가외부로나가지않는구조를
++만들예정입니다.
++실시간최적화
++고해상도영상도즉시비식별화하고진단할수있도록처리속도를높이
++고자합니다.
++
++=== 19쪽 ===
++Q & A
++경청해주셔서감사합니다
++Thank you for listening
++본연구는정부(과학기술정보통신부)의재원으로정보통신기획평가원학·석사연계ICT핵심인재양성사업의지원을받아수행된연구임(IITP-2024-00436954). 또한2024년도정부(교육부)의재원으로
++한국연구재단의지원을받아수행된기초연구사업임(No. RS-2020-NR049579)
+Binary files /dev/null and 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pptx differ
+Binary files /dev/null and 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.docx differ
+--- /dev/null
++++ 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.pdf
+@@ -0,0 +1,122 @@
++=== 1쪽 ===
++슬라이드5 (Gaussian Blur) — 대본에넣을구체적수치
++·
++초기안정구간: 원본92.5% →σ=1 89.6% →σ=2 89.2% (거의원본수준
++유지)
++·
++하락시작: σ=4 84.6% →σ=8 78.8% (여기서80% 기준선최초하회)
++·
++급락구간: σ=16 67.5% →σ=32 53.3% →σ=64 45.0% (전체실험중
++최저점)
++·
++이후반등아닌정체: σ=128, σ=256 둘다49.6%로소폭반등후고정(더
++이상떨어지지않고바닥에서정체)
++·
++ROC-AUC 동반붕괴: 원본0.9791 →σ=8 0.9147(0.9 붕괴) →σ=16
++0.8487(0.8 붕괴) →σ=64 0.6496(최저)
++·
++클래스별붕괴(가장중요): Malignant 정확도원본98% →σ=16 66% →
++σ=32 25% →σ=64 11% →σ=128·σ=256 0%
++·
++Confusion Matrix 근거: σ=256 에서실제Malignant 80 건전부
++오분류(Benign 21 건, Normal 59 건), Malignant 로예측된건단한건도
++없음
++·
++Benign(84%)·Normal(65%)은같은조건에서상대적으로유지됨→
++Malignant 만선택적·완전붕괴
++
++=== 2쪽 ===
++슬라이드6 (Block Encryption) — 대본에넣을구체적수치
++·
++원본92.9% →256×256 92.5% (여기까지는원본과사실상동일)
++·
++128×128 부터이미하락시작: 88.3% →64×64 86.7% (기존대본
++"128×128=92.9% 유지"는오류, 정정필요)
++·
++32×32 79.2% (80% 기준선근접) →16×16 72.5% →8×8 73.3%(소폭반등)
++→4×4 61.7% →2×2 55.4% →1×1(픽셀완전셔플) 52.9%
++·
++ROC-AUC: 원본0.9804 →32×32 0.9606(0.96 대유지) →16×16 0.9150(0.9
++기준선턱걸이) →4×4 0.7642(0.8 붕괴) →1×1 0.6907
++·
++클래스별반전패턴(가장중요): Malignant 는원본96% →32×32 86% →
++8×8 85% →1×1 에서도71% 유지(거의안무너짐)
++·
++반대로Normal 이붕괴: 원본90% →8×8 48% →4×4 31% →2×2 10% →
++1×1 0%
++·
++Confusion Matrix 근거: 1×1 조건에서실제Normal 80 건중정확히
++Normal 로예측된건0 건(Benign 29 건, Malignant 51 건으로오분류). 반면
++실제Malignant 80 건중57 건(71%)은여전히정확히Malignant 로분류
++
++=== 3쪽 ===
++슬라이드7 (비교/고찰)에넣을대비포인트
++·
++트레이드오프산점도: 원본·256×256·128×128·64×64 는"고성능-저위험"
++구역에몰려있고, 32×32 부터완만히이동, 4×4 이하부터급격히저성능
++구역진입
++·
++핵심대비문장: "Blur 는극단적조건에서암(Malignant)을놓치는
++방향으로실패하고, Block Encryption 은정상(Normal)을암으로오인하는
++방향으로실패한다" →후자가임상적으로훨씬안전(위음성대신위양성
++쪽으로오류가쏠림)
++·
++32×32 가균형점이라는기존결론에수치적근거추가: 정확도79.2% +
++ROC-AUC 0.9606 을동시에확보하는지점
++
++=== 4쪽 ===
++Q1. Sigma=64에서최저점(45.0%)을찍고128/256에서49.6%로반등하는이유는?
++A. 정보가균질화되어서가아니라, **클래스별붕괴시점이어긋나면서생기는재가중효과**입니
++다. Heatmap을보면σ=64에서Malignant는이미11%로거의붕괴했는데Normal은82%로멀쩡
++합니다. σ≥128에서는모델이Malignant 예측을아예포기(0%)하고Benign(84%)·Normal 위주로만
++찍기시작하면서, 전체평균이오히려소폭오르는겁니다. Block Encryption의8x8(73.3%)이
++16x16(72.5%)보다높은것도같은메커니즘이라blur만의특이현상이아니라다중클래스평균의
++일반적함정으로설명하는게정확합니다.
++Q2. 오버샘플링/augmentation 방식은? Data leakage 위험은없나요?
++A. 원본케이스ID 기준으로먼저train/test를분리한뒤, 각그룹내에서만augmentation(회전·반
++전)을적용했습니다. 따라서동일원본에서파생된augmented 이미지가train과test에동시에걸
++치는일은없으며, 이전에발견했던오버샘플링관련leakage(64.7% 오염) 문제와달리이부분은
++설계단계에서원천차단했습니다.
++Q3. Block Encryption과Gaussian Blur의보안강도를어떻게동등하게비교했나요?
++A. 1:1로강도를매칭한것이아니라각기법을독립적으로스윕한뒤성능기준선도달시점으로
++비교했습니다. 80% 정확도기준선은Blur(σ=4, 84.6%)와Block(64x64, 86.7%) 모두4단계째에하락
++하며거의동일하지만, ROC-AUC 0.9 기준선은Blur가5단계째(σ=8, 0.9147), Block이6단계째
++(16x16, 0.9150)에하락해Block Encryption이판별력을한단계더오래유지합니다. 즉원시정확
++도붕괴속도는비슷하지만판별력유지력은Block이근소하게앞선다는것이데이터에기반한
++정확한결론입니다.
++Q4. Block Encryption에서는Normal이붕괴하고Malignant는견고한데, Blur에서는반
++대로Malignant가붕괴하는이유는?
++A. Confusion Matrix에서명확히확인됩니다. 극단적조건(Block 1x1, Blur σ=256)에서완전히대칭
++적인패턴이나타나는데, Block 1x1에서는모델이Normal을예측값으로단한번도내놓지않고
++(0), Blur σ=256에서는반대로Malignant를단한번도예측하지않습니다(0). Block Encryption은
++국소적병변텍스처는보존하고전역공간배치만흐트러뜨리므로국소적으로뚜렷한Malignant
++병변이상대적으로잘보존되는반면, Normal은전역조직균일성으로판단되기때문에공간배치
++가깨지면판단근거가사라집니다. Blur는반대로경계정보를직접뭉개므로경계가핵심인
++Malignant가가장먼저타격을받습니다.
++
++=== 5쪽 ===
++Q5. 32×32(Block)/특정sigma가"최적의균형점"이라는결론이이데이터셋·모델에한
++정되지않나요?
++A. 맞는지적입니다. Tradeoff scatter에서32x32가고성능클러스터와저성능클러스터사이의변
++곡점으로뚜렷하게나타나지만, 이는EfficientNetV2-S와폐CT 데이터셋이라는특정조건의결론
++입니다. 절대적수치보다는"Block Encryption이Blur보다완만한붕괴곡선을보인다"는상대적
++경향성이핵심주장이며, 모델범용성검증(ResNet50, ViT 등)은향후연구로계획되어있습니다.
++Q6. 비식별화처리를학습단계에도적용했나요, 아니면원본으로학습한모델을테스트
++만비식별화했나요?
++A. 각조건(sigma, 블록크기)별로개별학습을진행했습니다. 이는"모델이해당왜곡패턴에적
++응할기회가있었던상태의성능"을의미하며, 실제배포환경에서예고없이비식별화이미지를
++마주쳤을때의성능과는다르다는점을한계로명시할필요가있습니다.
++오늘실험에서확인한핵심은, Blur와Block Encryption이성능을잃는양상자체가정반대라는점
++입니다.
++Blur는병변의경계정보를직접지우기때문에보안수준이높아질수록악성종양을놓치는방
++향으로실패하는반면, Block Encryption은국소적인병변텍스처를상대적으로보존하기때문에
++가장강한조건에서도악성종양의71%는여전히정확히분류해내고, 대신정상소견을과잉의
++심하는쪽으로오류가쏠립니다.
++암을놓치는것보다정상을의심하는실패가임상적으로훨씬안전하다는점에서, 저희는Block
++Encryption을실무에적용가능한현실적대안으로보고있습니다.
++다만오늘질문주신것처럼, 32×32라는균형점은EfficientNetV2-S와이번데이터셋에한정된결
++과이고, 각조건을개별적으로학습시켰기때문에실제배포환경과는차이가있을수있다는한
++계도분명히인지하고있습니다.
++이를보완하기위해ResNet50, ViT 등으로의모델범용성검증과, 엣지디바이스에서첫컨볼루션
++단계만처리해특징맵형태로만전송하는분산추론구조를Block Encryption과결합하는연구를
++이어가고있습니다.
+Binary files /dev/null and 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.docx differ
+--- /dev/null
++++ 연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.pdf
+@@ -0,0 +1,198 @@
++=== 1쪽 ===
++EfficientNetV2-S 모델에서개인정보보호를
++위한영상비식별화기법의성능분석
++2026 하계학술대회· 곽윤석· 김남기(교신저자) · 경기대학교컴퓨터과학과
++슬라이드1. 표지
++안녕하십니까. 경기대학교컴퓨터과학과곽윤석입니다.
++오늘발표할주제는
++'EfficientNetV2-S 모델에서개인정보보호를위한영상비식별화기법의성능분석'
++입니다.
++폐CT 영상에Gaussian Blur 와Block Encryption 이라는서로다른두가지비식별화기법을
++적용했을때, EfficientNetV2-S 모델의폐암분류성능이각각어떻게달라지는지를정량적으로
++비교·분석한연구입니다.
++
++=== 2쪽 ===
++슬라이드2. 서론— 의료AI와보안의충돌
++먼저연구의출발점이된문제의식을말씀드리겠습니다.
++폐암은조기에발견할수록생존율이크게높아지는만큼, 폐암조기진단을위한AI 도입은이제
++선택이아니라필수적인흐름이되었습니다.
++하지만이러한기술발전과동시에, 환자의민감한정보를보호하기위한법적·제도적규제역시
++갈수록강화되고있습니다. 이지점에서저희는세가지문제를발견했습니다.
++첫째, 데이터활용의장벽입니다.
++의료데이터는그자체로민감도가매우높기때문에, 연구와서비스개발전과정에서
++법적·윤리적개인정보보호요구가빠르게늘고있고, 이는곧데이터접근과활용의장벽으로
++이어집니다.
++둘째, 성능저하의딜레마입니다.
++개인정보를지키기위해영상을비식별화하면진단AI 의정확도가어느정도떨어질수밖에
++없는데, 정작이저하폭이구체적으로얼마나되는지에대한명확한정량적분석은아직부족한
++실정입니다.
++셋째, 이것이바로저희연구가지향하는지점입니다.
++본연구는보안성과진단정확도라는상충하는두가치사이의균형점을실험적으로찾아내어,
++실제의료AI 서비스구축에실질적으로적용할수있는기준을제시하고자했습니다.
++
++=== 3쪽 ===
++슬라이드3. 연구배경— 비식별화와인공지능
++이번실험에사용한세가지핵심구성요소를차례로소개해드리겠습니다.
++첫번째는Gaussian Blur 입니다.
++픽셀값을주변픽셀과평균화하여영상을흐리게만듦으로써정보를가리는가장전통적인
++비식별화방식입니다.
++구현이간단하다는장점이있지만, 블러강도가세질수록진단에꼭필요한병변의경계
++정보까지함께지워질위험이있다는점이한계로지적됩니다.
++두번째는Block Encryption 입니다.
++영상을일정크기의블록단위로나눈뒤, 그블록들을뒤섞어전체적인구조는유지한채세부
++내용만알아볼수없게만드는방식입니다.
++Blur 와달리영상의공간적맥락정보가어느정도남아있기때문에, AI 모델의학습과추론에
++상대적으로유리하다는특징이있습니다.
++세번째는이번실험의분류모델로사용한EfficientNetV2-S 입니다.
++본연구에서는블록암호화9 단계, 블러시그마9 단계등총20 여가지에이르는비식별화
++조건을각각학습·평가해야했기때문에, 무엇보다연산효율성과학습속도가중요한선택
++기준이었습니다.
++EfficientNetV2-S 는기존합성곱신경망대비적은파라미터와연산량으로도높은분류정확도를
++확보할수있는경량구조로, 다수의실험조건을반복적으로스윕(sweep)해야하는본연구의
++실험설계에특히적합했습니다.
++또한점진적학습(Progressive Learning) 방식을채택하고있어, 학습초반에는낮은해상도와
++약한정규화로빠르게학습하고후반으로갈수록해상도와정규화강도를함께높여가는
++방식으로학습효율과일반화성능을동시에확보합니다.
++이러한특성덕분에학습시간을크게단축하면서도, 의료영상과같이미세한패턴인식이
++중요한분류과제에서도안정적인성능을보였습니다.
++
++=== 4쪽 ===
++슬라이드4. 실험설계— 정밀한비교분석
++실험설계는크게데이터셋구성과실험변수통제, 두부분으로이루어져있습니다.
++먼저데이터셋구성측면입니다.
++폐CT 영상은미세한병변까지놓치지않도록512×512 의높은해상도로촬영된데이터를사용했으며,
++Benign(양성), Malignant(악성), Normal(정상)의세가지클래스로정밀하게분류하여실험을진행했습니다.
++원본데이터는양성120 장, 악성561 장, 정상416 장으로클래스간수량편차가컸기때문에, 특정
++클래스에편향된학습이이루어지지않도록각클래스를1,000 장씩으로오버샘플링하여클래스간균형을
++맞춘뒤실험에활용했습니다.
++다음으로실험변수통제측면입니다.
++두비식별화기법모두512×512 크기의동일한원본영상을기준으로, 처리강도를단계적으로조정하며
++성능이무너지는지점을정밀하게탐색했습니다.
++Block Encryption 의경우, 원본영상을지정한블록크기단위로균등하게분할한뒤그블록들의
++위치를뒤섞는방식으로비식별화를수행했습니다.
++예를들어블록크기를256×256 으로설정하면영상은2×2, 총4 개의블록으로나뉘어서로뒤섞이고,
++블록크기가작아질수록분할되는블록의개수는기하급수적으로늘어납니다.
++이러한방식으로256×256 에서128×128, 64×64, 32×32, 16×16, 8×8, 4×4, 2×2 를거쳐최종적으로1×1, 즉
++픽셀단위로완전히섞이는조건까지총열단계로세분화하여실험을진행했습니다.
++블록크기가작아질수록원본영상이지니고있던공간적구조와맥락정보가점진적으로소실되며, 이를
++통해보안수준과진단성능사이의관계를단계별로정밀하게관찰할수있었습니다.
++Gaussian Blur 의경우에는동일한원본영상에적용하는블러커널의표준편차, 즉시그마값을
++0 에서부터256 까지점진적으로증가시키는방식으로실험을설계했으며, 시그마값이커질수록각픽셀이
++주변의더넓은영역과평균화되면서영상전체의흐림정도가강해지고, 원본대비정보손실이점차
++누적되는구조입니다.
++두기법모두단일조건이아닌다단계실험으로설계한이유는, 성능이급격히무너지는임계점을정확히
++포착하고두기법이보안강도에따라서로다른붕괴양상을보인다는점을곡선형태로비교하기
++위함이었습니다.
++아울러EfficientNetV2-S 모델을기준으로학습률, 배치크기등하이퍼파라미터를모든조건에서동일하게
++고정함으로써, 비식별화기법자체가성능에미치는순수한영향만을측정할수있도록공정한비교환경을
++구축했습니다.
++
++=== 5쪽 ===
++슬라이드5. Gaussian Blur의한계분석
++먼저Gaussian Blur 의한계분석결과를말씀드리겠습니다.
++결과는크게세단계로나누어살펴볼수있습니다.
++첫번째는초기성능유지구간입니다.
++원본92.5 퍼센트대비시그마1 과2 구간에서는각각89.6 퍼센트, 89.2 퍼센트로원본과큰차이
++없이진단가치를안정적으로유지하는모습을보였습니다.
++두번째는임계점에서의붕괴입니다.
++시그마4 에서84.6 퍼센트, 시그마8 에서78.8 퍼센트로80 퍼센트기준선아래로떨어지기
++시작했고, 이후시그마16 에서67.5 퍼센트, 시그마32 에서53.3 퍼센트, 시그마64 에서는
++45.0 퍼센트까지급락하며최저점을기록했습니다.
++이러한정확도하락은모델의변별력을나타내는ROC-AUC 지표에서도동일하게관찰되었는데,
++원본0.9791 에서시그마8 에0.9147 로0.9 기준선을하회하고, 시그마16 에서는0.8487 로0.8
++기준선마저무너지는모습을보여, 정확도와변별력이함께붕괴되는양상을확인할수
++있었습니다.
++세번째는이번실험에서가장주목할만한결과인클래스별붕괴양상입니다.
++클래스별로나누어보면, 악성(Malignant) 종양의분류정확도가원본98 퍼센트에서시그마16 에
++66 퍼센트, 시그마32 에25 퍼센트, 시그마64 에11 퍼센트로급격히무너지다가, 시그마128 과
++시그마256 에서는급기야0 퍼센트를기록했습니다.
++Confusion Matrix 로확인한결과, 가장강한블러조건에서는실제악성종양사례가단한건도
++악성으로예측되지못하고전부양성또는정상으로오분류되었습니다.
++이는단순한정확도하락을넘어, 강한블러가AI 로하여금실제암을암으로진단하지못하게
++만드는임상적으로매우위험한실패양상이라는점에서, Gaussian Blur 는개인정보보호수준이
++높아질수록의료AI 진단모델에활용하기에는적합하지않은기법이라는점을명확히확인할수
++있었습니다.
++
++=== 6쪽 ===
++슬라이드6. Block Encryption의압도적안정성
++다음은Block Encryption 의결과입니다.
++이기법은크게세가지특징으로요약할수있습니다.
++첫번째는원본수준의성능재현입니다.
++원본92.9 퍼센트, 256×256 블록에서92.5 퍼센트로초기구간은원본과거의다름없는정확도를
++유지했으며, 128×128 에서는88.3 퍼센트, 64×64 에서는86.7 퍼센트로완만하게하락하는모습을
++보였습니다.
++두번째는점진적성능저하특성입니다.
++32×32 블록에서는79.2 퍼센트로80 퍼센트기준선에근접한수준을유지했고, 블록이더작아진
++16×16 에서72.5 퍼센트, 8×8 에서73.3 퍼센트, 4×4 에서61.7 퍼센트로이어지며, 가장강한보안
++수준인1×1 블록에서도52.9 퍼센트를지켜내완전히무너지지않았습니다. ROC-AUC 역시원본
++0.9804 에서32×32 까지0.96 대를유지하고, 16×16 에서0.9150 으로0.9 기준선을지켰으며,
++1×1 에서도0.6907 을기록해Gaussian Blur 대비훨씬완만한하락곡선을보였습니다.
++세번째는이번실험에서가장흥미로운발견인, Gaussian Blur 와는정반대방향의
++클래스별붕괴양상입니다.
++Block Encryption 에서는악성(Malignant) 클래스가보안수준이아무리높아져도끝까지견고하게
++유지되었습니다.
++원본96 퍼센트에서1×1 블록에서도71 퍼센트를유지하며상대적으로완만하게하락한반면,
++오히려정상(Normal) 클래스가원본90 퍼센트에서8×8 에48 퍼센트, 4×4 에31 퍼센트, 2×2 에
++10 퍼센트, 1×1 에서는0 퍼센트까지무너졌습니다.
++Confusion Matrix 로확인한결과, 완전암호화조건에서실제정상소견80 건중정상으로
++올바르게예측된사례는단한건도없었던반면, 실제악성종양80 건중에서는57 건, 약
++71 퍼센트가여전히악성으로정확히분류되었습니다.
++이는Block Encryption 이보안수준을극한까지높이더라도암을놓치는위양성누락(false
++negative) 위험은낮게유지하고, 대신정상소견을과잉의심하는방향으로오류가치우친다는
++것을보여주며, 임상적으로훨씬안전한실패양상이라는점에서의미가큽니다.
++
++=== 7쪽 ===
++슬라이드7. 결과고찰— 보안과성능의조화
++두기법의결과를함께놓고비교하면, 성능이떨어지는궤적자체가근본적으로다르다는점을
++확인할수있습니다.
++먼저궤적의차이입니다.
++지수적으로급격히무너지는Gaussian Blur 와달리, Block Encryption 은보안수준이높아져도
++완만하고안정적인곡선을그리며성능이저하됩니다.
++보안성과정확도를함께놓고본트레이드오프분석에서도, 원본과256×256, 128×128, 64×64
++조건은고성능·저위험구역에안정적으로위치했고, 32×32 부터완만하게저성능방향으로
++이동했으며, 4×4 이하에서야비로소급격한성능저하구역으로진입하는모습을보였습니다.
++다음으로보안의재정의입니다.
++Block Encryption 은고보안구역에서도성능을크게잃지않을뿐아니라, 앞서살펴본것처럼
++보안수준이극단적으로높아져도악성종양을놓치지않는방향으로오류가발생한다는점에서,
++단순히"정확도를덜잃는다"는차원을넘어임상적으로더안전한실패양상을보인다고할수
++있습니다.
++마지막으로최적의솔루션입니다.
++이번실험을통해32×32 블록크기가80 퍼센트에근접한정확도와0.96 수준의ROC-AUC 를
++동시에유지하면서보안성도상당수준확보할수있는균형점, 즉실무에적용가능한기준점이
++될수있음을확인했습니다.
++
++=== 8쪽 ===
++슬라이드8. 결론— 안전한의료AI의미래
++결론적으로, Block Encryption 은프라이버시보호와의료AI 혁신이라는두가치를동시에지킬
++수있는가장현실적인대안이라고판단됩니다.
++이를바탕으로저희는다음네가지방향으로후속연구를진행하고있거나계획하고있습니다.
++첫째, 풀링실험과지표수식화입니다.
++Pooling 기법에따른성능차이를실험하면서, 보안성과정확도를함께나타낼수있는통합
++평가지표를수식으로정립하는작업을현재진행하고있습니다.
++둘째, 모델범용성검증입니다.
++ResNet50, ViT 등다른딥러닝모델에도동일한실험을적용하여, 이번연구에서얻은결과가
++특정모델에국한되지않고일반적으로성립하는지검증할계획입니다.
++셋째, 분산추론시스템구축입니다.
++현재저희는ResNet50 의첫번째컨볼루션단(stem 단계)을전체네트워크에서분리하여, 엣지
++디바이스에서이초기단계만수행하고이후단계는클라우드로넘기는구조를실험하고
++있습니다.
++이렇게첫컨볼루션단만엣지에서처리하면, 원본영상자체는엣지단에서특징맵(feature map)
++형태로이미변환된뒤에만외부로전송되기때문에, 사람이육안으로식별가능한원본
++이미지가네트워크를통해클라우드로넘어갈필요가없어집니다.
++즉비식별화기법과는별개로, 모델구조자체를분할하는것만으로도민감한원본데이터의
++유출경로를원천적으로차단할수있다는것이이접근의핵심입니다.
++앞으로는엣지에서처리할레이어의범위를어디까지확장하는것이연산부담과보안성
++사이에서가장효율적인지검증하고, 이를앞서다룬Block Encryption 기반비식별화와결합하여,
++엣지와클라우드를연계한이중보안구조의분산추론시스템으로발전시켜나갈계획입니다.
++넷째, 실시간최적화입니다.
++고해상도영상도지연없이즉시비식별화하고진단할수있도록전체처리속도를높이는
++방향으로연구를이어가고자합니다.
++
++=== 9쪽 ===
++슬라이드9. Q&A
++이상으로발표를마치겠습니다.
++본연구는정부(과학기술정보통신부) 재원으로정보통신기획평가원의학·석사연계
++ICT 핵심인재양성사업지원과, 2024 년도정부(교육부) 재원으로한국연구재단의지원을받은
++기초연구사업의일환으로수행되었습니다.
++경청해주셔서감사합니다.
++질문있으시면편하게말씀해주시기바랍니다.
+Binary files /dev/null and 연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_심사용.hwp differ
+Binary files /dev/null and 연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_최종본.hwp differ
+--- /dev/null
++++ 연구1_하계_EfficientNetV2-S/그래프/Blur_Block_1차_그래프_white.ipynb
+@@ -0,0 +1,612 @@
++{
++ "cells": [
++  {
++   "cell_type": "code",
++   "execution_count": null,
++   "metadata": {},
++   "outputs": [],
++   "source": [
++    "\"\"\"\n",
++    "Gaussian Blur 실험 결과 시각화 스크립트\n",
++    "all_blur_results.json → 10개 그래프 생성\n",
++    "한글/기호 깨짐 없음 (NanumGothic 사용)\n",
++    "\"\"\"\n",
++    "\n",
++    "import json\n",
++    "import numpy as np\n",
++    "import matplotlib\n",
++    "matplotlib.use('Agg')\n",
++    "import matplotlib.pyplot as plt\n",
++    "import matplotlib.font_manager as fm\n",
++    "import matplotlib.patches as mpatches\n",
++    "from matplotlib.colors import LinearSegmentedColormap\n",
++    "import matplotlib.gridspec as gridspec\n",
++    "import warnings\n",
++    "import os\n",
++    "warnings.filterwarnings('ignore')\n",
++    "\n",
++    "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++    "_CANDIDATE_PATHS = [\n",
++    "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',      # Linux\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',                     # Windows (일반 설치)\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++    "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),  # Windows (사용자별 설치)\n",
++    "]\n",
++    "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++    "\n",
++    "if _NANUM_PATH:\n",
++    "    fm.fontManager.addfont(_NANUM_PATH)\n",
++    "    fm._load_fontmanager(try_read_cache=False)\n",
++    "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++    "else:\n",
++    "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++    "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++    "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다. '\n",
++    "          f'폰트가 깨지면 나눔고딕 설치 경로를 확인하세요.')\n",
++    "\n",
++    "plt.rcParams.update({\n",
++    "    'font.family': FONT,\n",
++    "    'axes.unicode_minus': False,\n",
++    "    'figure.facecolor': 'white',\n",
++    "    'axes.facecolor':   'white',\n",
++    "    'axes.edgecolor':   'black',\n",
++    "    'axes.labelcolor':  'black',\n",
++    "    'xtick.color':      'black',\n",
++    "    'ytick.color':      'black',\n",
++    "    'text.color':       'black',\n",
++    "    'grid.color':       '#cccccc',\n",
++    "    'grid.linestyle':   '--',\n",
++    "    'grid.alpha':       0.5,\n",
++    "    'legend.facecolor': 'white',\n",
++    "    'legend.edgecolor': '#cccccc',\n",
++    "    'legend.labelcolor':'black',\n",
++    "})\n",
++    "\n",
++    "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++    "JSON_PATH = os.environ[\"EXPERIMENT_JSON_PATH_1\"]  # confirmed\n",
++    "OUT       = os.environ[\"EXPERIMENT_OUTPUT_DIR\"]\n",
++    "os.makedirs(OUT, exist_ok=True)\n",
++    "\n",
++    "# ── 데이터 로드 ────────────────────────────────────────────\n",
++    "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++    "    raw = json.load(f)\n",
++    "\n",
++    "data    = {int(k): v for k, v in raw.items()}\n",
++    "sigmas  = sorted(data.keys())\n",
++    "# 실제 sigma 값 그대로 라벨링 (0이 없으면 자동으로 첫 값이 최소 sigma로 표시됨)\n",
++    "labels  = [f'σ={s}' for s in sigmas]\n",
++    "accs    = [data[s]['acc'] * 100 for s in sigmas]\n",
++    "aucs    = [data[s]['roc_auc'] for s in sigmas]\n",
++    "benign  = [data[s]['per_class_acc']['Bengin cases'] * 100 for s in sigmas]\n",
++    "malig   = [data[s]['per_class_acc']['Malignant cases'] * 100 for s in sigmas]\n",
++    "normal  = [data[s]['per_class_acc']['Normal cases'] * 100 for s in sigmas]\n",
++    "\n",
++    "# 색상 팔레트 (정확도에 따라 green→red)\n",
++    "def acc_color(val):\n",
++    "    if val >= 85: return '#2ea043'\n",
++    "    if val >= 75: return '#7ec852'\n",
++    "    if val >= 65: return '#d4e052'\n",
++    "    if val >= 55: return '#e8a838'\n",
++    "    if val >= 45: return '#e86b38'\n",
++    "    return '#c0392b'\n",
++    "\n",
++    "BAR_COLORS = [acc_color(a) for a in accs]\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 1. 블러 강도별 AI 정확도 (막대 그래프)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(22, 11))\n",
++    "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++    "\n",
++    "for bar, val in zip(bars, accs):\n",
++    "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++    "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++    "\n",
++    "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++    "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++    "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "ax.set_xlabel('블러 Sigma (σ)', fontsize=45)\n",
++    "ax.set_ylabel('정확도 (%)',      fontsize=45)\n",
++    "ax.tick_params(labelsize=35)\n",
++    "ax.set_ylim(0, 115)\n",
++    "ax.legend(fontsize=40)\n",
++    "ax.grid(axis='y', zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph1 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 2. ROC-AUC 꺾은선\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(18, 8))\n",
++    "ax.plot(labels, aucs, color='#7ca4f4', lw=2.5, marker='o', markersize=10,\n",
++    "        markerfacecolor='white', markeredgecolor='#7ca4f4', zorder=4)\n",
++    "\n",
++    "for i, (lbl, val) in enumerate(zip(labels, aucs)):\n",
++    "    ax.annotate(f'{val:.4f}', (lbl, val), textcoords='offset points',\n",
++    "                xytext=(0, 12), ha='center', fontsize=14, color='black')\n",
++    "\n",
++    "ax.axhline(0.9, color='#2ea043', linestyle='--', lw=1.5, label='ROC 0.9 기준')\n",
++    "ax.axhline(0.8, color='#d4a017', linestyle='--', lw=1.5, label='ROC 0.8 기준')\n",
++    "\n",
++    "ax.set_title('블러 강도별 ROC-AUC (Blur Sigma vs ROC-AUC)', fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++    "ax.set_ylabel('ROC-AUC',        fontsize=17)\n",
++    "ax.tick_params(labelsize=15)\n",
++    "ax.set_ylim(0.4, 1.05)\n",
++    "ax.legend(fontsize=14)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph2_roc_auc.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph2 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 3. 클래스별 정확도 (grouped bar)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(20, 9))\n",
++    "x = np.arange(len(labels))\n",
++    "w = 0.26\n",
++    "\n",
++    "ax.bar(x - w, benign, w, label='양성 Benign',    color='#e07070', zorder=3)\n",
++    "ax.bar(x,     malig,  w, label='악성 Malignant',  color='#e0c040', zorder=3)\n",
++    "ax.bar(x + w, normal, w, label='정상 Normal',     color='#60c060', zorder=3)\n",
++    "ax.axhline(80, color='gray', linestyle='--', lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "ax.set_title('클래스별 정확도 (Per-Class Accuracy by Blur Sigma)', fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++    "ax.set_ylabel('정확도 (%)',      fontsize=17)\n",
++    "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++    "ax.tick_params(axis='y', labelsize=15)\n",
++    "ax.set_ylim(0, 115)\n",
++    "ax.legend(fontsize=14)\n",
++    "ax.grid(axis='y', zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph3_class_accuracy.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph3 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 4. 보안성 vs AI 성능 트레이드오프 (scatter)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "blur_strength = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++    "cmap = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++    "norm_vals = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++    "\n",
++    "fig, ax = plt.subplots(figsize=(13, 10))\n",
++    "for i, (bs, ac, nv, lbl) in enumerate(zip(blur_strength, accs, norm_vals, labels)):\n",
++    "    color = cmap(nv)\n",
++    "    ax.scatter(bs, ac, s=300, color=color, zorder=4, edgecolors='white', linewidths=1)\n",
++    "    ax.annotate(lbl.replace('\\n',''), (bs, ac), textcoords='offset points',\n",
++    "                xytext=(8, 4), fontsize=12, color='black')\n",
++    "\n",
++    "sm = plt.cm.ScalarMappable(cmap=cmap,\n",
++    "     norm=plt.Normalize(vmin=min(accs), vmax=max(accs)))\n",
++    "sm.set_array([])\n",
++    "cbar = plt.colorbar(sm, ax=ax)\n",
++    "cbar.set_label('AI 정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++    "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++    "\n",
++    "ax.set_title('보안성 vs AI 성능 트레이드오프 (Security vs Performance)', fontsize=20, pad=16)\n",
++    "ax.set_xlabel('블러 강도 / Blur Strength (높을수록 보안 강함) →', fontsize=15)\n",
++    "ax.set_ylabel('AI 정확도 (%)', fontsize=15)\n",
++    "ax.tick_params(labelsize=14)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph4_tradeoff.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph4 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 5. 정확도 변화 추세 (multi-line)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(20, 9))\n",
++    "x = np.arange(len(labels))\n",
++    "ax.plot(x, accs,   color='black', lw=3,   marker='o', markersize=10, label='전체 정확도', zorder=4)\n",
++    "ax.plot(x, benign, color='#e07070', lw=2,   marker='s', markersize=9,  linestyle='--', label='양성 Benign', zorder=3)\n",
++    "ax.plot(x, malig,  color='#e0c040', lw=2,   marker='^', markersize=9,  linestyle='--', label='악성 Malignant', zorder=3)\n",
++    "ax.plot(x, normal, color='#60c060', lw=2,   marker='D', markersize=9,  linestyle='--', label='정상 Normal', zorder=3)\n",
++    "ax.axhline(80, color='gray', linestyle=':', lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "for i, val in enumerate(accs):\n",
++    "    ax.annotate(f'{val:.1f}%', (x[i], val), textcoords='offset points',\n",
++    "                xytext=(0, 10), ha='center', fontsize=12, color='#ffd700')\n",
++    "\n",
++    "ax.set_title('블러 강도에 따른 정확도 변화 추세 (Accuracy Trend by Blur Sigma)', fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (왼쪽=약한 블러 / 오른쪽=강한 블러)', fontsize=16)\n",
++    "ax.set_ylabel('정확도 (%)', fontsize=16)\n",
++    "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++    "ax.tick_params(axis='y', labelsize=15)\n",
++    "ax.set_ylim(-5, 115)\n",
++    "ax.legend(fontsize=14)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph5_trend.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph5 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 6. Sigma vs Accuracy (log scale)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(18, 8))\n",
++    "ax.plot(labels, accs, color='black', lw=3, marker='o', markersize=10,\n",
++    "        markerfacecolor='white', markeredgecolor='black', zorder=4)\n",
++    "\n",
++    "for i, (lbl, val) in enumerate(zip(labels, accs)):\n",
++    "    ax.annotate(f'{val:.1f}%', (lbl, val), textcoords='offset points',\n",
++    "                xytext=(0, 12), ha='center', fontsize=15, color='black')\n",
++    "\n",
++    "ax.set_title('블러 Sigma vs AI 정확도 (log scale)',\n",
++    "             fontsize=22, pad=16)\n",
++    "ax.set_xlabel('블러 Sigma (log scale) →', fontsize=17)\n",
++    "ax.set_ylabel('정확도 (%)',               fontsize=17)\n",
++    "ax.tick_params(labelsize=15)\n",
++    "ax.set_ylim(0, 110)\n",
++    "ax.grid(zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph6_sigma_vs_acc.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph6 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 7. 클래스별 정확도 히트맵\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "heatmap_data = np.array([benign, malig, normal])\n",
++    "row_labels   = ['양성\\n(Benign)', '악성\\n(Malignant)', '정상\\n(Normal)']\n",
++    "\n",
++    "cmap_rg = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++    "fig, ax = plt.subplots(figsize=(20, 7))\n",
++    "im = ax.imshow(heatmap_data, cmap=cmap_rg, aspect='auto', vmin=0, vmax=100)\n",
++    "\n",
++    "for i in range(3):\n",
++    "    for j in range(len(labels)):\n",
++    "        val = heatmap_data[i, j]\n",
++    "        tc = 'black' if 60 < val < 90 else 'white'\n",
++    "        ax.text(j, i, f'{val:.0f}%', ha='center', va='center',\n",
++    "                fontsize=17, fontweight='bold', color=tc)\n",
++    "\n",
++    "ax.set_xticks(range(len(labels))); ax.set_xticklabels(labels, fontsize=15)\n",
++    "ax.set_yticks(range(3));           ax.set_yticklabels(row_labels, fontsize=16)\n",
++    "ax.set_title('클래스별 정확도 히트맵 (Per-Class Accuracy Heatmap)', fontsize=22, pad=16)\n",
++    "\n",
++    "cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)\n",
++    "cbar.set_label('정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++    "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph7_heatmap.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph7 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 8. 레이더 차트\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 실제 존재하는 sigma 값 중에서 4개(처음/중간1/중간2/끝)를 자동 선택\n",
++    "_n = len(sigmas)\n",
++    "_idxs = sorted(set([0, _n // 3, 2 * _n // 3, _n - 1]))\n",
++    "radar_sigmas = [sigmas[i] for i in _idxs]\n",
++    "radar_colors = ['#ffd700', '#2ea043', '#e07070', '#7ca4f4'][:len(radar_sigmas)]\n",
++    "radar_names  = [f'σ={s}' for s in radar_sigmas]\n",
++    "\n",
++    "categories     = ['Benign', '전체 정확도', 'ROC-AUC×100', 'Normal', 'Malignant']\n",
++    "N = len(categories)\n",
++    "angles = [n / float(N) * 2 * np.pi for n in range(N)]\n",
++    "angles += angles[:1]\n",
++    "\n",
++    "fig, ax = plt.subplots(figsize=(11, 10), subplot_kw={'polar': True})\n",
++    "ax.set_facecolor('white')\n",
++    "ax.set_theta_offset(np.pi / 2)\n",
++    "ax.set_theta_direction(-1)\n",
++    "plt.xticks(angles[:-1], categories, fontsize=16, color='black')\n",
++    "ax.set_rlabel_position(30)\n",
++    "plt.yticks([20,40,60,80,100], ['20','40','60','80','100'], fontsize=11, color='black')\n",
++    "ax.set_ylim(0, 100)\n",
++    "\n",
++    "for sig, color, name in zip(radar_sigmas, radar_colors, radar_names):\n",
++    "    d = data[sig]\n",
++    "    vals = [\n",
++    "        d['per_class_acc']['Bengin cases'] * 100,\n",
++    "        d['acc'] * 100,\n",
++    "        d['roc_auc'] * 100,\n",
++    "        d['per_class_acc']['Normal cases'] * 100,\n",
++    "        d['per_class_acc']['Malignant cases'] * 100,\n",
++    "    ]\n",
++    "    vals += vals[:1]\n",
++    "    ax.plot(angles, vals, color=color, lw=2.5, marker='o', markersize=6, label=name)\n",
++    "    ax.fill(angles, vals, color=color, alpha=0.08)\n",
++    "\n",
++    "ax.set_title('주요 블러 강도별 성능 레이더 차트 (Radar Chart by Blur Sigma)',\n",
++    "             fontsize=18, pad=28)\n",
++    "ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.15), fontsize=14)\n",
++    "ax.grid(color='#ccc', linestyle='--', alpha=0.6)\n",
++    "ax.spines['polar'].set_color('#999')\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph8_radar.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph8 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 9. Confusion Matrix 비교 (최소 sigma vs 최대 sigma)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "def draw_cm(ax, cm, title, acc):\n",
++    "    cm_arr = np.array(cm)\n",
++    "    cmap_b = plt.cm.Blues\n",
++    "    im = ax.imshow(cm_arr, cmap=cmap_b, aspect='auto')\n",
++    "    cl = ['Benign', 'Malignant', 'Normal']\n",
++    "    ax.set_xticks(range(3)); ax.set_xticklabels(cl, fontsize=14)\n",
++    "    ax.set_yticks(range(3)); ax.set_yticklabels(cl, fontsize=14)\n",
++    "    ax.set_xlabel('AI 예측 (Predicted)', fontsize=14)\n",
++    "    ax.set_ylabel('실제 정답 (Actual)',   fontsize=14)\n",
++    "    ax.set_title(f'{title}', fontsize=16, pad=10)\n",
++    "    thresh = cm_arr.max() / 2\n",
++    "    for i in range(3):\n",
++    "        for j in range(3):\n",
++    "            ax.text(j, i, str(cm_arr[i, j]), ha='center', va='center',\n",
++    "                    fontsize=18, fontweight='bold',\n",
++    "                    color='black' if cm_arr[i, j] > thresh else 'black')\n",
++    "    return im\n",
++    "\n",
++    "_min_sig, _max_sig = sigmas[0], sigmas[-1]\n",
++    "\n",
++    "fig, axes = plt.subplots(1, 2, figsize=(18, 8))\n",
++    "fig.patch.set_facecolor('white')\n",
++    "fig.suptitle('Confusion Matrix: 약한 블러 vs 강한 블러 비교', fontsize=22, y=1.02)\n",
++    "\n",
++    "draw_cm(axes[0], data[_min_sig]['cm'], f'약한 블러 (σ={_min_sig})', data[_min_sig]['acc']*100)\n",
++    "im2 = draw_cm(axes[1], data[_max_sig]['cm'], f'최강 블러 (σ={_max_sig})', data[_max_sig]['acc']*100)\n",
++    "\n",
++    "cbar = fig.colorbar(im2, ax=axes, fraction=0.03, pad=0.04)\n",
++    "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph9_confusion.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph9 done')\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 10. 종합 대시보드\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig = plt.figure(figsize=(24, 16))\n",
++    "fig.patch.set_facecolor('white')\n",
++    "fig.suptitle('블러 강도별 AI 성능 종합 대시보드 (Gaussian Blur AI Performance Dashboard)',\n",
++    "    fontsize=20, y=0.99\n",
++    ")\n",
++    "gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.45, wspace=0.35,\n",
++    "                       top=0.93, bottom=0.06, left=0.06, right=0.97)\n",
++    "\n",
++    "# [0,0] 정확도 막대\n",
++    "ax1 = fig.add_subplot(gs[0, 0])\n",
++    "bars = ax1.bar(labels, accs, color=BAR_COLORS, width=0.65, zorder=3)\n",
++    "for bar, val in zip(bars, accs):\n",
++    "    ax1.text(bar.get_x()+bar.get_width()/2, bar.get_height()+0.8,\n",
++    "             f'{val:.1f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')\n",
++    "ax1.set_title('블러 강도별 정확도', fontsize=15, pad=8)\n",
++    "ax1.set_ylabel('정확도 (%)', fontsize=13)\n",
++    "ax1.tick_params(labelsize=11)\n",
++    "ax1.set_ylim(0, 110)\n",
++    "ax1.grid(axis='y', zorder=0)\n",
++    "\n",
++    "# [0,1] 실험 결론 텍스트 박스 (실제 데이터로 자동 계산)\n",
++    "ax_txt = fig.add_subplot(gs[0, 1])\n",
++    "ax_txt.set_facecolor('white')\n",
++    "ax_txt.axis('off')\n",
++    "\n",
++    "_best_idx  = int(np.argmax(accs))\n",
++    "_worst_idx = int(np.argmin(accs))\n",
++    "conclusion = (\n",
++    "    f\"▶ 실험 조건\\n\"\n",
++    "    f\"   Sigma: {len(sigmas)}개 조건 실험\\n\\n\"\n",
++    "    f\"▶ 최고 성능\\n\"\n",
++    "    f\"   {labels[_best_idx]}:  {accs[_best_idx]:.1f}%\\n\"\n",
++    "    f\"   ROC-AUC: {aucs[_best_idx]:.4f}\\n\\n\"\n",
++    "    f\"▶ 최저 성능\\n\"\n",
++    "    f\"   {labels[_worst_idx]}  정확도: {accs[_worst_idx]:.1f}%\\n\\n\"\n",
++    "    f\"▶ 핵심 관찰\\n\"\n",
++    "    f\"   악성(Malignant) 클래스\\n\"\n",
++    "    f\"   최저: {min(malig):.1f}%\"\n",
++    ")\n",
++    "ax_txt.text(0.05, 0.97, conclusion, transform=ax_txt.transAxes,\n",
++    "            fontsize=13, va='top', linespacing=1.6, color='black', family=FONT)\n",
++    "ax_txt.set_title('실험 결론', fontsize=15, pad=8)\n",
++    "\n",
++    "# [0,2] ROC-AUC\n",
++    "ax2 = fig.add_subplot(gs[0, 2])\n",
++    "ax2.plot(range(len(labels)), aucs, color='#7ca4f4', lw=2.5,\n",
++    "         marker='o', markersize=7, markerfacecolor='white', zorder=4)\n",
++    "for i, v in enumerate(aucs):\n",
++    "    ax2.annotate(f'{v:.3f}', (i, v), textcoords='offset points',\n",
++    "                 xytext=(0,8), ha='center', fontsize=10, color='black')\n",
++    "ax2.axhline(0.9, color='#2ea043', linestyle='--', lw=1.2)\n",
++    "ax2.axhline(0.8, color='#d4a017', linestyle='--', lw=1.2)\n",
++    "ax2.set_title('ROC-AUC', fontsize=15, pad=8)\n",
++    "ax2.set_ylabel('ROC-AUC', fontsize=13)\n",
++    "ax2.set_xticks(range(len(labels))); ax2.set_xticklabels(labels, fontsize=10)\n",
++    "ax2.set_ylim(0.5, 1.05)\n",
++    "ax2.grid(zorder=0)\n",
++    "\n",
++    "# [1,0] 클래스별 정확도\n",
++    "ax3 = fig.add_subplot(gs[1, 0])\n",
++    "x = np.arange(len(labels))\n",
++    "ax3.plot(x, benign, color='#e07070', lw=2, marker='s', markersize=7, linestyle='--', label='양성(Benign)')\n",
++    "ax3.plot(x, malig,  color='#e0c040', lw=2, marker='^', markersize=7, linestyle='--', label='악성(Malignant)')\n",
++    "ax3.plot(x, normal, color='#60c060', lw=2, marker='D', markersize=7, linestyle='--', label='정상(Normal)')\n",
++    "ax3.set_title('클래스별 정확도', fontsize=15, pad=8)\n",
++    "ax3.set_ylabel('정확도 (%)', fontsize=13)\n",
++    "ax3.set_xticks(x); ax3.set_xticklabels(labels, fontsize=10)\n",
++    "ax3.set_ylim(0, 110)\n",
++    "ax3.legend(fontsize=11)\n",
++    "ax3.grid(zorder=0)\n",
++    "\n",
++    "# [1,1] 히트맵\n",
++    "ax4 = fig.add_subplot(gs[1, 1])\n",
++    "cmap_rg2 = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++    "hm = np.array([benign, malig, normal])\n",
++    "im4 = ax4.imshow(hm, cmap=cmap_rg2, aspect='auto', vmin=0, vmax=100)\n",
++    "for i in range(3):\n",
++    "    for j in range(len(labels)):\n",
++    "        v = hm[i,j]\n",
++    "        tc = 'black' if 50 < v < 85 else 'white'\n",
++    "        ax4.text(j, i, f'{v:.0f}%', ha='center', va='center', fontsize=9, color=tc, fontweight='bold')\n",
++    "ax4.set_xticks(range(len(labels))); ax4.set_xticklabels(labels, fontsize=9)\n",
++    "ax4.set_yticks([0,1,2]); ax4.set_yticklabels(['양성','악성','정상'], fontsize=13)\n",
++    "ax4.set_title('클래스별 정확도 히트맵', fontsize=15, pad=8)\n",
++    "\n",
++    "# [1,2] 트레이드오프 scatter\n",
++    "ax5 = fig.add_subplot(gs[1, 2])\n",
++    "bs_vals = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++    "norm_v  = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++    "for bsv, ac, nv, lbl in zip(bs_vals, accs, norm_v, labels):\n",
++    "    color = cmap_rg2(nv)\n",
++    "    ax5.scatter(bsv, ac, s=120, color=color, zorder=4, edgecolors='white', lw=0.8)\n",
++    "    ax5.annotate(lbl.replace('\\n',''), (bsv, ac), textcoords='offset points',\n",
++    "                 xytext=(5,3), fontsize=10, color='black')\n",
++    "ax5.set_title('보안 vs 성능', fontsize=15, pad=8)\n",
++    "ax5.set_xlabel('블러 강도 →', fontsize=13)\n",
++    "ax5.set_ylabel('AI(정확도%)', fontsize=13)\n",
++    "ax5.grid(zorder=0)\n",
++    "\n",
++    "plt.savefig(f'{OUT}/graph10_dashboard.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph10 done')\n",
++    "print('\\n✅ 모든 그래프 생성 완료!')\n"
++   ]
++  },
++  {
++   "cell_type": "code",
++   "execution_count": null,
++   "metadata": {},
++   "outputs": [],
++   "source": [
++    "\"\"\"\n",
++    "Block Encryption 실험 결과 시각화 스크립트\n",
++    "all_block_results.json → graph1 (정확도 막대그래프)만 생성\n",
++    "\"\"\"\n",
++    "\n",
++    "import json\n",
++    "import matplotlib\n",
++    "matplotlib.use('Agg')\n",
++    "import matplotlib.pyplot as plt\n",
++    "import matplotlib.font_manager as fm\n",
++    "import warnings\n",
++    "import os\n",
++    "warnings.filterwarnings('ignore')\n",
++    "\n",
++    "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++    "_CANDIDATE_PATHS = [\n",
++    "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',\n",
++    "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++    "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),\n",
++    "]\n",
++    "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++    "\n",
++    "if _NANUM_PATH:\n",
++    "    fm.fontManager.addfont(_NANUM_PATH)\n",
++    "    fm._load_fontmanager(try_read_cache=False)\n",
++    "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++    "else:\n",
++    "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++    "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++    "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다.')\n",
++    "\n",
++    "plt.rcParams.update({\n",
++    "    'font.family': FONT,\n",
++    "    'axes.unicode_minus': False,\n",
++    "    'figure.facecolor': 'white',\n",
++    "    'axes.facecolor':   'white',\n",
++    "    'axes.edgecolor':   'black',\n",
++    "    'axes.labelcolor':  'black',\n",
++    "    'xtick.color':      'black',\n",
++    "    'ytick.color':      'black',\n",
++    "    'text.color':       'black',\n",
++    "    'grid.color':       '#cccccc',\n",
++    "    'grid.linestyle':   '--',\n",
++    "    'grid.alpha':       0.5,\n",
++    "    'legend.facecolor': 'white',\n",
++    "    'legend.edgecolor': '#cccccc',\n",
++    "    'legend.labelcolor':'black',\n",
++    "})\n",
++    "\n",
++    "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++    "JSON_PATH = os.environ[\"EXPERIMENT_JSON_PATH_2\"]\n",
++    "OUT       = os.environ[\"EXPERIMENT_OUTPUT_DIR\"]\n",
++    "os.makedirs(OUT, exist_ok=True)\n",
++    "\n",
++    "# ── 데이터 로드 ────────────────────────────────────────────\n",
++    "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++    "    raw = json.load(f)\n",
++    "\n",
++    "data = {int(k): v for k, v in raw.items()}\n",
++    "# block size는 큰 값(원본에 가까움)부터 작은 값(강한 암호화) 순서로 정렬\n",
++    "block_sizes = sorted(data.keys(), reverse=True)\n",
++    "\n",
++    "def block_label(b):\n",
++    "    if b == max(block_sizes):\n",
++    "        return '원본'\n",
++    "    if b == 1:\n",
++    "        return '픽셀\\n1×1'\n",
++    "    return f'{b}×{b}'\n",
++    "\n",
++    "labels = [block_label(b) for b in block_sizes]\n",
++    "accs   = [data[b]['acc'] * 100 for b in block_sizes]\n",
++    "\n",
++    "# 색상 팔레트 (정확도에 따라 green→red 계열, 이미지와 동일한 룩)\n",
++    "def acc_color(val):\n",
++    "    if val >= 90: return '#e0602a'   # 진한 주황빨강\n",
++    "    if val >= 80: return '#e0602a'\n",
++    "    if val >= 75: return '#e8a838'   # 주황\n",
++    "    if val >= 65: return '#d4d838'   # 연두노랑\n",
++    "    if val >= 58: return '#8ec13a'   # 연두\n",
++    "    return '#2ea05a'                 # 초록\n",
++    "\n",
++    "BAR_COLORS = [acc_color(a) for a in accs]\n",
++    "\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "# 1. 블록 크기별 AI 정확도 (막대 그래프)\n",
++    "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++    "fig, ax = plt.subplots(figsize=(22, 11))\n",
++    "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++    "\n",
++    "for bar, val in zip(bars, accs):\n",
++    "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++    "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++    "\n",
++    "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++    "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++    "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++    "\n",
++    "ax.set_xlabel('블록 크기', fontsize=45)\n",
++    "ax.set_ylabel('정확도 (%)', fontsize=45)\n",
++    "ax.tick_params(labelsize=30)\n",
++    "ax.set_ylim(0, 115)\n",
++    "ax.legend(fontsize=40)\n",
++    "ax.grid(axis='y', zorder=0)\n",
++    "plt.tight_layout()\n",
++    "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++    "plt.close()\n",
++    "print('graph1 done')\n"
++   ]
++  }
++ ],
++ "metadata": {
++  "kernelspec": {
++   "display_name": "base",
++   "language": "python",
++   "name": "python3"
++  },
++  "language_info": {
++   "codemirror_mode": {
++    "name": "ipython",
++    "version": 3
++   },
++   "file_extension": ".py",
++   "mimetype": "text/x-python",
++   "name": "python",
++   "nbconvert_exporter": "python",
++   "pygments_lexer": "ipython3",
++   "version": "3.13.9"
++  }
++ },
++ "nbformat": 4,
++ "nbformat_minor": 0
++}
+--- /dev/null
++++ 연구1_하계_EfficientNetV2-S/원문보관/그림/Blur_Block_1차_그래프_white.ipynb
+@@ -0,0 +1,627 @@
++{
++  "cells": [
++    {
++      "cell_type": "code",
++      "execution_count": null,
++      "metadata": {
++        "colab": {
++          "base_uri": "https://localhost:8080/"
++        },
++        "id": "QaB8lkrkrroe",
++        "outputId": "f9c0e2b0-ceb7-4599-84cc-85732f0a7028"
++      },
++      "outputs": [],
++      "source": [
++        "\"\"\"\n",
++        "Gaussian Blur 실험 결과 시각화 스크립트\n",
++        "all_blur_results.json → 10개 그래프 생성\n",
++        "한글/기호 깨짐 없음 (NanumGothic 사용)\n",
++        "\"\"\"\n",
++        "\n",
++        "import json\n",
++        "import numpy as np\n",
++        "import matplotlib\n",
++        "matplotlib.use('Agg')\n",
++        "import matplotlib.pyplot as plt\n",
++        "import matplotlib.font_manager as fm\n",
++        "import matplotlib.patches as mpatches\n",
++        "from matplotlib.colors import LinearSegmentedColormap\n",
++        "import matplotlib.gridspec as gridspec\n",
++        "import warnings\n",
++        "import os\n",
++        "warnings.filterwarnings('ignore')\n",
++        "\n",
++        "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++        "_CANDIDATE_PATHS = [\n",
++        "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',      # Linux\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',                     # Windows (일반 설치)\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++        "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),  # Windows (사용자별 설치)\n",
++        "]\n",
++        "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++        "\n",
++        "if _NANUM_PATH:\n",
++        "    fm.fontManager.addfont(_NANUM_PATH)\n",
++        "    fm._load_fontmanager(try_read_cache=False)\n",
++        "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++        "else:\n",
++        "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++        "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++        "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다. '\n",
++        "          f'폰트가 깨지면 나눔고딕 설치 경로를 확인하세요.')\n",
++        "\n",
++        "plt.rcParams.update({\n",
++        "    'font.family': FONT,\n",
++        "    'axes.unicode_minus': False,\n",
++        "    'figure.facecolor': 'white',\n",
++        "    'axes.facecolor':   'white',\n",
++        "    'axes.edgecolor':   'black',\n",
++        "    'axes.labelcolor':  'black',\n",
++        "    'xtick.color':      'black',\n",
++        "    'ytick.color':      'black',\n",
++        "    'text.color':       'black',\n",
++        "    'grid.color':       '#cccccc',\n",
++        "    'grid.linestyle':   '--',\n",
++        "    'grid.alpha':       0.5,\n",
++        "    'legend.facecolor': 'white',\n",
++        "    'legend.edgecolor': '#cccccc',\n",
++        "    'legend.labelcolor':'black',\n",
++        "})\n",
++        "\n",
++        "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++        "JSON_PATH = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\\all_blur_results.json\"  # confirmed\n",
++        "OUT       = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\"\n",
++        "os.makedirs(OUT, exist_ok=True)\n",
++        "\n",
++        "# ── 데이터 로드 ────────────────────────────────────────────\n",
++        "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++        "    raw = json.load(f)\n",
++        "\n",
++        "data    = {int(k): v for k, v in raw.items()}\n",
++        "sigmas  = sorted(data.keys())\n",
++        "# 실제 sigma 값 그대로 라벨링 (0이 없으면 자동으로 첫 값이 최소 sigma로 표시됨)\n",
++        "labels  = [f'σ={s}' for s in sigmas]\n",
++        "accs    = [data[s]['acc'] * 100 for s in sigmas]\n",
++        "aucs    = [data[s]['roc_auc'] for s in sigmas]\n",
++        "benign  = [data[s]['per_class_acc']['Bengin cases'] * 100 for s in sigmas]\n",
++        "malig   = [data[s]['per_class_acc']['Malignant cases'] * 100 for s in sigmas]\n",
++        "normal  = [data[s]['per_class_acc']['Normal cases'] * 100 for s in sigmas]\n",
++        "\n",
++        "# 색상 팔레트 (정확도에 따라 green→red)\n",
++        "def acc_color(val):\n",
++        "    if val >= 85: return '#2ea043'\n",
++        "    if val >= 75: return '#7ec852'\n",
++        "    if val >= 65: return '#d4e052'\n",
++        "    if val >= 55: return '#e8a838'\n",
++        "    if val >= 45: return '#e86b38'\n",
++        "    return '#c0392b'\n",
++        "\n",
++        "BAR_COLORS = [acc_color(a) for a in accs]\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 1. 블러 강도별 AI 정확도 (막대 그래프)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(22, 11))\n",
++        "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++        "\n",
++        "for bar, val in zip(bars, accs):\n",
++        "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++        "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++        "\n",
++        "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++        "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++        "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "ax.set_xlabel('블러 Sigma (σ)', fontsize=45)\n",
++        "ax.set_ylabel('정확도 (%)',      fontsize=45)\n",
++        "ax.tick_params(labelsize=35)\n",
++        "ax.set_ylim(0, 115)\n",
++        "ax.legend(fontsize=40)\n",
++        "ax.grid(axis='y', zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph1 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 2. ROC-AUC 꺾은선\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(18, 8))\n",
++        "ax.plot(labels, aucs, color='#7ca4f4', lw=2.5, marker='o', markersize=10,\n",
++        "        markerfacecolor='white', markeredgecolor='#7ca4f4', zorder=4)\n",
++        "\n",
++        "for i, (lbl, val) in enumerate(zip(labels, aucs)):\n",
++        "    ax.annotate(f'{val:.4f}', (lbl, val), textcoords='offset points',\n",
++        "                xytext=(0, 12), ha='center', fontsize=14, color='black')\n",
++        "\n",
++        "ax.axhline(0.9, color='#2ea043', linestyle='--', lw=1.5, label='ROC 0.9 기준')\n",
++        "ax.axhline(0.8, color='#d4a017', linestyle='--', lw=1.5, label='ROC 0.8 기준')\n",
++        "\n",
++        "ax.set_title('블러 강도별 ROC-AUC (Blur Sigma vs ROC-AUC)', fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++        "ax.set_ylabel('ROC-AUC',        fontsize=17)\n",
++        "ax.tick_params(labelsize=15)\n",
++        "ax.set_ylim(0.4, 1.05)\n",
++        "ax.legend(fontsize=14)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph2_roc_auc.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph2 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 3. 클래스별 정확도 (grouped bar)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(20, 9))\n",
++        "x = np.arange(len(labels))\n",
++        "w = 0.26\n",
++        "\n",
++        "ax.bar(x - w, benign, w, label='양성 Benign',    color='#e07070', zorder=3)\n",
++        "ax.bar(x,     malig,  w, label='악성 Malignant',  color='#e0c040', zorder=3)\n",
++        "ax.bar(x + w, normal, w, label='정상 Normal',     color='#60c060', zorder=3)\n",
++        "ax.axhline(80, color='gray', linestyle='--', lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "ax.set_title('클래스별 정확도 (Per-Class Accuracy by Blur Sigma)', fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (σ)', fontsize=17)\n",
++        "ax.set_ylabel('정확도 (%)',      fontsize=17)\n",
++        "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++        "ax.tick_params(axis='y', labelsize=15)\n",
++        "ax.set_ylim(0, 115)\n",
++        "ax.legend(fontsize=14)\n",
++        "ax.grid(axis='y', zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph3_class_accuracy.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph3 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 4. 보안성 vs AI 성능 트레이드오프 (scatter)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "blur_strength = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++        "cmap = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++        "norm_vals = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++        "\n",
++        "fig, ax = plt.subplots(figsize=(13, 10))\n",
++        "for i, (bs, ac, nv, lbl) in enumerate(zip(blur_strength, accs, norm_vals, labels)):\n",
++        "    color = cmap(nv)\n",
++        "    ax.scatter(bs, ac, s=300, color=color, zorder=4, edgecolors='white', linewidths=1)\n",
++        "    ax.annotate(lbl.replace('\\n',''), (bs, ac), textcoords='offset points',\n",
++        "                xytext=(8, 4), fontsize=12, color='black')\n",
++        "\n",
++        "sm = plt.cm.ScalarMappable(cmap=cmap,\n",
++        "     norm=plt.Normalize(vmin=min(accs), vmax=max(accs)))\n",
++        "sm.set_array([])\n",
++        "cbar = plt.colorbar(sm, ax=ax)\n",
++        "cbar.set_label('AI 정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++        "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++        "\n",
++        "ax.set_title('보안성 vs AI 성능 트레이드오프 (Security vs Performance)', fontsize=20, pad=16)\n",
++        "ax.set_xlabel('블러 강도 / Blur Strength (높을수록 보안 강함) →', fontsize=15)\n",
++        "ax.set_ylabel('AI 정확도 (%)', fontsize=15)\n",
++        "ax.tick_params(labelsize=14)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph4_tradeoff.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph4 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 5. 정확도 변화 추세 (multi-line)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(20, 9))\n",
++        "x = np.arange(len(labels))\n",
++        "ax.plot(x, accs,   color='black', lw=3,   marker='o', markersize=10, label='전체 정확도', zorder=4)\n",
++        "ax.plot(x, benign, color='#e07070', lw=2,   marker='s', markersize=9,  linestyle='--', label='양성 Benign', zorder=3)\n",
++        "ax.plot(x, malig,  color='#e0c040', lw=2,   marker='^', markersize=9,  linestyle='--', label='악성 Malignant', zorder=3)\n",
++        "ax.plot(x, normal, color='#60c060', lw=2,   marker='D', markersize=9,  linestyle='--', label='정상 Normal', zorder=3)\n",
++        "ax.axhline(80, color='gray', linestyle=':', lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "for i, val in enumerate(accs):\n",
++        "    ax.annotate(f'{val:.1f}%', (x[i], val), textcoords='offset points',\n",
++        "                xytext=(0, 10), ha='center', fontsize=12, color='#ffd700')\n",
++        "\n",
++        "ax.set_title('블러 강도에 따른 정확도 변화 추세 (Accuracy Trend by Blur Sigma)', fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (왼쪽=약한 블러 / 오른쪽=강한 블러)', fontsize=16)\n",
++        "ax.set_ylabel('정확도 (%)', fontsize=16)\n",
++        "ax.set_xticks(x); ax.set_xticklabels(labels, fontsize=14)\n",
++        "ax.tick_params(axis='y', labelsize=15)\n",
++        "ax.set_ylim(-5, 115)\n",
++        "ax.legend(fontsize=14)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph5_trend.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph5 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 6. Sigma vs Accuracy (log scale)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(18, 8))\n",
++        "ax.plot(labels, accs, color='black', lw=3, marker='o', markersize=10,\n",
++        "        markerfacecolor='white', markeredgecolor='black', zorder=4)\n",
++        "\n",
++        "for i, (lbl, val) in enumerate(zip(labels, accs)):\n",
++        "    ax.annotate(f'{val:.1f}%', (lbl, val), textcoords='offset points',\n",
++        "                xytext=(0, 12), ha='center', fontsize=15, color='black')\n",
++        "\n",
++        "ax.set_title('블러 Sigma vs AI 정확도 (log scale)',\n",
++        "             fontsize=22, pad=16)\n",
++        "ax.set_xlabel('블러 Sigma (log scale) →', fontsize=17)\n",
++        "ax.set_ylabel('정확도 (%)',               fontsize=17)\n",
++        "ax.tick_params(labelsize=15)\n",
++        "ax.set_ylim(0, 110)\n",
++        "ax.grid(zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph6_sigma_vs_acc.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph6 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 7. 클래스별 정확도 히트맵\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "heatmap_data = np.array([benign, malig, normal])\n",
++        "row_labels   = ['양성\\n(Benign)', '악성\\n(Malignant)', '정상\\n(Normal)']\n",
++        "\n",
++        "cmap_rg = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++        "fig, ax = plt.subplots(figsize=(20, 7))\n",
++        "im = ax.imshow(heatmap_data, cmap=cmap_rg, aspect='auto', vmin=0, vmax=100)\n",
++        "\n",
++        "for i in range(3):\n",
++        "    for j in range(len(labels)):\n",
++        "        val = heatmap_data[i, j]\n",
++        "        tc = 'black' if 60 < val < 90 else 'white'\n",
++        "        ax.text(j, i, f'{val:.0f}%', ha='center', va='center',\n",
++        "                fontsize=17, fontweight='bold', color=tc)\n",
++        "\n",
++        "ax.set_xticks(range(len(labels))); ax.set_xticklabels(labels, fontsize=15)\n",
++        "ax.set_yticks(range(3));           ax.set_yticklabels(row_labels, fontsize=16)\n",
++        "ax.set_title('클래스별 정확도 히트맵 (Per-Class Accuracy Heatmap)', fontsize=22, pad=16)\n",
++        "\n",
++        "cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)\n",
++        "cbar.set_label('정확도 / Accuracy (%)', fontsize=14, color='black')\n",
++        "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph7_heatmap.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph7 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 8. 레이더 차트\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 실제 존재하는 sigma 값 중에서 4개(처음/중간1/중간2/끝)를 자동 선택\n",
++        "_n = len(sigmas)\n",
++        "_idxs = sorted(set([0, _n // 3, 2 * _n // 3, _n - 1]))\n",
++        "radar_sigmas = [sigmas[i] for i in _idxs]\n",
++        "radar_colors = ['#ffd700', '#2ea043', '#e07070', '#7ca4f4'][:len(radar_sigmas)]\n",
++        "radar_names  = [f'σ={s}' for s in radar_sigmas]\n",
++        "\n",
++        "categories     = ['Benign', '전체 정확도', 'ROC-AUC×100', 'Normal', 'Malignant']\n",
++        "N = len(categories)\n",
++        "angles = [n / float(N) * 2 * np.pi for n in range(N)]\n",
++        "angles += angles[:1]\n",
++        "\n",
++        "fig, ax = plt.subplots(figsize=(11, 10), subplot_kw={'polar': True})\n",
++        "ax.set_facecolor('white')\n",
++        "ax.set_theta_offset(np.pi / 2)\n",
++        "ax.set_theta_direction(-1)\n",
++        "plt.xticks(angles[:-1], categories, fontsize=16, color='black')\n",
++        "ax.set_rlabel_position(30)\n",
++        "plt.yticks([20,40,60,80,100], ['20','40','60','80','100'], fontsize=11, color='black')\n",
++        "ax.set_ylim(0, 100)\n",
++        "\n",
++        "for sig, color, name in zip(radar_sigmas, radar_colors, radar_names):\n",
++        "    d = data[sig]\n",
++        "    vals = [\n",
++        "        d['per_class_acc']['Bengin cases'] * 100,\n",
++        "        d['acc'] * 100,\n",
++        "        d['roc_auc'] * 100,\n",
++        "        d['per_class_acc']['Normal cases'] * 100,\n",
++        "        d['per_class_acc']['Malignant cases'] * 100,\n",
++        "    ]\n",
++        "    vals += vals[:1]\n",
++        "    ax.plot(angles, vals, color=color, lw=2.5, marker='o', markersize=6, label=name)\n",
++        "    ax.fill(angles, vals, color=color, alpha=0.08)\n",
++        "\n",
++        "ax.set_title('주요 블러 강도별 성능 레이더 차트 (Radar Chart by Blur Sigma)',\n",
++        "             fontsize=18, pad=28)\n",
++        "ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.15), fontsize=14)\n",
++        "ax.grid(color='#ccc', linestyle='--', alpha=0.6)\n",
++        "ax.spines['polar'].set_color('#999')\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph8_radar.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph8 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 9. Confusion Matrix 비교 (최소 sigma vs 최대 sigma)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "def draw_cm(ax, cm, title, acc):\n",
++        "    cm_arr = np.array(cm)\n",
++        "    cmap_b = plt.cm.Blues\n",
++        "    im = ax.imshow(cm_arr, cmap=cmap_b, aspect='auto')\n",
++        "    cl = ['Benign', 'Malignant', 'Normal']\n",
++        "    ax.set_xticks(range(3)); ax.set_xticklabels(cl, fontsize=14)\n",
++        "    ax.set_yticks(range(3)); ax.set_yticklabels(cl, fontsize=14)\n",
++        "    ax.set_xlabel('AI 예측 (Predicted)', fontsize=14)\n",
++        "    ax.set_ylabel('실제 정답 (Actual)',   fontsize=14)\n",
++        "    ax.set_title(f'{title}', fontsize=16, pad=10)\n",
++        "    thresh = cm_arr.max() / 2\n",
++        "    for i in range(3):\n",
++        "        for j in range(3):\n",
++        "            ax.text(j, i, str(cm_arr[i, j]), ha='center', va='center',\n",
++        "                    fontsize=18, fontweight='bold',\n",
++        "                    color='black' if cm_arr[i, j] > thresh else 'black')\n",
++        "    return im\n",
++        "\n",
++        "_min_sig, _max_sig = sigmas[0], sigmas[-1]\n",
++        "\n",
++        "fig, axes = plt.subplots(1, 2, figsize=(18, 8))\n",
++        "fig.patch.set_facecolor('white')\n",
++        "fig.suptitle('Confusion Matrix: 약한 블러 vs 강한 블러 비교', fontsize=22, y=1.02)\n",
++        "\n",
++        "draw_cm(axes[0], data[_min_sig]['cm'], f'약한 블러 (σ={_min_sig})', data[_min_sig]['acc']*100)\n",
++        "im2 = draw_cm(axes[1], data[_max_sig]['cm'], f'최강 블러 (σ={_max_sig})', data[_max_sig]['acc']*100)\n",
++        "\n",
++        "cbar = fig.colorbar(im2, ax=axes, fraction=0.03, pad=0.04)\n",
++        "cbar.ax.yaxis.set_tick_params(color='black', labelcolor='black', labelsize=12)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph9_confusion.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph9 done')\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 10. 종합 대시보드\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig = plt.figure(figsize=(24, 16))\n",
++        "fig.patch.set_facecolor('white')\n",
++        "fig.suptitle('블러 강도별 AI 성능 종합 대시보드 (Gaussian Blur AI Performance Dashboard)',\n",
++        "    fontsize=20, y=0.99\n",
++        ")\n",
++        "gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.45, wspace=0.35,\n",
++        "                       top=0.93, bottom=0.06, left=0.06, right=0.97)\n",
++        "\n",
++        "# [0,0] 정확도 막대\n",
++        "ax1 = fig.add_subplot(gs[0, 0])\n",
++        "bars = ax1.bar(labels, accs, color=BAR_COLORS, width=0.65, zorder=3)\n",
++        "for bar, val in zip(bars, accs):\n",
++        "    ax1.text(bar.get_x()+bar.get_width()/2, bar.get_height()+0.8,\n",
++        "             f'{val:.1f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')\n",
++        "ax1.set_title('블러 강도별 정확도', fontsize=15, pad=8)\n",
++        "ax1.set_ylabel('정확도 (%)', fontsize=13)\n",
++        "ax1.tick_params(labelsize=11)\n",
++        "ax1.set_ylim(0, 110)\n",
++        "ax1.grid(axis='y', zorder=0)\n",
++        "\n",
++        "# [0,1] 실험 결론 텍스트 박스 (실제 데이터로 자동 계산)\n",
++        "ax_txt = fig.add_subplot(gs[0, 1])\n",
++        "ax_txt.set_facecolor('white')\n",
++        "ax_txt.axis('off')\n",
++        "\n",
++        "_best_idx  = int(np.argmax(accs))\n",
++        "_worst_idx = int(np.argmin(accs))\n",
++        "conclusion = (\n",
++        "    f\"▶ 실험 조건\\n\"\n",
++        "    f\"   Sigma: {len(sigmas)}개 조건 실험\\n\\n\"\n",
++        "    f\"▶ 최고 성능\\n\"\n",
++        "    f\"   {labels[_best_idx]}:  {accs[_best_idx]:.1f}%\\n\"\n",
++        "    f\"   ROC-AUC: {aucs[_best_idx]:.4f}\\n\\n\"\n",
++        "    f\"▶ 최저 성능\\n\"\n",
++        "    f\"   {labels[_worst_idx]}  정확도: {accs[_worst_idx]:.1f}%\\n\\n\"\n",
++        "    f\"▶ 핵심 관찰\\n\"\n",
++        "    f\"   악성(Malignant) 클래스\\n\"\n",
++        "    f\"   최저: {min(malig):.1f}%\"\n",
++        ")\n",
++        "ax_txt.text(0.05, 0.97, conclusion, transform=ax_txt.transAxes,\n",
++        "            fontsize=13, va='top', linespacing=1.6, color='black', family=FONT)\n",
++        "ax_txt.set_title('실험 결론', fontsize=15, pad=8)\n",
++        "\n",
++        "# [0,2] ROC-AUC\n",
++        "ax2 = fig.add_subplot(gs[0, 2])\n",
++        "ax2.plot(range(len(labels)), aucs, color='#7ca4f4', lw=2.5,\n",
++        "         marker='o', markersize=7, markerfacecolor='white', zorder=4)\n",
++        "for i, v in enumerate(aucs):\n",
++        "    ax2.annotate(f'{v:.3f}', (i, v), textcoords='offset points',\n",
++        "                 xytext=(0,8), ha='center', fontsize=10, color='black')\n",
++        "ax2.axhline(0.9, color='#2ea043', linestyle='--', lw=1.2)\n",
++        "ax2.axhline(0.8, color='#d4a017', linestyle='--', lw=1.2)\n",
++        "ax2.set_title('ROC-AUC', fontsize=15, pad=8)\n",
++        "ax2.set_ylabel('ROC-AUC', fontsize=13)\n",
++        "ax2.set_xticks(range(len(labels))); ax2.set_xticklabels(labels, fontsize=10)\n",
++        "ax2.set_ylim(0.5, 1.05)\n",
++        "ax2.grid(zorder=0)\n",
++        "\n",
++        "# [1,0] 클래스별 정확도\n",
++        "ax3 = fig.add_subplot(gs[1, 0])\n",
++        "x = np.arange(len(labels))\n",
++        "ax3.plot(x, benign, color='#e07070', lw=2, marker='s', markersize=7, linestyle='--', label='양성(Benign)')\n",
++        "ax3.plot(x, malig,  color='#e0c040', lw=2, marker='^', markersize=7, linestyle='--', label='악성(Malignant)')\n",
++        "ax3.plot(x, normal, color='#60c060', lw=2, marker='D', markersize=7, linestyle='--', label='정상(Normal)')\n",
++        "ax3.set_title('클래스별 정확도', fontsize=15, pad=8)\n",
++        "ax3.set_ylabel('정확도 (%)', fontsize=13)\n",
++        "ax3.set_xticks(x); ax3.set_xticklabels(labels, fontsize=10)\n",
++        "ax3.set_ylim(0, 110)\n",
++        "ax3.legend(fontsize=11)\n",
++        "ax3.grid(zorder=0)\n",
++        "\n",
++        "# [1,1] 히트맵\n",
++        "ax4 = fig.add_subplot(gs[1, 1])\n",
++        "cmap_rg2 = LinearSegmentedColormap.from_list('rg', ['#c0392b','#e8a838','#2ea043'])\n",
++        "hm = np.array([benign, malig, normal])\n",
++        "im4 = ax4.imshow(hm, cmap=cmap_rg2, aspect='auto', vmin=0, vmax=100)\n",
++        "for i in range(3):\n",
++        "    for j in range(len(labels)):\n",
++        "        v = hm[i,j]\n",
++        "        tc = 'black' if 50 < v < 85 else 'white'\n",
++        "        ax4.text(j, i, f'{v:.0f}%', ha='center', va='center', fontsize=9, color=tc, fontweight='bold')\n",
++        "ax4.set_xticks(range(len(labels))); ax4.set_xticklabels(labels, fontsize=9)\n",
++        "ax4.set_yticks([0,1,2]); ax4.set_yticklabels(['양성','악성','정상'], fontsize=13)\n",
++        "ax4.set_title('클래스별 정확도 히트맵', fontsize=15, pad=8)\n",
++        "\n",
++        "# [1,2] 트레이드오프 scatter\n",
++        "ax5 = fig.add_subplot(gs[1, 2])\n",
++        "bs_vals = [np.log2(max(s, 0.5)) * 5 for s in sigmas]\n",
++        "norm_v  = [(a - min(accs)) / (max(accs) - min(accs)) for a in accs]\n",
++        "for bsv, ac, nv, lbl in zip(bs_vals, accs, norm_v, labels):\n",
++        "    color = cmap_rg2(nv)\n",
++        "    ax5.scatter(bsv, ac, s=120, color=color, zorder=4, edgecolors='white', lw=0.8)\n",
++        "    ax5.annotate(lbl.replace('\\n',''), (bsv, ac), textcoords='offset points',\n",
++        "                 xytext=(5,3), fontsize=10, color='black')\n",
++        "ax5.set_title('보안 vs 성능', fontsize=15, pad=8)\n",
++        "ax5.set_xlabel('블러 강도 →', fontsize=13)\n",
++        "ax5.set_ylabel('AI(정확도%)', fontsize=13)\n",
++        "ax5.grid(zorder=0)\n",
++        "\n",
++        "plt.savefig(f'{OUT}/graph10_dashboard.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph10 done')\n",
++        "print('\\n✅ 모든 그래프 생성 완료!')\n"
++      ]
++    },
++    {
++      "cell_type": "code",
++      "execution_count": null,
++      "metadata": {
++        "colab": {
++          "base_uri": "https://localhost:8080/"
++        },
++        "id": "SVN0ofgatH2p",
++        "outputId": "dcfd31bb-be1f-49b7-8863-97d583b3f4e4"
++      },
++      "outputs": [],
++      "source": [
++        "\"\"\"\n",
++        "Block Encryption 실험 결과 시각화 스크립트\n",
++        "all_block_results.json → graph1 (정확도 막대그래프)만 생성\n",
++        "\"\"\"\n",
++        "\n",
++        "import json\n",
++        "import matplotlib\n",
++        "matplotlib.use('Agg')\n",
++        "import matplotlib.pyplot as plt\n",
++        "import matplotlib.font_manager as fm\n",
++        "import warnings\n",
++        "import os\n",
++        "warnings.filterwarnings('ignore')\n",
++        "\n",
++        "# ── 폰트 설정 (Windows / Linux 둘 다 지원) ─────────────────\n",
++        "_CANDIDATE_PATHS = [\n",
++        "    '/usr/share/fonts/truetype/nanum/NanumGothic.ttf',\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic.ttf',\n",
++        "    r'C:\\Windows\\Fonts\\NanumGothic-Regular.ttf',\n",
++        "    os.path.expanduser(r'~\\AppData\\Local\\Microsoft\\Windows\\Fonts\\NanumGothic.ttf'),\n",
++        "]\n",
++        "_NANUM_PATH = next((p for p in _CANDIDATE_PATHS if os.path.exists(p)), None)\n",
++        "\n",
++        "if _NANUM_PATH:\n",
++        "    fm.fontManager.addfont(_NANUM_PATH)\n",
++        "    fm._load_fontmanager(try_read_cache=False)\n",
++        "    FONT = fm.FontProperties(fname=_NANUM_PATH).get_name()\n",
++        "else:\n",
++        "    _installed = {f.name for f in fm.fontManager.ttflist}\n",
++        "    FONT = 'NanumGothic' if 'NanumGothic' in _installed else 'Malgun Gothic'\n",
++        "    print(f'[경고] NanumGothic 파일을 못 찾아 \"{FONT}\"로 대체합니다.')\n",
++        "\n",
++        "plt.rcParams.update({\n",
++        "    'font.family': FONT,\n",
++        "    'axes.unicode_minus': False,\n",
++        "    'figure.facecolor': 'white',\n",
++        "    'axes.facecolor':   'white',\n",
++        "    'axes.edgecolor':   'black',\n",
++        "    'axes.labelcolor':  'black',\n",
++        "    'xtick.color':      'black',\n",
++        "    'ytick.color':      'black',\n",
++        "    'text.color':       'black',\n",
++        "    'grid.color':       '#cccccc',\n",
++        "    'grid.linestyle':   '--',\n",
++        "    'grid.alpha':       0.5,\n",
++        "    'legend.facecolor': 'white',\n",
++        "    'legend.edgecolor': '#cccccc',\n",
++        "    'legend.labelcolor':'black',\n",
++        "})\n",
++        "\n",
++        "# ── 경로 설정 (필요하면 여기만 수정) ───────────────────────\n",
++        "JSON_PATH = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\\all_block_results.json\"\n",
++        "OUT       = r\"C:\\Users\\PUVKID\\Desktop\\2026\\하계학술대회 논문\\곽윤석\\그림\"\n",
++        "os.makedirs(OUT, exist_ok=True)\n",
++        "\n",
++        "# ── 데이터 로드 ────────────────────────────────────────────\n",
++        "with open(JSON_PATH, 'r', encoding='utf-8') as f:\n",
++        "    raw = json.load(f)\n",
++        "\n",
++        "data = {int(k): v for k, v in raw.items()}\n",
++        "# block size는 큰 값(원본에 가까움)부터 작은 값(강한 암호화) 순서로 정렬\n",
++        "block_sizes = sorted(data.keys(), reverse=True)\n",
++        "\n",
++        "def block_label(b):\n",
++        "    if b == max(block_sizes):\n",
++        "        return '원본'\n",
++        "    if b == 1:\n",
++        "        return '픽셀\\n1×1'\n",
++        "    return f'{b}×{b}'\n",
++        "\n",
++        "labels = [block_label(b) for b in block_sizes]\n",
++        "accs   = [data[b]['acc'] * 100 for b in block_sizes]\n",
++        "\n",
++        "# 색상 팔레트 (정확도에 따라 green→red 계열, 이미지와 동일한 룩)\n",
++        "def acc_color(val):\n",
++        "    if val >= 90: return '#e0602a'   # 진한 주황빨강\n",
++        "    if val >= 80: return '#e0602a'\n",
++        "    if val >= 75: return '#e8a838'   # 주황\n",
++        "    if val >= 65: return '#d4d838'   # 연두노랑\n",
++        "    if val >= 58: return '#8ec13a'   # 연두\n",
++        "    return '#2ea05a'                 # 초록\n",
++        "\n",
++        "BAR_COLORS = [acc_color(a) for a in accs]\n",
++        "\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "# 1. 블록 크기별 AI 정확도 (막대 그래프)\n",
++        "# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
++        "fig, ax = plt.subplots(figsize=(22, 11))\n",
++        "bars = ax.bar(labels, accs, color=BAR_COLORS, width=0.6, zorder=3)\n",
++        "\n",
++        "for bar, val in zip(bars, accs):\n",
++        "    ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.8,\n",
++        "            f'{val:.1f}%', ha='center', va='bottom', fontsize=35, fontweight='bold', color='black')\n",
++        "\n",
++        "ax.axhline(max(accs), color='#ff6b6b', linestyle='--', lw=1.5, label=f'최고 {max(accs):.1f}%')\n",
++        "ax.axhline(min(accs), color='#4ecdc4', linestyle='--', lw=1.5, label=f'최저 {min(accs):.1f}%')\n",
++        "ax.axhline(80,        color='gray',   linestyle=':',  lw=1.2, label='80% 기준선')\n",
++        "\n",
++        "ax.set_xlabel('블록 크기', fontsize=45)\n",
++        "ax.set_ylabel('정확도 (%)', fontsize=45)\n",
++        "ax.tick_params(labelsize=30)\n",
++        "ax.set_ylim(0, 115)\n",
++        "ax.legend(fontsize=40)\n",
++        "ax.grid(axis='y', zorder=0)\n",
++        "plt.tight_layout()\n",
++        "plt.savefig(f'{OUT}/graph1_accuracy_bar.png', dpi=150, bbox_inches='tight')\n",
++        "plt.close()\n",
++        "print('graph1 done')\n"
++      ]
++    }
++  ],
++  "metadata": {
++    "colab": {
++      "provenance": []
++    },
++    "kernelspec": {
++      "display_name": "base",
++      "language": "python",
++      "name": "python3"
++    },
++    "language_info": {
++      "codemirror_mode": {
++        "name": "ipython",
++        "version": 3
++      },
++      "file_extension": ".py",
++      "mimetype": "text/x-python",
++      "name": "python",
++      "nbconvert_exporter": "python",
++      "pygments_lexer": "ipython3",
++      "version": "3.13.9"
++    }
++  },
++  "nbformat": 4,
++  "nbformat_minor": 0
++}

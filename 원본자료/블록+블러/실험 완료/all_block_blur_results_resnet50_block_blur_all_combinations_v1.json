@@ -1,0 +1,3502 @@
+{
+  "B512_S0": {
+    "condition": "B512_S0",
+    "block_size": 512,
+    "sigma": 0,
+    "experiment_seed": 42,
+    "acc": 0.981651376146789,
+    "roc_auc": 0.9824033125109904,
+    "per_class_acc": {
+      "Bengin cases": 0.8333333333333334,
+      "Malignant cases": 1.0,
+      "Normal cases": 1.0
+    },
+    "cm": [
+      [
+        10,
+        0,
+        2
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        0,
+        41
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S1": {
+    "condition": "B512_S1",
+    "block_size": 512,
+    "sigma": 1,
+    "experiment_seed": 1042,
+    "acc": 0.9357798165137615,
+    "roc_auc": 0.987221458024162,
+    "per_class_acc": {
+      "Bengin cases": 0.9166666666666666,
+      "Malignant cases": 0.9642857142857143,
+      "Normal cases": 0.9024390243902439
+    },
+    "cm": [
+      [
+        11,
+        0,
+        1
+      ],
+      [
+        0,
+        54,
+        2
+      ],
+      [
+        4,
+        0,
+        37
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S2": {
+    "condition": "B512_S2",
+    "block_size": 512,
+    "sigma": 2,
+    "experiment_seed": 2042,
+    "acc": 0.8256880733944955,
+    "roc_auc": 0.9764696843451152,
+    "per_class_acc": {
+      "Bengin cases": 0.9166666666666666,
+      "Malignant cases": 0.8928571428571429,
+      "Normal cases": 0.7073170731707317
+    },
+    "cm": [
+      [
+        11,
+        0,
+        1
+      ],
+      [
+        1,
+        50,
+        5
+      ],
+      [
+        12,
+        0,
+        29
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S4": {
+    "condition": "B512_S4",
+    "block_size": 512,
+    "sigma": 4,
+    "experiment_seed": 3042,
+    "acc": 0.8715596330275229,
+    "roc_auc": 0.9614185130644645,
+    "per_class_acc": {
+      "Bengin cases": 0.16666666666666666,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.9024390243902439
+    },
+    "cm": [
+      [
+        2,
+        0,
+        10
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        1,
+        3,
+        37
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S8": {
+    "condition": "B512_S8",
+    "block_size": 512,
+    "sigma": 8,
+    "experiment_seed": 4042,
+    "acc": 0.8165137614678899,
+    "roc_auc": 0.9003881848401681,
+    "per_class_acc": {
+      "Bengin cases": 0.08333333333333333,
+      "Malignant cases": 0.9107142857142857,
+      "Normal cases": 0.9024390243902439
+    },
+    "cm": [
+      [
+        1,
+        2,
+        9
+      ],
+      [
+        0,
+        51,
+        5
+      ],
+      [
+        3,
+        1,
+        37
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S16": {
+    "condition": "B512_S16",
+    "block_size": 512,
+    "sigma": 16,
+    "experiment_seed": 5042,
+    "acc": 0.6697247706422018,
+    "roc_auc": 0.8375803546962516,
+    "per_class_acc": {
+      "Bengin cases": 0.4166666666666667,
+      "Malignant cases": 0.6428571428571429,
+      "Normal cases": 0.7804878048780488
+    },
+    "cm": [
+      [
+        5,
+        0,
+        7
+      ],
+      [
+        5,
+        36,
+        15
+      ],
+      [
+        7,
+        2,
+        32
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S32": {
+    "condition": "B512_S32",
+    "block_size": 512,
+    "sigma": 32,
+    "experiment_seed": 6042,
+    "acc": 0.5963302752293578,
+    "roc_auc": 0.6908349513764892,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.42857142857142855,
+      "Normal cases": 1.0
+    },
+    "cm": [
+      [
+        0,
+        4,
+        8
+      ],
+      [
+        0,
+        24,
+        32
+      ],
+      [
+        0,
+        0,
+        41
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S64": {
+    "condition": "B512_S64",
+    "block_size": 512,
+    "sigma": 64,
+    "experiment_seed": 7042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6684592496650147,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9821428571428571,
+      "Normal cases": 0.024390243902439025
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        55,
+        1
+      ],
+      [
+        0,
+        40,
+        1
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S128": {
+    "condition": "B512_S128",
+    "block_size": 512,
+    "sigma": 128,
+    "experiment_seed": 8042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5958288127196295,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B512_S256": {
+    "condition": "B512_S256",
+    "block_size": 512,
+    "sigma": 256,
+    "experiment_seed": 9042,
+    "acc": 0.46788990825688076,
+    "roc_auc": 0.5566560484930946,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.8214285714285714,
+      "Normal cases": 0.12195121951219512
+    },
+    "cm": [
+      [
+        0,
+        8,
+        4
+      ],
+      [
+        1,
+        46,
+        9
+      ],
+      [
+        0,
+        36,
+        5
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S0": {
+    "condition": "B256_S0",
+    "block_size": 256,
+    "sigma": 0,
+    "experiment_seed": 10042,
+    "acc": 0.981651376146789,
+    "roc_auc": 0.9920231691704425,
+    "per_class_acc": {
+      "Bengin cases": 0.8333333333333334,
+      "Malignant cases": 1.0,
+      "Normal cases": 1.0
+    },
+    "cm": [
+      [
+        10,
+        0,
+        2
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        0,
+        41
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S1": {
+    "condition": "B256_S1",
+    "block_size": 256,
+    "sigma": 1,
+    "experiment_seed": 11042,
+    "acc": 0.9357798165137615,
+    "roc_auc": 0.9863874139044605,
+    "per_class_acc": {
+      "Bengin cases": 0.75,
+      "Malignant cases": 0.9821428571428571,
+      "Normal cases": 0.926829268292683
+    },
+    "cm": [
+      [
+        9,
+        0,
+        3
+      ],
+      [
+        0,
+        55,
+        1
+      ],
+      [
+        3,
+        0,
+        38
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S2": {
+    "condition": "B256_S2",
+    "block_size": 256,
+    "sigma": 2,
+    "experiment_seed": 12042,
+    "acc": 0.908256880733945,
+    "roc_auc": 0.9733605684680287,
+    "per_class_acc": {
+      "Bengin cases": 0.75,
+      "Malignant cases": 0.9642857142857143,
+      "Normal cases": 0.8780487804878049
+    },
+    "cm": [
+      [
+        9,
+        0,
+        3
+      ],
+      [
+        0,
+        54,
+        2
+      ],
+      [
+        5,
+        0,
+        36
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S4": {
+    "condition": "B256_S4",
+    "block_size": 256,
+    "sigma": 4,
+    "experiment_seed": 13042,
+    "acc": 0.8623853211009175,
+    "roc_auc": 0.9768863348598114,
+    "per_class_acc": {
+      "Bengin cases": 0.25,
+      "Malignant cases": 0.9642857142857143,
+      "Normal cases": 0.9024390243902439
+    },
+    "cm": [
+      [
+        3,
+        0,
+        9
+      ],
+      [
+        0,
+        54,
+        2
+      ],
+      [
+        0,
+        4,
+        37
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S8": {
+    "condition": "B256_S8",
+    "block_size": 256,
+    "sigma": 8,
+    "experiment_seed": 14042,
+    "acc": 0.8073394495412844,
+    "roc_auc": 0.9501304258599398,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9642857142857143,
+      "Normal cases": 0.8292682926829268
+    },
+    "cm": [
+      [
+        0,
+        1,
+        11
+      ],
+      [
+        0,
+        54,
+        2
+      ],
+      [
+        0,
+        7,
+        34
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S16": {
+    "condition": "B256_S16",
+    "block_size": 256,
+    "sigma": 16,
+    "experiment_seed": 15042,
+    "acc": 0.6238532110091743,
+    "roc_auc": 0.8236894414123038,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9464285714285714,
+      "Normal cases": 0.36585365853658536
+    },
+    "cm": [
+      [
+        0,
+        11,
+        1
+      ],
+      [
+        0,
+        53,
+        3
+      ],
+      [
+        0,
+        26,
+        15
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S32": {
+    "condition": "B256_S32",
+    "block_size": 256,
+    "sigma": 32,
+    "experiment_seed": 16042,
+    "acc": 0.5871559633027523,
+    "roc_auc": 0.7657344561089025,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9285714285714286,
+      "Normal cases": 0.2926829268292683
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        52,
+        4
+      ],
+      [
+        0,
+        29,
+        12
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S64": {
+    "condition": "B256_S64",
+    "block_size": 256,
+    "sigma": 64,
+    "experiment_seed": 17042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5936757019050546,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S128": {
+    "condition": "B256_S128",
+    "block_size": 256,
+    "sigma": 128,
+    "experiment_seed": 18042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5958301460739244,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B256_S256": {
+    "condition": "B256_S256",
+    "block_size": 256,
+    "sigma": 256,
+    "experiment_seed": 19042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.4499418204585639,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S0": {
+    "condition": "B128_S0",
+    "block_size": 128,
+    "sigma": 0,
+    "experiment_seed": 20042,
+    "acc": 0.944954128440367,
+    "roc_auc": 0.9804431034001061,
+    "per_class_acc": {
+      "Bengin cases": 0.5833333333333334,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.975609756097561
+    },
+    "cm": [
+      [
+        7,
+        0,
+        5
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        1,
+        0,
+        40
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S1": {
+    "condition": "B128_S1",
+    "block_size": 128,
+    "sigma": 1,
+    "experiment_seed": 21042,
+    "acc": 0.908256880733945,
+    "roc_auc": 0.9799793652127006,
+    "per_class_acc": {
+      "Bengin cases": 0.6666666666666666,
+      "Malignant cases": 0.9642857142857143,
+      "Normal cases": 0.9024390243902439
+    },
+    "cm": [
+      [
+        8,
+        0,
+        4
+      ],
+      [
+        0,
+        54,
+        2
+      ],
+      [
+        4,
+        0,
+        37
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S2": {
+    "condition": "B128_S2",
+    "block_size": 128,
+    "sigma": 2,
+    "experiment_seed": 22042,
+    "acc": 0.8440366972477065,
+    "roc_auc": 0.9762448308655802,
+    "per_class_acc": {
+      "Bengin cases": 0.5,
+      "Malignant cases": 0.8392857142857143,
+      "Normal cases": 0.9512195121951219
+    },
+    "cm": [
+      [
+        6,
+        0,
+        6
+      ],
+      [
+        0,
+        47,
+        9
+      ],
+      [
+        2,
+        0,
+        39
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S4": {
+    "condition": "B128_S4",
+    "block_size": 128,
+    "sigma": 4,
+    "experiment_seed": 23042,
+    "acc": 0.8440366972477065,
+    "roc_auc": 0.9490713217236803,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9464285714285714,
+      "Normal cases": 0.9512195121951219
+    },
+    "cm": [
+      [
+        0,
+        0,
+        12
+      ],
+      [
+        0,
+        53,
+        3
+      ],
+      [
+        0,
+        2,
+        39
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S8": {
+    "condition": "B128_S8",
+    "block_size": 128,
+    "sigma": 8,
+    "experiment_seed": 24042,
+    "acc": 0.7522935779816514,
+    "roc_auc": 0.9026284348984074,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9642857142857143,
+      "Normal cases": 0.6829268292682927
+    },
+    "cm": [
+      [
+        0,
+        4,
+        8
+      ],
+      [
+        0,
+        54,
+        2
+      ],
+      [
+        0,
+        13,
+        28
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S16": {
+    "condition": "B128_S16",
+    "block_size": 128,
+    "sigma": 16,
+    "experiment_seed": 25042,
+    "acc": 0.5412844036697247,
+    "roc_auc": 0.805089522758433,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.07317073170731707
+    },
+    "cm": [
+      [
+        0,
+        11,
+        1
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        38,
+        3
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S32": {
+    "condition": "B128_S32",
+    "block_size": 128,
+    "sigma": 32,
+    "experiment_seed": 26042,
+    "acc": 0.5229357798165137,
+    "roc_auc": 0.6321031432294809,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.024390243902439025
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        40,
+        1
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S64": {
+    "condition": "B128_S64",
+    "block_size": 128,
+    "sigma": 64,
+    "experiment_seed": 27042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.650222918676139,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S128": {
+    "condition": "B128_S128",
+    "block_size": 128,
+    "sigma": 128,
+    "experiment_seed": 28042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5982829288199972,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B128_S256": {
+    "condition": "B128_S256",
+    "block_size": 128,
+    "sigma": 256,
+    "experiment_seed": 29042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5910258352189998,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S0": {
+    "condition": "B64_S0",
+    "block_size": 64,
+    "sigma": 0,
+    "experiment_seed": 30042,
+    "acc": 0.963302752293578,
+    "roc_auc": 0.9833819790593298,
+    "per_class_acc": {
+      "Bengin cases": 0.75,
+      "Malignant cases": 0.9821428571428571,
+      "Normal cases": 1.0
+    },
+    "cm": [
+      [
+        9,
+        0,
+        3
+      ],
+      [
+        0,
+        55,
+        1
+      ],
+      [
+        0,
+        0,
+        41
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S1": {
+    "condition": "B64_S1",
+    "block_size": 64,
+    "sigma": 1,
+    "experiment_seed": 31042,
+    "acc": 0.8899082568807339,
+    "roc_auc": 0.9666443980995298,
+    "per_class_acc": {
+      "Bengin cases": 0.75,
+      "Malignant cases": 0.8928571428571429,
+      "Normal cases": 0.926829268292683
+    },
+    "cm": [
+      [
+        9,
+        0,
+        3
+      ],
+      [
+        1,
+        50,
+        5
+      ],
+      [
+        3,
+        0,
+        38
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S2": {
+    "condition": "B64_S2",
+    "block_size": 64,
+    "sigma": 2,
+    "experiment_seed": 32042,
+    "acc": 0.8623853211009175,
+    "roc_auc": 0.9455787358092288,
+    "per_class_acc": {
+      "Bengin cases": 0.5,
+      "Malignant cases": 0.8928571428571429,
+      "Normal cases": 0.926829268292683
+    },
+    "cm": [
+      [
+        6,
+        1,
+        5
+      ],
+      [
+        1,
+        50,
+        5
+      ],
+      [
+        3,
+        0,
+        38
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S4": {
+    "condition": "B64_S4",
+    "block_size": 64,
+    "sigma": 4,
+    "experiment_seed": 33042,
+    "acc": 0.7155963302752294,
+    "roc_auc": 0.8858501417814094,
+    "per_class_acc": {
+      "Bengin cases": 0.08333333333333333,
+      "Malignant cases": 0.6607142857142857,
+      "Normal cases": 0.975609756097561
+    },
+    "cm": [
+      [
+        1,
+        2,
+        9
+      ],
+      [
+        1,
+        37,
+        18
+      ],
+      [
+        1,
+        0,
+        40
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S8": {
+    "condition": "B64_S8",
+    "block_size": 64,
+    "sigma": 8,
+    "experiment_seed": 34042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.7710891405110063,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S16": {
+    "condition": "B64_S16",
+    "block_size": 64,
+    "sigma": 16,
+    "experiment_seed": 35042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6985015818698298,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S32": {
+    "condition": "B64_S32",
+    "block_size": 64,
+    "sigma": 32,
+    "experiment_seed": 36042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.642533978308257,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S64": {
+    "condition": "B64_S64",
+    "block_size": 64,
+    "sigma": 64,
+    "experiment_seed": 37042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6503641506860278,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S128": {
+    "condition": "B64_S128",
+    "block_size": 64,
+    "sigma": 128,
+    "experiment_seed": 38042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5168925280247263,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B64_S256": {
+    "condition": "B64_S256",
+    "block_size": 64,
+    "sigma": 256,
+    "experiment_seed": 39042,
+    "acc": 0.5779816513761468,
+    "roc_auc": 0.5784148191326383,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9464285714285714,
+      "Normal cases": 0.24390243902439024
+    },
+    "cm": [
+      [
+        0,
+        9,
+        3
+      ],
+      [
+        0,
+        53,
+        3
+      ],
+      [
+        0,
+        31,
+        10
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S0": {
+    "condition": "B32_S0",
+    "block_size": 32,
+    "sigma": 0,
+    "experiment_seed": 40042,
+    "acc": 0.8990825688073395,
+    "roc_auc": 0.9662617209871441,
+    "per_class_acc": {
+      "Bengin cases": 0.5833333333333334,
+      "Malignant cases": 0.9285714285714286,
+      "Normal cases": 0.9512195121951219
+    },
+    "cm": [
+      [
+        7,
+        0,
+        5
+      ],
+      [
+        0,
+        52,
+        4
+      ],
+      [
+        2,
+        0,
+        39
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S1": {
+    "condition": "B32_S1",
+    "block_size": 32,
+    "sigma": 1,
+    "experiment_seed": 41042,
+    "acc": 0.8440366972477065,
+    "roc_auc": 0.9674650056846298,
+    "per_class_acc": {
+      "Bengin cases": 0.4166666666666667,
+      "Malignant cases": 0.8571428571428571,
+      "Normal cases": 0.9512195121951219
+    },
+    "cm": [
+      [
+        5,
+        0,
+        7
+      ],
+      [
+        0,
+        48,
+        8
+      ],
+      [
+        2,
+        0,
+        39
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S2": {
+    "condition": "B32_S2",
+    "block_size": 32,
+    "sigma": 2,
+    "experiment_seed": 42042,
+    "acc": 0.7155963302752294,
+    "roc_auc": 0.9180158251967381,
+    "per_class_acc": {
+      "Bengin cases": 0.75,
+      "Malignant cases": 0.7142857142857143,
+      "Normal cases": 0.7073170731707317
+    },
+    "cm": [
+      [
+        9,
+        0,
+        3
+      ],
+      [
+        5,
+        40,
+        11
+      ],
+      [
+        10,
+        2,
+        29
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S4": {
+    "condition": "B32_S4",
+    "block_size": 32,
+    "sigma": 4,
+    "experiment_seed": 43042,
+    "acc": 0.7064220183486238,
+    "roc_auc": 0.8267850731349925,
+    "per_class_acc": {
+      "Bengin cases": 0.4166666666666667,
+      "Malignant cases": 0.6964285714285714,
+      "Normal cases": 0.8048780487804879
+    },
+    "cm": [
+      [
+        5,
+        0,
+        7
+      ],
+      [
+        1,
+        39,
+        16
+      ],
+      [
+        5,
+        3,
+        33
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S8": {
+    "condition": "B32_S8",
+    "block_size": 32,
+    "sigma": 8,
+    "experiment_seed": 44042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.7507924770210451,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S16": {
+    "condition": "B32_S16",
+    "block_size": 32,
+    "sigma": 16,
+    "experiment_seed": 45042,
+    "acc": 0.4954128440366973,
+    "roc_auc": 0.7868281022278397,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.23214285714285715,
+      "Normal cases": 1.0
+    },
+    "cm": [
+      [
+        0,
+        1,
+        11
+      ],
+      [
+        0,
+        13,
+        43
+      ],
+      [
+        0,
+        0,
+        41
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S32": {
+    "condition": "B32_S32",
+    "block_size": 32,
+    "sigma": 32,
+    "experiment_seed": 46042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6045871519592572,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S64": {
+    "condition": "B32_S64",
+    "block_size": 32,
+    "sigma": 64,
+    "experiment_seed": 47042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5585036533974127,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S128": {
+    "condition": "B32_S128",
+    "block_size": 32,
+    "sigma": 128,
+    "experiment_seed": 48042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5477550757819002,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B32_S256": {
+    "condition": "B32_S256",
+    "block_size": 32,
+    "sigma": 256,
+    "experiment_seed": 49042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6647799791988757,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S0": {
+    "condition": "B16_S0",
+    "block_size": 16,
+    "sigma": 0,
+    "experiment_seed": 50042,
+    "acc": 0.8348623853211009,
+    "roc_auc": 0.9377001457267649,
+    "per_class_acc": {
+      "Bengin cases": 0.5,
+      "Malignant cases": 0.9464285714285714,
+      "Normal cases": 0.7804878048780488
+    },
+    "cm": [
+      [
+        6,
+        0,
+        6
+      ],
+      [
+        0,
+        53,
+        3
+      ],
+      [
+        9,
+        0,
+        32
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S1": {
+    "condition": "B16_S1",
+    "block_size": 16,
+    "sigma": 1,
+    "experiment_seed": 51042,
+    "acc": 0.7706422018348624,
+    "roc_auc": 0.8984393269597847,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.8035714285714286,
+      "Normal cases": 0.9512195121951219
+    },
+    "cm": [
+      [
+        0,
+        1,
+        11
+      ],
+      [
+        0,
+        45,
+        11
+      ],
+      [
+        1,
+        1,
+        39
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S2": {
+    "condition": "B16_S2",
+    "block_size": 16,
+    "sigma": 2,
+    "experiment_seed": 52042,
+    "acc": 0.6697247706422018,
+    "roc_auc": 0.8056182774718351,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9821428571428571,
+      "Normal cases": 0.43902439024390244
+    },
+    "cm": [
+      [
+        0,
+        9,
+        3
+      ],
+      [
+        0,
+        55,
+        1
+      ],
+      [
+        0,
+        23,
+        18
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S4": {
+    "condition": "B16_S4",
+    "block_size": 16,
+    "sigma": 4,
+    "experiment_seed": 53042,
+    "acc": 0.5779816513761468,
+    "roc_auc": 0.6816872610546599,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9464285714285714,
+      "Normal cases": 0.24390243902439024
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        53,
+        3
+      ],
+      [
+        0,
+        31,
+        10
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S8": {
+    "condition": "B16_S8",
+    "block_size": 16,
+    "sigma": 8,
+    "experiment_seed": 54042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.7168390910827652,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S16": {
+    "condition": "B16_S16",
+    "block_size": 16,
+    "sigma": 16,
+    "experiment_seed": 55042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.7446281420167266,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S32": {
+    "condition": "B16_S32",
+    "block_size": 16,
+    "sigma": 32,
+    "experiment_seed": 56042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6078585710523529,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S64": {
+    "condition": "B16_S64",
+    "block_size": 16,
+    "sigma": 64,
+    "experiment_seed": 57042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5293445875700611,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S128": {
+    "condition": "B16_S128",
+    "block_size": 16,
+    "sigma": 128,
+    "experiment_seed": 58042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5917973534387923,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B16_S256": {
+    "condition": "B16_S256",
+    "block_size": 16,
+    "sigma": 256,
+    "experiment_seed": 59042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6166897536298367,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S0": {
+    "condition": "B8_S0",
+    "block_size": 8,
+    "sigma": 0,
+    "experiment_seed": 60042,
+    "acc": 0.7522935779816514,
+    "roc_auc": 0.9197228747352489,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.7321428571428571,
+      "Normal cases": 1.0
+    },
+    "cm": [
+      [
+        0,
+        0,
+        12
+      ],
+      [
+        0,
+        41,
+        15
+      ],
+      [
+        0,
+        0,
+        41
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S1": {
+    "condition": "B8_S1",
+    "block_size": 8,
+    "sigma": 1,
+    "experiment_seed": 61042,
+    "acc": 0.6880733944954128,
+    "roc_auc": 0.8378706626931646,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9821428571428571,
+      "Normal cases": 0.4878048780487805
+    },
+    "cm": [
+      [
+        0,
+        7,
+        5
+      ],
+      [
+        0,
+        55,
+        1
+      ],
+      [
+        0,
+        21,
+        20
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S2": {
+    "condition": "B8_S2",
+    "block_size": 8,
+    "sigma": 2,
+    "experiment_seed": 62042,
+    "acc": 0.6055045871559633,
+    "roc_auc": 0.7320226442895441,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.8392857142857143,
+      "Normal cases": 0.4634146341463415
+    },
+    "cm": [
+      [
+        0,
+        5,
+        7
+      ],
+      [
+        0,
+        47,
+        9
+      ],
+      [
+        0,
+        22,
+        19
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S4": {
+    "condition": "B8_S4",
+    "block_size": 8,
+    "sigma": 4,
+    "experiment_seed": 63042,
+    "acc": 0.5229357798165137,
+    "roc_auc": 0.6716117250277392,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.024390243902439025
+    },
+    "cm": [
+      [
+        0,
+        10,
+        2
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        40,
+        1
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S8": {
+    "condition": "B8_S8",
+    "block_size": 8,
+    "sigma": 8,
+    "experiment_seed": 64042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6607760735073528,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9821428571428571,
+      "Normal cases": 0.024390243902439025
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        55,
+        1
+      ],
+      [
+        0,
+        40,
+        1
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S16": {
+    "condition": "B8_S16",
+    "block_size": 8,
+    "sigma": 16,
+    "experiment_seed": 65042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6724055254361452,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S32": {
+    "condition": "B8_S32",
+    "block_size": 8,
+    "sigma": 32,
+    "experiment_seed": 66042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6500622932273695,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S64": {
+    "condition": "B8_S64",
+    "block_size": 8,
+    "sigma": 64,
+    "experiment_seed": 67042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.516692258541863,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S128": {
+    "condition": "B8_S128",
+    "block_size": 8,
+    "sigma": 128,
+    "experiment_seed": 68042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5212888540604343,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B8_S256": {
+    "condition": "B8_S256",
+    "block_size": 8,
+    "sigma": 256,
+    "experiment_seed": 69042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5211192268090186,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S0": {
+    "condition": "B4_S0",
+    "block_size": 4,
+    "sigma": 0,
+    "experiment_seed": 70042,
+    "acc": 0.6422018348623854,
+    "roc_auc": 0.8012374206715657,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.34146341463414637
+    },
+    "cm": [
+      [
+        0,
+        11,
+        1
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        27,
+        14
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S1": {
+    "condition": "B4_S1",
+    "block_size": 4,
+    "sigma": 1,
+    "experiment_seed": 71042,
+    "acc": 0.5779816513761468,
+    "roc_auc": 0.8098328896873777,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.17073170731707318
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        34,
+        7
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S2": {
+    "condition": "B4_S2",
+    "block_size": 4,
+    "sigma": 2,
+    "experiment_seed": 72042,
+    "acc": 0.5504587155963303,
+    "roc_auc": 0.774453637479333,
+    "per_class_acc": {
+      "Bengin cases": 0.08333333333333333,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.07317073170731707
+    },
+    "cm": [
+      [
+        1,
+        11,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        38,
+        3
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S4": {
+    "condition": "B4_S4",
+    "block_size": 4,
+    "sigma": 4,
+    "experiment_seed": 73042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6525954509911652,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S8": {
+    "condition": "B4_S8",
+    "block_size": 4,
+    "sigma": 8,
+    "experiment_seed": 74042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.7431219693903405,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S16": {
+    "condition": "B4_S16",
+    "block_size": 4,
+    "sigma": 16,
+    "experiment_seed": 75042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6818126539451113,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S32": {
+    "condition": "B4_S32",
+    "block_size": 4,
+    "sigma": 32,
+    "experiment_seed": 76042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6466713844374015,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S64": {
+    "condition": "B4_S64",
+    "block_size": 4,
+    "sigma": 64,
+    "experiment_seed": 77042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.7243573626546181,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S128": {
+    "condition": "B4_S128",
+    "block_size": 4,
+    "sigma": 128,
+    "experiment_seed": 78042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6749809291575529,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B4_S256": {
+    "condition": "B4_S256",
+    "block_size": 4,
+    "sigma": 256,
+    "experiment_seed": 79042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.630780020546148,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S0": {
+    "condition": "B2_S0",
+    "block_size": 2,
+    "sigma": 0,
+    "experiment_seed": 80042,
+    "acc": 0.6605504587155964,
+    "roc_auc": 0.7591083220395788,
+    "per_class_acc": {
+      "Bengin cases": 0.08333333333333333,
+      "Malignant cases": 0.9642857142857143,
+      "Normal cases": 0.4146341463414634
+    },
+    "cm": [
+      [
+        1,
+        6,
+        5
+      ],
+      [
+        0,
+        54,
+        2
+      ],
+      [
+        5,
+        19,
+        17
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S1": {
+    "condition": "B2_S1",
+    "block_size": 2,
+    "sigma": 1,
+    "experiment_seed": 81042,
+    "acc": 0.5688073394495413,
+    "roc_auc": 0.7397943096567219,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.875,
+      "Normal cases": 0.3170731707317073
+    },
+    "cm": [
+      [
+        0,
+        9,
+        3
+      ],
+      [
+        0,
+        49,
+        7
+      ],
+      [
+        0,
+        28,
+        13
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S2": {
+    "condition": "B2_S2",
+    "block_size": 2,
+    "sigma": 2,
+    "experiment_seed": 82042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6294986105894529,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S4": {
+    "condition": "B2_S4",
+    "block_size": 2,
+    "sigma": 4,
+    "experiment_seed": 83042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5811901817007967,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S8": {
+    "condition": "B2_S8",
+    "block_size": 2,
+    "sigma": 8,
+    "experiment_seed": 84042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5937633854540642,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S16": {
+    "condition": "B2_S16",
+    "block_size": 2,
+    "sigma": 16,
+    "experiment_seed": 85042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6156258764395813,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S32": {
+    "condition": "B2_S32",
+    "block_size": 2,
+    "sigma": 32,
+    "experiment_seed": 86042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5148930342430943,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S64": {
+    "condition": "B2_S64",
+    "block_size": 2,
+    "sigma": 64,
+    "experiment_seed": 87042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.529475695943499,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S128": {
+    "condition": "B2_S128",
+    "block_size": 2,
+    "sigma": 128,
+    "experiment_seed": 88042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5232134197538282,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B2_S256": {
+    "condition": "B2_S256",
+    "block_size": 2,
+    "sigma": 256,
+    "experiment_seed": 89042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5431045857283489,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S0": {
+    "condition": "B1_S0",
+    "block_size": 1,
+    "sigma": 0,
+    "experiment_seed": 90042,
+    "acc": 0.47706422018348627,
+    "roc_auc": 0.6720154118834851,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.6785714285714286,
+      "Normal cases": 0.34146341463414637
+    },
+    "cm": [
+      [
+        0,
+        4,
+        8
+      ],
+      [
+        0,
+        38,
+        18
+      ],
+      [
+        0,
+        27,
+        14
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S1": {
+    "condition": "B1_S1",
+    "block_size": 1,
+    "sigma": 1,
+    "experiment_seed": 91042,
+    "acc": 0.5045871559633027,
+    "roc_auc": 0.6691519665352347,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 0.9285714285714286,
+      "Normal cases": 0.07317073170731707
+    },
+    "cm": [
+      [
+        0,
+        9,
+        3
+      ],
+      [
+        0,
+        52,
+        4
+      ],
+      [
+        0,
+        38,
+        3
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S2": {
+    "condition": "B1_S2",
+    "block_size": 1,
+    "sigma": 2,
+    "experiment_seed": 92042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6414300844313163,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S4": {
+    "condition": "B1_S4",
+    "block_size": 1,
+    "sigma": 4,
+    "experiment_seed": 93042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.694761793287284,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S8": {
+    "condition": "B1_S8",
+    "block_size": 1,
+    "sigma": 8,
+    "experiment_seed": 94042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6303558859713813,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S16": {
+    "condition": "B1_S16",
+    "block_size": 1,
+    "sigma": 16,
+    "experiment_seed": 95042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6576633058563566,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S32": {
+    "condition": "B1_S32",
+    "block_size": 1,
+    "sigma": 32,
+    "experiment_seed": 96042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.6048211019273122,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S64": {
+    "condition": "B1_S64",
+    "block_size": 1,
+    "sigma": 64,
+    "experiment_seed": 97042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5858449686103814,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S128": {
+    "condition": "B1_S128",
+    "block_size": 1,
+    "sigma": 128,
+    "experiment_seed": 98042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5880306070681041,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "B1_S256": {
+    "condition": "B1_S256",
+    "block_size": 1,
+    "sigma": 256,
+    "experiment_seed": 99042,
+    "acc": 0.5137614678899083,
+    "roc_auc": 0.5889952650905683,
+    "per_class_acc": {
+      "Bengin cases": 0.0,
+      "Malignant cases": 1.0,
+      "Normal cases": 0.0
+    },
+    "cm": [
+      [
+        0,
+        12,
+        0
+      ],
+      [
+        0,
+        56,
+        0
+      ],
+      [
+        0,
+        41,
+        0
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  }
+}

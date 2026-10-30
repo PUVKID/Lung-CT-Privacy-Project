@@ -1,0 +1,18 @@
+{
+  "stage": "블러 스테이지 1 엣지 · 기본",
+  "previous": null,
+  "files": {
+    "블러 스테이지 1 엣지/stage1_edge_feature_blur_resnet50.ipynb": {
+      "bytes": 136775,
+      "sha256": "069080fa81d3e1f740d9cb0f9433b3a6cb1184a3af6a626956bc4b948cc87caa"
+    },
+    "원본자료/블러 스테이지 1 엣지/stage1_edge_feature_blur_resnet50.ipynb": {
+      "bytes": 136774,
+      "sha256": "31f78836099ec69365232e8a30071e8b6f4ed0bb70491b29f2b08a6dcfcb51e1"
+    },
+    "원본자료/블러 스테이지 1 엣지/stage1_feature_blur_resnet50_outputs/results/all_stage1_feature_blur_results_resnet50_stage1_feature_blur_resnet50_v1.json": {
+      "bytes": 7731,
+      "sha256": "74122d318190860fb214e01725ce4bc8d81e1abe533c67be64beb5224dd7f802"
+    }
+  }
+}

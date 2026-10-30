@@ -1,0 +1,50 @@
+{
+  "stage": "폴더 1차",
+  "previous": null,
+  "files": {
+    "자료차수/1차/block_encryption_resnet50_metric_matched_seq.ipynb": {
+      "bytes": 60093,
+      "sha256": "066b6f71ee4c438ea16e481f2182166ef777cf77b0759439945aeb7cdc12d5c1"
+    },
+    "자료차수/1차/block_encryption_resnet50_rebuilt_KO.ipynb": {
+      "bytes": 93336,
+      "sha256": "e4526e11284c362e99634a7f3a7cd2ee3e96c79b25a8e1970d57eba31669de89"
+    },
+    "자료차수/1차/block_encryption_resnet50_same_settings_seq.ipynb": {
+      "bytes": 60070,
+      "sha256": "e7ee462efd677bce07208fb329a0b16add22b58598dc2e7dff71698c4b5887d6"
+    },
+    "자료차수/1차/blur_resnet50_metric_matched_seq.ipynb": {
+      "bytes": 72937,
+      "sha256": "ca47cc04346b01931e768101723d2e5c7f9a8d6fc878c53bfba0178331d2dfdc"
+    },
+    "자료차수/1차/blur_resnet50_rebuilt_KO.ipynb": {
+      "bytes": 106507,
+      "sha256": "2667478acda4fd06ecd4dfb1126540af313490a24dd5b57bc05d670c4cd19819"
+    },
+    "자료차수/1차/blur_resnet50_same_settings_seq.ipynb": {
+      "bytes": 63986,
+      "sha256": "847de605b3686cbaf559cd7c95402b2cded9a2be7b8b536339ddb8ca93acfaa6"
+    },
+    "자료차수/1차/create_metric_matched_notebooks.js": {
+      "bytes": 18124,
+      "sha256": "f40132eda3c769d267c036941a23db74c2b4fab28e9fbb3cc3c57354b3f68973"
+    },
+    "자료차수/1차/fix_pseudo_callbacks.py": {
+      "bytes": 1725,
+      "sha256": "b12fd56841636cc008ee9baecc3d8b237731c2cc4af12802b2487cb3c94a968d"
+    },
+    "자료차수/1차/fix_training_repeat_overfit.py": {
+      "bytes": 6714,
+      "sha256": "a8e3cfd2fc9e97297f213c60e5d006dd731edda15f05785ab46c607f90353510"
+    },
+    "자료차수/1차/patch_blur_block_notebooks.js": {
+      "bytes": 36556,
+      "sha256": "700d96b1a98589cc1e8254660463a77755cf54ab521dff6f7aa7e280a98fad48"
+    },
+    "자료차수/1차/rebuild_blur_ko_notebook.py": {
+      "bytes": 45698,
+      "sha256": "47761fbbefedbb8524b8e97d2527d55f82c51fc9e47f88a7a26275822f0bef6a"
+    }
+  }
+}

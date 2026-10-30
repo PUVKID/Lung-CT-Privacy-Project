@@ -1,0 +1,338 @@
+# 비교 대상 없음 -> 블록 · 1차 실험
+# 공백·주석·개행을 무시하지 않습니다. PDF 추출 텍스트는 배치·글꼴 비교를 대신하지 않습니다. 바이너리는 크기·SHA-256으로 비교합니다. ipynb의 바이너리 이미지 출력만 크기·SHA·원문 링크로 표시하며 코드·Markdown·수치·설정·그 밖의 JSON 텍스트는 전체 비교합니다.
+# 현재 원본자료/블록/1차 실험/블록 1/불록 결과/all_block_results.json 5040 a85dd325d928a5e3ae116c6d8d5ca0d06b90e632313b28ca694d81fa80cb9801
+--- /dev/null
++++ 원본자료/블록/1차 실험/블록 1/불록 결과/all_block_results.json
+@@ -0,0 +1,332 @@
++{
++  "512": {
++    "block_size": 512,
++    "n_blocks": 1,
++    "acc": 0.9291666666666667,
++    "roc_auc": 0.9804166666666667,
++    "per_class_acc": {
++      "Bengin cases": 0.925,
++      "Malignant cases": 0.9625,
++      "Normal cases": 0.9
++    },
++    "cm": [
++      [
++        74,
++        0,
++        6
++      ],
++      [
++        1,
++        77,
++        2
++      ],
++      [
++        8,
++        0,
++        72
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "256": {
++    "block_size": 256,
++    "n_blocks": 4,
++    "acc": 0.925,
++    "roc_auc": 0.980546875,
++    "per_class_acc": {
++      "Bengin cases": 0.9625,
++      "Malignant cases": 0.975,
++      "Normal cases": 0.8375
++    },
++    "cm": [
++      [
++        77,
++        0,
++        3
++      ],
++      [
++        0,
++        78,
++        2
++      ],
++      [
++        13,
++        0,
++        67
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "128": {
++    "block_size": 128,
++    "n_blocks": 16,
++    "acc": 0.8833333333333333,
++    "roc_auc": 0.9679687499999999,
++    "per_class_acc": {
++      "Bengin cases": 0.8875,
++      "Malignant cases": 0.9375,
++      "Normal cases": 0.825
++    },
++    "cm": [
++      [
++        71,
++        0,
++        9
++      ],
++      [
++        1,
++        75,
++        4
++      ],
++      [
++        14,
++        0,
++        66
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "64": {
++    "block_size": 64,
++    "n_blocks": 64,
++    "acc": 0.8666666666666667,
++    "roc_auc": 0.9646614583333334,
++    "per_class_acc": {
++      "Bengin cases": 0.8875,
++      "Malignant cases": 0.8875,
++      "Normal cases": 0.825
++    },
++    "cm": [
++      [
++        71,
++        0,
++        9
++      ],
++      [
++        4,
++        71,
++        5
++      ],
++      [
++        14,
++        0,
++        66
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "32": {
++    "block_size": 32,
++    "n_blocks": 256,
++    "acc": 0.7916666666666666,
++    "roc_auc": 0.9605989583333333,
++    "per_class_acc": {
++      "Bengin cases": 0.6125,
++      "Malignant cases": 0.8625,
++      "Normal cases": 0.9
++    },
++    "cm": [
++      [
++        49,
++        0,
++        31
++      ],
++      [
++        7,
++        69,
++        4
++      ],
++      [
++        7,
++        1,
++        72
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "16": {
++    "block_size": 16,
++    "n_blocks": 1024,
++    "acc": 0.725,
++    "roc_auc": 0.9149739583333334,
++    "per_class_acc": {
++      "Bengin cases": 0.75,
++      "Malignant cases": 0.725,
++      "Normal cases": 0.7
++    },
++    "cm": [
++      [
++        60,
++        0,
++        20
++      ],
++      [
++        6,
++        58,
++        16
++      ],
++      [
++        22,
++        2,
++        56
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "8": {
++    "block_size": 8,
++    "n_blocks": 4096,
++    "acc": 0.7333333333333333,
++    "roc_auc": 0.8492708333333333,
++    "per_class_acc": {
++      "Bengin cases": 0.875,
++      "Malignant cases": 0.85,
++      "Normal cases": 0.475
++    },
++    "cm": [
++      [
++        70,
++        1,
++        9
++      ],
++      [
++        10,
++        68,
++        2
++      ],
++      [
++        29,
++        13,
++        38
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "4": {
++    "block_size": 4,
++    "n_blocks": 16384,
++    "acc": 0.6166666666666667,
++    "roc_auc": 0.7642447916666666,
++    "per_class_acc": {
++      "Bengin cases": 0.8125,
++      "Malignant cases": 0.725,
++      "Normal cases": 0.3125
++    },
++    "cm": [
++      [
++        65,
++        7,
++        8
++      ],
++      [
++        22,
++        58,
++        0
++      ],
++      [
++        28,
++        27,
++        25
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "2": {
++    "block_size": 2,
++    "n_blocks": 65536,
++    "acc": 0.5541666666666667,
++    "roc_auc": 0.6884375,
++    "per_class_acc": {
++      "Bengin cases": 0.85,
++      "Malignant cases": 0.7125,
++      "Normal cases": 0.1
++    },
++    "cm": [
++      [
++        68,
++        10,
++        2
++      ],
++      [
++        22,
++        57,
++        1
++      ],
++      [
++        29,
++        43,
++        8
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  },
++  "1": {
++    "block_size": 1,
++    "n_blocks": 262144,
++    "acc": 0.5291666666666667,
++    "roc_auc": 0.6907291666666667,
++    "per_class_acc": {
++      "Bengin cases": 0.875,
++      "Malignant cases": 0.7125,
++      "Normal cases": 0.0
++    },
++    "cm": [
++      [
++        70,
++        10,
++        0
++      ],
++      [
++        23,
++        57,
++        0
++      ],
++      [
++        29,
++        51,
++        0
++      ]
++    ],
++    "class_names": [
++      "Bengin cases",
++      "Malignant cases",
++      "Normal cases"
++    ]
++  }
++}

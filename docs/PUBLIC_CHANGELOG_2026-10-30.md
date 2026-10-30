@@ -1,0 +1,192 @@
+# 📝 2026-10-30 연구 원문과 차수 공개 보완
+
+원격 기준 커밋: `775419238a7dff0b724cc2d70d5c24936d80ba31`
+
+기존 공개 파일을 삭제하지 않고 원본 논문·문서·연구 코드·결과표·발표자료를 추가했습니다. 연구 번호와 원본 폴더 차수·원고 수정·발표 차수를 구별하고 각 파일·직전 단계의 전체 차이와 크기·SHA-256을 연결했습니다. 현재 원문 PDF/HWP와 나중 공식 URL 교체 지점은 [논문 표](PAPERS.md)에 있습니다.
+
+## 실제 수정 파일
+
+- `CHANGELOG.md`: 현재 원문·이전 정제 사본과 차수 안내의 정합성을 보완했습니다.
+- `README.md`: 논문 직접 링크·모든 실제 단계·파일 종류·비교를 보완하고 기존 이모지 구조를 유지했습니다.
+- `docs/RESEARCH_STAGES.md`: 현재 원문·이전 정제 사본과 차수 안내의 정합성을 보완했습니다.
+- `docs/VERSIONS.md`: 현재 원문·이전 정제 사본과 차수 안내의 정합성을 보완했습니다.
+
+## 실제 추가 파일
+
+- `docs/PAPERS.md`
+- `docs/PUBLIC_CHANGELOG_2026-10-30.md`
+- `docs/REVISION_INDEX.md`
+- `docs/revision-diffs/experiment-10.diff`
+- `docs/revision-diffs/experiment-11.diff`
+- `docs/revision-diffs/experiment-12.diff`
+- `docs/revision-diffs/experiment-13.diff`
+- `docs/revision-diffs/experiment-14.diff`
+- `docs/revision-diffs/experiment-6.diff`
+- `docs/revision-diffs/experiment-7.diff`
+- `docs/revision-diffs/experiment-8.diff`
+- `docs/revision-diffs/experiment-9.diff`
+- `docs/revision-diffs/experiment-original-block.diff`
+- `docs/revision-diffs/experiment-original-blur.diff`
+- `docs/revision-diffs/folder-1.diff`
+- `docs/revision-diffs/folder-2.diff`
+- `docs/revision-diffs/folder-3.diff`
+- `docs/revision-diffs/folder-4.diff`
+- `docs/revision-diffs/study-1.diff`
+- `docs/revision-diffs/study-2.diff`
+- `docs/revision-manifests/experiment-10.json`
+- `docs/revision-manifests/experiment-11.json`
+- `docs/revision-manifests/experiment-12.json`
+- `docs/revision-manifests/experiment-13.json`
+- `docs/revision-manifests/experiment-14.json`
+- `docs/revision-manifests/experiment-6.json`
+- `docs/revision-manifests/experiment-7.json`
+- `docs/revision-manifests/experiment-8.json`
+- `docs/revision-manifests/experiment-9.json`
+- `docs/revision-manifests/experiment-original-block.json`
+- `docs/revision-manifests/experiment-original-blur.json`
+- `docs/revision-manifests/folder-1.json`
+- `docs/revision-manifests/folder-2.json`
+- `docs/revision-manifests/folder-3.json`
+- `docs/revision-manifests/folder-4.json`
+- `docs/revision-manifests/study-1.json`
+- `docs/revision-manifests/study-2.json`
+- `docs/revisions/experiment-10.md`
+- `docs/revisions/experiment-11.md`
+- `docs/revisions/experiment-12.md`
+- `docs/revisions/experiment-13.md`
+- `docs/revisions/experiment-14.md`
+- `docs/revisions/experiment-6.md`
+- `docs/revisions/experiment-7.md`
+- `docs/revisions/experiment-8.md`
+- `docs/revisions/experiment-9.md`
+- `docs/revisions/experiment-original-block.md`
+- `docs/revisions/experiment-original-blur.md`
+- `docs/revisions/folder-1.md`
+- `docs/revisions/folder-2.md`
+- `docs/revisions/folder-3.md`
+- `docs/revisions/folder-4.md`
+- `docs/revisions/study-1.md`
+- `docs/revisions/study-2.md`
+- `논문/연구2_원문_최종.hwp`
+- `논문/연구2_원문_최종.pdf`
+- `연구1_하계_EfficientNetV2-S/논문/원문_최종.hwp`
+- `연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pdf`
+- `연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 PPT.pptx`
+- `연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.docx`
+- `연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본 정리.pdf`
+- `연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.docx`
+- `연구1_하계_EfficientNetV2-S/발표자료/하계학술대회 발표 대본.pdf`
+- `연구1_하계_EfficientNetV2-S/원문보관/그림/Blur_Block_1차_그래프_white.ipynb`
+- `연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_논문_심사용.hwp`
+- `연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_심사용.hwp`
+- `연구1_하계_EfficientNetV2-S/원문보관/하계학술대회_초록_최종본.hwp`
+- `원본자료/3차/privacy_score_outputs/privacy_score_results.xlsx`
+- `원본자료/3차/privacy_score_outputs/tables/selected_images.csv`
+- `원본자료/4차/work/source/게재논문(한글논문)양식.hwp`
+- `원본자료/블러 스테이지 1 엣지/stage1_edge_feature_blur_resnet50.ipynb`
+- `원본자료/블러 스테이지 1 엣지/stage1_feature_blur_resnet50_outputs/results/all_stage1_feature_blur_results_resnet50_stage1_feature_blur_resnet50_v1.json`
+- `원본자료/블러 엣지/all_blur_results_resnet50_same_settings_gpu4090_v2.json`
+- `원본자료/블러 엣지/blur_resnet50_edge_v6.ipynb`
+- `원본자료/블러/1차 실험/블러 1/블러링 결과/all_blur_results.json`
+- `원본자료/블러/2차 실험/all_blur_results_resnet50_unified_v1.json`
+- `원본자료/블러/2차 실험/blur_resnet50_rebuilt2_KO.ipynb`
+- `원본자료/블록 엣지/all_block_results_resnet50_same_settings_gpu4090_v2.json`
+- `원본자료/블록 엣지/block_encryption_resnet50_edge_v2.ipynb`
+- `원본자료/블록+블러 엣지/block_blur_resnet50_edge.ipynb`
+- `원본자료/블록+블러/block_blur_resnet50_v4_KO.ipynb`
+- `원본자료/블록+블러/실험 완료/all_block_blur_results_resnet50_block_blur_all_combinations_v1.json`
+- `원본자료/블록/1차 실험/블록 1/불록 결과/all_block_results.json`
+- `원본자료/블록/2차 실험/all_block_results_resnet50_unified_v1.json`
+- `원본자료/블록/2차 실험/block_encryption_resnet50_rebuilt_KO.ipynb`
+- `원본자료/원본 실험/Lung Cancer/Train.ipynb`
+- `원본자료/원본 실험/Lung Cancer/main.ipynb`
+- `원본자료/원본 실험/Lung Cancer/main.py`
+- `원본자료/원본 실험/LungCancerClassification-main/LICENSE`
+- `원본자료/원본 실험/LungCancerClassification-main/README.md`
+- `원본자료/원본 실험/LungCancerClassification-main/confusion_matrix (2).png`
+- `원본자료/원본 실험/LungCancerClassification-main/confusion_matrix.png`
+- `원본자료/원본 실험/LungCancerClassification-main/main.py`
+- `원본자료/원본 실험/LungCancerClassification-main/trainer.ipynb`
+- `원본자료/추가 학습모델과 실험/Blur_Block_1차_그래프_white.ipynb`
+- `원본자료/추가 학습모델과 실험/Train.ipynb`
+- `원본자료/추가 학습모델과 실험/all_block_results.json`
+- `원본자료/추가 학습모델과 실험/block_blur_resnet50_edge.ipynb`
+- `원본자료/추가 학습모델과 실험/block_blur_resnet50_v4_KO.ipynb`
+- `원본자료/추가 학습모델과 실험/block_encryption_resnet50_edge_v2.ipynb`
+- `원본자료/추가 학습모델과 실험/block_encryption_resnet50_rebuilt_KO.ipynb`
+- `원본자료/추가 학습모델과 실험/blur_resnet50_edge_v6.ipynb`
+- `원본자료/추가 학습모델과 실험/blur_resnet50_rebuilt2_KO.ipynb`
+- `원본자료/추가 학습모델과 실험/heatmaps.py`
+- `원본자료/추가 학습모델과 실험/paper_figures_resnet50.ipynb`
+- `원본자료/추가 학습모델과 실험/plot_privacy_metrics_split.py`
+- `원본자료/추가 학습모델과 실험/privacy_score_outputs/privacy_scores.csv`
+- `원본자료/추가 학습모델과 실험/privacy_score_outputs/privacy_scores.json`
+- `원본자료/추가 학습모델과 실험/privacy_score_outputs/privacy_scores.xlsx`
+- `원본자료/추가 학습모델과 실험/privacy_score_outputs/tables/best_by_type.csv`
+- `원본자료/추가 학습모델과 실험/privacy_score_outputs/tables/selected_images.csv`
+- `원본자료/추가 학습모델과 실험/privacy_score_outputs/tables/summary_by_type.csv`
+- `원본자료/추가 학습모델과 실험/privacy_score_quantitative_docker_vscode.ipynb`
+- `원본자료/추가 학습모델과 실험/privacy_score_ssim_psnr (1).ipynb`
+- `원본자료/추가 학습모델과 실험/privacy_score_ssim_psnr (1)_backup_before_ssim_only_20260825_005153.ipynb`
+- `원본자료/추가 학습모델과 실험/privacy_score_ssim_psnr.ipynb`
+- `원본자료/추가 학습모델과 실험/privacy_score_ssim_psnr_updated.ipynb`
+- `원본자료/추가 학습모델과 실험/stage1_edge_feature_blur_resnet50.ipynb`
+- `원본자료/폐암 2차 논문/게재논문(한글논문)양식.hwp`
+- `원본자료/폐암 2차 논문/코드/block_blur_resnet50_v4_KO.ipynb`
+- `원본자료/폐암 2차 논문/코드/block_encryption_resnet50_rebuilt_KO.ipynb`
+- `원본자료/폐암 2차 논문/코드/blur_resnet50_rebuilt2_KO.ipynb`
+- `원본자료/폐암 2차 논문/코드/heatmaps_windows.ipynb`
+- `원본자료/폐암 2차 논문/코드/paper_figures_resnet50.ipynb`
+- `원본자료/폐암 2차 논문/코드/pareto_scatter.ipynb`
+- `원본자료/폐암 2차 논문/코드/picture2x2.ipynb`
+- `원본자료/폐암 2차 논문/코드/plot_privacy_metrics_split.ipynb`
+- `원본자료/폐암 2차 논문/코드/privacy_score_ssim_psnr_updated.ipynb`
+- `자료차수/1차/block_encryption_resnet50_metric_matched_seq.ipynb`
+- `자료차수/1차/block_encryption_resnet50_rebuilt_KO.ipynb`
+- `자료차수/1차/block_encryption_resnet50_same_settings_seq.ipynb`
+- `자료차수/1차/blur_resnet50_metric_matched_seq.ipynb`
+- `자료차수/1차/blur_resnet50_rebuilt_KO.ipynb`
+- `자료차수/1차/blur_resnet50_same_settings_seq.ipynb`
+- `자료차수/1차/create_metric_matched_notebooks.js`
+- `자료차수/1차/fix_pseudo_callbacks.py`
+- `자료차수/1차/fix_training_repeat_overfit.py`
+- `자료차수/1차/patch_blur_block_notebooks.js`
+- `자료차수/1차/rebuild_blur_ko_notebook.py`
+- `자료차수/2차/align_experiment_methods.mjs`
+- `자료차수/2차/build_block_blur_notebook.mjs`
+- `자료차수/2차/rollback_original_notebooks.mjs`
+- `자료차수/3차/_smoke_privacy_score.ipynb`
+- `자료차수/3차/create_privacy_notebook.py`
+- `자료차수/3차/graphs/01_block_privacy_score.png`
+- `자료차수/3차/graphs/02_blur_privacy_score.png`
+- `자료차수/3차/graphs/03_combo_privacy_score_heatmap.png`
+- `자료차수/3차/graphs/04_block_ssim_psnr_reference.png`
+- `자료차수/3차/graphs/05_blur_ssim_psnr_reference.png`
+- `자료차수/3차/graphs/06_top_conditions_privacy_score.png`
+- `자료차수/3차/graphs/07_method_distribution_boxplot.png`
+- `자료차수/3차/graphs/08_top_conditions_table.png`
+- `자료차수/3차/graphs/09_best_by_method_table.png`
+- `자료차수/3차/modify_privacy_notebook_ssim_only.py`
+- `자료차수/3차/tables/privacy_scores_best_conditions.csv`
+- `자료차수/3차/tables/privacy_scores_combo_pivot.csv`
+- `자료차수/3차/tables/privacy_scores_long.csv`
+- `자료차수/3차/tables/privacy_scores_summary_by_method.csv`
+- `자료차수/4차/코드/block_blur_resnet50_v4_KO.ipynb`
+- `자료차수/4차/코드/block_encryption_resnet50_rebuilt_KO.ipynb`
+- `자료차수/4차/코드/blur_resnet50_rebuilt2_KO.ipynb`
+- `자료차수/4차/코드/heatmaps_windows.ipynb`
+- `자료차수/4차/코드/paper_figures_resnet50.ipynb`
+- `자료차수/4차/코드/pareto_scatter.ipynb`
+- `자료차수/4차/코드/picture2x2.ipynb`
+- `자료차수/4차/코드/plot_privacy_metrics_split.ipynb`
+- `자료차수/4차/코드/privacy_score_ssim_psnr_updated.ipynb`
+
+## 비교와 검증 범위
+
+- [전체 단계·직전 단계 차이](REVISION_INDEX.md)에 파일별 근거와 원고 설명을 연결했습니다. 공백·주석·코드셀·Markdown·텍스트·수치·실험 설정을 전체 비교하며 ipynb의 바이너리 이미지 출력만 바이트 길이·SHA-256·원문 링크로 표시합니다. 원문 ipynb 자체는 보존합니다.
+- UTF-8, 비밀 패턴, 실제 로컬 링크, 노트북 JSON, source/public SHA 및 코드 셀 보존, PDF 열기를 검사했습니다. 원본0바이트 노트북은 그대로 남기며 JSON·실행·성능 근거에서 제외합니다.
+- 의료 원본 후보가 포함된 노트북 이미지 출력만 제외한 사본은 비공개 대응표에 source/public 해시와 변환 이유를 구별해 기록했습니다.
+- 원문에 실린 본인·공동저자의 성명·소속·이메일·전화·ORCID·이력·사진은 최신 공개 지시에 따라 보존합니다. 기존 원격 정제 사본은 이력으로 유지합니다.
+- 인증키·비밀번호, 대용량 모델·원데이터, 연구와 무관한 결제 자료·도구 설치 캐시와 본인 비저자·공개권한 근거 불명확 외부 원고는 별도 제외·보류 근거로 관리합니다. 원본은 수정·삭제하지 않았습니다.
+- 새 학습·임상·제조 장비·추천 성능 실험은 수행하지 않았습니다. 저장 표와 원고 보고값을 새 실측으로 소개하지 않습니다.
+- 이 변경 기록 시점에는 원격 쓰기·커밋·푸시를 수행하지 않았고 부모 통합 독립 검토와 반영을 기다립니다.

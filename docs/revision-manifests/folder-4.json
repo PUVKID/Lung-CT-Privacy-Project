@@ -1,0 +1,50 @@
+{
+  "stage": "폴더 4차",
+  "previous": "폴더 3차",
+  "files": {
+    "논문/2차_ResNet50_최종.pdf": {
+      "bytes": 2827829,
+      "sha256": "b64645277f78ac2b2c87a1dcc15216ec9ad6c41a5a20f795465748ac0d2f76c7"
+    },
+    "자료차수/4차/코드/block_blur_resnet50_v4_KO.ipynb": {
+      "bytes": 219524,
+      "sha256": "da4b889ce6dc4f4c908cc98986724abd25cd0dbd6aa1425b5e014b1f7a7fee03"
+    },
+    "자료차수/4차/코드/block_encryption_resnet50_rebuilt_KO.ipynb": {
+      "bytes": 135877,
+      "sha256": "cc8eb1485adac09ffdcb2a5c0e502e016f5a5bb1c60898746be7ef9ce87a1986"
+    },
+    "자료차수/4차/코드/blur_resnet50_rebuilt2_KO.ipynb": {
+      "bytes": 130270,
+      "sha256": "2a3da41eff6a705b2e30668e63d4fe42d4029dc307de2cb197ff8a6434f31faa"
+    },
+    "자료차수/4차/코드/heatmaps_windows.ipynb": {
+      "bytes": 8646,
+      "sha256": "75c45970b92c8957ea61de8c236e045c3a0d77ed0de942815d3b16ae6e24ef4a"
+    },
+    "자료차수/4차/코드/paper_figures_resnet50.ipynb": {
+      "bytes": 37162,
+      "sha256": "f317a502c0658e3dbcb90cb7af67db526d6594f733b0a0bccb6ec536a3df53c0"
+    },
+    "자료차수/4차/코드/pareto_scatter.ipynb": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "자료차수/4차/코드/picture2x2.ipynb": {
+      "bytes": 7054,
+      "sha256": "d56ae7885ab9219f62bb695fe1e5de081c7e667ebbf8c5916b87909bff4b2046"
+    },
+    "자료차수/4차/코드/plot_privacy_metrics_split.ipynb": {
+      "bytes": 18984,
+      "sha256": "77cc7650ee472043999937da35fd6ac817330ce45a796c584330571ccf1e05be"
+    },
+    "자료차수/4차/코드/privacy_score_ssim_psnr_updated.ipynb": {
+      "bytes": 94241,
+      "sha256": "1b25934ba5fbee1a8fa025596bfa852c6cfe2667f9edb56a5fe57852d35ea6b5"
+    },
+    "원본자료/4차/work/source/게재논문(한글논문)양식.hwp": {
+      "bytes": 414720,
+      "sha256": "7f3d880b8df41d7549973470476f6011ce80ca835f36f7ac62e22acdb978f196"
+    }
+  }
+}

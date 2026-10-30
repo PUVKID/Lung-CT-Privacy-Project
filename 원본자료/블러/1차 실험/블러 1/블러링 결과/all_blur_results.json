@@ -1,0 +1,322 @@
+{
+  "0": {
+    "sigma": 0,
+    "acc": 0.925,
+    "roc_auc": 0.9790625000000001,
+    "per_class_acc": {
+      "Bengin cases": 0.9,
+      "Malignant cases": 0.975,
+      "Normal cases": 0.9
+    },
+    "cm": [
+      [
+        72,
+        0,
+        8
+      ],
+      [
+        1,
+        78,
+        1
+      ],
+      [
+        8,
+        0,
+        72
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "1": {
+    "sigma": 1,
+    "acc": 0.8958333333333334,
+    "roc_auc": 0.9743749999999999,
+    "per_class_acc": {
+      "Bengin cases": 0.9375,
+      "Malignant cases": 0.95,
+      "Normal cases": 0.8
+    },
+    "cm": [
+      [
+        75,
+        0,
+        5
+      ],
+      [
+        2,
+        76,
+        2
+      ],
+      [
+        16,
+        0,
+        64
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "2": {
+    "sigma": 2,
+    "acc": 0.8916666666666667,
+    "roc_auc": 0.9611979166666668,
+    "per_class_acc": {
+      "Bengin cases": 0.925,
+      "Malignant cases": 0.9875,
+      "Normal cases": 0.7625
+    },
+    "cm": [
+      [
+        74,
+        2,
+        4
+      ],
+      [
+        1,
+        79,
+        0
+      ],
+      [
+        16,
+        3,
+        61
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "4": {
+    "sigma": 4,
+    "acc": 0.8458333333333333,
+    "roc_auc": 0.9564322916666668,
+    "per_class_acc": {
+      "Bengin cases": 0.8125,
+      "Malignant cases": 0.875,
+      "Normal cases": 0.85
+    },
+    "cm": [
+      [
+        65,
+        0,
+        15
+      ],
+      [
+        1,
+        70,
+        9
+      ],
+      [
+        10,
+        2,
+        68
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "8": {
+    "sigma": 8,
+    "acc": 0.7875,
+    "roc_auc": 0.9146614583333333,
+    "per_class_acc": {
+      "Bengin cases": 0.8625,
+      "Malignant cases": 0.8625,
+      "Normal cases": 0.6375
+    },
+    "cm": [
+      [
+        69,
+        3,
+        8
+      ],
+      [
+        3,
+        69,
+        8
+      ],
+      [
+        25,
+        4,
+        51
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "16": {
+    "sigma": 16,
+    "acc": 0.675,
+    "roc_auc": 0.8487239583333333,
+    "per_class_acc": {
+      "Bengin cases": 0.875,
+      "Malignant cases": 0.6625,
+      "Normal cases": 0.4875
+    },
+    "cm": [
+      [
+        70,
+        3,
+        7
+      ],
+      [
+        12,
+        53,
+        15
+      ],
+      [
+        34,
+        7,
+        39
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "32": {
+    "sigma": 32,
+    "acc": 0.5333333333333333,
+    "roc_auc": 0.7509895833333333,
+    "per_class_acc": {
+      "Bengin cases": 0.6875,
+      "Malignant cases": 0.25,
+      "Normal cases": 0.6625
+    },
+    "cm": [
+      [
+        55,
+        0,
+        25
+      ],
+      [
+        17,
+        20,
+        43
+      ],
+      [
+        26,
+        1,
+        53
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "64": {
+    "sigma": 64,
+    "acc": 0.45,
+    "roc_auc": 0.6496354166666667,
+    "per_class_acc": {
+      "Bengin cases": 0.4125,
+      "Malignant cases": 0.1125,
+      "Normal cases": 0.825
+    },
+    "cm": [
+      [
+        33,
+        1,
+        46
+      ],
+      [
+        15,
+        9,
+        56
+      ],
+      [
+        14,
+        0,
+        66
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "128": {
+    "sigma": 128,
+    "acc": 0.49583333333333335,
+    "roc_auc": 0.6873177083333332,
+    "per_class_acc": {
+      "Bengin cases": 0.8375,
+      "Malignant cases": 0.0,
+      "Normal cases": 0.65
+    },
+    "cm": [
+      [
+        67,
+        0,
+        13
+      ],
+      [
+        21,
+        0,
+        59
+      ],
+      [
+        28,
+        0,
+        52
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  },
+  "256": {
+    "sigma": 256,
+    "acc": 0.49583333333333335,
+    "roc_auc": 0.6670052083333333,
+    "per_class_acc": {
+      "Bengin cases": 0.8375,
+      "Malignant cases": 0.0,
+      "Normal cases": 0.65
+    },
+    "cm": [
+      [
+        67,
+        0,
+        13
+      ],
+      [
+        21,
+        0,
+        59
+      ],
+      [
+        28,
+        0,
+        52
+      ]
+    ],
+    "class_names": [
+      "Bengin cases",
+      "Malignant cases",
+      "Normal cases"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "stage": "블록 · 1차 실험",
+  "previous": null,
+  "files": {
+    "원본자료/블록/1차 실험/블록 1/불록 결과/all_block_results.json": {
+      "bytes": 5040,
+      "sha256": "a85dd325d928a5e3ae116c6d8d5ca0d06b90e632313b28ca694d81fa80cb9801"
+    }
+  }
+}
