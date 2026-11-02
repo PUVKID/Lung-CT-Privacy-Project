@@ -1,14 +1,112 @@
-# 📚 폴더 3차
+<div align="center">
 
-Privacy Score 계산과 소규모 검사를 정리한 자료 차수입니다. 저장 CSV의 n_images=3이고 block2·blur2·combo4조건이므로 논문2의1097장 전체 결과로 소개하지 않습니다. 의료 원본 비교그림은 제외하고 집계4CSV·통합표·비의료 도표9개를 보존합니다. 추가 선택목록의 파일명·본인 경로는 의료영상 바이트와 구별합니다.
+# 📐 자료 3차 · Privacy Score의 소규모 계산 확인
 
+**SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다.**
 
+**기술 분류:** 영상 지표 › SSIM·DSSIM › 소규모 계산·표·그래프
 
-[전체 차수](../REVISION_INDEX.md) · [첫 화면](../../README.md) · [직전 단계 전체 비교](../revision-diffs/folder-3.diff) · [전체 파일 크기·해시](../revision-manifests/folder-3.json)
+[목적](#purpose) · [기능](#features) · [입출력](#flow) · [구성](#files) · [준비](#setup) · [사용법](#usage) · [결과](#results) · [제약](#limits) · [변경](#changes)
 
-직전 단계: 폴더 2차.
+</div>
 
-## 📁 실제 파일
+<a name="purpose"></a>
+
+## 🎯 이 단계에서 하는 일
+
+블록 2조건·블러 2조건·조합 4조건을 대상으로 계산한 CSV·통합표·비의료 도표를 읽습니다. 의료 원영상의 비교 그림은 첨부하지 않습니다.
+
+<a name="features"></a>
+
+## 🧩 주요 기능과 처리 방식
+
+| 구성 | 실제 역할 |
+| --- | --- |
+| 점수식 | Privacy Score=((1−SSIM)/2)×100을 사용하며 PSNR은 참고값으로 따로 저장합니다. |
+| 작은 조건 집합 | 블록 512·32, 블러σ0·2와 네 조합을 사용합니다. |
+| 집계 | long·방법별 요약·조합 pivot·best_conditions의 4CSV를 제공합니다. |
+| 점검 결과 | 각 조건 n_images=3이며 동일 변환과 항등 조건의 값 대응을 읽습니다. |
+
+<a name="flow"></a>
+
+## 🔄 입력 → 처리 → 출력
+
+| 입력 | 처리 | 출력·읽을 결과 |
+| --- | --- | --- |
+| 3장과 8개 조건 | 원본/변환 SSIM·PSNR 계산 | 조건별 지표 |
+| SSIM | DSSIM×100 변환 | Privacy Score |
+| 조건별 값 | 요약·pivot·최대 조건 정리 | CSV·통합표·도표 |
+
+<a name="files"></a>
+
+## 📁 파일과 핵심 처리
+
+| 파일 | 이용 방법 |
+| --- | --- |
+| [자료차수/3차/_smoke_privacy_score.ipynb](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/_smoke_privacy_score.ipynb) | 설정·함수·실행 셀 |
+| [자료차수/3차/tables/privacy_scores_long.csv](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables/privacy_scores_long.csv) | 원정밀도 표 |
+| [자료차수/3차/tables/privacy_scores_summary_by_method.csv](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables/privacy_scores_summary_by_method.csv) | 원정밀도 표 |
+| [자료차수/3차/tables/privacy_scores_combo_pivot.csv](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables/privacy_scores_combo_pivot.csv) | 원정밀도 표 |
+| [자료차수/3차/tables/privacy_scores_best_conditions.csv](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables/privacy_scores_best_conditions.csv) | 원정밀도 표 |
+
+### 🔎 함수·셀로 찾아가기
+
+아래 이름은 해당 파일의 실제 정의입니다. 위 처리 설명과 함께 설정·호출 순서·출력 경로를 따라 읽습니다.
+
+| 파일 | 핵심 정의 |
+| --- | --- |
+| [자료차수/3차/_smoke_privacy_score.ipynb](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/_smoke_privacy_score.ipynb) | 셀 6: `path_exists` · `candidate_train_dirs` · `should_ignore` · `count_images_under`<br>셀 8: `collect_image_table`<br>셀 10: `setup_matplotlib_font` · `load_rgb_image` · `block_scramble` · `apply_gaussian_blur` · `apply_transform`<br>셀 12: `compute_pair_metrics` · `load_image_records` · `iter_records` · `evaluate_condition` · `condition_name` · `format_sigma`<br>셀 18: `save_fig`<br>셀 20: `save_table_png`<br>셀 22: `parse_condition` |
+
+<a name="setup"></a>
+
+## ⚙️ 환경과 설정
+
+| 항목 | 조건·기본값 |
+| --- | --- |
+| 입력 수 | 각 조건 3장 |
+| 조건 수 | 블록 2·블러 2·조합 4 |
+| 크기·시드 | 512·42 |
+| 지표 | SSIM·PSNR·DSSIM 기반점수 |
+
+<a name="usage"></a>
+
+## 🚀 준비와 사용 순서
+
+1. long CSV의 condition·method·n_images·ssim_mean·privacy_score 열을 확인합니다.
+2. Block512·σ0 항등 조건과 Block32·조합 B32_S0의 대응을 비교합니다.
+3. 방법별 요약과 2×2 pivot이 long표의 같은 조건에서 나온 값인지 읽습니다.
+4. 점수식을 최종 논문의 MS-SSIM식과 구별합니다.
+
+<a name="results"></a>
+
+## 📊 결과를 읽는 방법
+
+저장표에서 Block32와 B32+σ0는 같은 점수 35.3667978…이고 항등 조건은 0입니다. 이는 3장 입력에 대한 계산 확인값입니다.
+
+계산 경로를 확인한 소규모 자료이지 임상·공격 저항성 평가나 전체 1,097장 논문 결과를 대신하지 않습니다.
+
+<a name="limits"></a>
+
+## 🛠️ 알려진 제약과 확인 지점
+
+| 상황 | 확인할 내용 |
+| --- | --- |
+| 표본 | 3장 결과를 전체 논문 수치로 일반화하지 않습니다. |
+| 점수식 | 이 자료는 SSIM이며 최종 MS-SSIM 기반점수와 구분합니다. |
+| 원영상 | 의료 원본·비교 이미지 자체는 포함하지 않습니다. |
+
+<a name="changes"></a>
+
+## 🔀 이전 단계와의 변화
+
+자료 2차의 실험 노트북 구성 이후 유사도 기반점수 계산과 소규모 결과 읽기를 정리했습니다.
+
+[🔎 직전 단계 전체 비교·구성](../revision-diffs/folder-3.diff) · [📋 전체 파일 크기·해시](../revision-manifests/folder-3.json)
+
+<details>
+<summary>📎 이 단계의 파일 기록과 전체 해시</summary>
+
+아래 표는 해당 단계가 기록될 당시의 파일 정보입니다. 현재 첨부는 [프로젝트 자료 안내](../PAPERS.md)에서 확인할 수 있습니다.
 
 | 파일 | 종류 | 바이트 | SHA-256 |
 |---|---|---:|---|
@@ -31,6 +129,8 @@ Privacy Score 계산과 소규모 검사를 정리한 자료 차수입니다. �
 | [원본자료/3차/privacy_score_outputs/privacy_score_results.xlsx](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/3%EC%B0%A8/privacy_score_outputs/privacy_score_results.xlsx) | .xlsx | 8330 | `a90c2676448a700ef65836cd2f3427030c95e4864870268f1bd3d7eda144b4f1` |
 | [원본자료/3차/privacy_score_outputs/tables/selected_images.csv](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/3%EC%B0%A8/privacy_score_outputs/tables/selected_images.csv) | .csv | 406 | `13a874a2d948b964c171ab3a6927e78882c262a245940933a5285454de846a71` |
 
-## 🔎 해석·검증 범위
+</details>
 
-원고는 원고 보고값, 저장된 표는 당시 결과 파일, 노트북은 구현 자료입니다. 이번 정리는 재학습·임상 실험·제조 장비 검사·추천 성능 재현을 수행하지 않았습니다. 파일 비교와 PDF 내용 확인은 실제 기능 실행의 성공을 대신하지 않습니다. 원본의 알려진 오류와 0바이트 자료는 보존하며 성공으로 보정하지 않습니다.
+---
+
+[🏠 프로젝트](../../README.md) · [🗂️ 전체 차수](../REVISION_INDEX.md) · [📁 자료 폴더](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) · [⬅️ 폴더 2차](folder-2.md) · [➡️ 폴더 4차](folder-4.md)

@@ -1,24 +1,114 @@
-# 📚 추가 학습모델과 실험 · 기본
+<div align="center">
 
-EfficientNetV2-S 변환 비교, MobileNetV2 풀링, ResNet50 사본과 SSIM/MS-SSIM 계산·도표를 모았습니다. 셀별 실험을 구분합니다.
+# 🧪 추가 실험 · 학습·유사도·도표 코드 모음
 
-### 🧪 학습·지표·도표를 모은 실험 묶음
+**EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다.**
 
-`Train.ipynb`는 하나의 연속 학습 절차가 아닙니다. 셀 0은 `lung_colon_image_set`의 조직영상 5클래스 학습과 `Model.h5` 저장을 다룹니다. 셀 1·2는 각각 EfficientNetV2-S의 입력 블록·블러 10조건 CT 3분류입니다. 셀 3~5는 MobileNetV2와 풀링·특징 수 비교이며 224×224와 512×512 설정이 섞여 있습니다. 정확도 또는 특징 수 비율에서 만든 `security`는 실제 공격 저항성 측정값이 아닙니다. 첫 셀 끝의 Markdown 백틱 때문에 문법 수정도 필요합니다.
+**기술 분류:** 실험 코드 모음 › TensorFlow·영상 유사도 › 학습·지표·그래프
 
-ResNet50 단독·조합·edge·Stage 1 노트북 사본은 각 실험 설명과 함께 읽습니다. `Blur_Block_1차_그래프_white.ipynb`는 저장 JSON을 그리는 자료이고 `heatmaps.py`는 코드에 있는 결과표를 시각화합니다. 도표 재생성은 분류 모델 재학습과 구별됩니다.
+[목적](#purpose) · [기능](#features) · [입출력](#flow) · [구성](#files) · [준비](#setup) · [사용법](#usage) · [결과](#results) · [제약](#limits) · [변경](#changes)
 
-`privacy_score_ssim_psnr.ipynb`와 `(1)`·백업은 단일 SSIM·PSNR 계산 경로를, `privacy_score_ssim_psnr_updated.ipynb`는 셀 15의 `compute_ms_ssim` 및 `privacy_score_from_ms_ssim`을 포함합니다. 후자는 입력 영상의 5스케일 MS-SSIM으로 점수를 계산하고 셀 23에서 CSV·JSON·Excel 및 조건별 요약표를 내보냅니다. `updated`의 일부 그래프 축에는 이전 SSIM 표기가 남아 있어 계산 함수와 표의 지표 열을 기준으로 구분해야 합니다.
+</div>
 
-`privacy_score_quantitative_docker_vscode.ipynb`와 저장된 `privacy_score_outputs`는 계산·집계 자료입니다. 파일 이름만으로 논문의 전체 1,097장 평가와 같은 실행이라고 간주하지 않습니다. 원본 폴더 3차의 n_images=3 소규모 검사도 별도 차수로 유지합니다.
+<a name="purpose"></a>
 
-셀 번호는 노트북의 전체 셀을 0부터 센 값입니다. 아래 파일 표에서 소스와 보관 결과를 각각 열 수 있습니다.
+## 🎯 이 단계에서 하는 일
 
-[전체 차수](../REVISION_INDEX.md) · [첫 화면](../../README.md) · [직전 단계 전체 비교](../revision-diffs/experiment-14.diff) · [전체 파일 크기·해시](../revision-manifests/experiment-14.json)
+모델·입력 종류·크기·점수식·변환 위치가 다른 코드를 목적에 맞게 선택해 읽습니다. 모든 셀을 하나의 연속된 학습으로 실행하는 구성은 아닙니다.
 
-직전 단계: 확인된 비교 대상 없음.
+<a name="features"></a>
 
-## 📁 실제 파일
+## 🧩 주요 기능과 처리 방식
+
+| 구성 | 실제 역할 |
+| --- | --- |
+| Train.ipynb | 셀 0은 조직영상 5클래스, 셀 1·2는 EfficientNetV2-S의 CT 블록·블러, 셀 3~5는 MobileNetV2와 풀링 비교입니다. |
+| ResNet50 사본 | 단독·조합·edge·Stage1 특징 블러 노트북을 각각 구분합니다. |
+| 유사도 코드 | SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다. |
+| 도표 | 저장된 분류 JSON과 유사도 CSV에서 막대·히트맵·논문 그림을 구성합니다. |
+
+<a name="flow"></a>
+
+## 🔄 입력 → 처리 → 출력
+
+| 입력 | 처리 | 출력·읽을 결과 |
+| --- | --- | --- |
+| 선택한 모델·영상 | 해당 셀의 학습·분류 | 모델별 결과 |
+| 원본·변환 영상 | SSIM·PSNR·MS-SSIM 계산 | 정의가 다른 유사도 지표 |
+| 저장 결과 | 조건 대조와 도표 작성 | 표·그림 |
+
+<a name="files"></a>
+
+## 📁 파일과 핵심 처리
+
+| 파일 | 이용 방법 |
+| --- | --- |
+| [추가 학습모델과 실험/Train.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb) | 설정·함수·실행 셀 |
+| [추가 학습모델과 실험/privacy_score_ssim_psnr_updated.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/privacy_score_ssim_psnr_updated.ipynb) | 설정·함수·실행 셀 |
+| [추가 학습모델과 실험/privacy_score_quantitative_docker_vscode.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/privacy_score_quantitative_docker_vscode.ipynb) | 설정·함수·실행 셀 |
+| [추가 학습모델과 실험/paper_figures_resnet50.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/paper_figures_resnet50.ipynb) | 설정·함수·실행 셀 |
+
+### 🔎 함수·셀로 찾아가기
+
+아래 이름은 해당 파일의 실제 정의입니다. 위 처리 설명과 함께 설정·호출 순서·출력 경로를 따라 읽습니다.
+
+| 파일 | 핵심 정의 |
+| --- | --- |
+| [추가 학습모델과 실험/Train.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb) | 셀 1: `block_scramble` · `generate_block_dataset` · `oversample_dir` · `prepare_split` · `get_paths_labels` · `load_image` · `augment_train` · `cutmix_batch`<br>셀 2: `apply_gaussian_blur` · `generate_blur_dataset` · `oversample_dir` · `prepare_split` · `get_paths_labels` · `load_image` · `augment_train` · `cutmix_batch`<br>셀 3: `oversample_dir` · `style_ax`<br>셀 4: `style_ax` · `oversample_dir`<br>셀 5: `style_ax` · `oversample_dir` |
+| [추가 학습모델과 실험/privacy_score_ssim_psnr_updated.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/privacy_score_ssim_psnr_updated.ipynb) | 셀 9: `save_condition_sample`<br>셀 11: `block_scramble` · `apply_gaussian_blur`<br>셀 13: `_is_image_file` · `_is_ignored_path` · `collect_image_files` · `load_original_images`<br>셀 15: `_to_gray` · `_downsample_avg2x2` · `_ssim_l_cs` · `compute_ms_ssim` · `compute_ssim_psnr_msssim` · `privacy_score_from_ms_ssim` · `evaluate_condition`<br>셀 21: `combo_fn`<br>셀 25: `_save` · `_annotate_bars`<br>셀 38: `_combo_transform` |
+| [추가 학습모델과 실험/privacy_score_quantitative_docker_vscode.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/privacy_score_quantitative_docker_vscode.ipynb) | 셀 6: `path_exists` · `candidate_train_dirs` · `should_ignore` · `count_images_under`<br>셀 8: `collect_image_table`<br>셀 10: `setup_matplotlib_font` · `load_rgb_image` · `block_scramble` · `apply_gaussian_blur` · `apply_transform`<br>셀 12: `compute_pair_metrics` · `load_image_records` · `iter_records` · `evaluate_condition` · `condition_name` · `format_sigma`<br>셀 18: `save_fig`<br>셀 20: `save_table_png`<br>셀 22: `parse_condition` |
+| [추가 학습모델과 실험/paper_figures_resnet50.ipynb](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/paper_figures_resnet50.ipynb) | 셀 4: `_bar_colors` · `plot_clean_bar`<br>셀 6: `_try_load_json`<br>셀 12: `_try_load_privacy_csv`<br>셀 20: `encryption_strength` |
+
+<a name="setup"></a>
+
+## ⚙️ 환경과 설정
+
+| 항목 | 조건·기본값 |
+| --- | --- |
+| 입력 크기 | 코드별 224 또는 512 |
+| 점수식 | SSIM과 MS-SSIM 기반 변형을 구분 |
+| 모델 | 조직영상·CT 모델과 클래스 수를 각 셀에서 확인 |
+| 실행 | 선택한 입력·가중치·패키지·GPU를 준비 |
+
+<a name="usage"></a>
+
+## 🚀 준비와 사용 순서
+
+1. 분류 학습·유사도 계산·도표 중 목적을 먼저 정합니다.
+2. 선택한 셀의 모델·영상 종류·크기·클래스와 입력 경로를 확인합니다.
+3. 설치·데이터 생성·학습·파일 쓰기 셀을 구분합니다.
+4. 지표식과 캐시·출력 파일을 읽고 같은 조건의 결과만 비교합니다.
+
+<a name="results"></a>
+
+## 📊 결과를 읽는 방법
+
+Train.ipynb에는 정확도나 특징 수의 비율로 만든 security 표현도 있습니다. 이 값은 실제 공격 저항성 평가와 다릅니다.
+
+첫 학습 셀 끝의 Markdown 백틱과 사본별 문법·설정 차이를 확인해야 합니다. 후속 논문 보고값과 여러 실험 코드를 한 번의 동일 실행으로 합치지 않습니다.
+
+<a name="limits"></a>
+
+## 🛠️ 알려진 제약과 확인 지점
+
+| 상황 | 확인할 내용 |
+| --- | --- |
+| 셀 독립성 | 입력 종류·모델·클래스가 달라 모든 셀을 같은 학습으로 연속 실행하지 않습니다. |
+| 점수 정의 | 유사도·정확도·특징 수 비율로 만든 값은 서로 다른 지표입니다. |
+| 문법 | Train 첫 셀 끝의 백틱과 각 노트북의 구문을 확인합니다. |
+
+<a name="changes"></a>
+
+## 🔀 이전 단계와의 변화
+
+분류·유사도·도표의 추가 연구 코드를 모은 묶음입니다. 단독 실험·조합 실험·특징 변환과 각각 연결합니다.
+
+[🔎 직전 단계 전체 비교·구성](../revision-diffs/experiment-14.diff) · [📋 전체 파일 크기·해시](../revision-manifests/experiment-14.json)
+
+<details>
+<summary>📎 이 단계의 파일 기록과 전체 해시</summary>
+
+아래 표는 해당 단계가 기록될 당시의 파일 정보입니다. 현재 첨부는 [프로젝트 자료 안내](../PAPERS.md)에서 확인할 수 있습니다.
 
 | 파일 | 종류 | 바이트 | SHA-256 |
 |---|---|---:|---|
@@ -63,6 +153,8 @@ ResNet50 단독·조합·edge·Stage 1 노트북 사본은 각 실험 설명과 
 | [원본자료/추가 학습모델과 실험/privacy_score_outputs/tables/selected_images.csv](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/privacy_score_outputs/tables/selected_images.csv) | .csv | 117495 | `6153b9d964ed487924ecfa96cd75fa3898ad05be54bcb28942f0925a9feee9c1` |
 | [원본자료/추가 학습모델과 실험/privacy_score_outputs/tables/summary_by_type.csv](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/privacy_score_outputs/tables/summary_by_type.csv) | .csv | 407 | `aca5a2d0b0ddcb21e0f1aa39d0f60cf9919eaada24dcd00d86cd0ffe653c2437` |
 
-## 🔎 해석·검증 범위
+</details>
 
-원고는 원고 보고값, 저장된 표는 당시 결과 파일, 노트북은 구현 자료입니다. 재학습·임상 검증·전체 실행 재현은 수행하지 않았습니다. 파일 비교와 PDF 내용 확인은 실제 기능 실행의 성공을 대신하지 않습니다. 원본의 알려진 오류와 0바이트 자료는 보존하며 성공으로 보정하지 않습니다.
+---
+
+[🏠 프로젝트](../../README.md) · [🗂️ 전체 차수](../REVISION_INDEX.md) · [📁 자료 폴더](../../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98)

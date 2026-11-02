@@ -1,16 +1,110 @@
-# 📚 연구2 · ResNet50 후속 원고
+<div align="center">
 
-19쪽 후속 원고는 ResNet50, 단독20조건·조합100조건, 전체1097장 입력영상 MS-SSIM 기반 점수와 정확도 절충을 다룹니다. 원본98.17%와 Block256+σ0 98.17%·49.65점은 원고 보고값이며 연구1 대비 모델 변경만으로 효과 원인을 단정하지 않습니다.
+# 🫁 연구 2 · ResNet50의 프라이버시·정확도 절충
 
+**ResNet50에서 Block·Blur 단독 20조건과 Block→Blur 조합 100조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.**
 
+**기술 분류:** 의료 영상 연구 › ResNet50 분류 › MS-SSIM·프라이버시·정확도 절충
 
-[전체 차수](../REVISION_INDEX.md) · [첫 화면](../../README.md) · [직전 단계 전체 비교](../revision-diffs/study-2.diff) · [전체 파일 크기·해시](../revision-manifests/study-2.json)
+[목적](#purpose) · [기능](#features) · [입출력](#flow) · [구성](#files) · [준비](#setup) · [사용법](#usage) · [결과](#results) · [제약](#limits) · [변경](#changes)
 
-직전 단계: 연구1 · 하계 EfficientNetV2-S.
+</div>
 
-## 📁 당시 파일 기록
+<a name="purpose"></a>
 
-아래 첨부의 크기·해시는 이 단계의 이전 파일 기록입니다. 현재 첨부와 실제 크기·해시는 [최신 자료 안내](../PAPERS.md)에서 확인할 수 있습니다. 코드·그래프는 기존 파일을 유지했습니다.
+## 🎯 이 단계에서 하는 일
+
+정확도를 가장 높게 유지하는 조건과 원본 영상의 구조를 더 많이 바꾸는 조건을 한 지표로 섞지 않고 Pareto 관점에서 비교합니다. 영상 입력 변환과 특징맵 변환의 후속 코드도 구분합니다.
+
+<a name="features"></a>
+
+## 🧩 주요 기능과 처리 방식
+
+| 구성 | 실제 역할 |
+| --- | --- |
+| 단독·조합 | 블록 10개·블러 10개와 Block→Blur100조합을 비교합니다. |
+| 분류 평가 | 정확도·macro OvR ROC-AUC·클래스별 Recall·혼동행렬을 봅니다. |
+| 영상 유사도 | 입력 1,097장에 대한 MS-SSIM과 Privacy Score를 정리합니다. |
+| 절충 분석 | 정확도와 구조 변화의 두 축에서 조건을 선택하는 Pareto 결과를 읽습니다. |
+
+<a name="flow"></a>
+
+## 🔄 입력 → 처리 → 출력
+
+| 입력 | 처리 | 출력·읽을 결과 |
+| --- | --- | --- |
+| CT와 변환 조건 | Block→Blur 입력 생성 | 조건별 영상 |
+| 조건별 영상 | ResNet50 분류와 원본/변환 유사도 계산 | 정확도·MS-SSIM |
+| 두 지표 | Privacy Score·Pareto 비교 | 조건 선택의 장단점 |
+
+<a name="files"></a>
+
+## 📁 파일과 핵심 처리
+
+| 파일 | 이용 방법 |
+| --- | --- |
+| [논문/연구2_원문_최종.pdf](../../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) | 전체 원문·도표 읽기 |
+| [논문/연구2_원문_최종.hwp](../../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) | 같은 판의 편집 원본 |
+| [자료차수/4차/코드/privacy_score_ssim_psnr_updated.ipynb](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C/privacy_score_ssim_psnr_updated.ipynb) | 설정·함수·실행 셀 |
+
+### 🔎 함수·셀로 찾아가기
+
+아래 이름은 해당 파일의 실제 정의입니다. 위 처리 설명과 함께 설정·호출 순서·출력 경로를 따라 읽습니다.
+
+| 파일 | 핵심 정의 |
+| --- | --- |
+| [자료차수/4차/코드/privacy_score_ssim_psnr_updated.ipynb](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C/privacy_score_ssim_psnr_updated.ipynb) | 셀 9: `save_condition_sample`<br>셀 11: `block_scramble` · `apply_gaussian_blur`<br>셀 13: `_is_image_file` · `_is_ignored_path` · `collect_image_files` · `load_original_images`<br>셀 15: `_to_gray` · `_downsample_avg2x2` · `_ssim_l_cs` · `compute_ms_ssim` · `compute_ssim_psnr_msssim` · `privacy_score_from_ms_ssim` · `evaluate_condition`<br>셀 21: `combo_fn`<br>셀 25: `_save` · `_annotate_bars`<br>셀 38: `_combo_transform` |
+
+<a name="setup"></a>
+
+## ⚙️ 환경과 설정
+
+| 항목 | 조건·기본값 |
+| --- | --- |
+| 원고 | 19쪽 최종 PDF/HWP |
+| 조건 | 단독 20·조합 100 |
+| 유사도 입력 | 원고의 전체 1,097장 |
+| 점수식 | Privacy Score=((1−MS-SSIM)/2)×100 |
+
+<a name="usage"></a>
+
+## 📖 읽고 활용하는 순서
+
+1. 원고의 데이터·분할·모델 조건을 연구 1과 별도로 확인합니다.
+2. 단독·조합 결과표에서 조건명과 분류 지표를 읽습니다.
+3. MS-SSIM 계산과 Privacy Score 변환식을 확인합니다.
+4. 정확도·점수의 산점도와 Pareto 조건을 함께 보며 선택 근거를 읽습니다.
+
+<a name="results"></a>
+
+## 📊 결과를 읽는 방법
+
+원고는 원본 정확도 98.17%와 Block256+σ0의 98.17%·Privacy Score49.65점 등을 보고합니다. 모델 변경만으로 연구 1 대비 차이의 원인을 확정하지 않습니다.
+
+Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대 지표입니다. 복원 공격·신원 재식별·암호학적 안전성을 직접 측정한 값과 구분합니다.
+
+<a name="limits"></a>
+
+## 🛠️ 알려진 제약과 확인 지점
+
+| 상황 | 확인할 내용 |
+| --- | --- |
+| 점수 정의 | SSIM 기반 소규모 점검 자료와 최종 MS-SSIM 점수식을 구분합니다. |
+| 기준 영상 | 의료 원영상은 별도로 준비해야 하며 공개 첨부에 포함하지 않습니다. |
+| 후속 코드 | pool1_pool 특징 블러·복원 코드를 원고의 입력 변환 실험 결과와 섞지 않습니다. |
+
+<a name="changes"></a>
+
+## 🔀 이전 단계와의 변화
+
+연구 1의 입력 변환 질문에서 ResNet50·조합·영상 유사도 절충 분석으로 확장한 별도 후속 논문입니다.
+
+[🔎 직전 단계 전체 비교·구성](../revision-diffs/study-2.diff) · [📋 전체 파일 크기·해시](../revision-manifests/study-2.json)
+
+<details>
+<summary>📎 이 단계의 파일 기록과 전체 해시</summary>
+
+아래 표는 해당 단계가 기록될 당시의 파일 정보입니다. 현재 첨부는 [프로젝트 자료 안내](../PAPERS.md)에서 확인할 수 있습니다.
 
 | 파일 | 종류 | 바이트 | SHA-256 |
 |---|---|---:|---|
@@ -37,6 +131,8 @@
 | [최신 편집 원문](../../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) | .hwp | 414720 | `7f3d880b8df41d7549973470476f6011ce80ca835f36f7ac62e22acdb978f196` |
 | [원본자료/폐암 2차 논문/코드/block_blur_resnet50_v4_KO.ipynb](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%ED%8F%90%EC%95%94%202%EC%B0%A8%20%EB%85%BC%EB%AC%B8/%EC%BD%94%EB%93%9C/block_blur_resnet50_v4_KO.ipynb) | .ipynb | 223652 | `988bdd6a86fac7245cdd255f19cdc5bf046579c6bdbe52e95ba8ed96a4f04140` |
 
-## 🔎 해석·검증 범위
+</details>
 
-원고는 원고 보고값, 저장된 표는 당시 결과 파일, 노트북은 구현 자료입니다. 이번 정리는 재학습·임상 실험·제조 장비 검사·추천 성능 재현을 수행하지 않았습니다. 파일 비교와 PDF 내용 확인은 실제 기능 실행의 성공을 대신하지 않습니다. 원본의 알려진 오류와 0바이트 자료는 보존하며 성공으로 보정하지 않습니다.
+---
+
+[🏠 프로젝트](../../README.md) · [🗂️ 전체 차수](../REVISION_INDEX.md) · [📁 자료 폴더](../../%EB%85%BC%EB%AC%B8) · [⬅️ 연구1 · 하계 EfficientNetV2-S](study-1.md)

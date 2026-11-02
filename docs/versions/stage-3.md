@@ -1,29 +1,37 @@
+<div align="center">
+
 # 📚 후속 특징맵
 
-입력 영상 대신 ResNet50의 pool1_pool 특징에 블러를 넣고 복원 가능성을 살펴보는 후속 코드입니다.
+ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다.
 
-- [근거 자료](../../%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb)
-- [전체 보관 기록](../VERSIONS.md) · [프로젝트 소개](../../README.md)
+</div>
 
-## 🔎 범위와 해석
+[📖 목적·구성·사용법·결과의 상세 안내](../revisions/experiment-12.md) · [🏠 프로젝트](../../README.md) · [🗂️ 전체 차수](../REVISION_INDEX.md)
 
-복원 공격 평가는 후속 연구 과제입니다.
+## 🧭 이 자료를 읽는 순서
+
+1. 설정 셀에서 입력·작업·결과 경로와 변환 조건을 확인합니다.
+2. 분할·증강 함수의 호출 순서와 시험 자료가 분리되는 지점을 읽습니다.
+3. GPU·TensorFlow·학습 자료를 준비하고 설치·모니터·학습·출력 셀을 구분해 순서대로 읽습니다.
+4. 기존 결과의 재사용 조건을 확인한 뒤 필요한 조건을 선택합니다.
+5. 조건별 JSON과 혼동행렬·ROC-AUC·Recall을 같은 분모와 클래스 순서로 비교합니다.
+
+## 🔎 연결된 내용
+
+| 구성 | 읽을 내용 |
+| --- | --- |
+| 변환 위치 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
+| 모델 연결 | edge→FeatureGaussianBlur→cloud 순서로 연결합니다. |
+| 분할·증강 | 원본 test를 먼저 분리하고 학습 쪽을 증강합니다. |
+| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
+| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
+| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+| 추가 분석 | 특징 SSIM·cosine과 선택적 디코더 복원의 PSNR/SSIM 경로를 제공합니다. 설정과 저장된 결과를 구분합니다. |
 
 
-## 🧩 주요 내용
+## 📊 해석 범위
 
-- build_edge_model과 cloud 모델을 같은 프로세스에서 연결합니다. pool1_pool 특징 경계이며 실제 네트워크 전송 구현은 아닙니다.
-- 큰 σ에서 전역 평균 대체와 REUSE_COLLAPSED_RESULTS 기본 재사용을 합니다. 열 σ 조건에는 결과를 재사용하는 조건이 포함됩니다.
-- decoder로 영상 복원을 학습하고 PSNR·SSIM을 계산하는 경로가 있지만 Conv2D import/정의 누락과 대체 가중치·예시 결과 분기를 고려해야 합니다.
+σ32·64·128·256은 전역 평균 분기로 처리됩니다. REUSE_COLLAPSED_RESULTS를 켜면 같은 분기의 결과를 재사용합니다.
 
-## 🔄 자료 구성
-
-연구 2의 입력 MS-SSIM 점수와 달리 특징 SSIM·cosine 및 decoder 복원을 다룹니다. 원고의 후속 과제를 이미 실험 완료한 것으로 소급하지 않습니다.
-
-## 📍 관련 자료
-
-- [블러 스테이지 1 엣지/stage1_edge_feature_blur_resnet50.ipynb](../../%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb) · `def build_edge_model` · 셀 16 소스 70행
-- [블러 스테이지 1 엣지/stage1_edge_feature_blur_resnet50.ipynb](../../%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb) · `REUSE_COLLAPSED_RESULTS` · 셀 7 소스 14행; 셀 8 소스 3행; 셀 26 소스 62행
-- [블러 스테이지 1 엣지/stage1_edge_feature_blur_resnet50.ipynb](../../%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb) · `def build_reconstruction_decoder` · 셀 22 소스 1행
-
-셀 번호는 0부터, 소스 행 번호와 PDF 쪽 번호는 1부터 셉니다. 
+[➡️ 전체 설명으로 이동](../revisions/experiment-12.md)

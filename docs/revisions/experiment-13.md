@@ -1,22 +1,109 @@
-# 📚 원본 실험 · 기본
+<div align="center">
 
-224×224 조직영상 5라벨 Streamlit 앱과 MobileNetV2 3클래스 학습을 보관합니다. 두 코드의 출력 라벨·모델 파일이 다릅니다.
+# 🖥️ 원본 실험 · 조직영상 화면과 학습 노트북
 
-### 🖥️ 초기 화면과 학습 모델의 구분
+**Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다.**
 
-`Lung Cancer/main.py`의 `preprocess_image`는 업로드 영상을 224×224로 만들고 255로 나눕니다. `Model.h5`의 예측을 대장 선암·대장 정상·폐 선암·폐 정상·폐 편평상피암의 **조직영상 5라벨**과 연결하여 확률·원형 그래프로 표시합니다.
+**기술 분류:** 의료 영상 코드 › Streamlit·TensorFlow › 조직영상 예측 화면
 
-같은 폴더 `Train.ipynb`의 셀 0은 ImageNet MobileNetV2를 동결하고 GAP·Dropout 0.3·3클래스 softmax를 학습해 `LungCancer_3Class_Model.h5`로 저장합니다. 앱의 5라벨 출력과 이 학습기의 3클래스 출력은 다르므로 파일명 변경만으로 서로 연결할 수 없습니다.
+[목적](#purpose) · [기능](#features) · [입출력](#flow) · [구성](#files) · [준비](#setup) · [사용법](#usage) · [결과](#results) · [제약](#limits) · [변경](#changes)
 
-함께 보관한 `LungCancerClassification-main`은 별도 README·LICENSE·학습 코드와 혼동행렬 자료를 가진 초기 코드 묶음입니다. 이 폴더의 화면이나 혼동행렬을 연구 1·2의 CT 3분류 결과로 합산하지 않습니다. 초기 앱 실행에는 실제 입력에 맞는 모델·라벨 대응이 필요합니다.
+</div>
 
-셀 번호는 노트북의 전체 셀을 0부터 센 값입니다. 아래 파일 표에서 소스와 보관 결과를 각각 열 수 있습니다.
+<a name="purpose"></a>
 
-[전체 차수](../REVISION_INDEX.md) · [첫 화면](../../README.md) · [직전 단계 전체 비교](../revision-diffs/experiment-13.diff) · [전체 파일 크기·해시](../revision-manifests/experiment-13.json)
+## 🎯 이 단계에서 하는 일
 
-직전 단계: 확인된 비교 대상 없음.
+입력 화면·전처리·분류 모델·클래스 순서를 연결해 읽는 초기 코드 자료입니다. CT의 ResNet50 변환 실험과 별도 목적의 원본 구성입니다.
 
-## 📁 실제 파일
+<a name="features"></a>
+
+## 🧩 주요 기능과 처리 방식
+
+| 구성 | 실제 역할 |
+| --- | --- |
+| 전처리 | preprocess_image가 영상을 224×224로 맞추고 255로 나누어 배치 차원을 추가합니다. |
+| 5라벨 화면 | 대장선암·대장정상·폐선암·폐정상·폐편평상피암의 예측 확률을 표시합니다. |
+| 그래프 | 예측 확률을 텍스트와 원형 그래프로 보여 줍니다. |
+| 학습 사본 | Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라벨을 구분합니다. |
+
+<a name="flow"></a>
+
+## 🔄 입력 → 처리 → 출력
+
+| 입력 | 처리 | 출력·읽을 결과 |
+| --- | --- | --- |
+| 업로드 조직영상 | 224×224·정규화 | 모델 입력 |
+| Model.h5 | 예측 벡터와 5라벨 연결 | 클래스별 확률 |
+| 예측 확률 | 텍스트·원형 그래프 | 연구용 화면 |
+
+<a name="files"></a>
+
+## 📁 파일과 핵심 처리
+
+| 파일 | 이용 방법 |
+| --- | --- |
+| [원본 실험/Lung Cancer/main.py](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py) | 처리 함수와 실행 조건 |
+| [원본 실험/Lung Cancer/Train.ipynb](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/Train.ipynb) | 설정·함수·실행 셀 |
+
+### 🔎 함수·셀로 찾아가기
+
+아래 이름은 해당 파일의 실제 정의입니다. 위 처리 설명과 함께 설정·호출 순서·출력 경로를 따라 읽습니다.
+
+| 파일 | 핵심 정의 |
+| --- | --- |
+| [원본 실험/Lung Cancer/main.py](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py) | 소스: `preprocess_image` · `predict_cancer` · `plot_pie_chart` |
+
+<a name="setup"></a>
+
+## ⚙️ 환경과 설정
+
+| 항목 | 조건·기본값 |
+| --- | --- |
+| 환경 | Streamlit·TensorFlow·NumPy·Matplotlib |
+| 입력 크기 | 224×224 |
+| 모델 | 화면은 Model.h5와 5라벨 |
+| 학습 노트북 | 3클래스 MobileNetV2·별도 모델 대응 확인 |
+
+<a name="usage"></a>
+
+## 🚀 준비와 사용 순서
+
+1. main.py의 모델 경로와 라벨 순서를 확인합니다.
+2. 모델 출력 차원이 화면의 5라벨과 같은지 확인합니다.
+3. 환경과 일치하는 모델을 준비하고 해당 폴더에서 Streamlit 앱을 엽니다.
+4. 업로드 영상의 전처리와 확률 표시를 읽으며 학습 노트북의 모델과 혼합하지 않습니다.
+
+<a name="results"></a>
+
+## 📊 결과를 읽는 방법
+
+화면의 확률은 지정한 모델의 출력입니다. 5라벨 화면과 3클래스 학습 파일은 같은 모델이라는 근거가 필요합니다.
+
+이 초기 조직영상 코드는 후속 CT 비식별화 실험과 입력·모델이 다릅니다. 실제 진단 결과를 제공하는 자료로 해석하지 않습니다.
+
+<a name="limits"></a>
+
+## 🛠️ 알려진 제약과 확인 지점
+
+| 상황 | 확인할 내용 |
+| --- | --- |
+| 모델 불일치 | 5라벨 화면과 3클래스 학습의 모델·라벨 대응을 먼저 확인합니다. |
+| 입력 범위 | 조직영상과 CT를 구분합니다. |
+| 사용 목적 | 연구용 예측 화면이며 임상 진단 승인 자료가 아닙니다. |
+
+<a name="changes"></a>
+
+## 🔀 이전 단계와의 변화
+
+초기 화면과 학습 코드를 보관한 기본 자료입니다. 후속 ResNet50 입력·특징 변환 실험과 별도로 읽습니다.
+
+[🔎 직전 단계 전체 비교·구성](../revision-diffs/experiment-13.diff) · [📋 전체 파일 크기·해시](../revision-manifests/experiment-13.json)
+
+<details>
+<summary>📎 이 단계의 파일 기록과 전체 해시</summary>
+
+아래 표는 해당 단계가 기록될 당시의 파일 정보입니다. 현재 첨부는 [프로젝트 자료 안내](../PAPERS.md)에서 확인할 수 있습니다.
 
 | 파일 | 종류 | 바이트 | SHA-256 |
 |---|---|---:|---|
@@ -33,6 +120,8 @@
 | [원본자료/원본 실험/LungCancerClassification-main/confusion_matrix.png](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/LungCancerClassification-main/confusion_matrix.png) | .png | 90242 | `1deeddc5d7501f2de854781c480081ff2eebfd07bd5ff7ddfa77981cbe2a3bde` |
 | [원본자료/원본 실험/LungCancerClassification-main/confusion_matrix (2).png](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/LungCancerClassification-main/confusion_matrix%20%282%29.png) | .png | 90242 | `1deeddc5d7501f2de854781c480081ff2eebfd07bd5ff7ddfa77981cbe2a3bde` |
 
-## 🔎 해석·검증 범위
+</details>
 
-원고는 원고 보고값, 저장된 표는 당시 결과 파일, 노트북은 구현 자료입니다. 재학습·임상 검증·전체 실행 재현은 수행하지 않았습니다. 파일 비교와 PDF 내용 확인은 실제 기능 실행의 성공을 대신하지 않습니다. 원본의 알려진 오류와 0바이트 자료는 보존하며 성공으로 보정하지 않습니다.
+---
+
+[🏠 프로젝트](../../README.md) · [🗂️ 전체 차수](../REVISION_INDEX.md) · [📁 자료 폴더](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer)
