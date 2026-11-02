@@ -1,15 +1,17 @@
 # 📚 실제 차수와 원고 단계
 
-연구 단계·원본 폴더 차수·논문 수정·발표 차수는 서로 다른 구분입니다. 실제 파일과 본문으로 확인한 단계만 정리했습니다. 이전 공개 파일과 이름은 보존하며, 현재 원문과 과거 정제 사본을 구별합니다.
+아래 표는 코드 개발과 원고 수정 당시의 변화입니다. 현재 다운로드는 최신 완성 문서로 연결하며 이전 첨부는 변경 이력에서 구분합니다.
+
+연구 단계·원본 폴더 차수·논문 수정·발표 차수는 서로 다른 구분입니다. 실제 파일과 본문으로 확인한 단계만 정리했습니다. 코드 차수와 원고 수정의 설명·비교 이력은 유지하고, 현재 첨부는 문서 계보별 최신 완성본으로 연결합니다.
 
 | 단계 | 내용 | 파일 종류 | 폴더·자료 | 직전 단계 전체 비교 |
 |---|---|---|---|---|
 | [연구1 · 하계 EfficientNetV2-S](revisions/study-1.md) | 제58회2026하계학술대회 3쪽 논문에서 512×512 CT의 Blur·Block 단독 변환을 비교한 연구입니다. 원본92.5%, Blur σ32 53.3%, Block32 79.2%, Block1 52.9%는 원고 보고값입니다. 발표와 그래프 JSON·노트북을 함께 읽습니다. 환자 수·세부 분할을 연구2에서 가져와 소급하지 않습니다. | docx·hwp·ipynb·pdf·pptx | [직접 자료](../%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) | [전체 차이](revision-diffs/study-1.diff) · [자료 폴더](../%EB%85%BC%EB%AC%B8) |
-| [연구2 · ResNet50 후속 원고](revisions/study-2.md) | 19쪽 후속 원고는 ResNet50, 단독20조건·조합100조건, 전체1097장 입력영상 MS-SSIM 기반 점수와 정확도 절충을 다룹니다. 원본98.17%와 Block256+σ0 98.17%·49.65점은 원고 보고값이며 연구1 대비 모델 변경만으로 효과 원인을 단정하지 않습니다. | hwp·ipynb·pdf | [직접 자료](../%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf) | [전체 차이](revision-diffs/study-2.diff) · [자료 폴더](../%EB%85%BC%EB%AC%B8) |
+| [연구2 · ResNet50 후속 원고](revisions/study-2.md) | 19쪽 후속 원고는 ResNet50, 단독20조건·조합100조건, 전체1097장 입력영상 MS-SSIM 기반 점수와 정확도 절충을 다룹니다. 원본98.17%와 Block256+σ0 98.17%·49.65점은 원고 보고값이며 연구1 대비 모델 변경만으로 효과 원인을 단정하지 않습니다. | hwp·ipynb·pdf | [최신 PDF](../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) | [전체 차이](revision-diffs/study-2.diff) · [자료 폴더](../%EB%85%BC%EB%AC%B8) |
 | [폴더 1차](revisions/folder-1.md) | ResNet50 블록·블러 노트북의 rebuilt·same_settings·metric_matched 변형을 보관한 코드 차수입니다. EfficientNetV2-S의 연구1과 다른 번호 체계입니다. 보조 패치 스크립트와 본인의 로컬 경로도 원문으로 보존합니다. | ipynb·js·py | [직접 자료](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/1%EC%B0%A8/block_encryption_resnet50_metric_matched_seq.ipynb) | [전체 차이](revision-diffs/folder-1.diff) · [자료 폴더](../1%EC%B0%A8) |
 | [폴더 2차](revisions/folder-2.md) | Blur·Block 설정 정렬, 조합 노트북 생성, 원본 복원을 담당한 보조 스크립트의 차수입니다. 스크립트에는 본인 컴퓨터의 절대경로가 내장되어 있으며 원문을 보존합니다. 실행 전 사용자의 실제 경로를 확인해야 합니다. 연구2 논문 번호와 같은 뜻이 아닙니다. | mjs | [직접 자료](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8/align_experiment_methods.mjs) | [전체 차이](revision-diffs/folder-2.diff) · [자료 폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) |
 | [폴더 3차](revisions/folder-3.md) | Privacy Score 계산과 소규모 검사를 정리한 자료 차수입니다. 저장 CSV의 n_images=3이고 block2·blur2·combo4조건이므로 논문2의1097장 전체 결과로 소개하지 않습니다. 의료 원본 비교그림은 제외하고 집계4CSV·통합표·비의료 도표9개를 보존합니다. 추가 선택목록의 파일명·본인 경로는 의료영상 바이트와 구별합니다. | csv·ipynb·png·py·xlsx | [직접 자료](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables/privacy_scores_best_conditions.csv) | [전체 차이](revision-diffs/folder-3.diff) · [자료 폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) |
-| [폴더 4차](revisions/folder-4.md) | ResNet50 후속 논문의 원본 사본·코드·도표와 원고 점검 산출물을 모은 차수입니다. 공개에는 대응 논문과 코드만 연결하며 개인 검토·실행로그와 의료영상 그림은 제외합니다. | hwp·ipynb·pdf | [직접 자료](../%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf) | [전체 차이](revision-diffs/folder-4.diff) · [자료 폴더](../%EB%85%BC%EB%AC%B8) |
+| [폴더 4차](revisions/folder-4.md) | ResNet50 후속 논문의 원본 사본·코드·도표와 원고 점검 산출물을 모은 차수입니다. 공개에는 대응 논문과 코드만 연결하며 개인 검토·실행로그와 의료영상 그림은 제외합니다. | hwp·ipynb·pdf | [최신 PDF](../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) | [전체 차이](revision-diffs/folder-4.diff) · [자료 폴더](../%EB%85%BC%EB%AC%B8) |
 | [블러 · 2차 실험](revisions/experiment-6.md) | 입력 영상에 σ0~256의 Gaussian Blur 10조건을 적용하고 ResNet50으로 분류합니다. 테스트를 먼저 분리한 뒤 학습 자료를 증강합니다. | ipynb·json | [직접 자료](../%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/blur_resnet50_rebuilt2_KO.ipynb) | [전체 차이](revision-diffs/experiment-6.diff) · [자료 폴더](../%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) |
 | [블록 · 2차 실험](revisions/experiment-7.md) | 입력 블록을 512~1 크기로 재배열하는 ResNet50 10조건 실험입니다. 이 사본은 증강 후 테스트를 나눕니다. | ipynb·json | [직접 자료](../%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/block_encryption_resnet50_rebuilt_KO.ipynb) | [전체 차이](revision-diffs/experiment-7.diff) · [자료 폴더](../%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) |
 | [블록+블러 · 기본](revisions/experiment-8.md) | 블록 재배열 뒤 입력 블러를 적용하는 ResNet50 100조합 실험입니다. 조합별 정확도·ROC-AUC·혼동행렬을 저장합니다. | ipynb·json | [직접 자료](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC/block_blur_resnet50_v4_KO.ipynb) | [전체 차이](revision-diffs/experiment-8.diff) · [자료 폴더](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) |
@@ -24,3 +26,18 @@
 
 
 
+
+[🏠 첫 화면](../README.md)
+
+## 📚 현재 첨부 문서
+
+이전 원고·발표의 변경 설명과 코드 차수는 위의 이력에서 확인할 수 있습니다. 다운로드는 문서 계보별 최신 완성본으로 연결합니다.
+
+| 문서 | 자료 폴더 | 상세 | 직전 공개본 전체 비교 |
+|---|---|---|---|
+| 연구1 최종 논문 · EfficientNetV2-S | [폴더](../%EB%85%BC%EB%AC%B8) | [설명](latest/lung-study1-efficientnet.md) | [전체 비교](changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 연구2 최종 논문 · ResNet50 | [폴더](../%EB%85%BC%EB%AC%B8) | [설명](latest/lung-study2-resnet.md) | [전체 비교](changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 최종 발표 · 하계 연구 | [폴더](../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](latest/lung-study1-presentation.md) | [전체 비교](changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 완성 대본 · 하계 연구 | [폴더](../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](latest/lung-complete-talk-script.md) | [전체 비교](changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+
+[📝 최신 문서 구성 변경](changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C.md)

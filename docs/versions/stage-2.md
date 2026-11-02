@@ -2,7 +2,7 @@
 
 ResNet50에서 블록·블러 단독 및 100조합의 분류 성능과 MS-SSIM 점수를 비교합니다.
 
-- [근거 자료](../../%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf)
+- [최신 PDF](../../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf)
 - [전체 보관 기록](../VERSIONS.md) · [프로젝트 소개](../../README.md)
 
 ## 🔎 범위와 해석
@@ -22,8 +22,8 @@ ResNet50에서 블록·블러 단독 및 100조합의 분류 성능과 MS-SSIM �
 
 ## 📍 관련 자료
 
-- [논문/2차_ResNet50_최종.pdf](../../%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf) · `연구 방법` · PDF 6–7쪽
+- [최신 PDF](../../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) · `연구 방법` · PDF 6–7쪽
 - [블록+블러/block_blur_resnet50_v4_KO.ipynb](../../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC/block_blur_resnet50_v4_KO.ipynb) · `def block_scramble` · 셀 10 소스 2행
-- [논문/2차_ResNet50_최종.pdf](../../%EB%85%BC%EB%AC%B8/2%EC%B0%A8_ResNet50_%EC%B5%9C%EC%A2%85.pdf) · `분할과 평가 한계` · PDF 16쪽
+- [최신 PDF](../../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) · `분할과 평가 한계` · PDF 16쪽
 
 셀 번호는 0부터, 소스 행 번호와 PDF 쪽 번호는 1부터 셉니다. 
