@@ -32,23 +32,23 @@
 
 | 단계 | 설명 | 파일 종류 | 전체 차이 |
 |---|---|---|---|
-| [연구1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | 하계 3쪽 논문. EfficientNetV2-S로 입력 Blur·Block을 각각 비교합니다. 정확도·ROC-AUC·혼동행렬과 발표·그래프 자료를 연결합니다. | docx·hwp·ipynb·pdf·pptx | [직전 단계 비교](docs/revision-diffs/study-1.diff) |
-| [연구2 · ResNet50 후속 원고](docs/revisions/study-2.md) | 후속 19쪽 원고. ResNet50의 단독 20조건·조합 100조건과 입력 영상 MS-SSIM 기반 Privacy Score를 비교합니다. | hwp·ipynb·pdf | [직전 단계 비교](docs/revision-diffs/study-2.diff) |
-| [폴더 1차](docs/revisions/folder-1.md) | ResNet50 단독 실험의 rebuilt·same_settings·metric_matched 노트북과 수정 보조 스크립트입니다. | ipynb·js·py | [직전 단계 비교](docs/revision-diffs/folder-1.diff) |
-| [폴더 2차](docs/revisions/folder-2.md) | Blur·Block 설정 정렬, 조합 노트북 생성, 원본 복원 스크립트입니다. 실행 경로를 별도로 맞춰야 합니다. | mjs | [직전 단계 비교](docs/revision-diffs/folder-2.diff) |
-| [폴더 3차](docs/revisions/folder-3.md) | Privacy Score 계산의 소규모 검사 자료입니다. n_images=3, 블록 2·블러 2·조합 4조건의 표와 비의료 도표를 보존합니다. | csv·ipynb·png·py·xlsx | [직전 단계 비교](docs/revision-diffs/folder-3.diff) |
-| [폴더 4차](docs/revisions/folder-4.md) | ResNet50 후속 원고 사본과 학습·지표·도표 코드를 모았습니다. 개인 검토 로그와 의료 원영상은 제외합니다. | hwp·ipynb·pdf | [직전 단계 비교](docs/revision-diffs/folder-4.diff) |
-| [블러 · 2차 실험](docs/revisions/experiment-6.md) | 입력 영상에 σ0~256의 Gaussian Blur 10조건을 적용하고 ResNet50으로 분류합니다. 테스트를 먼저 분리한 뒤 학습 자료를 증강합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-6.diff) |
-| [블록 · 2차 실험](docs/revisions/experiment-7.md) | 입력 블록을 512~1 크기로 재배열하는 ResNet50 10조건 실험입니다. 이 사본은 증강 후 테스트를 나눕니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-7.diff) |
-| [블록+블러 · 기본](docs/revisions/experiment-8.md) | 블록 재배열 뒤 입력 블러를 적용하는 ResNet50 100조합 실험입니다. 조합별 정확도·ROC-AUC·혼동행렬을 저장합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-8.diff) |
-| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | 입력 블러 10조건에 ResNet50 edge/cloud 분리를 더했습니다. pool1_pool 특징 그림과 부분 모델을 저장하며, 셀 20 문법 오류가 남아 있습니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-9.diff) |
-| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | 입력 블록 재배열 10조건을 pool1_pool 경계의 분리 모델로 학습합니다. 블록별 특징 그림과 edge·cloud 가중치를 저장합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-10.diff) |
-| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | 입력 Block→Blur 100조합을 분리 모델로 학습합니다. 특징 자체의 블러 없이 edge/cloud를 같은 프로세스에서 연결합니다. | ipynb | [직전 단계 비교](docs/revision-diffs/experiment-11.diff) |
-| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | pool1_pool 특징 자체에 블러를 적용합니다. 특징 SSIM·cosine 및 복원 PSNR/SSIM 코드가 있으며 큰 σ 결과를 재사용합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-12.diff) |
-| [원본 실험 · 기본](docs/revisions/experiment-13.md) | 224×224 조직영상 5라벨 Streamlit 앱과 MobileNetV2 3클래스 학습을 보관합니다. 두 코드의 출력 라벨·모델 파일이 다릅니다. | ipynb·md·png·py·기타 | [직전 단계 비교](docs/revision-diffs/experiment-13.diff) |
-| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | EfficientNetV2-S 변환 비교, MobileNetV2 풀링, ResNet50 사본과 SSIM/MS-SSIM 계산·도표를 모았습니다. 셀별 실험을 구분합니다. | csv·ipynb·json·py·xlsx | [직전 단계 비교](docs/revision-diffs/experiment-14.diff) |
-| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | σ0~256의 10조건 결과 JSON입니다. 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보존합니다. | json | [직전 단계 비교](docs/revision-diffs/experiment-original-blur.diff) |
-| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | 블록 512~1의 10조건 결과 JSON입니다. 블록 수와 정확도·ROC-AUC·혼동행렬을 보존합니다. | json | [직전 단계 비교](docs/revision-diffs/experiment-original-block.diff) |
+| [연구1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | 하계 3쪽 논문. EfficientNetV2-S로 입력 Blur·Block을 각각 비교합니다. 정확도·ROC-AUC·혼동행렬과 발표·그래프 자료를 연결합니다. | docx·hwp·ipynb·pdf·pptx | [직전 단계 비교](docs/revision-diffs/study-1.diff) · [자료 폴더](%EB%85%BC%EB%AC%B8) |
+| [연구2 · ResNet50 후속 원고](docs/revisions/study-2.md) | 후속 19쪽 원고. ResNet50의 단독 20조건·조합 100조건과 입력 영상 MS-SSIM 기반 Privacy Score를 비교합니다. | hwp·ipynb·pdf | [직전 단계 비교](docs/revision-diffs/study-2.diff) · [자료 폴더](%EB%85%BC%EB%AC%B8) |
+| [폴더 1차](docs/revisions/folder-1.md) | ResNet50 단독 실험의 rebuilt·same_settings·metric_matched 노트북과 수정 보조 스크립트입니다. | ipynb·js·py | [직전 단계 비교](docs/revision-diffs/folder-1.diff) · [자료 폴더](1%EC%B0%A8) |
+| [폴더 2차](docs/revisions/folder-2.md) | Blur·Block 설정 정렬, 조합 노트북 생성, 원본 복원 스크립트입니다. 실행 경로를 별도로 맞춰야 합니다. | mjs | [직전 단계 비교](docs/revision-diffs/folder-2.diff) · [자료 폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) |
+| [폴더 3차](docs/revisions/folder-3.md) | Privacy Score 계산의 소규모 검사 자료입니다. n_images=3, 블록 2·블러 2·조합 4조건의 표와 비의료 도표를 보존합니다. | csv·ipynb·png·py·xlsx | [직전 단계 비교](docs/revision-diffs/folder-3.diff) · [자료 폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) |
+| [폴더 4차](docs/revisions/folder-4.md) | ResNet50 후속 원고 사본과 학습·지표·도표 코드를 모았습니다. 개인 검토 로그와 의료 원영상은 제외합니다. | hwp·ipynb·pdf | [직전 단계 비교](docs/revision-diffs/folder-4.diff) · [자료 폴더](%EB%85%BC%EB%AC%B8) |
+| [블러 · 2차 실험](docs/revisions/experiment-6.md) | 입력 영상에 σ0~256의 Gaussian Blur 10조건을 적용하고 ResNet50으로 분류합니다. 테스트를 먼저 분리한 뒤 학습 자료를 증강합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-6.diff) · [자료 폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) |
+| [블록 · 2차 실험](docs/revisions/experiment-7.md) | 입력 블록을 512~1 크기로 재배열하는 ResNet50 10조건 실험입니다. 이 사본은 증강 후 테스트를 나눕니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-7.diff) · [자료 폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) |
+| [블록+블러 · 기본](docs/revisions/experiment-8.md) | 블록 재배열 뒤 입력 블러를 적용하는 ResNet50 100조합 실험입니다. 조합별 정확도·ROC-AUC·혼동행렬을 저장합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-8.diff) · [자료 폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) |
+| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | 입력 블러 10조건에 ResNet50 edge/cloud 분리를 더했습니다. pool1_pool 특징 그림과 부분 모델을 저장하며, 셀 20 문법 오류가 남아 있습니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-9.diff) · [자료 폴더](%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) |
+| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | 입력 블록 재배열 10조건을 pool1_pool 경계의 분리 모델로 학습합니다. 블록별 특징 그림과 edge·cloud 가중치를 저장합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-10.diff) · [자료 폴더](%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80) |
+| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | 입력 Block→Blur 100조합을 분리 모델로 학습합니다. 특징 자체의 블러 없이 edge/cloud를 같은 프로세스에서 연결합니다. | ipynb | [직전 단계 비교](docs/revision-diffs/experiment-11.diff) · [자료 폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) |
+| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | pool1_pool 특징 자체에 블러를 적용합니다. 특징 SSIM·cosine 및 복원 PSNR/SSIM 코드가 있으며 큰 σ 결과를 재사용합니다. | ipynb·json | [직전 단계 비교](docs/revision-diffs/experiment-12.diff) · [자료 폴더](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80) |
+| [원본 실험 · 기본](docs/revisions/experiment-13.md) | 224×224 조직영상 5라벨 Streamlit 앱과 MobileNetV2 3클래스 학습을 보관합니다. 두 코드의 출력 라벨·모델 파일이 다릅니다. | ipynb·md·png·py·기타 | [직전 단계 비교](docs/revision-diffs/experiment-13.diff) · [자료 폴더](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer) |
+| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | EfficientNetV2-S 변환 비교, MobileNetV2 풀링, ResNet50 사본과 SSIM/MS-SSIM 계산·도표를 모았습니다. 셀별 실험을 구분합니다. | csv·ipynb·json·py·xlsx | [직전 단계 비교](docs/revision-diffs/experiment-14.diff) · [자료 폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98) |
+| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | σ0~256의 10조건 결과 JSON입니다. 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보존합니다. | json | [직전 단계 비교](docs/revision-diffs/experiment-original-blur.diff) · [자료 폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) |
+| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | 블록 512~1의 10조건 결과 JSON입니다. 블록 수와 정확도·ROC-AUC·혼동행렬을 보존합니다. | json | [직전 단계 비교](docs/revision-diffs/experiment-original-block.diff) · [자료 폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) |
 
 <a name="overview"></a>
 
@@ -314,13 +314,4 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 </details>
 
 
-<details>
-<summary>🧹 공개 자료 정리 기록</summary>
 
-| 검수 대상 | 연결 자료 | 상세·이번 비교 |
-| :--- | :--- | :--- |
-| **1차** | [📁 검수 자료](1%EC%B0%A8) | [📖 정리 내용](docs/publication-review/item-1.md) · [🔎 파일 비교](docs/publication-review/공개파일변경.json) |
-
-[🗂️ 전체 차수와 자료](docs/REVISION_INDEX.md)
-
-</details>
