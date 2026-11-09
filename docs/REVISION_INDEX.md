@@ -42,3 +42,4 @@
 | 차수 | 폴더 | 설명 | 비교 |
 |---|---|---|---|
 | Conv1 블러 OK-NG 실험 · 1차 | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](revisions/conv1-okng-round1.md) | [전체 비교](revision-diffs/conv1-okng-round1.diff) |
+| Conv1 블러 OK-NG 실험 · 2차 | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) | [설명](revisions/conv1-okng-round2.md) | [전체 비교](revision-diffs/conv1-okng-round2.diff) |

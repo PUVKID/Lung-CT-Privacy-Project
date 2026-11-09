@@ -83,3 +83,7 @@
 ## 2026-11-10 · Conv1 블러 OK/NG 실험 1차
 
 원본 중복 그룹 분리 후 학습에만 클래스별 5,000개 표본을 구성하는 예비실험과 로컬 진행 대시보드를 추가했습니다. 환자ID 부재와 TensorFlow 대비 구현 차이를 명시했습니다. 원본 영상과 가중치는 제외합니다. [차수 설명](docs/revisions/conv1-okng-round1.md) · [전체 비교](docs/revision-diffs/conv1-okng-round1.diff).
+
+## 2026-11-10 · Conv1 블러 OK/NG 실험 2차
+
+평가 수치 포화·영상 유사성·학습 예산을 검토하여 별도 2차를 추가했습니다. FP32 추론·FP64 안정 손실·로짓 순위 지표, 고정 유사 그룹 분할, 최대100회와 학습률 감소·조기 종료를 적용합니다. [차수 설명](docs/revisions/conv1-okng-round2.md) · [전체 비교](docs/revision-diffs/conv1-okng-round2.diff).

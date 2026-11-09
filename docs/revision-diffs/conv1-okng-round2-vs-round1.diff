@@ -1,0 +1,1108 @@
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/README.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/README.md"
+index 3238f3d..bc3b043 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/README.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/README.md"	
+@@ -1,14 +1,23 @@
+-# 🫁 폐 CT 특징 블러 실험 1차
+-
+-폐 CT 영상에서 양성·정상을 OK(0), 악성을 NG(1)로 분류하고 첫 합성곱 특징에 10단계 블러를 적용하는 로컬 예비실험입니다. 원본 1,097장 중 양성 120장·정상 416장·악성 561장입니다. 매 학습 회차(epoch)에 클래스당 5,000개를 원본 학습 영상의 반복 표본과 온라인 증강으로 구성합니다. 이는 독립 영상이나 환자 5,000명을 의미하지 않습니다.
+-
+-환자 식별자가 없어 영상 단위 분할입니다. 바이트와 회색조 픽셀이 완전히 같은 영상은 같은 분할에 묶지만 동일 환자의 다른 영상이나 유사 영상의 분리 여부는 확인할 수 없습니다. 따라서 환자 독립성 또는 임상 성능을 주장할 수 없습니다.
+-
+-- [실행 방법](docs/실행방법.md)
+-- [원본 대비 변경](docs/원본대비변경.md)
+-- [변경 기록](변경기록.md)
+-- 로컬 모니터링 노트북은 비공개 실행 출력 때문에 공개 묶음에서 제외했습니다.
+-
+-초기 연속 배치에서 FP16 기울기 오버플로가 관측되어 실제 512픽셀 입력으로 재현했습니다. BF16을 명시하도록 수정한 뒤 실제 학습이 진행 중입니다. 오류 검사는 유지하며 아직 전체 학습 성능을 확정하지 않습니다.
+-
+-원본 의료영상, 경로가 포함된 manifest, 모델 체크포인트, 접근 토큰, 개인 지침과 원본 노트북은 공개하지 않습니다. 실험 결과는 실제 저장된 결과로만 확인하며 아직 관측하지 않은 성능을 기재하지 않습니다.
++# 폐 CT 특징 블러 실험 · 2차
++
++고정된 첫 합성곱의 특징에 블러를 적용한 뒤 양성·정상을 OK, 악성을 NG로 분류합니다. 원본을 분할한 뒤 학습에만 클래스당 5000개 온라인 표본을 구성합니다. 원본 환자 ID가 없어 영상 단위 예비실험입니다.
++
++1차의 초기 검증 포화와 손실 계산을 감사한 뒤 평가 수치, 유사 영상 분할, 학습 예산·종료 기준을 보완했습니다. 1차의 결과·가중치는 보존하며 2차는 ImageNet 초기값으로 새로 시작합니다. 원본 노트북과 프레임워크·가중치·전처리가 달라 수치상 재현은 아닙니다.
++
++| 항목 | 1차 | 2차 |
++|---|---|---|
++| 최대 에폭 | 35 | 100 |
++| 조기 종료 | 검증 손실 7회 정체 | 의미 있는 개선 15회 정체 |
++| 개선 기준 | 엄격한 감소 | 종료 판단은 절대 0.0001, 체크포인트는 실제 최소 손실 |
++| 최적화 | Adam, 0.00008 | AdamW, 0.00003, 가중치 감쇠 0.0001 |
++| 학습률 조절 | 없음 | 검증 미개선 4회를 허용한 뒤 다음 미개선에서 0.5배, 최저 0.000001 |
++| 배치 | 2 | 8 |
++| 학습 표본 | 클래스당 5000/epoch | 동일 |
++| 분할 | 바이트·픽셀 완전 중복 그룹 | 완전 중복 + 고정 64px RMSE≤5 유사 그룹 |
++| 평가 | 혼합 정밀도·확률 점수 | FP32 추론·FP64 안정 손실·로짓 순위 점수 |
++
++최대100회는 학습 상한이며 100회를 강제로 반복하지 않습니다. 에폭당 가중치 갱신 수가 배치 크기에 따라 달라지므로 두 차수의 에폭만 비교하지 않습니다. 유사 그룹은 환자 그룹이 아닙니다. 소스별 촬영·압축 차이와 같은 환자의 다른 영상은 여전히 성능을 부풀릴 수 있습니다.
++
++[실행 방법](docs/실행방법.md) · [검토 근거](docs/검토근거.md) · [원본 및 1차와의 차이](docs/원본대비변경.md) · [변경 기록](변경기록.md)
++
++원본 의료영상·영상별 목록·가중치·운영 로그·접속정보는 공개하지 않습니다. 전체 조건의 학습 완료나 환자 독립 성능을 미리 주장하지 않습니다. 7-fold 환자 교차검증·동일 영상 매칭·복원 공격은 이번 분류 실험에 포함되지 않습니다.
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/config.example.json" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/config.example.json"
+index 453a197..4e6324e 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/config.example.json"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/config.example.json"	
+@@ -7,13 +7,20 @@
+   },
+   "seed": 42,
+   "image_size": 512,
+-  "batch_size": 2,
++  "batch_size": 8,
+   "samples_per_class": 5000,
+   "validation_ratio": 0.15,
+   "test_ratio": 0.15,
+-  "epochs": 35,
+-  "early_stopping_patience": 7,
+-  "learning_rate": 8e-05,
++  "epochs": 100,
++  "early_stopping_patience": 15,
++  "min_delta": 0.0001,
++  "learning_rate": 3e-05,
++  "weight_decay": 0.0001,
++  "scheduler_patience": 4,
++  "scheduler_factor": 0.5,
++  "min_learning_rate": 1e-06,
++  "similarity_image_size": 64,
++  "similarity_rmse_threshold": 5.0,
+   "sigmas": [
+     0,
+     1,
+@@ -32,8 +39,11 @@
+   "status_every_batches": 10,
+   "pretrained_weights": "torchvision.ResNet50_Weights.IMAGENET1K_V1",
+   "framework": "PyTorch CUDA",
+-  "protocol": "image-level stratified duplicate-group holdout; online training augmentation only",
++  "protocol": "source-stratified similarity-group holdout; fixed64px 8bit RMSE<=5; online training augmentation only",
+   "port_notes": [
++    "2차는 원본 클래스 분포를 반영해 완전 중복 및 고정 64픽셀 8bit RMSE 5 이하 연결 그룹을 같은 분할에 둡니다. 이 그룹은 환자 ID가 아닙니다.",
++    "학습 BF16/평가 FP32를 분리하며 signed-softplus BCE는 학습 FP32·평가 FP64로 계산합니다. AUC/AP는 확률 포화 전 로짓 순위를 사용합니다.",
++    "최저 원시 검증 손실 체크포인트와 절대 min_delta 0.0001 기반 조기 종료·학습률 감소 기준은 분리합니다. 최대 100 epoch는 상한이며 완료 횟수 예측이 아닙니다.",
+     "RTX 4090에서 FP16 기본 GradScaler 65536은 실제 512 학습 연속 배치에 비유한 기울기를 발생시켰습니다. 지원이 확인된 BF16 autocast를 명시하며 BF16에는 GradScaler를 사용하지 않습니다. 손실·기울기의 비유한 값 검사는 유지합니다.",
+     "Windows 네이티브 TensorFlow 최신판은 CUDA GPU를 지원하지 않아 PyTorch CUDA로 이식합니다.",
+     "torchvision ResNet50은 V1.5이며 Keras ResNet50과 stride·가중치·RGB 정규화 전처리가 다릅니다. 원본 결과의 수치상 재현을 주장하지 않습니다.",
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/dashboard.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/dashboard.py"
+index b329ff0..5dfbc20 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/dashboard.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/dashboard.py"	
+@@ -112,7 +112,7 @@ def read_status(root: Path):
+         if stamp.tzinfo is None:
+             raise ValueError("상태 갱신 시각에 시간대가 없습니다")
+         age = max(0, (datetime.now(timezone.utc) - stamp).total_seconds())
+-        meta.update(age_seconds=round(age, 1), stale=age > 60,
++        meta.update(age_seconds=round(age, 1), stale=data.get("status") == "running" and age > 60,
+                     process_alive=process_alive(data.get("pid")))
+     except FileNotFoundError:
+         data = {"stage": "ready", "status": "waiting", "message": "학습 상태가 아직 기록되지 않았습니다", "history": []}
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/docs/\352\262\200\355\206\240\352\267\274\352\261\260.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/docs/\352\262\200\355\206\240\352\267\274\352\261\260.md"
+new file mode 100644
+index 0000000..38c61a7
+--- /dev/null
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/docs/\352\262\200\355\206\240\352\267\274\352\261\260.md"	
+@@ -0,0 +1,25 @@
++# 2차 검토 근거
++
++## 확인된 문제와 한계
++
++1차에서는 epoch마다 OK·NG를 각각 5000개씩 학습했으며 배치2로 5000번의 optimizer update가 발생했다. 따라서 epoch 숫자만으로 학습량을 비교하면 안 된다. 원본의 최대35회 설정을 충분성 검토 없이 그대로 사용했다.
++
++1차 평가에서는 BF16 로짓의 sigmoid를 먼저 계산한 뒤 FP32로 바꿨다. 확률의 양자화와 동점 위험을 줄이기 위해 평가 정밀도를 높일 필요가 있다. 기존 정확도1.0이 이 문제 때문이라고 확정하지 않는다.
++
++기존 train769/validation161을 이용한 별도 감사에서 64px 회색조 1-NN 검증 정확도159/161, 영상 크기·JPEG 파일 크기만 사용한 분류 정확도156/161을 관측했다. 시험셋은 이 감사 분류기의 학습·평가에 사용하지 않았다. 이는 유사 영상 및 소스 차이의 영향을 의심할 근거이며 실제 ResNet이 파일 크기를 입력받았다는 뜻은 아니다. 실제 모델은 회색조 픽셀만 입력받는다. 파일 번호의 인접성을 환자 ID로 해석하지 않는다.
++
++## 평가 원칙
++
++유사도 그룹은 환자 그룹이 아니다. 원본 환자 ID 없이 환자 독립성·임상 성능을 주장하지 않는다. 라벨과 성능에 맞춰 유사도 임계값을 조정하지 않는다. 같은 원본에서 증강한 영상을 별도 독립 영상으로 세지 않는다. 검증·시험은 증강하지 않는다. 완전 중복뿐 아니라 사전 명시한 보수적 유사 기준의 그룹도 분할 사이에 섞이지 않게 검증한다.
++
++최대 에폭은 학습 예산의 상한이다. 실제 종료는 검증 손실의 의미 있는 개선·정체에 따라 결정하며 최적 모델은 검증 지표로 선택한다. 시험 결과를 이용해 학습률·sigma·종료 조건을 고르지 않는다.
++
++## 공식 참고
++
++- [PyTorch ReduceLROnPlateau](https://docs.pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.ReduceLROnPlateau.html): 검증 정체에 따른 학습률 감소.
++- [PyTorch AdamW](https://docs.pytorch.org/docs/stable/generated/torch.optim.AdamW.html): 가중치 감쇠를 포함한 최적화.
++- [scikit-learn 교차검증](https://scikit-learn.org/stable/modules/cross_validation.html): 상관된 표본의 그룹 분리와 시험셋 보존.
++
++세부 실행 설정과 검사 결과는 조사 완료 뒤 실행 문서와 변경 기록에 확정한다. 특정 epoch·학습률이 보편적 최적값이라는 뜻은 아니다.
++
++2차는 분할·배치·학습률·최적화·평가 계산을 함께 보완한 후속 예비실험입니다. 두 차수의 수치 차이를 에폭 증가 하나의 효과나 공정한 단일 요인 절제 실험으로 주장하지 않습니다. 학습 중간에 확인한 검증 정보가 있으므로 완전히 사전 등록된 독립 연구로 표현하지 않습니다. 최종 환자 독립성 검증에는 실제 환자 ID와 별도 출처 데이터가 필요합니다.
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/docs/\354\213\244\355\226\211\353\260\251\353\262\225.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/docs/\354\213\244\355\226\211\353\260\251\353\262\225.md"
+index aced6ce..39cc67e 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/docs/\354\213\244\355\226\211\353\260\251\353\262\225.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/docs/\354\213\244\355\226\211\353\260\251\353\262\225.md"	
+@@ -1,19 +1,19 @@
+ # 실행 방법
+ 
+-PowerShell에서 프로젝트 1차 폴더를 작업 디렉터리로 열고 전용 환경을 사용합니다. 이미 실행 중인 학습이 있는지 먼저 확인하세요. 각 명령은 실제 상태 파일을 갱신하므로 진행 중에는 준비나 연결 검사도 중복 실행하지 마세요.
++Python 3.12 환경을 준비하고 requirements.txt의 버전을 설치합니다. torch와 torchvision은 CUDA 12.8 공식 패키지 인덱스를 사용합니다. 기존 환경을 사용하는 경우 실제 패키지 버전과 CUDA·BF16 지원을 확인합니다. 폴더 연결이나 바로가기는 필요하지 않습니다.
++
++공개본에서는 config.example.json을 config.json으로 복사한 뒤 자체 데이터 경로를 설정합니다. 이미지 원본이나 모델 가중치는 저장소에 포함하지 않습니다.
+ 
+ ```powershell
+-.\.venv\Scripts\python.exe run_training.py prepare
+-.\.venv\Scripts\python.exe run_training.py smoke --device cuda
+-.\.venv\Scripts\python.exe run_training.py train --device cuda
++python -B -X utf8 run_training.py prepare
++python -B -X utf8 run_training.py smoke --device cuda
++python -B -X utf8 run_training.py train --device cuda
+ ```
+ 
+-`prepare`는 자료를 확인하고 분할을 기록합니다. `smoke`는 64 픽셀 난수 입력을 사용하는 연결 검사이며 연구 결과가 아닙니다. `train`은 config의 10개 sigma를 순서대로 학습합니다. GPU나 사전학습 가중치를 이용할 수 없는 경우 오류를 확인해야 합니다.
+-
+-별도 PowerShell에서 `.\.venv\Scripts\python.exe dashboard.py`로 대시보드를 시작합니다. 생성된 로컬 접속 주소는 `work/server.json`에서 확인하며 토큰이 포함되므로 공유하거나 공개하지 마세요. 서버 종료는 해당 터미널에서 Ctrl+C를 사용합니다.
++프로젝트 2차를 작업 디렉터리로 사용합니다. 준비와 smoke는 상태 파일을 갱신하므로 실제 학습 도중 중복 실행하지 않습니다. smoke는 작은 난수 입력 연결 검사이며 실험 성능이 아닙니다. 실제 학습은 config의 10개 sigma를 순서대로 실행합니다.
+ 
+-`실행_모니터링.ipynb`는 프로젝트 1차 폴더를 작업 디렉터리로 열고 전용 `.venv` 커널을 선택해 순서대로 실행합니다. `work/runtime/status.json`과 `work/results`를 읽고 사용 가능한 학습 이력을 그래프로 표시하며 학습을 시작하지 않습니다. 파일이 없으면 대기 상태를 표시합니다.
++대시보드는 별도 프로세스에서 `python -B -X utf8 dashboard.py`로 시작합니다. 로컬 접속 URL은 work/server.json에 저장되며 토큰이 포함되므로 공유하지 않습니다. 최대 에폭과 현재 학습 회차, 현재 학습률, 의미 있는 개선 없이 지난 회차, 최적 회차와 가중치 갱신 횟수를 구분해 표시합니다. 흰색 기본 테마·다크/라이트 전환·3D 모형·움직임 제어를 제공합니다.
+ 
+-환자 ID가 없는 영상 단위 결과는 환자 독립적인 임상 성능을 나타내지 않습니다. 원본 영상·manifest·체크포인트·런타임 및 접속 정보는 공개하지 않습니다.
++2차는 새 run_id와 ImageNet 초기값으로 시작하며 1차 가중치를 불러오지 않습니다. 동일한 2차 소스·자료·설정에서 중단된 실행만 마지막 완료 회차의 optimizer·scheduler·RNG 상태로 재개합니다. 미완료 회차는 처음부터 다시 수행하므로 중단된 배치까지 정확히 이어가는 기능은 아닙니다.
+ 
+-새 환경 재구성 시 Python3.12로 .venv를 만든 뒤 torch/torchvision은 https://download.pytorch.org/whl/cu128 공식 인덱스에서 requirements의 지정버전을 먼저 설치하고 나머지 requirements를 설치합니다. 공개본에서는 config.example.json을 config.json으로 복사하고 자체 데이터 경로를 지정해야 합니다. 이 컴퓨터의 원본 데이터나 기존 .venv를 공개 저장소에서 제공하지 않습니다.
++시험셋은 학습률·블러 강도·임계값을 정하는 데 사용하지 않습니다. 유사도 그룹 분리는 환자 독립성을 보장하지 않습니다. 학습이 끝났다는 표시는 실제 큐가 완료된 경우에만 사용합니다.
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/docs/\354\233\220\353\263\270\353\214\200\353\271\204\353\263\200\352\262\275.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/docs/\354\233\220\353\263\270\353\214\200\353\271\204\353\263\200\352\262\275.md"
+index 024adf0..15d9ccd 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/docs/\354\233\220\353\263\270\353\214\200\353\271\204\353\263\200\352\262\275.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/docs/\354\233\220\353\263\270\353\214\200\353\271\204\353\263\200\352\262\275.md"	
+@@ -1,13 +1,24 @@
+-# 원본 노트북과 이번 예비실험의 차이
+-
+-제공 노트북은 TensorFlow/Keras ImageNet ResNet50에서 `conv1_conv`를 고정 Edge로 분리하고 DCT 기반 블러 뒤 Cloud의 마지막 잔차 블록과 분류 헤드를 학습합니다. 회색조 영상을 512×512로 맞춰 3채널로 복제하고 Keras의 BGR 평균 차감 전처리를 사용합니다. 환자 ID가 있는 입력을 요구하며 환자 단위 10% 시험 분리와 7-fold, 10개 sigma의 adaptive 분류, sigma 0 고정 대조군, 동일 영상 매칭 및 복원 공격을 포함합니다. 원본 기본값은 배치 2, 최대 35 epoch, patience 7, 분류 학습률 0.00008입니다.
+-
+-이번 코드는 PyTorch/torchvision ResNet50 V1.5와 ImageNet1K V1 가중치를 사용합니다. 구조의 stride와 가중치가 Keras와 다르며 회색조 3채널을 0~1로 변환한 뒤 RGB 평균·표준편차로 정규화합니다. 첫 합성곱과 모든 배치정규화를 고정하고 마지막 layer4의 비배치정규화 가중치와 128 유닛 분류 헤드를 학습합니다. sigma는 특징맵 픽셀 단위이며 값은 0, 1, 2, 4, 8, 16, 32, 64, 128, 256입니다. 원본과 수치적으로 동일한 재현이 아닙니다.
+-
+-기본 설정은 영상 중복 그룹 기준 학습·검증·시험 약 70:15:15, 512 픽셀, 배치 2, 최대 35 epoch, patience 7, 학습률 0.00008입니다. 각 학습 epoch에는 클래스별 5,000개를 반복 추출하고 좌우 반전·명암·밝기 변화를 적용합니다. 검증과 시험에는 증강하지 않습니다. 완전 중복만 같은 분할에 묶으며 환자 ID가 없으므로 환자 독립성을 검증하지 못합니다.
+-
+-원본의 환자 7-fold, fixed 대조군, 영상 매칭, 복원 공격 및 프라이버시 임계점 선택은 이번 단일 holdout 예비실험에 구현되지 않았습니다. 시험 결과를 사용해 sigma나 임계값을 선택하지 않습니다. 원본 노트북은 변경 없이 로컬 사본으로 보존하며 저작권 확인 전 공개하지 않습니다.
+-
+-현재 CUDA 학습 정밀도는 BF16을 명시하며 FP16을 선택한 경우에만 GradScaler를 사용합니다. 비유한 손실/기울기 검사는 유지합니다. 연속20배치와 검증161장 연결 검증은 최종 시험 성능이 아닙니다. 재개 시 CUDA RNG state는 CPU ByteTensor로 복구합니다. [PyTorch 혼합 정밀도 공식 문서](https://docs.pytorch.org/docs/stable/amp.html)를 함께 참고했습니다.
+-
++# 첨부 원본·1차와 2차의 차이
++
++제공 노트북은 TensorFlow/Keras ImageNet ResNet50에서 `conv1_conv`를 고정 Edge로 분리하고 DCT 기반 블러 뒤 Cloud의 마지막 잔차 블록과 분류 헤드를 학습합니다. 회색조 영상을 512×512로 맞춰 3채널로 복제하고 Keras의 BGR 평균 차감 전처리를 사용합니다. 환자 ID가 있는 입력을 요구하며 환자 단위 10% 시험 분리와 7-fold, 10개 sigma의 adaptive 분류, sigma 0 고정 대조군, 동일 영상 매칭 및 복원 공격을 포함합니다. 원본 기본값은 배치 2, 최대 35 epoch, patience 7, 분류 학습률 0.00008입니다.
++
++1차부터 사용한 이식 코드는 PyTorch/torchvision ResNet50 V1.5와 ImageNet1K V1 가중치를 사용합니다. 구조의 stride와 가중치가 Keras와 다르며 회색조 3채널을 0~1로 변환한 뒤 RGB 평균·표준편차로 정규화합니다. 첫 합성곱과 모든 배치정규화를 고정하고 마지막 layer4의 비배치정규화 가중치와 128 유닛 분류 헤드를 학습합니다. sigma는 특징맵 픽셀 단위이며 값은 0, 1, 2, 4, 8, 16, 32, 64, 128, 256입니다. 원본과 수치적으로 동일한 재현이 아닙니다.
++
++1차 기본 설정은 영상 중복 그룹 기준 학습·검증·시험 약 70:15:15, 512 픽셀, 배치 2, 최대 35 epoch, patience 7, 학습률 0.00008입니다. 각 학습 epoch에는 클래스별 5,000개를 반복 추출하고 좌우 반전·명암·밝기 변화를 적용합니다. 검증과 시험에는 증강하지 않습니다. 완전 중복만 같은 분할에 묶으며 환자 ID가 없으므로 환자 독립성을 검증하지 못합니다.
++
++원본의 환자 7-fold, fixed 대조군, 영상 매칭, 복원 공격 및 프라이버시 임계점 선택은 이번 단일 holdout 예비실험에 구현되지 않았습니다. 시험 결과를 사용해 sigma나 임계값을 선택하지 않습니다. 원본 노트북은 변경 없이 로컬 사본으로 보존하며 저작권 확인 전 공개하지 않습니다.
++
++현재 CUDA 학습 정밀도는 BF16을 명시하며 FP16을 선택한 경우에만 GradScaler를 사용합니다. 비유한 손실/기울기 검사는 유지합니다. 연속20배치와 검증161장 연결 검증은 최종 시험 성능이 아닙니다. 재개 시 CUDA RNG state는 CPU ByteTensor로 복구합니다. [PyTorch 혼합 정밀도 공식 문서](https://docs.pytorch.org/docs/stable/amp.html)를 함께 참고했습니다.
++
+ 실시간 상태 파일은 Windows에서 읽기 핸들의 삭제 공유와 ReplaceFileW를 결합해 원자적으로 교체합니다. 짧은 공유 위반은 제한된 횟수만 재시도하고 계속되는 오류를 보고합니다. 이는 모델 학습의 실패를 숨기는 분기가 아닙니다. [Microsoft 파일 교체 문서](https://learn.microsoft.com/en-us/windows/win32/fileio/moving-and-replacing-files)를 참고했습니다.
++
++## 2차 보완
++
++첨부 원본과의 구조·프레임워크 차이는 위와 같습니다. 2차는 1차의 최대35회 설정을 재검토하여 최대100회·정체15회로 조정했습니다. 검증 손실이 절대0.0001 초과 개선되어야 정체 횟수를 초기화하지만, 최적 체크포인트는 이 기준과 별도로 실제 최소 손실로 보존합니다. 학습률 감소는 검증 미개선4회를 허용한 뒤 다음 미개선에서 적용하며, 감소율0.5, 최저0.000001입니다. AdamW 학습률0.00003과 가중치 감쇠0.0001을 사용하며 배치8에서 각 회차1250회 가중치를 갱신합니다. 클래스당5000개 학습 표본은 유지합니다.
++
++고정64px 회색조의8bit RMSE≤5인 쌍과 완전 중복의 연결 성분을 같은 분할에 묶습니다. 기준은 검증 성능을 높이거나 낮추기 위한 조절값이 아니며 label을 보지 않고 계산합니다. 유사 그룹과 환자 그룹은 다릅니다. 임의 환자 ID를 생성하지 않습니다.
++
++평가에서는 FP32 추론 뒤 signed-softplus FP64 손실을 사용하고, AUC·AP는 sigmoid 포화 이전 로짓 순위로 계산합니다. 확률은 별도로 저장합니다. 수치적 손실0을 완벽한 임상 분류라는 뜻으로 사용하지 않습니다. 1차 best 모델은 이런 정밀도 감사에서도 검증 정확도·AUC1.0이 유지됐으므로 평가 수치 수리가 높은 검증 성능의 원인을 모두 해결했다는 주장은 하지 않습니다.
++
++양성·정상·악성 원본 범주별 결과도 남깁니다. 단일 라벨 범주에서 AUC를 정의할 수 없으면 null로 표시하며 클래스별 오류와 전체 이진 분류를 구분합니다. checkpoint에는 optimizer·scheduler·의미 있는 개선 기준·최적 회차·RNG를 포함하고 원본/코드/설정 식별자가 다른 실행은 재사용하지 않습니다.
++
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/src/data.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/src/data.py"
+index e3570b4..6a38046 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/src/data.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/src/data.py"	
+@@ -23,11 +23,13 @@ def binary_label(value):
+     raise ValueError(f"확인되지 않은 원본 라벨: {value!r}")
+ 
+ 
+-def discover_images(dataset_root):
++def discover_images(dataset_root, similarity_rmse=5.0, similarity_size=64):
+     root = Path(dataset_root).resolve()
+     if not root.is_dir():
+         raise FileNotFoundError(f"원본 자료 폴더가 없습니다: {root}")
+-    rows = []
++    if not np.isfinite(similarity_rmse) or similarity_rmse < 0 or similarity_size != 64:
++        raise ValueError("유사 그룹은 고정 64 픽셀과 유한한 0 이상 RMSE 기준이 필요합니다.")
++    rows, thumbnails = [], []
+     for folder in sorted(root.iterdir()):
+         if not folder.is_dir():
+             continue
+@@ -45,10 +47,13 @@ def discover_images(dataset_root):
+                 width, height = gray.size
+                 # 실제 학습에 읽히는 회색조 픽셀과 크기를 함께 해시합니다.
+                 pixel_digest = hashlib.sha256(f"L:{width}:{height}:".encode() + gray.tobytes()).hexdigest()
++                thumbnail = np.asarray(gray.resize((similarity_size, similarity_size), Image.Resampling.BILINEAR), dtype=np.uint8)
++                thumbnails.append(thumbnail.reshape(-1).astype(np.float64))
+             rows.append({"path": str(path.resolve()), "relative_path": path.relative_to(root).as_posix(),
+                          "source_class": folder.name, "label": label,
+                          "byte_sha256": hashlib.sha256(raw).hexdigest(), "pixel_sha256": pixel_digest,
+-                         "width": width, "height": height})
++                         "width": width, "height": height,
++                         "similarity_descriptor_sha256": hashlib.sha256(thumbnail.tobytes()).hexdigest()})
+     if not rows:
+         raise ValueError("분류 가능한 원본 영상이 0개입니다.")
+     parents = list(range(len(rows)))
+@@ -67,15 +72,31 @@ def discover_images(dataset_root):
+                 parents[find(index)] = find(known[key])
+             else:
+                 known[key] = index
++    exact_members = defaultdict(list)
++    for index in range(len(rows)):
++        exact_members[find(index)].append(index)
++    for indices in exact_members.values():
++        exact_group = min(rows[i]["pixel_sha256"] for i in indices)
++        for index in indices:
++            rows[index]["exact_duplicate_group"] = exact_group
++    # 라벨을 보지 않고 모든 원본의 64 픽셀 8bit RMSE 연결 성분을 만듭니다.
++    # 정수 픽셀의 제곱거리를 float64로 계산하여 임계점 근처의 상쇄 오차를 줄입니다.
++    descriptors = np.stack(thumbnails)
++    squares = (descriptors * descriptors).sum(axis=1)
++    distance_squared = np.maximum(squares[:, None] + squares[None, :] - 2 * descriptors @ descriptors.T, 0)
++    connected = np.triu(distance_squared <= float(similarity_rmse) ** 2 * descriptors.shape[1], 1)
++    for left, right in zip(*np.nonzero(connected)):
++        parents[find(int(left))] = find(int(right))
+     members = defaultdict(list)
+     for index in range(len(rows)):
+         members[find(index)].append(index)
+     for indices in members.values():
+         if len({rows[i]["label"] for i in indices}) > 1:
+-            raise ValueError("동일 바이트/픽셀 영상에 OK와 NG 라벨 충돌이 있습니다. 원본 확인이 필요합니다.")
++            raise ValueError("완전 중복 또는 근접 유사 그룹에 OK와 NG 라벨 충돌이 있습니다. 원본 확인이 필요합니다.")
+         group = min(rows[i]["pixel_sha256"] for i in indices)
+         for index in indices:
+             rows[index]["duplicate_group"] = group
++            rows[index]["similarity_group"] = group
+     return rows
+ 
+ 
+@@ -88,29 +109,39 @@ def split_records(records, seed=42, validation_ratio=0.15, test_ratio=0.15):
+     if set(by_class) != {0, 1}:
+         raise ValueError("OK와 NG 두 클래스가 모두 필요합니다.")
+     result = {"train": [], "validation": [], "test": []}
++    ratios = {"train": 1 - validation_ratio - test_ratio, "validation": validation_ratio, "test": test_ratio}
+     rng = np.random.default_rng(seed)
+     for label in [0, 1]:
+         groups = sorted(by_class[label])
+         if len(groups) < 7:
+             raise ValueError("각 클래스에 서로 다른 영상 중복 그룹이 7개 이상 필요합니다.")
+         groups = [groups[i] for i in rng.permutation(len(groups))]
+-        n_test = max(1, round(len(groups) * test_ratio))
+-        n_val = max(1, round(len(groups) * validation_ratio))
+-        n_train = len(groups) - n_test - n_val
+-        if n_train < 1:
+-            raise ValueError("원본 학습 그룹이 남지 않는 분할입니다.")
+-        for name, selected in [("test", groups[:n_test]), ("validation", groups[n_test:n_test + n_val]),
+-                               ("train", groups[n_test + n_val:])]:
+-            for group in selected:
+-                result[name].extend(by_class[label][group])
++        groups.sort(key=lambda group: len(by_class[label][group]), reverse=True)
++        totals = Counter(row["source_class"] for group in groups for row in by_class[label][group])
++        allocated = {name: Counter() for name in result}
++        for group in groups:
++            members = by_class[label][group]
++            counts = Counter(row["source_class"] for row in members)
++            # 혼합 원본 클래스 그룹도 쪼개지 않고 각 원본 클래스의 목표 비율을 함께 반영합니다.
++            scores = {name: sum(count * (allocated[name][source] + count / 2) /
++                               max(totals[source] * ratios[name], 1) for source, count in counts.items()) / len(members)
++                      for name in result}
++            chosen = min(scores, key=scores.get)
++            result[chosen].extend(members)
++            allocated[chosen].update(counts)
+     for name in result:
+         result[name].sort(key=lambda row: row["relative_path"])
+     assert_disjoint(result)
++    if any({row["label"] for row in rows} != {0, 1} for rows in result.values()):
++        raise ValueError("유사 그룹과 원본 클래스 분포로 세 분할에 두 라벨을 모두 배정하지 못했습니다.")
+     return result
+ 
+ 
+ def assert_disjoint(splits):
+-    for key in ["path", "byte_sha256", "pixel_sha256", "duplicate_group"]:
++    keys = ["path", "byte_sha256", "pixel_sha256", "duplicate_group"]
++    if all("similarity_group" in row for rows in splits.values() for row in rows):
++        keys += ["similarity_group", "exact_duplicate_group"]
++    for key in keys:
+         owners = {}
+         for name, rows in splits.items():
+             for row in rows:
+@@ -180,17 +211,20 @@ def dataset_summary(records, splits, samples_per_class):
+         return {"OK": labels[0], "NG": labels[1], "total": len(rows)}
+     return {"source_counts": dict(Counter(row["source_class"] for row in records)),
+             "class_counts": count(records), "splits": {name: count(rows) for name, rows in splits.items()},
+-            "original_total": len(records), "unique_duplicate_groups": len({r["duplicate_group"] for r in records}),
+-            "duplicate_extra_files": len(records) - len({r["duplicate_group"] for r in records}),
+-            "epoch_target_per_class": samples_per_class, "split_unit": "image_duplicate_group",
++            "original_total": len(records), "unique_duplicate_groups": len({r["exact_duplicate_group"] for r in records}),
++            "duplicate_extra_files": len(records) - len({r["exact_duplicate_group"] for r in records}),
++            "similarity_group_count": len({r["similarity_group"] for r in records}),
++            "largest_similarity_group": max(Counter(r["similarity_group"] for r in records).values()),
++            "source_counts_by_split": {name: dict(Counter(row["source_class"] for row in rows)) for name, rows in splits.items()},
++            "epoch_target_per_class": samples_per_class, "split_unit": "image_similarity_group",
+             "patient_id_available": False, "leakage_checked": True,
+             "limitations": ["실제 환자 ID가 없어 이미지 단위 예비실험입니다. 환자 간 독립성을 검증하지 못했습니다.",
+-                            "바이트·회색조 픽셀의 완전 중복만 차단하며 유사 영상·같은 환자의 다른 절편은 식별할 수 없습니다.",
++                            "완전 중복과 고정 64픽셀 RMSE 연결 성분을 묶지만 이 그룹은 환자 ID가 아닙니다. 같은 환자의 다른 영상은 남을 수 있습니다.",
+                             "온라인 증강 5000개/클래스는 원본 환자나 독립 영상 5000개를 의미하지 않습니다."]}
+ 
+ 
+ def prepare_dataset(config, root):
+-    records = discover_images(config["dataset_root"])
++    records = discover_images(config["dataset_root"], config["similarity_rmse_threshold"], config["similarity_image_size"])
+     actual = dict(Counter(row["source_class"] for row in records))
+     expected = config.get("expected_source_counts")
+     if expected and actual != expected:
+@@ -200,6 +234,8 @@ def prepare_dataset(config, root):
+     destination = Path(root) / "work/results"
+     destination.mkdir(parents=True, exist_ok=True)
+     payload = {"records": records, "splits": splits, "summary": summary,
++               "grouping_policy": {"image_size": config["similarity_image_size"], "rmse_threshold_8bit": config["similarity_rmse_threshold"],
++                                   "algorithm": "exact-union-plus-label-independent-rmse-connected-components-float64-v1"},
+                "manifest_sha256": hashlib.sha256(json.dumps(records, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()}
+     path = destination / "dataset_manifest_private.json"
+     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/src/state.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/src/state.py"
+index b49d96f..740809c 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/src/state.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/src/state.py"	
+@@ -61,6 +61,11 @@ class StatusWriter:
+         self.folder = self.root / "work/runtime"
+         self.folder.mkdir(parents=True, exist_ok=True)
+         self.data = {"schema_version": 1, "stage": "preparing", "status": "running", "message": "원본 자료 확인 중",
++                     "training_policy": {"max_epochs": config.get("epochs", 100),
++                                         "patience": config.get("early_stopping_patience", 15),
++                                         "min_delta": config.get("min_delta", 1e-4),
++                                         "scheduler_patience": config.get("scheduler_patience", 4),
++                                         "batch_size": config.get("batch_size", 8)},
+                      "pid": os.getpid(), "epoch": 0, "epochs": config.get("epochs", 35),
+                      "batch": 0, "batches": 0, "seen_per_class": {"OK": 0, "NG": 0},
+                      "history": [], "dataset": None, "evaluation": None, "device": None, "error": None,
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/src/training.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/src/training.py"
+index 338b91c..d55ed20 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/src/training.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/src/training.py"	
+@@ -21,24 +21,97 @@ from .model import SplitResNet50
+ from .state import atomic_json, now_kst
+ 
+ 
+-def binary_metrics(labels, probabilities):
++def binary_metrics(labels, probabilities, logits=None):
+     y = np.asarray(labels, dtype=int)
+     p = np.asarray(probabilities, dtype=float)
+     if len(y) == 0 or len(y) != len(p) or not np.isfinite(p).all():
+         raise ValueError("평가 라벨·예측 확률이 유효하지 않습니다.")
+     if not set(y).issubset({0, 1}) or np.any((p < 0) | (p > 1)):
+         raise ValueError("이진 라벨/확률 범위가 유효하지 않습니다.")
+-    predicted = (p >= 0.5).astype(int)
++    score = p if logits is None else np.asarray(logits, dtype=np.float64)
++    if len(score) != len(y) or not np.isfinite(score).all():
++        raise ValueError("평가 로짓의 수 또는 유한성이 유효하지 않습니다.")
++    predicted = (p >= 0.5).astype(int) if logits is None else (score >= 0).astype(int)
++    consistent = bool(np.array_equal(predicted, (p >= 0.5).astype(int)))
+     matrix = confusion_matrix(y, predicted, labels=[0, 1])
+     tn, fp, fn, tp = matrix.ravel()
+     return {"accuracy": float(accuracy_score(y, predicted)),
+-            "auc": float(roc_auc_score(y, p)) if len(set(y)) == 2 else None,
+-            "pr_auc": float(average_precision_score(y, p)) if len(set(y)) == 2 else None,
++            "auc": float(roc_auc_score(y, score)) if len(set(y)) == 2 else None,
++            "pr_auc": float(average_precision_score(y, score)) if len(set(y)) == 2 else None,
+             "sensitivity": float(tp / (tp + fn)) if tp + fn else None,
+             "specificity": float(tn / (tn + fp)) if tn + fp else None,
+             "f1": float(f1_score(y, predicted, zero_division=0)),
+             "confusion_matrix": matrix.tolist(), "threshold": 0.5, "n_images": len(y),
+-            "unit": "image", "patient_id_available": False}
++            "unit": "image", "patient_id_available": False, "threshold_consistent": consistent,
++            "threshold_rounding_differences": int(np.count_nonzero(predicted != (p >= 0.5).astype(int))),
++            "ranking_score": "raw_logits" if logits is not None else "probability",
++            "ng_probability_mean": float(p.mean()), "brier_score": float(np.mean((p-y)**2)),
++            "false_positive_rate": float(fp/(tn+fp)) if tn+fp else None}
++
++
++def stable_binary_loss(logits, targets, dtype=torch.float32, reduction="mean"):
++    # 확신한 음성의 input-logsigmoid 상쇄를 피하는 동일한 이진 교차 엔트로피입니다.
++    signed = logits.to(dtype) * (targets.to(dtype) * 2 - 1)
++    values = torch.nn.functional.softplus(-signed)
++    if reduction == "sum":
++        return values.sum()
++    if reduction == "none":
++        return values
++    if reduction != "mean":
++        raise ValueError("지원하지 않는 손실 집계 방식입니다.")
++    return values.mean()
++
++
++class TrainingControl:
++    def __init__(self, min_delta=1e-4, patience=15):
++        if min_delta < 0 or not math.isfinite(min_delta) or patience < 1:
++            raise ValueError("조기 종료 정책이 유효하지 않습니다.")
++        self.min_delta, self.patience = float(min_delta), int(patience)
++        self.best_raw_loss, self.best_raw_epoch = math.inf, 0
++        self.meaningful_best_loss, self.stale_epochs = math.inf, 0
++        self.optimizer_steps = 0
++
++    def observe(self, loss, epoch):
++        if not math.isfinite(loss) or loss < 0:
++            raise ValueError("검증 손실은 유한한 0 이상이어야 합니다.")
++        raw = loss < self.best_raw_loss
++        meaningful = loss < self.meaningful_best_loss - self.min_delta
++        if raw:
++            self.best_raw_loss, self.best_raw_epoch = float(loss), int(epoch)
++        if meaningful:
++            self.meaningful_best_loss, self.stale_epochs = float(loss), 0
++        else:
++            self.stale_epochs += 1
++        return {"raw_improved": raw, "meaningful_improved": meaningful,
++                "should_stop": self.stale_epochs >= self.patience}
++
++    def state_dict(self):
++        return {key: getattr(self, key) for key in ["min_delta", "patience", "best_raw_loss", "best_raw_epoch",
++                                                    "meaningful_best_loss", "stale_epochs", "optimizer_steps"]}
++
++    def load_state_dict(self, values):
++        if values["min_delta"] != self.min_delta or values["patience"] != self.patience:
++            raise ValueError("재개 조기 종료 정책이 현재 설정과 다릅니다.")
++        for key in ["best_raw_loss", "best_raw_epoch", "meaningful_best_loss", "stale_epochs", "optimizer_steps"]:
++            setattr(self, key, values[key])
++
++
++def build_optimizer_scheduler(parameters, config):
++    optimizer = torch.optim.AdamW(parameters, lr=config["learning_rate"], weight_decay=config["weight_decay"])
++    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
++        optimizer, mode="min", factor=config["scheduler_factor"], patience=config["scheduler_patience"],
++        threshold=config["min_delta"], threshold_mode="abs", min_lr=config["min_learning_rate"])
++    return optimizer, scheduler
++
++
++def per_source_metrics(records, labels, probabilities, logits):
++    result = {}
++    for source in sorted({row["source_class"] for row in records}):
++        indices = [index for index, row in enumerate(records) if row["source_class"] == source]
++        result[source] = binary_metrics([labels[i] for i in indices], [probabilities[i] for i in indices],
++                                        logits=[logits[i] for i in indices])
++        result[source]["auc_note"] = "단일 라벨 원본 클래스는 AUC/AP를 계산하지 않습니다." if result[source]["auc"] is None else None
++    return result
+ 
+ 
+ def seed_everything(seed, cpu_threads=4):
+@@ -92,27 +165,36 @@ def _loader(dataset, config, device):
+ 
+ def evaluate(model, loader, device, precision, state=None, stage="validation"):
+     model.eval()
+-    labels, probabilities = [], []
++    labels, probabilities, raw_logits = [], [], []
+     total_loss = 0.0
+     count = 0
+-    criterion = nn.BCEWithLogitsLoss(reduction="sum")
+     with torch.inference_mode():
+         for batch_index, (images, target) in enumerate(loader, 1):
+             images, target = images.to(device, non_blocking=True), target.to(device, non_blocking=True)
+-            with torch.autocast(device_type=device.type, dtype=precision["dtype"], enabled=precision["autocast_enabled"]):
+-                logits = model(images)
+-                loss = criterion(logits, target)
++            # 평가는 학습 AMP와 분리하여 FP32 정방향과 FP64 손실/확률 계산을 사용합니다.
++            with torch.autocast(device_type=device.type, enabled=False):
++                logits = model(images.float())
++            logits64 = logits.double()
++            loss = stable_binary_loss(logits64, target, dtype=torch.float64, reduction="sum")
+             if not torch.isfinite(loss):
+                 raise FloatingPointError("평가 손실에 NaN/Inf가 발생했습니다.")
+             total_loss += loss.item()
+             count += len(target)
+             labels.extend(target.cpu().int().tolist())
+-            probabilities.extend(logits.sigmoid().float().cpu().tolist())
++            probabilities.extend(logits64.sigmoid().cpu().tolist())
++            raw_logits.extend(logits64.cpu().tolist())
+             if state and (batch_index == 1 or batch_index % 10 == 0 or batch_index == len(loader)):
+                 state.update(stage=stage, batch=batch_index, batches=len(loader),
+                              message=f"{'시험' if stage == 'testing' else '검증'} 원본 영상 {count}개 평가 중")
+-    metrics = binary_metrics(labels, probabilities)
++    metrics = binary_metrics(labels, probabilities, logits=raw_logits)
+     metrics["loss"] = total_loss / count
++    metrics.update(forward_precision="fp32", loss_precision="fp64_signed_softplus",
++                   logit_min=min(raw_logits), logit_max=max(raw_logits))
++    records = getattr(loader.dataset, "records", None)
++    if records is not None:
++        if len(records) != count:
++            raise ValueError("원본 클래스별 평가 목록과 예측 수가 다릅니다.")
++        metrics["per_source"] = per_source_metrics(records, labels, probabilities, raw_logits)
+     return metrics, labels, probabilities
+ 
+ 
+@@ -150,7 +232,14 @@ def run_training(config, root, state, device_name="cuda"):
+     device = torch.device("cuda" if device_name == "auto" and torch.cuda.is_available() else "cpu" if device_name == "auto" else device_name)
+     precision = precision_policy(config["precision"], device.type)
+     precision_info = {key: value for key, value in precision.items() if key != "dtype"}
+-    state.update(device=device_information(device), precision=precision_info, stage="preparing", message="원본 해시와 분할을 확인하는 중")
++    policy = {"max_epochs": config["epochs"], "patience": config["early_stopping_patience"],
++              "min_delta": config["min_delta"], "min_delta_mode": "absolute", "batch_size": config["batch_size"],
++              "optimizer": "AdamW", "initial_learning_rate": config["learning_rate"], "weight_decay": config["weight_decay"],
++              "scheduler_patience": config["scheduler_patience"], "scheduler_factor": config["scheduler_factor"],
++              "min_learning_rate": config["min_learning_rate"], "evaluation_forward": "fp32", "evaluation_loss": "fp64_signed_softplus"}
++    state.update(device=device_information(device), precision=precision_info, training_policy=policy,
++                 learning_rate=config["learning_rate"], optimizer_steps=0, best_epoch=0, best_raw_epoch=0,
++                 early_stopping_wait=0, stage="preparing", message="원본 해시와 유사 그룹 분할을 확인하는 중")
+     manifest = prepare_dataset(config, root)
+     run_id, settings = _run_identity(root, config, manifest["manifest_sha256"])
+     result_dir = root / "work/results" / f"run_{run_id}"
+@@ -158,7 +247,8 @@ def run_training(config, root, state, device_name="cuda"):
+     result_dir.mkdir(parents=True, exist_ok=True)
+     checkpoint_dir.mkdir(parents=True, exist_ok=True)
+     atomic_json(result_dir / "run_metadata.json", {**settings, "run_id": run_id, "started_at": now_kst(),
+-                                                  "device": state.data["device"], "protocol": "image-level preliminary holdout"})
++                                                  "device": state.data["device"], "training_policy": policy,
++                                                  "protocol": "similarity-group preliminary holdout"})
+     state.update(dataset=manifest["summary"], run_id=run_id, result_directory=result_dir.relative_to(root).as_posix())
+     state.event("자료 검증 완료", {"run_id": run_id, "summary": manifest["summary"]})
+     splits = manifest["splits"]
+@@ -167,6 +257,7 @@ def run_training(config, root, state, device_name="cuda"):
+     validation = CTDataset(splits["validation"], config["image_size"], training=False)
+     test = CTDataset(splits["test"], config["image_size"], training=False)
+     train_loader, val_loader, test_loader = [_loader(dataset, config, device) for dataset in [training, validation, test]]
++    completed_steps = 0
+     for sigma_index, sigma in enumerate(config["sigmas"], 1):
+         entry = state.data["sigma_queue"][sigma_index - 1]
+         metrics_file = result_dir / f"sigma_{sigma}_metrics.json"
+@@ -174,39 +265,55 @@ def run_training(config, root, state, device_name="cuda"):
+             # 완료된 결과는 동일한 소스·설정·자료 해시에 한해서만 재사용합니다.
+             result = json.loads(metrics_file.read_text(encoding="utf-8"))
+             entry.update(status="completed", result=metrics_file.relative_to(root).as_posix())
++            history_file = result_dir / f"sigma_{sigma}_history.json"
++            if history_file.exists():
++                state.data["history"].extend(json.loads(history_file.read_text(encoding="utf-8")))
++            completed_steps += result["optimizer_steps"]
++            state.update(evaluation=result, run_optimizer_steps=completed_steps)
+             state.event("완료 조건 재사용", {"sigma": sigma, "run_id": run_id})
+             continue
+         entry["status"] = "running"
+         seed_everything(config["seed"], config.get("cpu_threads", 4))
+         state.update(stage="loading_model", status="running", sigma=sigma, sigma_index=sigma_index,
+                      epoch=0, batch=0, batches=len(train_loader), seen_per_class={"OK": 0, "NG": 0},
++                     best_epoch=0, best_raw_epoch=0, best_raw_loss=None, meaningful_best_loss=None,
++                     early_stopping_wait=0, optimizer_steps=0, learning_rate=config["learning_rate"],
++                     train_loss=None, attempted_batch=0,
+                      evaluation=None, message=f"σ={sigma}: 동일 ImageNet 초기값 모델 구성 중")
+         model = SplitResNet50(sigma=sigma, pretrained=True).to(device)
+-        optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad], lr=config["learning_rate"])
++        optimizer, scheduler = build_optimizer_scheduler([p for p in model.parameters() if p.requires_grad], config)
+         scaler = torch.amp.GradScaler("cuda", enabled=precision["use_grad_scaler"])
+-        criterion = nn.BCEWithLogitsLoss()
+-        best_loss, stale_epochs, best_epoch = math.inf, 0, 0
++        control = TrainingControl(config["min_delta"], config["early_stopping_patience"])
+         checkpoint = checkpoint_dir / f"sigma_{sigma}_best.pt"
+         latest_checkpoint = checkpoint_dir / f"sigma_{sigma}_last.pt"
+         sigma_history = []
+         start_epoch = 1
++        stopping_reason = "max_epochs"
+         if latest_checkpoint.exists():
+             saved = torch.load(latest_checkpoint, map_location=device, weights_only=False)
+             if saved["run_id"] != run_id or saved["sigma"] != sigma:
+                 raise ValueError("재개 체크포인트의 자료·설정 식별자가 일치하지 않습니다.")
+             model.load_state_dict(saved["model"])
+             optimizer.load_state_dict(saved["optimizer"])
++            scheduler.load_state_dict(saved["scheduler"])
+             scaler.load_state_dict(saved["scaler"])
+-            best_loss, best_epoch, stale_epochs = saved["best_loss"], saved["best_epoch"], saved["stale_epochs"]
++            control.load_state_dict(saved["training_control"])
+             sigma_history = saved["history"]
+             start_epoch = saved["epoch"] + 1
+             restore_rng_state(saved, device)
+             state.data["history"].extend(sigma_history)
+-            state.event("체크포인트 재개", {"sigma": sigma, "epoch": start_epoch, "run_id": run_id})
++            state.event("체크포인트 재개", {"sigma": sigma, "epoch": start_epoch, "run_id": run_id,
++                                              "optimizer_steps": control.optimizer_steps,
++                                              "learning_rate": optimizer.param_groups[0]["lr"],
++                                              "meaningful_best_loss": control.meaningful_best_loss})
++        state.update(learning_rate=optimizer.param_groups[0]["lr"], optimizer_steps=control.optimizer_steps,
++                     early_stopping_wait=control.stale_epochs, best_epoch=control.best_raw_epoch,
++                     best_raw_epoch=control.best_raw_epoch, run_optimizer_steps=completed_steps + control.optimizer_steps)
+         state.event("학습 조건 시작", {"sigma": sigma, "epochs": config["epochs"], "batches": len(train_loader),
+                                         "samples_per_class": config["samples_per_class"], "image_size": config["image_size"]})
+         for epoch in range(start_epoch, config["epochs"] + 1):
+-            if stale_epochs >= config["early_stopping_patience"]:
++            if control.stale_epochs >= control.patience:
++                stopping_reason = "meaningful_validation_plateau"
+                 break
+             training.set_epoch(epoch - 1)
+             model.train()
+@@ -221,7 +328,7 @@ def run_training(config, root, state, device_name="cuda"):
+                 optimizer.zero_grad(set_to_none=True)
+                 with torch.autocast(device_type=device.type, dtype=precision["dtype"], enabled=precision["autocast_enabled"]):
+                     logits = model(images)
+-                    loss = criterion(logits, target)
++                    loss = stable_binary_loss(logits, target, dtype=torch.float32)
+                 if not torch.isfinite(loss):
+                     raise FloatingPointError(f"σ={sigma}, epoch={epoch}, batch={batch_index}: 학습 손실 NaN/Inf")
+                 scaler.scale(loss).backward()
+@@ -229,6 +336,7 @@ def run_training(config, root, state, device_name="cuda"):
+                 gradient_norm = nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0, error_if_nonfinite=True)
+                 scaler.step(optimizer)
+                 scaler.update()
++                control.optimizer_steps += 1
+                 total_loss += loss.item() * len(target)
+                 ng = int(target.sum().item())
+                 seen["NG"] += ng
+@@ -237,6 +345,8 @@ def run_training(config, root, state, device_name="cuda"):
+                     state.update(stage="training", batch=batch_index, batches=len(train_loader), seen_per_class=seen.copy(),
+                                  train_loss=total_loss / sum(seen.values()), elapsed_seconds=round(time.monotonic() - started, 1),
+                                  last_gradient_norm=gradient_norm.item(),
++                                 learning_rate=optimizer.param_groups[0]["lr"], optimizer_steps=control.optimizer_steps,
++                                 run_optimizer_steps=completed_steps + control.optimizer_steps,
+                                  epoch_elapsed_seconds=round(time.monotonic() - epoch_started, 1),
+                                  message=f"σ={sigma}: epoch {epoch}, 실제 학습 {sum(seen.values())}/{len(training)} 표본")
+                 if batch_index == 1:
+@@ -246,29 +356,42 @@ def run_training(config, root, state, device_name="cuda"):
+                 raise AssertionError(f"클래스별 실제 학습 표본 수가 다릅니다: {seen}")
+             state.update(stage="validation", batch=0, batches=len(val_loader), message=f"σ={sigma}: 원본 검증셋 평가 중")
+             val_metrics, _, _ = evaluate(model, val_loader, device, precision, state)
++            learning_rate_before = optimizer.param_groups[0]["lr"]
++            decision = control.observe(val_metrics["loss"], epoch)
++            scheduler.step(val_metrics["loss"])
+             row = {"sigma": sigma, "epoch": epoch, "train_loss": total_loss / len(training),
+                    "val_loss": val_metrics["loss"], "val_accuracy": val_metrics["accuracy"], "val_auc": val_metrics["auc"],
+-                   "seen_per_class": seen.copy(), "seconds": round(time.monotonic() - epoch_started, 2)}
++                   "seen_per_class": seen.copy(), "seconds": round(time.monotonic() - epoch_started, 2),
++                   "learning_rate": learning_rate_before, "next_learning_rate": optimizer.param_groups[0]["lr"],
++                   "optimizer_steps": control.optimizer_steps, "best_raw_epoch": control.best_raw_epoch,
++                   "meaningful_best_loss": control.meaningful_best_loss, "early_stopping_wait": control.stale_epochs,
++                   "per_source_validation": val_metrics.get("per_source", {}),
++                   "val_logit_min": val_metrics["logit_min"], "val_logit_max": val_metrics["logit_max"]}
+             sigma_history.append(row)
+             state.data["history"].append(row)
+-            improved = val_metrics["loss"] < best_loss
+-            if improved:
+-                best_loss, best_epoch, stale_epochs = val_metrics["loss"], epoch, 0
++            if decision["raw_improved"]:
+                 _save_checkpoint(checkpoint, {"run_id": run_id, "sigma": sigma, "epoch": epoch,
+-                                              "model": model.state_dict(), "validation": val_metrics})
+-            else:
+-                stale_epochs += 1
++                                              "model": model.state_dict(), "validation": val_metrics,
++                                              "training_control": control.state_dict(), "training_policy": policy})
+             _save_checkpoint(latest_checkpoint, {"run_id": run_id, "sigma": sigma, "epoch": epoch,
+                                                   "model": model.state_dict(), "optimizer": optimizer.state_dict(),
+-                                                  "scaler": scaler.state_dict(), "best_loss": best_loss, "best_epoch": best_epoch,
+-                                                  "stale_epochs": stale_epochs, "history": sigma_history,
++                                                  "scheduler": scheduler.state_dict(), "scaler": scaler.state_dict(),
++                                                  "training_control": control.state_dict(), "training_policy": policy,
++                                                  "learning_rate": optimizer.param_groups[0]["lr"], "history": sigma_history,
+                                                   "torch_rng_state": torch.get_rng_state(),
+                                                   "cuda_rng_state": torch.cuda.get_rng_state_all() if device.type == "cuda" else []})
+             atomic_json(result_dir / f"sigma_{sigma}_history.json", sigma_history)
+-            state.update(message=f"σ={sigma}: epoch {epoch} 완료, 검증 손실 {val_metrics['loss']:.5f}",
+-                         best_epoch=best_epoch, early_stopping_wait=stale_epochs)
++            state.update(message=f"σ={sigma}: epoch {epoch} 완료, 검증 손실 {val_metrics['loss']:.6g}",
++                         best_epoch=control.best_raw_epoch, best_raw_epoch=control.best_raw_epoch,
++                         best_raw_loss=control.best_raw_loss, meaningful_best_loss=control.meaningful_best_loss,
++                         early_stopping_wait=control.stale_epochs, learning_rate=optimizer.param_groups[0]["lr"])
+             state.event("epoch 완료", row)
+             print(json.dumps(row, ensure_ascii=False), flush=True)
++            if decision["should_stop"]:
++                stopping_reason = "meaningful_validation_plateau"
++                state.event("조기 종료", {"sigma": sigma, "epoch": epoch, "stale_epochs": control.stale_epochs,
++                                             "min_delta": control.min_delta, "best_raw_epoch": control.best_raw_epoch})
++                break
+         if not checkpoint.exists():
+             raise RuntimeError("검증을 거친 최적 체크포인트가 없어 시험 평가를 중단합니다.")
+         best = torch.load(checkpoint, map_location=device, weights_only=False)
+@@ -278,15 +401,18 @@ def run_training(config, root, state, device_name="cuda"):
+         test_metrics, test_y, test_p = evaluate(model, test_loader, device, precision, state, stage="testing")
+         _save_predictions(result_dir / f"sigma_{sigma}_validation_predictions_private.csv", splits["validation"], val_y, val_p)
+         _save_predictions(result_dir / f"sigma_{sigma}_test_predictions_private.csv", splits["test"], test_y, test_p)
+-        result = {"run_id": run_id, "sigma": sigma, "best_epoch": best_epoch, "epochs_ran": len(sigma_history),
++        result = {"run_id": run_id, "sigma": sigma, "best_epoch": control.best_raw_epoch,
++                  "best_raw_epoch": control.best_raw_epoch, "epochs_ran": len(sigma_history),
++                  "optimizer_steps": control.optimizer_steps, "training_policy": policy, "stopping_reason": stopping_reason,
+                   "validation": val_metrics, "test": test_metrics, "completed_at": now_kst(),
+                   "test_use": "모든 sigma 시험 성능은 탐색적 기술 결과이며 sigma·임계값 선택에 사용하지 않습니다.",
+-                  "protocol": "환자 ID 없는 영상 단위 예비실험; 7-fold/매칭/복원 공격 미실행"}
++                  "protocol": "환자 ID 없는 유사 영상 그룹 예비실험; 7-fold/매칭/복원 공격 미실행"}
+         atomic_json(metrics_file, result)
+         entry.update(status="completed", result=metrics_file.relative_to(root).as_posix())
+         state.update(evaluation=result, message=f"σ={sigma}: 학습·검증·시험 평가 완료")
+         state.event("조건 완료", result)
+-        del model, optimizer, scaler
++        completed_steps += control.optimizer_steps
++        del model, optimizer, scheduler, scaler
+         gc.collect()
+         if device.type == "cuda":
+             torch.cuda.empty_cache()
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/tests/test_dashboard.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/tests/test_dashboard.py"
+index 5dce3c6..153b217 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/tests/test_dashboard.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/tests/test_dashboard.py"	
+@@ -3,6 +3,8 @@ import http.client
+ import ctypes
+ import json
+ import os
++import shutil
++import subprocess
+ from pathlib import Path
+ import tempfile
+ import threading
+@@ -158,6 +160,56 @@ class DashboardTests(unittest.TestCase):
+         self.assertEqual(state["status"], "failed")
+         self.assertIsNotNone(state["_dashboard"]["read_error"])
+ 
++    @unittest.skipUnless(shutil.which("node"), "화면 상태 검사에 Node.js가 필요합니다")
++    def test_ui_policy_zero_missing_interrupted_and_zero_loss(self):
++        script = r"""
++const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
++const html=fs.readFileSync('web/index.html','utf8');
++const ids=[...html.matchAll(/id="([^"]+)"/g)].map(x=>x[1]);
++const plot=[];
++const context={scale(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},fillText(){},arc(...args){plot.push(args);},fill(){}};
++function element(){return {textContent:'',className:'',children:[],attributes:{},parentElement:{},addEventListener(){},setAttribute(k,v){this.attributes[k]=v;},replaceChildren(){this.children=[];},append(...items){this.children.push(...items);},getBoundingClientRect(){return {width:600,height:210};},getContext(){return context;}};}
++const nodes=Object.fromEntries(ids.map(id=>[id,element()]));
++const motion=[];
++const pipeline={setStatus(...args){motion.push(args);},setPaused(){},setTheme(){}};
++const sandbox={console,createPipeline(){return pipeline;},document:{getElementById(id){return nodes[id];},createElement:element,querySelectorAll(){return [];},querySelector(){return null;},fonts:{ready:Promise.resolve()}},window:{matchMedia(){return {matches:false,addEventListener(){}};},addEventListener(){},ctTheme:{current(){return 'light';}},devicePixelRatio:1},setInterval(){}};
++let code=fs.readFileSync('web/app.js','utf8').replace(/^import[^\n]*\n/,'').replace('await document.fonts.ready;','').replace('refresh();setInterval(refresh,3000);','');
++vm.runInNewContext(code+'\nglobalThis.testAPI={render};',sandbox);
++const state={stage:'training',status:'running',sigma:0,epoch:0,epochs:35,training_policy:{max_epochs:20,patience:7},learning_rate:0,early_stopping_wait:0,best_epoch:0,optimizer_steps:0,history:[{sigma:0,epoch:1,train_loss:0,val_loss:1e-16,val_accuracy:1}],_dashboard:{stale:false,process_alive:true},updated_at:'2026-11-10T00:00:00+09:00'};
++const original=JSON.stringify(state.history);
++sandbox.testAPI.render(state);
++assert.match(html,/<title>폐 CT 특징 블러 실험 · 2차<\/title>/);
++assert.equal(nodes.epoch.textContent,'0회 / 최대 20회');
++assert.equal(nodes.learningRate.textContent,'0');
++assert.equal(nodes.earlyStopping.textContent,'0 / 7회');
++assert.equal(nodes.bestEpoch.textContent,'0회');
++assert.equal(nodes.optimizerSteps.textContent,'0');
++assert.match(nodes.latestLoss.textContent,/학습 손실 0 · 검증 손실 1\.000e-16/);
++assert.equal(JSON.stringify(state.history),original);
++assert.ok(plot.some(point=>point[1]===180));
++sandbox.testAPI.render({...state,learning_rate:null,early_stopping_wait:null,best_epoch:null,optimizer_steps:null,training_policy:{}});
++assert.equal(nodes.learningRate.textContent,'미측정');
++assert.equal(nodes.earlyStopping.textContent,'미측정');
++assert.equal(nodes.bestEpoch.textContent,'미측정');
++assert.equal(nodes.optimizerSteps.textContent,'미측정');
++assert.equal(nodes.epoch.textContent,'0회 / 최대 35회');
++sandbox.testAPI.render({...state,early_stopping_wait:0,training_policy:{max_epochs:100,patience:15}});
++assert.equal(nodes.earlyStopping.textContent,'0 / 15회');
++sandbox.testAPI.render({...state,stage:'interrupted',status:'interrupted'});
++assert.equal(nodes.currentTitle.textContent,'학습을 중단했습니다');
++assert.equal(nodes.badge.textContent,'중단');
++assert.equal(nodes.motion.disabled,true);
++assert.equal(nodes.motion.attributes['aria-pressed'],'true');
++assert.equal(motion.at(-1)[2],false);
++assert.match(nodes.alert.textContent,/중단/);
++assert.equal(nodes.step0.textContent,'중단');
++console.log('화면 상태 0/미측정/상한/중단/선형0손실 검증 통과');
++"""
++        result = subprocess.run([shutil.which("node"), "-"], input=script, text=True,
++                                encoding="utf-8", capture_output=True, timeout=20,
++                                cwd=Path(__file__).resolve().parents[1])
++        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
++
+     def test_state_is_read_only_and_process_is_observed(self):
+         path = self.status(epoch=2, seen_per_class={"OK": 5000, "NG": 5000})
+         before = path.read_bytes()
+@@ -190,6 +242,16 @@ class DashboardTests(unittest.TestCase):
+         self.assertEqual(code, 200)
+         self.assertEqual(json.loads(body)["status"], "failed")
+ 
++    def test_deliberately_idle_states_are_not_stale(self):
++        old_stamp = (datetime.now(timezone.utc) - timedelta(minutes=3)).isoformat()
++        for status in ("ready", "interrupted", "completed"):
++            with self.subTest(status=status):
++                self.status(updated_at=old_stamp, stage=status, status=status, pid=None)
++                state = read_status(self.root)
++                self.assertGreaterEqual(state["_dashboard"]["age_seconds"], 179)
++                self.assertFalse(state["_dashboard"]["stale"])
++                self.assertIsNone(state["_dashboard"]["read_error"])
++
+     def test_stale_and_dead_process_are_observable(self):
+         self.status(updated_at=(datetime.now(timezone.utc)-timedelta(minutes=3)).isoformat(), pid=2147483647)
+         state = read_status(self.root)
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/tests/test_pipeline.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/tests/test_pipeline.py"
+index c410e97..7540d54 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/tests/test_pipeline.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/tests/test_pipeline.py"	
+@@ -50,7 +50,7 @@ class DataTests(unittest.TestCase):
+             folder = root / name
+             folder.mkdir()
+             for i in range(20):
+-                pixels = np.full((16, 16), offset + i, dtype=np.uint8)
++                pixels = np.random.default_rng(offset + i).integers(0, 255, (16, 16), dtype=np.uint8)
+                 pixels[0, 0] = 250
+                 Image.fromarray(pixels).save(folder / f"case ({i}).png")
+         original = root / "Bengin cases" / "case (0).png"
+@@ -78,6 +78,7 @@ class DataTests(unittest.TestCase):
+                 self.assertTrue(all(len(parts) == 1 for parts in owners.values()), hash_name)
+             self.assertEqual(split, data.split_records(manifest, seed=42, validation_ratio=0.15, test_ratio=0.15))
+             self.assertTrue(all({r["label"] for r in rows} == {0, 1} for rows in split.values()))
++            self.assertTrue(all({r["source_class"] for r in rows} == {"Bengin cases", "Normal cases", "Malignant cases"} for rows in split.values()))
+ 
+     def test_duplicate_label_conflict_fails_closed(self):
+         data = load_module("src.data")
+@@ -181,6 +182,123 @@ class ModelTests(unittest.TestCase):
+ 
+ 
+ class RuntimeTests(unittest.TestCase):
++    def test_round2_raw_logits_preserve_auc_order_after_probability_saturation(self):
++        training = load_module("src.training")
++        result = training.binary_metrics([0, 1, 0, 1], [0.0, 0.0, 1.0, 1.0], logits=[-10, -9, 9, 10])
++        self.assertEqual(result["accuracy"], 0.5)
++        self.assertEqual(result["auc"], 0.75)
++        self.assertAlmostEqual(result["pr_auc"], 5 / 6)
++
++    def test_round2_valid_tiny_logits_do_not_fail_when_sigmoid_rounds_to_half(self):
++        training = load_module("src.training")
++        result = training.binary_metrics([0, 1], [0.5, 0.5], logits=[-1e-20, 1e-20])
++        self.assertEqual(result["accuracy"], 1.0)
++        self.assertEqual(result["auc"], 1.0)
++        self.assertFalse(result["threshold_consistent"])
++        self.assertEqual(result["threshold_rounding_differences"], 1)
++
++    def test_round2_per_source_metrics_keep_single_class_auc_null(self):
++        training = load_module("src.training")
++        result = training.per_source_metrics([{"source_class": "Bengin cases"}, {"source_class": "Malignant cases"}],
++                                             [0, 1], [0.1, 0.9], [-2, 2])
++        self.assertIsNone(result["Bengin cases"]["auc"])
++        self.assertIsNone(result["Malignant cases"]["pr_auc"])
++        self.assertEqual(result["Bengin cases"]["false_positive_rate"], 0)
++        self.assertEqual(result["Malignant cases"]["sensitivity"], 1)
++
++    def test_round2_signed_softplus_retains_small_correct_class_loss(self):
++        import torch
++        training = load_module("src.training")
++        self.assertTrue(hasattr(training, "stable_binary_loss"), "안정적인 부호 로짓 손실이 아직 없습니다.")
++        logits = torch.tensor([-100.0, 100.0], dtype=torch.float64)
++        value = training.stable_binary_loss(logits, torch.tensor([0.0, 1.0]), dtype=torch.float64)
++        self.assertGreater(value.item(), 0)
++        self.assertAlmostEqual(value.item() / 3.720075976020836e-44, 1.0, places=12)
++
++    def test_round2_raw_checkpoint_and_meaningful_stopping_are_separate(self):
++        training = load_module("src.training")
++        self.assertTrue(hasattr(training, "TrainingControl"), "최저 손실과 유의미한 개선의 별도 상태가 아직 없습니다.")
++        control = training.TrainingControl(min_delta=1e-4, patience=15)
++        self.assertTrue(control.observe(1e-6, 1)["raw_improved"])
++        result = control.observe(1e-7, 2)
++        self.assertTrue(result["raw_improved"])
++        self.assertFalse(result["meaningful_improved"])
++        self.assertEqual(control.best_raw_epoch, 2)
++        self.assertEqual(control.stale_epochs, 1)
++        self.assertEqual(control.meaningful_best_loss, 1e-6)
++        for epoch in range(3, 17):
++            result = control.observe(1e-6 / epoch, epoch)
++        self.assertTrue(result["should_stop"])
++        self.assertEqual(control.best_raw_epoch, 16)
++        self.assertEqual(control.stale_epochs, 15)
++
++    def test_round2_near_images_with_conflicting_labels_fail_closed(self):
++        import numpy as np
++        from PIL import Image
++        data = load_module("src.data")
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            pixels = np.random.default_rng(77).integers(10, 200, (64, 64), dtype=np.uint8)
++            for source, shift in [("Normal cases", 0), ("Malignant cases", 1)]:
++                (root / source).mkdir()
++                Image.fromarray(pixels + shift).save(root / source / "ct.png")
++            with self.assertRaisesRegex(ValueError, "라벨"):
++                data.discover_images(root)
++
++    def test_round2_scheduler_and_control_resume_keep_learning_rate(self):
++        import torch
++        training = load_module("src.training")
++        self.assertTrue(hasattr(training, "build_optimizer_scheduler"), "학습률 감소 및 재개 구성이 아직 없습니다.")
++        policy = {"learning_rate": 3e-5, "weight_decay": 1e-4, "scheduler_patience": 4,
++                  "scheduler_factor": 0.5, "min_delta": 1e-4, "min_learning_rate": 1e-6}
++        parameter = torch.nn.Parameter(torch.tensor([1.0]))
++        optimizer, scheduler = training.build_optimizer_scheduler([parameter], policy)
++        control = training.TrainingControl(min_delta=1e-4, patience=15)
++        for epoch, loss in enumerate([1.0, .99999, .99998, .99997], 1):
++            control.observe(loss, epoch)
++            scheduler.step(loss)
++        second_optimizer, second_scheduler = training.build_optimizer_scheduler([torch.nn.Parameter(torch.tensor([1.0]))], policy)
++        second_optimizer.load_state_dict(optimizer.state_dict())
++        second_scheduler.load_state_dict(scheduler.state_dict())
++        second_control = training.TrainingControl(min_delta=1e-4, patience=15)
++        second_control.load_state_dict(control.state_dict())
++        for epoch, loss in enumerate([.99996, .99995, .99994], 5):
++            control.observe(loss, epoch)
++            second_control.observe(loss, epoch)
++            scheduler.step(loss)
++            second_scheduler.step(loss)
++        self.assertEqual(optimizer.param_groups[0]["lr"], 1.5e-5)
++        self.assertEqual(second_optimizer.param_groups[0]["lr"], 1.5e-5)
++        self.assertEqual(control.state_dict(), second_control.state_dict())
++
++    def test_round2_similarity_chain_is_kept_in_one_split_without_patient_ids(self):
++        import numpy as np
++        from PIL import Image
++        data = load_module("src.data")
++        with tempfile.TemporaryDirectory() as directory:
++            root = Path(directory)
++            for source in ["Normal cases", "Malignant cases"]:
++                folder = root / source
++                folder.mkdir()
++                for index in range(12):
++                    pixels = np.random.default_rng(index + (100 if source.startswith("Malignant") else 0)).integers(10, 220, (64, 64), dtype=np.uint8)
++                    Image.fromarray(pixels).save(folder / f"case{index}.png")
++                base = np.random.default_rng(999 if source.startswith("Normal") else 1999).integers(10, 200, (64, 64), dtype=np.uint8)
++                for index, shift in enumerate([0, 3, 6]):
++                    Image.fromarray(base + shift).save(folder / f"chain{index}.png")
++            records = data.discover_images(root)
++            self.assertTrue(all("similarity_group" in row for row in records), "유사 영상 그룹이 아직 없습니다.")
++            for source in ["Normal cases", "Malignant cases"]:
++                chain = [row for row in records if row["source_class"] == source and "chain" in row["path"]]
++                self.assertEqual(len({row["similarity_group"] for row in chain}), 1)
++            splits = data.split_records(records, seed=42)
++            owners = {}
++            for part, rows in splits.items():
++                for row in rows:
++                    owners.setdefault(row["similarity_group"], set()).add(part)
++                    self.assertNotIn("patient_id", row)
++            self.assertTrue(all(len(parts) == 1 for parts in owners.values()))
++
+     def test_atomic_status_retries_only_transient_windows_lock(self):
+         state_module = load_module("src.state")
+         with tempfile.TemporaryDirectory() as directory:
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/web/app.js" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/app.js"
+index 61ea33c..f4c235c 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/web/app.js"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/app.js"	
+@@ -1,9 +1,11 @@
+ import { createPipeline } from './scene.js';
+ const $ = id => document.getElementById(id);
+-const stages = {preparing:'학습 데이터를 준비하고 있습니다',ready:'학습 준비를 마쳤습니다',loading_model:'모델을 불러오고 있습니다',training:'분류기를 학습하고 있습니다',validation:'검증 결과를 확인하고 있습니다',testing:'시험 영상을 평가하고 있습니다',completed:'실험을 마쳤습니다',error:'학습을 멈췄습니다'};
+-const states = {running:'진행 중',ready:'준비 완료',completed:'완료',failed:'오류',pending:'대기',waiting:'기록 대기'};
++const stages = {preparing:'학습 데이터를 준비하고 있습니다',ready:'학습 준비를 마쳤습니다',loading_model:'모델을 불러오고 있습니다',training:'분류기를 학습하고 있습니다',validation:'검증 결과를 확인하고 있습니다',testing:'시험 영상을 평가하고 있습니다',completed:'실험을 마쳤습니다',interrupted:'학습을 중단했습니다',error:'학습을 멈췄습니다'};
++const states = {running:'진행 중',ready:'준비 완료',completed:'완료',failed:'오류',pending:'대기',waiting:'기록 대기',interrupted:'중단'};
+ const number = v => typeof v === 'number' && Number.isFinite(v);
+ const shown = v => number(v) ? v.toLocaleString('ko-KR') : '—';
++const measured = v => number(v) ? v.toLocaleString('ko-KR') : '미측정';
++const lossText = v => !number(v) ? '미측정' : v===0 ? '0' : Math.abs(v)<0.001 || Math.abs(v)>=10000 ? v.toExponential(3) : v.toPrecision(4);
+ const percent = v => number(v) ? `${(v * 100).toFixed(1)}%` : '미측정';
+ let latest = null;
+ let pipeline = null;
+@@ -32,13 +34,17 @@ $('theme')?.addEventListener('click',()=>window.ctTheme?.toggle());
+ window.addEventListener('ct-theme-change',updateTheme);updateTheme();
+ function stageVisual(s, blocked) {
+   const active = s.status==='waiting'?-1:({preparing:0,ready:0,loading_model:1,training:3,validation:3,testing:3,completed:4,error:3}[s.stage] ?? -1);
++  const interrupted=s.status==='interrupted' || s.stage==='interrupted';
+   for (let i=0;i<4;i++) {
+     const node = $('step'+i).parentElement;
+-    node.className = i<active ? 'complete' : i===active ? (blocked?'failed':'active') : '';
+-    $('step'+i).textContent = i<active ? '완료' : i===active ? (blocked?'확인 필요':'진행 중') : '대기';
++    node.className = interrupted ? 'interrupted' : i<active ? 'complete' : i===active ? (blocked?'failed':'active') : '';
++    $('step'+i).textContent = interrupted ? '중단' : i<active ? '완료' : i===active ? (blocked?'확인 필요':'진행 중') : '대기';
+   }
+   // 모형의 순서는 연산 구조이며, 학습 중 앞 단계도 실제 배치마다 함께 실행됩니다.
+-  pipeline?.setStatus(active, blocked ? 'failed' : s.status, !blocked && s.status==='running');
++  pipeline?.setStatus(active, interrupted ? 'interrupted' : blocked ? 'failed' : s.status, !blocked && !interrupted && s.status==='running');
++  $('motion').disabled=interrupted;
++  if(interrupted){$('motion').textContent='모형 정지 · 학습 중단';$('motion').setAttribute('aria-pressed','true');}
++  else setMotion();
+ }
+ function drawChart(s) {
+   const rows = (Array.isArray(s.history) ? s.history : []).filter(row => row.sigma === s.sigma);
+@@ -52,7 +58,9 @@ function drawChart(s) {
+   const measured = rows.some(r=>metrics.some(([key])=>number(r[key])));
+   $('emptyChart').hidden = measured;
+   $('curveSigma').textContent = number(s.sigma) ? `σ = ${s.sigma}` : '현재 σ 미측정';
+-  if (!measured) return;
++  if (!measured) {$('latestLoss').textContent='최근 손실 미측정';return;}
++  const recent=rows.at(-1);
++  $('latestLoss').textContent=recent ? `최근 학습 손실 ${lossText(recent.train_loss)} · 검증 손실 ${lossText(recent.val_loss)}` : '최근 손실 미측정';
+   const lossValues=rows.flatMap(r=>[r.train_loss,r.val_loss]).filter(number);
+   const maxLoss=Math.max(1,...lossValues)*1.1;
+   const maxEpoch=Math.max(1,...rows.map(r=>number(r.epoch)?r.epoch:0));
+@@ -81,20 +89,27 @@ function render(s) {
+   latest=s;
+   const meta=s._dashboard || {};
+   const dead=meta.process_alive===false && s.status==='running';
+-  const failed=s.status==='failed' || Boolean(s.error);
+-  const blocked=failed || dead || meta.stale;
+-  $('currentTitle').textContent=s.stage==='ready' && s.status==='waiting' ? '학습 상태를 기다리고 있습니다' : stages[s.stage] || '학습 상태를 확인하고 있습니다';
+-  $('message').textContent=s.status==='failed'?'오류를 확인한 뒤 다시 시작합니다. 실행 기록은 보존되어 있습니다.':s.stage==='training'?`현재 블러 강도에서 학습과 검증을 반복합니다.`:'첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.';
+-  $('badge').textContent=states[s.status] || '상태 확인 중';
+-  let warning=failed ? '실험이 오류로 중단되었습니다. 작업 기록을 확인해 주세요.' : dead ? '학습 프로세스가 종료되었습니다. 마지막 기록을 표시합니다.' : meta.read_error ? meta.read_error : meta.stale ? '60초 이상 새 기록이 없습니다. 실행 상태를 확인해 주세요.' : '';
++  const interrupted=s.status==='interrupted' || s.stage==='interrupted';
++  const failed=!interrupted && (s.status==='failed' || Boolean(s.error));
++  const blocked=failed || dead || meta.stale || interrupted;
++  $('currentTitle').textContent=interrupted ? '학습을 중단했습니다' : s.stage==='ready' && s.status==='waiting' ? '학습 상태를 기다리고 있습니다' : stages[s.stage] || '학습 상태를 확인하고 있습니다';
++  $('message').textContent=interrupted?'학습과 모형의 움직임을 멈추고 마지막 기록을 표시합니다.':s.status==='failed'?'오류를 확인한 뒤 다시 시작합니다. 실행 기록은 보존되어 있습니다.':s.stage==='training'?`현재 블러 강도에서 학습과 검증을 반복합니다.`:'첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.';
++  $('badge').textContent=interrupted?'중단':states[s.status] || '상태 확인 중';
++  let warning=interrupted ? '학습이 중단되었습니다. 마지막 기록을 표시하며 모형의 움직임도 멈췄습니다.' : failed ? '실험이 오류로 중단되었습니다. 작업 기록을 확인해 주세요.' : dead ? '학습 프로세스가 종료되었습니다. 마지막 기록을 표시합니다.' : meta.read_error ? meta.read_error : meta.stale ? '60초 이상 새 기록이 없습니다. 실행 상태를 확인해 주세요.' : '';
+   $('alert').textContent=warning;$('alert').className=warning?`alert visible${failed||dead?' failed':''}`:'alert';
+   $('sigmaLabel').textContent=number(s.sigma)?`σ ${s.sigma} · ${shown(s.sigma_index)} / ${Array.isArray(s.sigmas)?s.sigmas.length:'—'}번째 실험`:'블러 강도 기록 대기';
+-  $('epoch').textContent=number(s.epoch)?`${s.epoch} / ${shown(s.epochs)}회`:'—';
++  const policy=s.training_policy || {};
++  const maximum=number(policy.max_epochs)?policy.max_epochs:s.epochs;
++  $('epoch').textContent=`${measured(s.epoch)}회 / 최대 ${measured(maximum)}회`;
++  $('learningRate').textContent=number(s.learning_rate)?(s.learning_rate===0?'0':s.learning_rate.toExponential(3)):'미측정';
++  $('earlyStopping').textContent=!number(s.early_stopping_wait) && !number(policy.patience) ? '미측정' : `${measured(s.early_stopping_wait)} / ${measured(policy.patience)}회`;
++  $('bestEpoch').textContent=number(s.best_epoch)?`${s.best_epoch}회`:'미측정';
++  $('optimizerSteps').textContent=measured(s.optimizer_steps);
+   $('batch').textContent=`배치 ${shown(s.batch)} / ${shown(s.batches)}`;
+   $('progress').value=number(s.batch)&&number(s.batches)&&s.batches>0?Math.min(100,s.batch/s.batches*100):0;
+   const device=s.device || {};
+   $('device').textContent=typeof device==='string'?device:device.name || device.type || '미확인';
+-  $('process').textContent=meta.process_alive===true?'학습 프로세스 실행 중':meta.process_alive===false?'학습 프로세스 종료':'학습 프로세스 확인 대기';
++  $('process').textContent=interrupted?'학습 중단':meta.process_alive===true?'학습 프로세스 실행 중':meta.process_alive===false?'학습 프로세스 종료':'학습 프로세스 확인 대기';
+   $('seen').textContent=`이번 회차 OK ${shown(s.seen_per_class?.OK)} / NG ${shown(s.seen_per_class?.NG)}`;
+   const stamp=new Date(s.updated_at);
+   const stampText=Number.isNaN(stamp.getTime())?'갱신 시각 미확인':stamp.toLocaleString('ko-KR',{timeZone:'Asia/Seoul',hour12:false});
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/web/index.html" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/index.html"
+index baf9db2..6711c14 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/web/index.html"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/index.html"	
+@@ -1,11 +1,12 @@
+-<!doctype html>
+-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>폐 CT 특징 블러 실험</title><script src="/theme.js"></script><link rel="stylesheet" href="/style.css"></head>
+-<body><header class="topbar"><div class="identity"><h1>폐 CT 특징 블러 실험</h1><p>첫 합성곱 특징을 흐린 뒤 분류 성능을 비교합니다</p></div><div class="top-actions"><button id="theme" class="theme-toggle" aria-label="어두운 화면으로 전환" aria-pressed="false"><span class="theme-track"><span></span></span><span id="themeText">다크</span></button><button id="refresh" class="icon-button" aria-label="상태 새로고침"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 2M5 16a8 8 0 0 0 13 2"/></svg></button></div></header>
+-<aside class="sidebar"><nav aria-label="실험 메뉴"><a class="active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 5-7 6 4 7-10"/><circle cx="3" cy="17" r="1"/><circle cx="8" cy="10" r="1"/><circle cx="14" cy="14" r="1"/><circle cx="21" cy="4" r="1"/></svg>실험 현황</a><a href="#analysis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10m6 10V4m6 16v-7m5 7H2"/></svg>학습 결과</a><a href="#data"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/></svg>데이터</a><a href="#records"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="15" height="18" rx="2"/><path d="M9 8h7m-7 4h7m-7 4h4M3 7h3m-3 5h3m-3 5h3"/></svg>기록</a></nav><div class="sidebar-note">폐 CT 실험실<span>Conv1 · ResNet-50</span><small>이 PC에서 실행</small></div></aside>
+-<main><section id="overview"><div id="alert" class="alert" role="status"></div><div class="status-row"><div class="current-heading"><div class="status-title"><span id="badge" class="pill">기록 대기</span><h2 id="currentTitle">학습 상태를 기다리고 있습니다</h2></div><p id="sigmaLabel">블러 강도 기록 대기</p><p id="message" class="sr-only">첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.</p></div><div class="training-progress"><div class="progress-top"><h3>학습 진행</h3><strong id="epoch">—</strong><span id="process" class="process">프로세스 확인 대기</span></div><progress id="progress" value="0" max="100" aria-label="이번 학습 회차의 배치 진행률"></progress><div class="progress-bottom"><span id="seen">이번 회차 OK — / NG —</span><span id="device">장치 확인 중</span></div><span id="batch" class="batch-note">배치 미측정</span></div></div>
+-<div class="model-workspace"><div class="model-tools"><span>연산 구조</span><button id="motion" class="text-button" aria-pressed="false" title="실행 상태에 맞춰 흐르는 모형입니다. 실제 계산 속도를 나타내지 않습니다.">움직임 정지</button></div><canvas id="scene" aria-label="영상 입력에서 7곱하기7 합성곱, 64채널 특징, 가우시안 블러, ResNet 잔차 블록, 분류로 이어지는 입체 모형"></canvas><p id="sceneError" role="status"></p><div class="steps"><div><strong>입력 영상</strong><small id="step0">대기</small></div><div><strong>첫 합성곱</strong><small id="step1">대기</small></div><div><strong>특징 블러</strong><small id="step2">대기</small></div><div><strong>분류</strong><small id="step3">대기</small></div></div><div class="model-footnote"><span>입력 영상은 추상 모형입니다.</span><span>Conv1 고정 · 특징 블러 · ResNet 후단 학습</span></div></div>
+-<div class="sigma-row"><span class="sigma-label">블러 강도</span><div id="queue" class="queue"></div><span id="queueCount" class="queue-count">기록 대기</span></div></section>
+-<div class="lower-grid"><section id="analysis" class="chart-section"><div class="section-heading"><h2>학습 곡선</h2><span id="curveSigma">현재 σ</span></div><div class="legend"><span>학습 손실</span><span>검증 손실</span><span>검증 정확도</span></div><div class="chart-wrap"><canvas id="chart" aria-label="현재 블러 강도의 학습 회차별 손실과 정확도"></canvas><p id="emptyChart">완료된 학습 회차가 없습니다<span>첫 회차가 끝나면 곡선이 표시됩니다.</span></p></div><p class="chart-note">왼쪽 축: 손실 · 오른쪽 축: 정확도</p></section>
+-<section id="data" class="data-section"><div class="section-heading"><h2>데이터 구성</h2><span>원본 <strong id="originalCount">1,097</strong>장</span></div><div class="table-scroll"><table><thead><tr><th>분할</th><th>OK</th><th>NG</th><th>합계</th></tr></thead><tbody id="splits"><tr><td colspan="4">분할 기록 대기</td></tr></tbody></table></div><p class="data-labels">OK 양성·정상 <strong>536</strong><span></span>NG 악성 <strong>561</strong></p><div class="sample-target"><span>이번 회차 학습량</span><strong>클래스당 5,000개</strong><small>학습에만 온라인 증강 적용</small></div></section></div>
+-<div class="bottom-grid"><section class="evaluation"><div class="section-heading"><h2>시험 결과</h2><span id="evaluationNote">시험 평가 후 표시</span></div><div class="metrics"><div>정확도<strong id="testAccuracy">미측정</strong></div><div>AUC<strong id="testAuc">미측정</strong></div></div></section><section id="records" class="record-section"><div class="section-heading"><h2>작업 기록</h2><span id="updated">갱신 시각 확인 중</span></div><p id="record">기록 대기</p><p class="error" id="error"></p><p id="freshness" class="freshness">관측 대기</p></section></div>
++<!doctype html>
++<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>폐 CT 특징 블러 실험 · 2차</title><script src="/theme.js"></script><link rel="stylesheet" href="/style.css"></head>
++<body><header class="topbar"><div class="identity"><h1>폐 CT 특징 블러 실험 · 2차</h1><p>첫 합성곱 특징을 흐린 뒤 분류 성능을 비교합니다</p></div><div class="top-actions"><button id="theme" class="theme-toggle" aria-label="어두운 화면으로 전환" aria-pressed="false"><span class="theme-track"><span></span></span><span id="themeText">다크</span></button><button id="refresh" class="icon-button" aria-label="상태 새로고침"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 2M5 16a8 8 0 0 0 13 2"/></svg></button></div></header>
++<aside class="sidebar"><nav aria-label="실험 메뉴"><a class="active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 5-7 6 4 7-10"/><circle cx="3" cy="17" r="1"/><circle cx="8" cy="10" r="1"/><circle cx="14" cy="14" r="1"/><circle cx="21" cy="4" r="1"/></svg>실험 현황</a><a href="#analysis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10m6 10V4m6 16v-7m5 7H2"/></svg>학습 결과</a><a href="#data"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/></svg>데이터</a><a href="#records"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="15" height="18" rx="2"/><path d="M9 8h7m-7 4h7m-7 4h4M3 7h3m-3 5h3m-3 5h3"/></svg>기록</a></nav><div class="sidebar-note">폐 CT 실험실<span>Conv1 · ResNet-50</span><small>이 PC에서 실행</small></div></aside>
++<main><section id="overview"><div id="alert" class="alert" role="status"></div><div class="status-row"><div class="current-heading"><div class="status-title"><span id="badge" class="pill">기록 대기</span><h2 id="currentTitle">학습 상태를 기다리고 있습니다</h2></div><p id="sigmaLabel">블러 강도 기록 대기</p><p id="message" class="sr-only">첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.</p></div><div class="training-progress"><div class="progress-top"><h3>학습 진행</h3><strong id="epoch">—</strong><span id="process" class="process">프로세스 확인 대기</span></div><progress id="progress" value="0" max="100" aria-label="이번 학습 회차의 배치 진행률"></progress><div class="progress-bottom"><span id="seen">이번 회차 OK — / NG —</span><span id="device">장치 확인 중</span></div><span id="batch" class="batch-note">배치 미측정</span></div></div>
++<div class="training-policy" aria-label="학습 설정과 실제 진행"><dl><div><dt>현재 학습률</dt><dd id="learningRate">미측정</dd></div><div><dt>개선 없이 지난 회차 / 종료 기준</dt><dd id="earlyStopping">미측정 / 미측정</dd></div><div><dt>최적 검증 회차</dt><dd id="bestEpoch">미측정</dd></div><div><dt>가중치 갱신 횟수</dt><dd id="optimizerSteps">미측정</dd></div></dl><p>최대 회차는 설정 상한입니다. 검증 손실이 개선되지 않으면 조기 종료할 수 있습니다.</p></div>
++<div class="model-workspace"><div class="model-tools"><span>연산 구조</span><button id="motion" class="text-button" aria-pressed="false" title="실행 상태에 맞춰 흐르는 모형입니다. 실제 계산 속도를 나타내지 않습니다.">움직임 정지</button></div><canvas id="scene" aria-label="영상 입력에서 7곱하기7 합성곱, 64채널 특징, 가우시안 블러, ResNet 잔차 블록, 분류로 이어지는 입체 모형"></canvas><p id="sceneError" role="status"></p><div class="steps"><div><strong>입력 영상</strong><small id="step0">대기</small></div><div><strong>첫 합성곱</strong><small id="step1">대기</small></div><div><strong>특징 블러</strong><small id="step2">대기</small></div><div><strong>분류</strong><small id="step3">대기</small></div></div><div class="model-footnote"><span>입력 영상은 추상 모형입니다.</span><span>Conv1 고정 · 특징 블러 · ResNet 후단 학습</span></div></div>
++<div class="sigma-row"><span class="sigma-label">블러 강도</span><div id="queue" class="queue"></div><span id="queueCount" class="queue-count">기록 대기</span></div></section>
++<div class="lower-grid"><section id="analysis" class="chart-section"><div class="section-heading"><h2>학습 곡선</h2><span id="curveSigma">현재 σ</span></div><div class="legend"><span>학습 손실</span><span>검증 손실</span><span>검증 정확도</span></div><div class="chart-wrap"><canvas id="chart" aria-label="현재 블러 강도의 학습 회차별 손실과 정확도"></canvas><p id="emptyChart">완료된 학습 회차가 없습니다<span>첫 회차가 끝나면 곡선이 표시됩니다.</span></p></div><p class="chart-note">왼쪽 축: 손실(선형) · 오른쪽 축: 정확도<br><span id="latestLoss">최근 손실 미측정</span></p></section>
++<section id="data" class="data-section"><div class="section-heading"><h2>데이터 구성</h2><span>원본 <strong id="originalCount">1,097</strong>장</span></div><div class="table-scroll"><table><thead><tr><th>분할</th><th>OK</th><th>NG</th><th>합계</th></tr></thead><tbody id="splits"><tr><td colspan="4">분할 기록 대기</td></tr></tbody></table></div><p class="data-labels">OK 양성·정상 <strong>536</strong><span></span>NG 악성 <strong>561</strong></p><div class="sample-target"><span>이번 회차 학습량</span><strong>클래스당 5,000개</strong><small>학습에만 온라인 증강 적용</small></div></section></div>
++<div class="bottom-grid"><section class="evaluation"><div class="section-heading"><h2>시험 결과</h2><span id="evaluationNote">시험 평가 후 표시</span></div><div class="metrics"><div>정확도<strong id="testAccuracy">미측정</strong></div><div>AUC<strong id="testAuc">미측정</strong></div></div></section><section id="records" class="record-section"><div class="section-heading"><h2>작업 기록</h2><span id="updated">갱신 시각 확인 중</span></div><p id="record">기록 대기</p><p class="error" id="error"></p><p id="freshness" class="freshness">관측 대기</p></section></div>
+ <footer><strong>영상 단위 예비실험</strong><span>환자 단위 독립성은 확인되지 않았습니다.</span><small>읽기 전용 · 3초마다 갱신</small></footer></main><script type="module" src="/app.js"></script></body></html>
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/web/style.css" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/style.css"
+index b284636..01e88c0 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/web/style.css"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/style.css"	
+@@ -7,3 +7,7 @@
+ @media(max-width:900px){:root{--nav:140px;--header:78px}.identity>p{display:none}.identity h1{font-size:24px}.sidebar nav a{font-size:12px;padding-left:12px;gap:9px}.sidebar nav svg{width:20px;height:20px}.sidebar-note{padding-left:16px}.status-row{grid-template-columns:1fr;gap:19px}.training-progress{padding-left:0;border-left:0}.current-heading h2{font-size:27px}.current-heading>p:not(.sr-only){font-size:15px}.progress-top{margin-bottom:7px}.progress-top>strong{margin-left:auto}.process{display:block;margin-left:0}.progress-bottom>span:last-child{max-width:none}.lower-grid{grid-template-columns:1fr;gap:25px}.data-section{padding-left:0;border-left:0;padding-top:23px;border-top:1px solid var(--line)}.bottom-grid{grid-template-columns:1fr;gap:22px}.record-section{border-left:0;padding-left:0;padding-top:22px;border-top:1px solid var(--line)}.queue-count{display:none}.sigma-row{gap:10px}.queue strong{font-size:10px}#scene{height:255px}.steps strong{font-size:11px}.sidebar{min-height:1510px}.sidebar-note{margin-top:650px}footer{flex-wrap:wrap;gap:5px 10px}footer small{margin-left:0;width:100%}}
+ @media(max-width:600px){:root{--header:76px;--nav:0px}html{scroll-padding-top:15px}.topbar{padding:0 15px;gap:8px}.identity h1{font-size:21px;letter-spacing:-1px}.top-actions{gap:7px}.theme-toggle{font-size:9px;gap:5px;padding:3px}.theme-track{width:31px;height:19px;padding:2px}.theme-track>span{width:13px;height:13px}[data-theme=dark] .theme-track>span{transform:translateX(12px)}.icon-button{padding-left:10px!important}.icon-button svg{width:19px;height:19px}.sidebar{position:relative;inset:auto;width:auto;min-height:0;padding:0;border-right:0;border-bottom:1px solid var(--line)}.sidebar nav{display:flex;justify-content:space-between;gap:0;padding:0 8px}.sidebar nav a{flex:1;justify-content:center;border-left:0;border-bottom:2px solid transparent;padding:12px 3px;font-size:11px;gap:6px}.sidebar nav a.active{border-bottom-color:var(--accent)}.sidebar nav svg{width:16px;height:16px}.sidebar-note{display:none}main{margin:0;padding:22px 15px 0}.status-row{padding-bottom:18px;gap:18px}.current-heading{padding-left:12px;border-left-width:4px}.current-heading h2{font-size:24px;letter-spacing:-.8px}.current-heading>p:not(.sr-only){font-size:13px}.pill{font-size:9px}.progress-top h3{font-size:11px}.progress-top>strong{font-size:19px}.process{font-size:8px}.progress-bottom{font-size:9px}.progress-bottom>span:last-child{font-size:8px;max-width:130px}.batch-note{font-size:8px}#scene{height:150px}.model-workspace{padding-top:12px}.model-tools{font-size:9px}.text-button{font-size:9px}.steps{grid-template-columns:19% 17% 23% 41%;margin:0}.steps strong{font-size:10px}.steps small{font-size:8px}.steps>div{margin:0 3px;padding-top:7px}.model-footnote{font-size:7px;gap:8px;padding-top:2px}.sigma-row{gap:9px;align-items:start;padding:13px 0}.sigma-label{font-size:9px;padding-top:6px}.queue{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.queue>div{flex-direction:row;padding:4px 0;gap:3px}.queue strong{font-size:9px}.queue small{font-size:7px}.lower-grid{padding:22px 0}.section-heading h2{font-size:20px;border-left-width:3px;padding-left:10px}.section-heading{margin-bottom:16px}.legend{padding-left:30px;gap:9px;font-size:8px}.legend span:before{width:10px;margin-right:4px}.chart-wrap,#chart{height:195px}#emptyChart{font-size:12px}#emptyChart span{font-size:9px}.chart-note{font-size:8px;padding-left:30px}.data-section{padding-top:22px}table{font-size:14px}th{font-size:12px}.sample-target{margin-top:16px}.sample-target strong{font-size:12px}.metrics strong{font-size:22px}.metrics{gap:45px}.section-heading>span{max-width:180px}.alert{font-size:10px;padding:9px 11px}footer{margin:0 -15px;padding:12px 15px;font-size:9px}.record-section>p{font-size:9px}}
+ @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
++
++/* 실제 종료 기준과 관측값을 구분하며 작은 화면에서도 값을 줄이지 않습니다. */
++.training-policy{padding:15px 0 12px;border-bottom:1px solid var(--line)}.training-policy dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}.training-policy dl>div{min-width:0}.training-policy dt{font-size:10px;color:var(--muted)}.training-policy dd{font-size:14px;margin:4px 0 0;overflow-wrap:anywhere}.training-policy>p{font-size:9px;color:var(--muted);margin-top:10px}.steps>div.interrupted strong,.steps>div.interrupted small{color:var(--muted)}.text-button:disabled{cursor:default;color:var(--muted)}#latestLoss{display:inline-block;margin-top:4px;color:var(--ink)}
++@media(max-width:900px){.training-policy dl{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}}@media(max-width:600px){.identity h1{font-size:17px}.training-policy dt{font-size:9px}.training-policy dd{font-size:12px}.training-policy>p{font-size:8px}.progress-top>strong{font-size:16px}}
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"
+index 17ad8f5..1a29ee6 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/1\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"	
+@@ -1,9 +1,20 @@
+-# 🧪 1차 변경 기록
++# 2차 변경 기록
++
++2026-11-10. 1차를 보존하고 별도 2차에서 학습 정책과 평가·분할을 보완했습니다.
++
++- 최대35→100회, 조기 종료7→15회. 종료 판단의 절대 개선량0.0001과 실제 최저 손실 체크포인트 선택을 분리합니다.
++- Adam→AdamW, 학습률0.00008→0.00003, 가중치 감쇠0.0001. 검증 미개선4회를 허용한 뒤 다음 미개선에서0.5배 감소, 최저학습률0.000001.
++- 배치2→8로 epoch당 가중치 갱신5000→1250회. OK·NG 학습 표본은 각각5000개를 유지합니다.
++- 완전 중복에 고정64px 회색조 RMSE≤5 유사 그룹을 추가해 분할하고 세 원본 범주의 평가를 구분합니다. 유사 그룹을 환자 ID로 해석하지 않습니다.
++- FP32 평가와 FP64 안정 손실, 로짓 순위 기반 AUC·AP로 수치 포화 영향을 줄입니다. 학습률·종료 상태·scheduler 재개 정보를 기록합니다.
++- 화면에서2차·최대 에폭·학습률·조기 종료 대기·최적 회차·가중치 갱신 횟수와 중단 상태를 표시합니다. 기존 테마·3D·글꼴·라이선스를 보존합니다.
++
++세부 실제 파일 차이는 공개 차수 설명의 전체 비교에서 확인합니다. 검증 결과는 구현과 독립 검사 이후 기록합니다. 장시간 학습 전체 완료와 환자 독립 성능을 사전에 주장하지 않습니다. 의료 원본·영상별 자료·가중치·운영 로그·접속정보·개인 지침은 공개하지 않습니다. 새 논문 원고는 없습니다.
+ 
+-2026-11-10 고정 첫 합성곱과 DCT 특징 블러를 사용하는 ResNet50 OK/NG 예비실험을 추가했습니다. 영상 중복 그룹을 분리한 후 학습에만 클래스별 5,000개 온라인 증강 표본을 구성합니다. 코드·설정·문서·검사를 신규 추가했으며 기존 실험 파일 삭제는 없습니다.
++## 구현 검증
+ 
+-BF16 명시와 FP16 전용 GradScaler, 비유한 값 검사, 원자적 상태 저장, 체크포인트 재개를 구현했습니다. 환자 식별자가 없는 영상 단위 평가라는 한계와 TensorFlow 원본 대비 구조·전처리 차이를 문서화했습니다. 전체 10조건 학습 완료나 최종 성능을 사전에 주장하지 않습니다.
++2차 전체 단위·통합 검사 43개가 통과했습니다. 새 분할에서 실제 512픽셀·배치8·BF16 학습20번과 검증164장 FP32 추론/FP64 손실 연결을 확인했습니다. 이는 완성된 epoch나 연구 성능이 아닌 실행 연결 검사입니다. 합성 포화 로짓, 작은 양수 손실, 유사 그룹 분할, 종료 제어 분리, optimizer·scheduler·RNG 재개, HTTP 경계와 동시 상태 읽기/쓰기를 검사했습니다.
+ 
+-실시간 로컬 화면에는 실측 학습량·학습 곡선·분할표·시험 결과를 표시합니다. 과학적 3D 연산 구조, 다크/라이트 전환, 움직임 제어, 모바일 배치를 제공합니다. 글꼴과 Three.js 라이선스를 함께 보존했습니다.
++실제 분할은 학습769장(양성84·정상292·악성393), 검증164장과 시험164장(각 양성18·정상62·악성84)입니다. 원본1097장·완전 중복 그룹1054개·고정 유사 그룹820개이며 최대 유사 그룹은26장입니다.
+ 
+-의료영상·영상별 목록·모델 가중치·실행 기록·접속 정보·원본 노트북은 공개하지 않습니다. 새 논문 원고는 없으며 기존 원고는 변경하지 않았습니다. 파일 전체 비교와 바이너리 크기/해시는 저장소 차수 설명에서 확인할 수 있습니다.
++공개 반영 전에는 구현자와 다른 검증자가 최종 소스와 요구 사항을 다시 대조하고 전체 검사를 실행합니다. 검토문과 운영 영수증은 비공개 로컬 기록에 별도로 보존합니다.
