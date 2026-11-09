@@ -87,3 +87,7 @@
 ## 2026-11-10 · Conv1 블러 OK/NG 실험 2차
 
 평가 수치 포화·영상 유사성·학습 예산을 검토하여 별도 2차를 추가했습니다. FP32 추론·FP64 안정 손실·로짓 순위 지표, 고정 유사 그룹 분할, 최대100회와 학습률 감소·조기 종료를 적용합니다. [차수 설명](docs/revisions/conv1-okng-round2.md) · [전체 비교](docs/revision-diffs/conv1-okng-round2.diff).
+
+## 2026-11-10 · Conv1 특징맵 시각화 코드 3차
+
+단일 채널 미리보기에서 원본 범주·처리 단계별 특징맵 묶음으로 확장했습니다. 한 조건에 PNG 18개, 전체 10조건에 180개를 저장하는 구성입니다. 학습 2차의 설정과 가중치는 그대로 읽습니다. [차수 설명](docs/revisions/conv1-okng-round3.md) · [전체 비교](docs/revision-diffs/conv1-okng-round3.diff).

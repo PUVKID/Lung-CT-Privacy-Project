@@ -1,0 +1,1409 @@
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/README.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/README.md"
+index bc3b043..d916f73 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/README.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/README.md"	
+@@ -1,23 +1,9 @@
+-# 폐 CT 특징 블러 실험 · 2차
+-
+-고정된 첫 합성곱의 특징에 블러를 적용한 뒤 양성·정상을 OK, 악성을 NG로 분류합니다. 원본을 분할한 뒤 학습에만 클래스당 5000개 온라인 표본을 구성합니다. 원본 환자 ID가 없어 영상 단위 예비실험입니다.
+-
+-1차의 초기 검증 포화와 손실 계산을 감사한 뒤 평가 수치, 유사 영상 분할, 학습 예산·종료 기준을 보완했습니다. 1차의 결과·가중치는 보존하며 2차는 ImageNet 초기값으로 새로 시작합니다. 원본 노트북과 프레임워크·가중치·전처리가 달라 수치상 재현은 아닙니다.
+-
+-| 항목 | 1차 | 2차 |
+-|---|---|---|
+-| 최대 에폭 | 35 | 100 |
+-| 조기 종료 | 검증 손실 7회 정체 | 의미 있는 개선 15회 정체 |
+-| 개선 기준 | 엄격한 감소 | 종료 판단은 절대 0.0001, 체크포인트는 실제 최소 손실 |
+-| 최적화 | Adam, 0.00008 | AdamW, 0.00003, 가중치 감쇠 0.0001 |
+-| 학습률 조절 | 없음 | 검증 미개선 4회를 허용한 뒤 다음 미개선에서 0.5배, 최저 0.000001 |
+-| 배치 | 2 | 8 |
+-| 학습 표본 | 클래스당 5000/epoch | 동일 |
+-| 분할 | 바이트·픽셀 완전 중복 그룹 | 완전 중복 + 고정 64px RMSE≤5 유사 그룹 |
+-| 평가 | 혼합 정밀도·확률 점수 | FP32 추론·FP64 안정 손실·로짓 순위 점수 |
+-
+-최대100회는 학습 상한이며 100회를 강제로 반복하지 않습니다. 에폭당 가중치 갱신 수가 배치 크기에 따라 달라지므로 두 차수의 에폭만 비교하지 않습니다. 유사 그룹은 환자 그룹이 아닙니다. 소스별 촬영·압축 차이와 같은 환자의 다른 영상은 여전히 성능을 부풀릴 수 있습니다.
+-
+-[실행 방법](docs/실행방법.md) · [검토 근거](docs/검토근거.md) · [원본 및 1차와의 차이](docs/원본대비변경.md) · [변경 기록](변경기록.md)
+-
+-원본 의료영상·영상별 목록·가중치·운영 로그·접속정보는 공개하지 않습니다. 전체 조건의 학습 완료나 환자 독립 성능을 미리 주장하지 않습니다. 7-fold 환자 교차검증·동일 영상 매칭·복원 공격은 이번 분류 실험에 포함되지 않습니다.
++# 폐 CT 특징맵 시각화 · 공개 코드 3차
++
++학습 2차에서 완료한 블러 조건의 특징맵을 범주·단계별로 저장하고 대시보드에서 살펴보는 소프트웨어 변경 묶음입니다. 학습 3차를 새로 시작한 결과가 아닙니다.
++
++한 조건은 양성·악성·정상 대표 CT 3장과 입력부터 마지막 잔차 블록 묶음까지 6개 단계로 구성해 PNG 18개를 저장합니다. 원본 기준을 포함한 10조건이 모두 끝나면 180개입니다. 입력 영상은 1패널, 특징맵은 평균·최댓값·개별 채널 8개의 10패널이며 사진 아래에 추출 위치와 해석을 설명합니다.
++
++코드 폴더의 src·학습 실행기·설정 예제와 의존성은 앞선 공개 2차와 같습니다. 실제 학습 소스·설정·체크포인트를 바꾸지 않고 별도 CPU 저장 도구가 완료한 결과만 읽습니다. 원본 의료영상·특징맵 PNG·영상별 목록·가중치·운영 기록은 포함하지 않습니다. 환자 ID가 없어 영상 단위 예비실험이며 특징의 색을 병변 위치나 프라이버시 보장으로 해석하지 않습니다.
++
++[3차 변경 기록](변경기록.md) · [저장 도구 안내](생성%20도구/사용방법.md) · [기존 학습 실행 방법](docs/실행방법.md) · [검토 근거](docs/검토근거.md)
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/dashboard.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/dashboard.py"
+index 5dfbc20..aa79118 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/dashboard.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/dashboard.py"	
+@@ -1,217 +1,324 @@
+-"""실제 학습 상태만 읽는 루프백 전용 대시보드 서버."""
+-from __future__ import annotations
+-
+-import argparse
+-import ctypes
+-import json
+-import mimetypes
+-import os
+-from pathlib import Path
+-import secrets
+-import time
+-from datetime import datetime, timezone
+-from http import HTTPStatus
+-from http.cookies import SimpleCookie
+-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+-from urllib.parse import parse_qs, urlsplit
+-
+-ROOT = Path(__file__).resolve().parent
+-ASSETS = {
+-    "/": "index.html", "/style.css": "style.css", "/app.js": "app.js",
+-    "/scene.js": "scene.js", "/theme.js": "theme.js", "/fonts/NanumGothic-Bold.ttf": "fonts/NanumGothic-Bold.ttf",
+-    "/fonts/OFL.txt": "fonts/OFL.txt", "/vendor/three.module.js": "vendor/three.module.js",
+-    "/vendor/three.core.js": "vendor/three.core.js", "/vendor/LICENSE": "vendor/LICENSE",
+-}
+-
+-
+-def process_alive(pid):
+-    """PID가 있을 때만 운영체제에서 생존 여부를 확인합니다."""
+-    if not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0:
+-        return None
+-    if os.name == "nt":
+-        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+-        kernel.OpenProcess.restype = ctypes.c_void_p
+-        handle = kernel.OpenProcess(0x1000, False, pid)
+-        if not handle:
+-            return None if ctypes.get_last_error() == 5 else False
+-        try:
+-            code = ctypes.c_ulong()
+-            if not kernel.GetExitCodeProcess(ctypes.c_void_p(handle), ctypes.byref(code)):
+-                return None
+-            return code.value == 259
+-        finally:
+-            kernel.CloseHandle(ctypes.c_void_p(handle))
+-    try:
+-        os.kill(pid, 0)
+-        return True
+-    except ProcessLookupError:
+-        return False
+-    except PermissionError:
+-        return None
+-
+-
+-MAX_STATUS_BYTES = 4 * 1024 * 1024
+-
+-
+-def open_status_file(path: Path):
+-    """원자적 교체를 막지 않는 읽기 전용 바이너리 파일을 엽니다."""
+-    if os.name != "nt":
+-        return path.open("rb")
+-    import msvcrt
+-    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+-    kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
+-                                  ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32,
+-                                  ctypes.c_void_p]
+-    kernel.CreateFileW.restype = ctypes.c_void_p
+-    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
+-    kernel.CloseHandle.restype = ctypes.c_int
+-    # 삭제 공유는 쓰기 권한을 부여하지 않으며 읽는 동안 이름 교체를 허용합니다.
+-    for delay in (0.01, 0.02, 0.04, 0.08, None):
+-        handle = kernel.CreateFileW(str(path), 0x80000000, 0x00000007, None, 3, 0x80, None)
+-        if handle != ctypes.c_void_p(-1).value:
+-            break
+-        error_code = ctypes.get_last_error()
+-        # 이름 교체 순간의 파일/경로 부재와 공유 위반만 짧게 재시도합니다.
+-        if error_code not in (2, 3, 32) or delay is None:
+-            raise ctypes.WinError(error_code)
+-        time.sleep(delay)
+-    try:
+-        descriptor = msvcrt.open_osfhandle(handle, os.O_RDONLY | os.O_BINARY)
+-    except BaseException:
+-        kernel.CloseHandle(handle)
+-        raise
+-    try:
+-        # 여기부터 파일 객체가 descriptor와 원래 Windows 핸들의 닫기를 소유합니다.
+-        return os.fdopen(descriptor, "rb")
+-    except BaseException:
+-        os.close(descriptor)
+-        raise
+-
+-
+-def reject_nonfinite(value):
+-    """상태 JSON의 NaN 및 무한대를 손상된 관측으로 처리합니다."""
+-    raise ValueError("유한하지 않은 JSON 수치: " + value)
+-
+-
+-def read_status(root: Path):
+-    meta = {"observed_at": datetime.now(timezone.utc).isoformat(), "stale": True,
+-            "age_seconds": None, "process_alive": None, "read_error": None}
+-    try:
+-        path = root / "work" / "runtime" / "status.json"
+-        # 상태 파일이 다른 위치로 연결되면 읽지 않습니다.
+-        if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
+-            raise ValueError("상태 파일 경계 위반")
+-        with open_status_file(path) as stream:
+-            payload = stream.read(MAX_STATUS_BYTES + 1)
+-        if len(payload) > MAX_STATUS_BYTES:
+-            raise ValueError("상태 파일이 허용 크기를 초과했습니다")
+-        data = json.loads(payload.decode("utf-8"), parse_constant=reject_nonfinite)
+-        if not isinstance(data, dict):
+-            raise ValueError("상태 원문은 JSON 객체여야 합니다")
+-        stamp = datetime.fromisoformat(str(data.get("updated_at", "")).replace("Z", "+00:00"))
+-        if stamp.tzinfo is None:
+-            raise ValueError("상태 갱신 시각에 시간대가 없습니다")
+-        age = max(0, (datetime.now(timezone.utc) - stamp).total_seconds())
+-        meta.update(age_seconds=round(age, 1), stale=data.get("status") == "running" and age > 60,
+-                    process_alive=process_alive(data.get("pid")))
+-    except FileNotFoundError:
+-        data = {"stage": "ready", "status": "waiting", "message": "학습 상태가 아직 기록되지 않았습니다", "history": []}
+-        meta["read_error"] = "상태 파일 대기"
+-    except (OSError, ValueError, TypeError) as error:
+-        data = {"stage": "error", "status": "failed", "message": "상태 파일을 읽을 수 없습니다", "history": []}
+-        # 로컬 파일의 절대 경로와 의료 원문은 응답에 포함하지 않습니다.
+-        meta["read_error"] = "상태 파일 형식 또는 읽기 오류: " + type(error).__name__
+-    data["_dashboard"] = meta
+-    return data
+-
+-
+-def make_server(root=ROOT, port=8766, token=None):
+-    root = Path(root).resolve()
+-    session_token = token or secrets.token_urlsafe(32)
+-
+-    class Handler(BaseHTTPRequestHandler):
+-        def log_message(self, *_args):
+-            pass
+-
+-        def send_content(self, status, body, content_type="text/plain; charset=utf-8", headers=None):
+-            self.send_response(status)
+-            self.send_header("Content-Type", content_type)
+-            self.send_header("Content-Length", str(len(body)))
+-            self.send_header("Cache-Control", "no-store")
+-            self.send_header("X-Content-Type-Options", "nosniff")
+-            self.send_header("Referrer-Policy", "no-referrer")
+-            self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
+-            for key, value in (headers or {}).items():
+-                self.send_header(key, value)
+-            self.end_headers()
+-            self.wfile.write(body)
+-
+-        def do_GET(self):
+-            # DNS 재바인딩 및 다른 사이트의 교차 출처 조회를 차단합니다.
+-            expected_host = f"127.0.0.1:{self.server.server_port}"
+-            if self.headers.get("Host") != expected_host:
+-                self.send_content(HTTPStatus.FORBIDDEN, "허용되지 않은 호스트".encode())
+-                return
+-            parts = urlsplit(self.path)
+-            supplied = parse_qs(parts.query).get("token", [""])[0]
+-            if parts.path == "/" and supplied and secrets.compare_digest(supplied, session_token):
+-                self.send_content(HTTPStatus.SEE_OTHER, b"", headers={
+-                    "Location": "/", "Set-Cookie": f"dashboard_session={session_token}; HttpOnly; SameSite=Strict; Path=/"})
+-                return
+-            cookies = SimpleCookie()
+-            try:
+-                cookies.load(self.headers.get("Cookie", ""))
+-                value = cookies["dashboard_session"].value if "dashboard_session" in cookies else ""
+-            except Exception:
+-                value = ""
+-            if not secrets.compare_digest(value, session_token):
+-                self.send_content(HTTPStatus.UNAUTHORIZED, "세션 URL로 접속해 주세요".encode())
+-                return
+-            if parts.path == "/api/status" and not parts.query:
+-                payload = json.dumps(read_status(root), ensure_ascii=False, allow_nan=False).encode("utf-8")
+-                self.send_content(HTTPStatus.OK, payload, "application/json; charset=utf-8")
+-                return
+-            if parts.path not in ASSETS or parts.query:
+-                self.send_content(HTTPStatus.NOT_FOUND, "등록되지 않은 경로".encode())
+-                return
+-            web = (root / "web").resolve()
+-            path = web / ASSETS[parts.path]
+-            if not web.is_relative_to(root) or path.is_symlink() or not path.resolve().is_relative_to(web):
+-                self.send_content(HTTPStatus.FORBIDDEN, b"Forbidden")
+-                return
+-            try:
+-                content = path.read_bytes()
+-            except OSError:
+-                self.send_content(HTTPStatus.NOT_FOUND, b"Not found")
+-                return
+-            mime = "text/javascript" if path.suffix == ".js" else mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+-            self.send_content(HTTPStatus.OK, content, mime)
+-
+-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+-    server.session_token = session_token
+-    return server
+-
+-
+-def main():
+-    parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument("--port", type=int, default=8766)
+-    args = parser.parse_args()
+-    server = make_server(port=args.port)
+-    record = {"url": f"http://127.0.0.1:{server.server_port}/?token={server.session_token}",
+-              "pid": os.getpid(), "port": server.server_port,
+-              "started_at": datetime.now(timezone.utc).isoformat()}
+-    work = ROOT / "work"
+-    work.mkdir(exist_ok=True)
+-    temporary = work / "server.json.tmp"
+-    temporary.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+-    temporary.replace(work / "server.json")
+-    try:
+-        server.serve_forever(poll_interval=0.5)
+-    except KeyboardInterrupt:
+-        pass
+-    finally:
+-        server.server_close()
+-
+-
+-if __name__ == "__main__":
+-    main()
++"""실제 학습 상태만 읽는 루프백 전용 대시보드 서버."""
++from __future__ import annotations
++
++import argparse
++import ctypes
++import hashlib
++import json
++import mimetypes
++import os
++from pathlib import Path
++import secrets
++import time
++from datetime import datetime, timezone
++from http import HTTPStatus
++from http.cookies import SimpleCookie
++from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
++from urllib.parse import parse_qs, urlsplit
++
++ROOT = Path(__file__).resolve().parent
++ASSETS = {
++    "/": "index.html", "/style.css": "style.css", "/app.js": "app.js",
++    "/scene.js": "scene.js", "/theme.js": "theme.js", "/fonts/NanumGothic-Bold.ttf": "fonts/NanumGothic-Bold.ttf",
++    "/fonts/OFL.txt": "fonts/OFL.txt", "/vendor/three.module.js": "vendor/three.module.js",
++    "/vendor/three.core.js": "vendor/three.core.js", "/vendor/LICENSE": "vendor/LICENSE",
++}
++
++
++def process_alive(pid):
++    """PID가 있을 때만 운영체제에서 생존 여부를 확인합니다."""
++    if not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0:
++        return None
++    if os.name == "nt":
++        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
++        kernel.OpenProcess.restype = ctypes.c_void_p
++        handle = kernel.OpenProcess(0x1000, False, pid)
++        if not handle:
++            return None if ctypes.get_last_error() == 5 else False
++        try:
++            code = ctypes.c_ulong()
++            if not kernel.GetExitCodeProcess(ctypes.c_void_p(handle), ctypes.byref(code)):
++                return None
++            return code.value == 259
++        finally:
++            kernel.CloseHandle(ctypes.c_void_p(handle))
++    try:
++        os.kill(pid, 0)
++        return True
++    except ProcessLookupError:
++        return False
++    except PermissionError:
++        return None
++
++
++MAX_STATUS_BYTES = 4 * 1024 * 1024
++PREVIEW_SIGMAS = (1, 2, 4, 8, 16, 32, 64, 128, 256)
++
++
++def feature_preview_path(sigma, class_key, stage):
++    """사용자가 지정한 참고 자료와 같은 고정 폴더·파일 구성을 사용합니다."""
++    folder = "원본 파일 생성" if sigma == 0 else f"sigma{sigma} 블러 파일 생성"
++    label = "원본" if sigma == 0 else f"sigma{sigma}_블러"
++    stage_names = ("stage0_원본", "stage1_Stage-1_에지클라우드_전송", "stage2_Stage-2",
++                   "stage3_Stage-3", "stage4_Stage-4", "stage5_Stage-5")
++    return Path("블러 피쳐맵 저장 파일") / folder / "피쳐맵" / class_key / f"{stage_names[stage]}_{label}_{class_key}.png"
++
++
++def feature_previews(root, requested_id=None):
++    """평가와 18장 묶음 생성이 모두 완료된 강도만 인증된 화면에 제공합니다."""
++    status = read_status(root)
++    run_id = status.get("run_id")
++    sigmas = (0,) + PREVIEW_SIGMAS
++    classes = {"Bengin_cases": "양성", "Malignant_cases": "악성", "Normal_cases": "정상"}
++    result = {"run_id": run_id, "items": [], "completed_sigmas": [],
++              "pending": list(sigmas), "expected_total": 180}
++    folder = root.parent / "블러 강도별 대표 특징맵" / "2차"
++    try:
++        if folder.is_symlink() or not folder.resolve().is_relative_to(root.parent.resolve()):
++            raise ValueError("이미지 폴더 경계 오류")
++        manifest_path = folder / "export_index_private.json"
++        if manifest_path.is_symlink() or manifest_path.stat().st_size > 4 * 1024 * 1024:
++            raise ValueError("특징맵 목록 형식 오류")
++        manifest = json.loads(manifest_path.read_text(encoding="utf-8"), parse_constant=reject_nonfinite)
++        if not isinstance(run_id, str) or len(run_id) != 16 or any(c not in "0123456789abcdef" for c in run_id) or manifest.get("run_id") != run_id:
++            raise ValueError("실행 식별자 불일치")
++        completed = {entry.get("sigma") for entry in status.get("sigma_queue", [])
++                     if entry.get("status") == "completed"}
++        raw_items = manifest.get("items", [])
++        if not isinstance(raw_items, list) or len(raw_items) > 180:
++            raise ValueError("특징맵 목록 개수 오류")
++        for sigma in sigmas:
++            if sigma not in completed or sigma not in manifest.get("completed_sigmas", []):
++                continue
++            metrics_path = root / "work" / "results" / f"run_{run_id}" / f"sigma_{sigma}_metrics.json"
++            if metrics_path.is_symlink() or not metrics_path.resolve().is_relative_to(root.resolve()):
++                raise ValueError("결과 파일 경계 오류")
++            metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
++            if metrics.get("run_id") != run_id or metrics.get("sigma") != sigma or not metrics.get("test") or not metrics.get("completed_at"):
++                continue
++            bundle = []
++            for class_key, class_label in classes.items():
++                for stage in range(6):
++                    item_id = f"{sigma}-{class_key}-{stage}"
++                    matches = [item for item in raw_items if item.get("id") == item_id]
++                    if len(matches) != 1:
++                        raise ValueError("18장 묶음 누락 또는 중복")
++                    entry = matches[0]
++                    relative = feature_preview_path(sigma, class_key, stage)
++                    if entry.get("relative_path", "").replace("\\", "/") != relative.as_posix():
++                        raise ValueError("등록되지 않은 이미지 경로")
++                    path = folder / relative
++                    if path.is_symlink() or not path.resolve().is_relative_to(folder.resolve()) or path.stat().st_size > 8 * 1024 * 1024:
++                        raise ValueError("이미지 경계 또는 크기 오류")
++                    item = {"id": item_id, "sigma": sigma, "class_key": class_key, "class_label": class_label,
++                            "stage": stage, "image_url": f"/api/feature-previews/image/{item_id}",
++                            "caption": str(entry.get("caption", "")), "width": entry.get("width"), "height": entry.get("height")}
++                    # 사진 이해에 필요한 생성 조건만 전달하고 원본 경로·해시는 노출하지 않습니다.
++                    policy = metrics.get("training_policy", {})
++                    item["settings"] = {
++                        "layer": str(entry.get("layer", "")), "shape": entry.get("shape", []),
++                        "panel_indices": entry.get("panel_indices", []),
++                        "panel_count": entry.get("panel_count", 1),
++                        "panel_minmax": entry.get("panel_minmax", []),
++                        "checkpoint_epoch": entry.get("checkpoint_epoch"),
++                        "precision": "CPU FP32 평가 추론",
++                        "preprocessing": "512×512 회색조를 3채널에 복제한 뒤 RGB 평균·표준편차로 정규화합니다.",
++                        "normalization": "입력 CT의 회색조 표시" if stage == 0 else "각 패널의 최솟값·최댓값으로 개별 정규화",
++                        "training_policy": {key: policy[key] for key in
++                            ("optimizer", "batch_size", "initial_learning_rate", "weight_decay", "max_epochs", "patience", "min_delta")
++                            if key in policy},
++                    }
++                    # 목록 조회는 이미지를 모두 읽지 않습니다. 전송할 한 파일만 읽어 해시를 확인합니다.
++                    if requested_id == item_id:
++                        payload = path.read_bytes()
++                        if not payload.startswith(b"\x89PNG\r\n\x1a\n") or hashlib.sha256(payload).hexdigest() != entry.get("sha256"):
++                            raise ValueError("이미지 무결성 오류")
++                        item["_payload"] = payload
++                    bundle.append(item)
++            result["items"].extend(bundle)
++            result["completed_sigmas"].append(sigma)
++            result["pending"].remove(sigma)
++    except FileNotFoundError:
++        result["message"] = "완료된 모델의 전체 특징 맵 생성을 기다리고 있습니다."
++    except (OSError, ValueError, TypeError, KeyError, AttributeError):
++        # 원본 경로를 노출하지 않고 준비 오류를 화면에서 구분할 수 있게 합니다.
++        result["error"] = "특징 맵 목록 또는 이미지 무결성을 확인할 수 없습니다."
++    return result
++
++
++def open_status_file(path: Path):
++    """원자적 교체를 막지 않는 읽기 전용 바이너리 파일을 엽니다."""
++    if os.name != "nt":
++        return path.open("rb")
++    import msvcrt
++    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
++    kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
++                                  ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32,
++                                  ctypes.c_void_p]
++    kernel.CreateFileW.restype = ctypes.c_void_p
++    kernel.CloseHandle.argtypes = [ctypes.c_void_p]
++    kernel.CloseHandle.restype = ctypes.c_int
++    # 삭제 공유는 쓰기 권한을 부여하지 않으며 읽는 동안 이름 교체를 허용합니다.
++    for delay in (0.01, 0.02, 0.04, 0.08, None):
++        handle = kernel.CreateFileW(str(path), 0x80000000, 0x00000007, None, 3, 0x80, None)
++        if handle != ctypes.c_void_p(-1).value:
++            break
++        error_code = ctypes.get_last_error()
++        # 이름 교체 순간의 파일/경로 부재와 공유 위반만 짧게 재시도합니다.
++        if error_code not in (2, 3, 32) or delay is None:
++            raise ctypes.WinError(error_code)
++        time.sleep(delay)
++    try:
++        descriptor = msvcrt.open_osfhandle(handle, os.O_RDONLY | os.O_BINARY)
++    except BaseException:
++        kernel.CloseHandle(handle)
++        raise
++    try:
++        # 여기부터 파일 객체가 descriptor와 원래 Windows 핸들의 닫기를 소유합니다.
++        return os.fdopen(descriptor, "rb")
++    except BaseException:
++        os.close(descriptor)
++        raise
++
++
++def reject_nonfinite(value):
++    """상태 JSON의 NaN 및 무한대를 손상된 관측으로 처리합니다."""
++    raise ValueError("유한하지 않은 JSON 수치: " + value)
++
++
++def read_status(root: Path):
++    meta = {"observed_at": datetime.now(timezone.utc).isoformat(), "stale": True,
++            "age_seconds": None, "process_alive": None, "read_error": None}
++    try:
++        path = root / "work" / "runtime" / "status.json"
++        # 상태 파일이 다른 위치로 연결되면 읽지 않습니다.
++        if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
++            raise ValueError("상태 파일 경계 위반")
++        with open_status_file(path) as stream:
++            payload = stream.read(MAX_STATUS_BYTES + 1)
++        if len(payload) > MAX_STATUS_BYTES:
++            raise ValueError("상태 파일이 허용 크기를 초과했습니다")
++        data = json.loads(payload.decode("utf-8"), parse_constant=reject_nonfinite)
++        if not isinstance(data, dict):
++            raise ValueError("상태 원문은 JSON 객체여야 합니다")
++        stamp = datetime.fromisoformat(str(data.get("updated_at", "")).replace("Z", "+00:00"))
++        if stamp.tzinfo is None:
++            raise ValueError("상태 갱신 시각에 시간대가 없습니다")
++        age = max(0, (datetime.now(timezone.utc) - stamp).total_seconds())
++        meta.update(age_seconds=round(age, 1), stale=data.get("status") == "running" and age > 60,
++                    process_alive=process_alive(data.get("pid")))
++    except FileNotFoundError:
++        data = {"stage": "ready", "status": "waiting", "message": "학습 상태가 아직 기록되지 않았습니다", "history": []}
++        meta["read_error"] = "상태 파일 대기"
++    except (OSError, ValueError, TypeError) as error:
++        data = {"stage": "error", "status": "failed", "message": "상태 파일을 읽을 수 없습니다", "history": []}
++        # 로컬 파일의 절대 경로와 의료 원문은 응답에 포함하지 않습니다.
++        meta["read_error"] = "상태 파일 형식 또는 읽기 오류: " + type(error).__name__
++    data["_dashboard"] = meta
++    return data
++
++
++def make_server(root=ROOT, port=8766, token=None):
++    root = Path(root).resolve()
++    session_token = token or secrets.token_urlsafe(32)
++
++    class Handler(BaseHTTPRequestHandler):
++        def log_message(self, *_args):
++            pass
++
++        def send_content(self, status, body, content_type="text/plain; charset=utf-8", headers=None):
++            self.send_response(status)
++            self.send_header("Content-Type", content_type)
++            self.send_header("Content-Length", str(len(body)))
++            self.send_header("Cache-Control", "no-store")
++            self.send_header("X-Content-Type-Options", "nosniff")
++            self.send_header("Referrer-Policy", "no-referrer")
++            self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
++            for key, value in (headers or {}).items():
++                self.send_header(key, value)
++            self.end_headers()
++            self.wfile.write(body)
++
++        def do_GET(self):
++            # DNS 재바인딩 및 다른 사이트의 교차 출처 조회를 차단합니다.
++            expected_host = f"127.0.0.1:{self.server.server_port}"
++            if self.headers.get("Host") != expected_host:
++                self.send_content(HTTPStatus.FORBIDDEN, "허용되지 않은 호스트".encode())
++                return
++            parts = urlsplit(self.path)
++            supplied = parse_qs(parts.query).get("token", [""])[0]
++            if parts.path == "/" and supplied and secrets.compare_digest(supplied, session_token):
++                self.send_content(HTTPStatus.SEE_OTHER, b"", headers={
++                    "Location": "/", "Set-Cookie": f"dashboard_session={session_token}; HttpOnly; SameSite=Strict; Path=/"})
++                return
++            cookies = SimpleCookie()
++            try:
++                cookies.load(self.headers.get("Cookie", ""))
++                value = cookies["dashboard_session"].value if "dashboard_session" in cookies else ""
++            except Exception:
++                value = ""
++            if not secrets.compare_digest(value, session_token):
++                self.send_content(HTTPStatus.UNAUTHORIZED, "세션 URL로 접속해 주세요".encode())
++                return
++            if parts.path == "/api/status" and not parts.query:
++                payload = json.dumps(read_status(root), ensure_ascii=False, allow_nan=False).encode("utf-8")
++                self.send_content(HTTPStatus.OK, payload, "application/json; charset=utf-8")
++                return
++            if parts.path == "/api/feature-previews" and not parts.query:
++                payload = json.dumps(feature_previews(root), ensure_ascii=False, allow_nan=False).encode("utf-8")
++                self.send_content(HTTPStatus.OK, payload, "application/json; charset=utf-8")
++                return
++            if parts.path.startswith("/api/feature-previews/image/") and not parts.query:
++                suffix = parts.path.removeprefix("/api/feature-previews/image/")
++                available = feature_previews(root, requested_id=suffix)
++                if not any(item["id"] == suffix and "_payload" in item for item in available["items"]):
++                    self.send_content(HTTPStatus.NOT_FOUND, "완료된 대표 특징맵이 없습니다".encode())
++                    return
++                # 해시 검증한 동일 바이트를 보내고 파일을 다시 열지 않습니다.
++                payload = next(item["_payload"] for item in available["items"] if item["id"] == suffix)
++                self.send_content(HTTPStatus.OK, payload, "image/png")
++                return
++            if parts.path not in ASSETS or parts.query:
++                self.send_content(HTTPStatus.NOT_FOUND, "등록되지 않은 경로".encode())
++                return
++            web = (root / "web").resolve()
++            path = web / ASSETS[parts.path]
++            if not web.is_relative_to(root) or path.is_symlink() or not path.resolve().is_relative_to(web):
++                self.send_content(HTTPStatus.FORBIDDEN, b"Forbidden")
++                return
++            try:
++                content = path.read_bytes()
++            except OSError:
++                self.send_content(HTTPStatus.NOT_FOUND, b"Not found")
++                return
++            mime = "text/javascript" if path.suffix == ".js" else mimetypes.guess_type(path.name)[0] or "application/octet-stream"
++            self.send_content(HTTPStatus.OK, content, mime)
++
++    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
++    server.session_token = session_token
++    return server
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--port", type=int, default=8766)
++    args = parser.parse_args()
++    server = make_server(port=args.port)
++    record = {"url": f"http://127.0.0.1:{server.server_port}/?token={server.session_token}",
++              "pid": os.getpid(), "port": server.server_port,
++              "started_at": datetime.now(timezone.utc).isoformat()}
++    work = ROOT / "work"
++    work.mkdir(exist_ok=True)
++    temporary = work / "server.json.tmp"
++    temporary.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
++    temporary.replace(work / "server.json")
++    try:
++        server.serve_forever(poll_interval=0.5)
++    except KeyboardInterrupt:
++        pass
++    finally:
++        server.server_close()
++
++
++if __name__ == "__main__":
++    main()
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/scene.js" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/scene.js"
+index 2d3f9a7..184c20c 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/scene.js"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/scene.js"	
+@@ -1,77 +1,358 @@
+-import * as THREE from './vendor/three.module.js';
+-export function createPipeline(canvas) {
+-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+-  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+-  const scene=new THREE.Scene(),root=new THREE.Group();scene.add(root);
+-  const camera=new THREE.OrthographicCamera(-9,9,4,-4,.1,100);
+-  camera.position.set(1.1,5.2,19);camera.lookAt(0,.8,0);
+-  const ambient=new THREE.HemisphereLight(0xffffff,0x9da9bb,2.6);scene.add(ambient);
+-  const light=new THREE.DirectionalLight(0xffffff,3.8);light.position.set(-5,9,9);light.castShadow=true;light.shadow.mapSize.set(2048,1024);scene.add(light);
+-  const surfaces=[],accents=[],outlines=[],labels=[];
+-  const surface=()=>{const m=new THREE.MeshStandardMaterial({color:0xe4e9f1,metalness:.3,roughness:.3});surfaces.push(m);return m;};
+-  const accent=()=>{const m=new THREE.MeshStandardMaterial({color:0x8aa7d5,metalness:.22,roughness:.34});accents.push(m);return m;};
+-  function box(w,h,d,mat,x,y,z,parent=root,edge=true){
+-    const geometry=new THREE.BoxGeometry(w,h,d),mesh=new THREE.Mesh(geometry,mat);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);
+-    if(edge){const m=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.24});const border=new THREE.LineSegments(new THREE.EdgesGeometry(geometry),m);mesh.add(border);outlines.push(m);}
+-    return mesh;
+-  }
+-  function path(points,color=0x8a9bb4,width=1){const material=new THREE.LineBasicMaterial({color,linewidth:width});outlines.push(material);const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points.map(p=>new THREE.Vector3(...p))),material);root.add(line);return line;}
+-  // 의료 원본 없이 수식으로 만든 추상 면을 입력 영상의 구조 모형으로 사용합니다.
+-  const abstract=document.createElement('canvas');abstract.width=128;abstract.height=160;
+-  const ctx=abstract.getContext('2d'),pixels=ctx.createImageData(128,160);
+-  for(let y=0;y<160;y++)for(let x=0;x<128;x++){const v=Math.round(90+26*Math.sin(x*.23+y*.09)+24*Math.cos(x*.11-y*.16)+18*Math.sin(x*.36)*Math.cos(y*.29));const k=(y*128+x)*4;pixels.data[k]=v;pixels.data[k+1]=v+3;pixels.data[k+2]=v+8;pixels.data[k+3]=255;}
+-  ctx.putImageData(pixels,0,0);const texture=new THREE.CanvasTexture(abstract);texture.colorSpace=THREE.SRGBColorSpace;
+-  const inputMaterial=new THREE.MeshStandardMaterial({map:texture,roughness:.55,metalness:.08});
+-  for(let i=0;i<4;i++)box(1.65,2.55,.035,inputMaterial,-7.7+i*.16,1.05,-.48+i*.32);
+-  // 고정된 첫 합성곱의 7×7 커널을 독립 모듈로 보여줍니다.
+-  box(1.12,1.34,.75,surface(),-5.1,.55,0);
+-  for(let x=0;x<7;x++)for(let y=0;y<7;y++){
+-    const m=new THREE.MeshStandardMaterial({color:(x+y)%3===0?0x75849d:(x+y)%3===1?0xc0c9d6:0x99a7bc,roughness:.6});
+-    box(.115,.115,.025,m,-5.53+x*.143,.12+y*.143,.39,root,false);
+-  }
+-  // 64개 채널의 특징 맵을 대표 적층 면으로 요약합니다.
+-  const featurePanels=[];
+-  for(let i=0;i<12;i++)featurePanels.push(box(1.35,2.35,.027,accent(),-3.77+i*.085,.98,-.75+i*.14));
+-  // sigma에 따라 달라지는 블러 연산을 가우시안 곡면으로 표현합니다.
+-
+-  const gaussGeometry=new THREE.PlaneGeometry(1.12,1.24,28,28),vertices=gaussGeometry.attributes.position;
+-  for(let i=0;i<vertices.count;i++){const x=vertices.getX(i),y=vertices.getY(i);vertices.setZ(i,.72*Math.exp(-(x*x+y*y)/.09));}
+-  gaussGeometry.computeVertexNormals();
+-  const gaussian=new THREE.Mesh(gaussGeometry,new THREE.MeshStandardMaterial({color:0x7f9bc5,roughness:.35,metalness:.2,side:THREE.DoubleSide}));gaussian.rotation.x=-Math.PI/2;gaussian.position.set(-1.7,.1,.08);gaussian.castShadow=true;root.add(gaussian);
+-  const gaussianWire=new THREE.Mesh(gaussGeometry,new THREE.MeshBasicMaterial({color:0xc1d2eb,wireframe:true,transparent:true,opacity:.4}));gaussian.add(gaussianWire);
+-  // 네 잔차 계층과 건너뛰기 연결은 구조 모형이며 실제 텐서 값이 아닙니다.
+-  const deep=[];
+-  for(let i=0;i<4;i++){
+-    const center=.08+i*1.52,group=new THREE.Group();group.position.x=center;root.add(group);deep.push(group);
+-    for(let j=0;j<4;j++)box(.2,2.16,1.08,j===3?accent():surface(),-.35+j*.23,.94,0,group);
+-    const points=[[center-.4,-.18,.7],[center-.4,-.37,.7],[center+.58,-.37,.7],[center+.58,.85,.7],[center+.78,.85,.7]];
+-    path(points,0x95aac9);
+-    const plusMat=surface();const disk=new THREE.Mesh(new THREE.CylinderGeometry(.14,.14,.04,24),plusMat);disk.rotation.x=Math.PI/2;disk.position.set(center-.37,-.18,.75);root.add(disk);
+-    path([[center-.43,-.18,.79],[center-.31,-.18,.79]],0x657a9c);path([[center-.37,-.24,.79],[center-.37,-.12,.79]],0x657a9c);
+-  }
+-  box(.25,1.24,.73,surface(),6.4,.48,0);box(.25,1.1,.6,surface(),6.9,.48,.12);
+-  for(let i=0;i<2;i++){const sphere=new THREE.Mesh(new THREE.SphereGeometry(.11,20,16),accent());sphere.position.set(6.91,.25+i*.43,.45);root.add(sphere);}
+-  function label(text,x,y,size=100){const c=document.createElement('canvas');c.width=384;c.height=80;const context=c.getContext('2d');context.clearRect(0,0,384,80);context.font='700 34px Nanum, sans-serif';context.textAlign='center';context.fillStyle='#73849f';context.fillText(text,192,52);const map=new THREE.CanvasTexture(c);const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map,transparent:true,depthTest:false}));sprite.position.set(x,y,0);sprite.scale.set(size/100*1.72,size/100*.36,1);root.add(sprite);labels.push(sprite);}
+-  label('7 × 7',-5.1,1.72,85);label('64',-3.28,2.54,90);label('Gaussian σ',-1.7,1.7,75);
+-  for(let i=0;i<4;i++)label(`Res Block ${i+1}`,.08+i*1.52,2.27,80);
+-  const links=[[-6.8,-5.75],[-4.48,-4.02],[-2.7,-2.24],[-1.18,-.62],[5.55,6.18]],particles=[];
+-  for(const [from,to] of links){path([[from,.55,0],[to,.55,0]],0x8497b5);const cone=new THREE.Mesh(new THREE.ConeGeometry(.075,.19,4),accent());cone.rotation.z=-Math.PI/2;cone.position.set(to,.55,0);root.add(cone);for(let j=0;j<2;j++)particles.push({mesh:box(.055,.055,.055,accent(),from,.55,0,root,false),from,to,offset:j/2});}
+-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.ShadowMaterial({opacity:.13}));floor.rotation.x=-Math.PI/2;floor.position.y=-.52;floor.receiveShadow=true;scene.add(floor);
+-  let paused=false,running=false,phase=0,last=0,dark=false;
+-  function resize(){
+-    const r=canvas.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.updateMatrixWorld();const bounds=new THREE.Box3().setFromObject(root),corners=[];
+-    for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z])corners.push(new THREE.Vector3(x,y,z).applyMatrix4(camera.matrixWorldInverse));
+-    const minX=Math.min(...corners.map(p=>p.x)),maxX=Math.max(...corners.map(p=>p.x)),minY=Math.min(...corners.map(p=>p.y)),maxY=Math.max(...corners.map(p=>p.y));
+-    const aspect=r.width/Math.max(1,r.height),height=Math.max((maxY-minY)/.86,(maxX-minX)/(aspect*.94));const x=(minX+maxX)/2,y=(minY+maxY)/2;
+-    camera.left=x-height*aspect/2;camera.right=x+height*aspect/2;camera.top=y+height/2;camera.bottom=y-height/2;camera.updateProjectionMatrix();
+-  }
+-  new ResizeObserver(resize).observe(canvas);resize();
+-  function animate(time){requestAnimationFrame(animate);const delta=Math.min(.05,(time-last)/1000||0);last=time;if(!paused&&running&&!document.hidden)phase+=delta;
+-    particles.forEach(({mesh,from,to,offset})=>{mesh.visible=running;mesh.position.x=from+((phase*.5+offset)%1)*(to-from);});
+-    featurePanels.forEach((panel,i)=>panel.material.emissive.setRGB(0,0,(!paused&&running?Math.sin(phase*1.7+i*.23)*.025+.025:0)));
+-    gaussian.rotation.y=!paused&&running?Math.sin(phase)*.06:0;renderer.render(scene,camera);
+-  }
+-  requestAnimationFrame(animate);
+-  return {setPaused(value){paused=value;},setStatus(_index,_status,isRunning){running=isRunning;},setTheme(theme){dark=theme==='dark';surfaces.forEach(m=>m.color.setHex(dark?0x546176:0xe4e9f1));accents.forEach(m=>m.color.setHex(dark?0x91afd9:0x8aa7d5));inputMaterial.color.setHex(dark?0xc2cee0:0xffffff);ambient.intensity=dark?2:2.6;light.intensity=dark?2.8:3.8;floor.material.opacity=dark?.2:.13;labels.forEach(s=>s.material.color.setHex(dark?0xc2d2ee:0xffffff));}};
+-}
++import * as THREE from './vendor/three.module.js';
++
++export function createPipeline(canvas) {
++  canvas.__pipelineDispose?.();
++  const workspace=canvas.closest('.model-workspace')||canvas.parentElement;
++  // 설명은 화면의 글자로 읽히게 두고 입체 모형은 처리 순서만 보조합니다.
++  workspace.querySelector('.pipeline-guide')?.remove();
++  workspace.querySelector('.pipeline-learning')?.remove();
++  workspace.querySelector('.pipeline-technical')?.remove();
++  workspace.querySelector('.pipeline-gallery')?.remove();
++  let viewport=canvas.parentElement;
++  if(!viewport.classList.contains('pipeline-viewport')){
++    viewport=document.createElement('div');viewport.className='pipeline-viewport';canvas.before(viewport);viewport.append(canvas);
++  }
++  viewport.removeAttribute('tabindex');viewport.setAttribute('role','img');
++  viewport.setAttribute('aria-label','실제 영상이 아닌 처리 순서 안내: CT 입력, 특징맵 64개 추출, 특징에만 블러, OK와 NG 분류');
++  canvas.setAttribute('aria-label','CT 문서 아이콘, 무늬 없는 특징 시트, 경계가 부드러워지는 개념, 이진 분류의 보조 모형');
++  const guide=document.createElement('section');guide.className='pipeline-guide';guide.setAttribute('aria-label','무엇을 학습하는 실험인가요');
++  function easyText(node,text){const space=text.indexOf(' ');if(space>0&&/\p{Extended_Pictographic}/u.test(text.slice(0,space))){const icon=document.createElement('span');icon.className='pipeline-emoji';icon.setAttribute('aria-hidden','true');icon.textContent=text.slice(0,space);node.replaceChildren(icon,document.createTextNode(text.slice(space)));}else node.textContent=text;}
++  const core=document.createElement('p');core.className='pipeline-core';easyText(core,'💡 원본 사진은 그대로 둡니다. 사진에서 찾은 선과 무늬만 부드럽게 바꿔 비교해요.');guide.append(core);
++  const list=document.createElement('ol');list.className='pipeline-cards';guide.append(list);
++  const definitions=[
++    ['📷 ① 몸속 사진 넣기','CT는 몸속을 찍은 사진이에요. 원본 사진은 바꾸지 않아요.','원본은 그대로'],
++    ['🔎 ② 선·무늬 찾기','서로 다른 돋보기 64개로 보는 것과 비슷해요. 사진 한 장에서 특징 그림 64개가 나와요.','돋보기는 이해를 돕는 비유'],
++    ['🌫️ ③ 무늬 부드럽게','찾아낸 선과 무늬의 경계를 흐리게 해요. 원본 CT를 흐리는 것은 아니에요.','숫자가 클수록 더 부드럽게'],
++    ['🗂️ ④ 두 묶음으로 나누기','자료의 이름에 따라 정상·양성은 OK, 악성은 NG로 나누도록 배워요.','OK·NG는 자료의 분류 이름']
++  ];
++  const cards=definitions.map(([title,description,note])=>{
++    const card=document.createElement('li'),heading=document.createElement('h3'),p=document.createElement('p'),badge=document.createElement('span');
++    easyText(heading,title);p.textContent=description;badge.textContent=note;badge.className='pipeline-card-note';card.append(heading,p,badge);list.append(card);return card;
++  });
++  viewport.before(guide);
++  const learning=document.createElement('div');learning.className='pipeline-learning';
++  const learningTitle=document.createElement('strong'),learningNote=document.createElement('span');
++  easyText(learningTitle,'✏️ 배우는 곳: 모델 맨 뒤의 두 부분');
++  learningNote.textContent='마지막 잔차 블록과 분류층만 배웁니다. 부드럽게 만드는 강도(σ)마다 모델을 따로 비교해요. 0은 흐리지 않은 기준이에요.';
++  learning.append(learningTitle,learningNote);viewport.before(learning);
++  const technical=document.createElement('details');technical.className='pipeline-technical';
++  const summary=document.createElement('summary');easyText(summary,'🔧 정확한 모델 구조 보기');
++  const fixed=document.createElement('p');fixed.textContent='돋보기는 비유입니다. 실제로는 첫 합성곱(conv1)의 서로 다른 필터 64개가 각각 반응한 특징맵입니다. 고정: conv1, DCT 가우시안 블러, bn1·relu·maxpool·layer1~3.';
++  const train=document.createElement('p');train.textContent='학습: 마지막 잔차 블록(layer4)과 분류층(head). 배치정규화는 고정합니다.';
++  const concept=document.createElement('p');concept.textContent='구조 개념 애니메이션이며 실제 영상·특징값·배치 이동·처리 속도를 나타내지 않습니다.';
++  technical.append(summary,fixed,train,concept);viewport.after(technical);
++  const oldSteps=workspace.querySelector('.steps');if(oldSteps)oldSteps.hidden=true;
++  const oldNote=workspace.querySelector('.model-footnote');
++  if(oldNote){oldNote.replaceChildren();const text=document.createElement('span');text.textContent='위 모형은 순서를 알려 주는 그림이에요. 실제 사진과 특징 그림은 아래에서 보세요.';oldNote.append(text);}
++  const toolsText=workspace.querySelector('.model-tools>span');if(toolsText)toolsText.textContent='처리 순서 안내 · 실제 사진의 이동은 아닙니다';
++
++  // 완료 강도 × 세 범주 × 여섯 단계를 파일 ID로 구분해 전체 구성을 보여줍니다.
++  const gallery=document.createElement('section');gallery.className='pipeline-gallery';gallery.setAttribute('aria-label','블러 강도별 원본과 특징 맵 전체 구성');
++  const galleryTitle=document.createElement('h2');easyText(galleryTitle,'🖼️ 사진과 특징 그림 살펴보기');
++  const galleryDescription=document.createElement('p');galleryDescription.className='pipeline-gallery-description';
++  galleryDescription.textContent='먼저 부드럽게 만드는 강도를 고르세요. 다음으로 양성·악성·정상 중 하나를 고르세요. 원본 1장과 특징 5단계를 볼 수 있어요. 모두 모이면 180장입니다.';
++  const galleryNormalization=document.createElement('p');galleryNormalization.className='pipeline-gallery-normalization';
++  galleryNormalization.textContent='특징 사진 한 장에는 작은 그림 10개가 있어요. 전체 평균 1개, 가장 큰 반응 1개, 골라낸 특징 8개입니다. 그림마다 색의 기준이 달라요. 밝은 곳이 암의 위치나 확률은 아닙니다.';
++  const galleryStatus=document.createElement('p');galleryStatus.className='pipeline-gallery-status';galleryStatus.setAttribute('role','status');galleryStatus.setAttribute('aria-live','polite');galleryStatus.textContent='완료된 강도의 전체 사진을 기다리는 중입니다.';
++  const galleryStatistics=document.createElement('p');galleryStatistics.className='pipeline-gallery-statistics';
++  const sigmaFieldset=document.createElement('fieldset');sigmaFieldset.className='pipeline-gallery-controls';
++  const sigmaLegend=document.createElement('legend');easyText(sigmaLegend,'🌫️ 1. 얼마나 부드럽게 만들까요? 숫자가 클수록 더 부드러워요');
++  const sigmaControls=document.createElement('div');sigmaControls.className='pipeline-gallery-options';sigmaFieldset.append(sigmaLegend,sigmaControls);
++  const classFieldset=document.createElement('fieldset');classFieldset.className='pipeline-gallery-controls';
++  const classLegend=document.createElement('legend');easyText(classLegend,'🗂️ 2. 어떤 자료를 볼까요?');
++  const classControls=document.createElement('div');classControls.className='pipeline-gallery-options pipeline-gallery-class-options';classFieldset.append(classLegend,classControls);
++  const selectionStatistics=document.createElement('p');selectionStatistics.className='pipeline-gallery-selection';
++  const galleryOverview=document.createElement('div');galleryOverview.className='pipeline-gallery-overview';galleryOverview.hidden=true;
++  const overviewTitle=document.createElement('p');easyText(overviewTitle,'👆 사진 6장 한눈에 보기 · 사진을 누르면 쉬운 설명과 설정이 열려요');
++  const galleryThumbnails=document.createElement('div');galleryThumbnails.className='pipeline-gallery-thumbnails';galleryThumbnails.setAttribute('role','group');galleryThumbnails.setAttribute('aria-label','선택한 여섯 그림의 설정과 설명');galleryOverview.append(overviewTitle,galleryThumbnails);
++  const galleryGrid=document.createElement('div');galleryGrid.className='pipeline-gallery-grid';
++  gallery.append(galleryTitle,galleryDescription,galleryNormalization,galleryStatus,galleryStatistics,sigmaFieldset,classFieldset,selectionStatistics,galleryOverview,galleryGrid);workspace.append(gallery);
++  const sigmaOrder=[0,1,2,4,8,16,32,64,128,256],allowedSigmas=new Set(sigmaOrder);
++  const classLabels={Bengin_cases:'양성',Malignant_cases:'악성',Normal_cases:'정상'};
++  const previewIdPattern=/^(0|1|2|4|8|16|32|64|128|256)-(Bengin_cases|Malignant_cases|Normal_cases)-[0-5]$/;
++  const previewRunPattern=/^[a-f0-9]{16}$/,galleryFigures=new Map(),sigmaButtons=new Map(),classButtons=new Map();
++  let currentPreviewRun=null;
++  let previewItems=new Map(),completedSigmas=new Set(),reportedSigmas=new Set(),selectedSigma=null,selectedClass='Bengin_cases';
++  let galleryController=null,galleryInterval=0,galleryTimeout=0,galleryBusy=false;
++  function previewMessage(text){if(galleryStatus.textContent!==text)galleryStatus.textContent=text;}
++  function choiceButton(parent){
++    const button=document.createElement('button');button.type='button';button.className='pipeline-gallery-choice';button.disabled=true;button.setAttribute('aria-pressed','false');
++    const name=document.createElement('span'),note=document.createElement('small');button.append(name,note);parent.append(button);return {button,name,note};
++  }
++  for(const sigma of sigmaOrder){
++    const entry=choiceButton(sigmaControls);entry.name.textContent=`σ ${sigma}`;entry.note.textContent='대기';sigmaButtons.set(sigma,entry);
++    entry.button.addEventListener('click',()=>{if(disposed||!completedSigmas.has(sigma))return;selectedSigma=sigma;renderGallery();});
++  }
++  for(const [key,label] of Object.entries(classLabels)){
++    const entry=choiceButton(classControls);entry.name.textContent=label;entry.note.textContent='대기';classButtons.set(key,entry);
++    entry.button.addEventListener('click',()=>{if(disposed||selectedSigma===null)return;selectedClass=key;renderGallery();});
++  }
++  // 화면에는 허용된 생성 설정만 옮기며 경로·해시·원자료 목록은 열거하지 않습니다.
++  function settingNumber(value){
++    if(typeof value!=='number'||!Number.isFinite(value))return '미확인';
++    if(value===0)return '0';
++    if(Math.abs(value)<.001||Math.abs(value)>=100000)return value.toExponential(3).replace(/\.?0+(?=e)/,'');
++    return Number(value.toPrecision(6)).toLocaleString('ko-KR',{maximumSignificantDigits:6});
++  }
++  function settingText(value){return typeof value==='string'&&value.trim()?value:typeof value==='number'?settingNumber(value):'미확인';}
++  function previewDescription(item){
++    const settings=item.settings&&typeof item.settings==='object'&&!Array.isArray(item.settings)?item.settings:{};
++    const shape=Array.isArray(settings.shape)&&settings.shape.length===3&&settings.shape.every(n=>Number.isInteger(n)&&n>0)?settings.shape:null;
++    const indices=Array.isArray(settings.panel_indices)?settings.panel_indices.filter(n=>Number.isInteger(n)&&n>=0):null;
++    const original=item.stage===0,label=classLabels[item.class_key];
++    const places=['원본 CT','첫 합성곱과 특징 블러','첫 번째 잔차 블록','두 번째 잔차 블록','세 번째 잔차 블록','마지막 잔차 블록'];
++    const summary=original?[
++      `몸속을 찍은 CT 사진이에요. 이 자료의 분류 이름은 '${label}'입니다.`,
++      '같은 사진이 모델을 지나는 모습을 원본 1장과 특징 5단계로 나눠 보여 줘요.',
++      '원본 사진은 흐리지 않아요. 여기의 밝고 어두운 색은 사진의 픽셀 밝기예요.'
++    ]:[
++      `${label} 자료 한 장에서 모델이 찾은 선과 무늬예요. ${item.stage}단계에서 꺼내 본 특징 그림입니다.`,
++      '작은 그림 10개를 모았어요. 전체 반응의 평균 1개, 각 위치의 가장 큰 반응 1개, 골라낸 특징 8개예요.',
++      '그림마다 색의 기준이 달라요. 밝은 곳이 암의 위치나 확률을 뜻하지는 않아요.'
++    ];
++    const shapeExplanation=shape?`특징 그림이 ${shape[0]}개예요. 하나는 세로 ${shape[1]}칸, 가로 ${shape[2]}칸입니다.${item.stage>=2?' 작은 모눈종이처럼 칸이 커 보이는 것은 뒤 단계에서 그림의 칸 수가 줄었기 때문이에요.':''}`:'그림의 크기 정보는 아직 없어요.';
++    const rows=[['현재 블러 강도',`σ = ${settingNumber(item.sigma)}`],['원본 범주',label],['처리 단계',original?'0단계 · 원본 CT':`${item.stage}단계 · ${places[item.stage]}`],['추출 지점',settingText(settings.layer)],
++      [original?'입력 크기 (채널 × 높이 × 너비)':'특징 크기 (채널 × 높이 × 너비)',shape?shape.map(settingNumber).join(' × '):'미확인'],['실제 채널 수',shape?settingNumber(shape[0]):'미확인'],
++      ['선택한 채널',original?'해당 없음 · 원본 한 장':indices?indices.map(settingNumber).join(' · ')||'없음':'미확인'],['그림 구성',original?'원본 CT 1패널':`평균 · 최댓값 · 개별 ${indices?indices.length:'미확인'}채널 (총 ${settingNumber(settings.panel_count)}패널)`],
++      ['색 정규화',settingText(settings.normalization)],['사진 생성 정밀도',settingText(settings.precision)],['입력 전처리',settingText(settings.preprocessing)],['완료 모델의 최적 학습 회차',typeof settings.checkpoint_epoch==='number'?`${settingNumber(settings.checkpoint_epoch)}회`:'미확인']];
++    const policy=settings.training_policy&&typeof settings.training_policy==='object'?settings.training_policy:{};
++    const trainingRows=[['최적화 방법',settingText(policy.optimizer)],['학습 배치 크기',settingNumber(policy.batch_size)],['초기 학습률',settingNumber(policy.initial_learning_rate)],['가중치 감쇠',settingNumber(policy.weight_decay)],['최대 학습 회차',settingNumber(policy.max_epochs)],['조기 종료 대기 회차',settingNumber(policy.patience)],['의미 있는 손실 개선 기준',settingNumber(policy.min_delta)]];
++    const limits=Array.isArray(settings.panel_minmax)?settings.panel_minmax.slice(0,original?1:10):[];
++    const minmaxRows=limits.map((entry,index)=>[original?'원본 CT':index===0?'전체 채널 평균':index===1?'채널 최댓값':`채널 ${indices&&indices[index-2]!==undefined?indices[index-2]:'미확인'}`,settingNumber(entry?.min),settingNumber(entry?.max)]);
++    return {title:original?'📷 원본 사진 이야기':`🔎 ${item.stage}단계 특징 그림 이야기`,summary,shapeExplanation,rows,trainingRows,minmaxRows,indices,original};
++  }
++  const settingsDialog=document.createElement('dialog');settingsDialog.className='pipeline-settings-dialog';settingsDialog.setAttribute('role','dialog');settingsDialog.setAttribute('aria-modal','true');
++  const dialogTitleId=`${canvas.id||'pipeline'}-feature-settings-title`,dialogSummaryId=`${canvas.id||'pipeline'}-feature-settings-summary`;
++  settingsDialog.setAttribute('aria-labelledby',dialogTitleId);settingsDialog.setAttribute('aria-describedby',dialogSummaryId);
++  const dialogHeader=document.createElement('div');dialogHeader.className='pipeline-settings-header';
++  const dialogHeading=document.createElement('h2');dialogHeading.id=dialogTitleId;dialogHeading.tabIndex=-1;
++  const dialogClose=document.createElement('button');dialogClose.type='button';dialogClose.className='pipeline-settings-close';dialogClose.textContent='닫기';dialogClose.setAttribute('aria-label','사진 설정과 설명 닫기');
++  const dialogBody=document.createElement('div');dialogBody.className='pipeline-settings-body';dialogHeader.append(dialogHeading,dialogClose);settingsDialog.append(dialogHeader,dialogBody);gallery.append(settingsDialog);
++  let dialogOpener=null,dialogReturnId=null,dialogReturnKind='thumbnail',previousBodyOverflow=null,galleryRenderPending=false;
++  function settingList(rows){const dl=document.createElement('dl');dl.className='pipeline-settings-list';for(const [name,value] of rows){const row=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=name;dd.textContent=value;row.append(dt,dd);dl.append(row);}return dl;}
++  function restoreDialogState(restoreFocus=true){
++    if(previousBodyOverflow===null)return;
++    document.body.style.overflow=previousBodyOverflow;previousBodyOverflow=null;
++    const oldOpener=dialogOpener,returnId=dialogReturnId,returnKind=dialogReturnKind;dialogOpener=null;dialogReturnId=null;
++    if(galleryRenderPending&&!disposed){galleryRenderPending=false;renderGallery();}
++    const entry=galleryFigures.get(returnId),fallback=entry?.[returnKind]||[...sigmaButtons.values()].find(x=>!x.button.disabled)?.button;
++    if(restoreFocus)(oldOpener?.isConnected?oldOpener:fallback)?.focus({preventScroll:true});
++  }
++  function closePreviewSettings(restoreFocus=true){if(settingsDialog.open)settingsDialog.close();restoreDialogState(restoreFocus);}
++  function onDialogKey(event){
++    if(!settingsDialog.open)return;
++    if(event.key==='Escape'){event.preventDefault();event.stopPropagation();closePreviewSettings();return;}
++    if(event.key!=='Tab')return;
++    const focusable=[...settingsDialog.querySelectorAll('button:not([disabled]),a[href],summary,[tabindex]:not([tabindex="-1"])')].filter(node=>node.getClientRects().length>0);
++    const first=focusable[0],last=focusable.at(-1);if(!first){event.preventDefault();dialogHeading.focus();return;}
++    if(event.shiftKey&&(document.activeElement===first||!focusable.includes(document.activeElement))){event.preventDefault();last.focus();}
++    else if(!event.shiftKey&&(document.activeElement===last||!focusable.includes(document.activeElement))){event.preventDefault();first.focus();}
++  }
++  settingsDialog.addEventListener('cancel',event=>{event.preventDefault();closePreviewSettings();});
++  settingsDialog.addEventListener('close',()=>restoreDialogState());
++  settingsDialog.addEventListener('click',event=>{if(event.target===settingsDialog){const r=settingsDialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closePreviewSettings();}});
++  dialogClose.addEventListener('click',()=>closePreviewSettings());
++  function openPreviewSettings(id,trigger){
++    if(disposed)return;const item=previewItems.get(id);if(!validPreview(item))return;
++    const description=previewDescription(item);easyText(dialogHeading,description.title);dialogBody.replaceChildren();
++    const identity=document.createElement('p');identity.className='pipeline-settings-identity';identity.textContent=`σ = ${item.sigma} · ${classLabels[item.class_key]} · ${item.stage}단계`;
++    const easy=document.createElement('div');easy.className='pipeline-settings-summary';easy.id=dialogSummaryId;
++    for(const [index,sentence] of description.summary.entries()){const section=document.createElement('section'),h=document.createElement('h3'),p=document.createElement('p');easyText(h,['📷 이 사진은 무엇인가요?','🧩 그림이 왜 여러 개인가요?','💡 어떻게 보면 되나요?'][index]);p.textContent=sentence;section.append(h,p);easy.append(section);}
++    const image=document.createElement('img');image.className='pipeline-settings-image';image.src=item.image_url;image.alt=item.stage===0?'선택한 대표 원본 CT':`${item.stage}단계 실제 특징 맵 10패널`;image.decoding='async';image.referrerPolicy='same-origin';
++    const openLink=document.createElement('a');openLink.className='pipeline-preview-open';openLink.href=item.image_url;openLink.target='_blank';openLink.rel='noopener noreferrer';openLink.textContent='사진을 원본 크기로 새 탭에서 보기';
++    const caption=document.createElement('p');caption.className='pipeline-settings-caption';caption.textContent=typeof item.caption==='string'?item.caption:'사진의 생성 설명은 아직 없습니다.';
++    const shapeMeaning=document.createElement('p');shapeMeaning.className='pipeline-settings-help';shapeMeaning.textContent=description.original?'입력의 3채널은 같은 회색조를 복제한 것입니다. 서로 다른 특징 그림 3개가 아닙니다.':description.shapeExplanation+(description.indices?` 채널 ${description.indices.join('·')}은 전체 채널 중 균등 간격으로 고른 ${description.indices.length}개입니다.`:'');
++    const numbers=document.createElement('details');numbers.className='pipeline-settings-advanced';const numbersTitle=document.createElement('summary');easyText(numbersTitle,'🔧 자세한 숫자와 설정 보기');numbers.append(numbersTitle,shapeMeaning,settingList(description.rows),caption);
++    const panels=document.createElement('p');panels.className='pipeline-panel-guide';if(description.original)panels.textContent='원본 한 장이에요. 같은 회색조를 3채널에 복제해 입력하며 서로 다른 특징 3개라는 뜻은 아닙니다.';else for(const text of ['🧩 전체 반응 모아 보기(평균)','🔥 가장 큰 반응 고르기(최댓값)','🔍 특징 8개 골라 보기']){const part=document.createElement('span');easyText(part,text);panels.append(part);}
++    dialogBody.append(identity,easy,image,openLink,panels,numbers);
++    const training=document.createElement('details');training.className='pipeline-settings-advanced';const trainingTitle=document.createElement('summary');easyText(trainingTitle,'✏️ 모델이 배울 때 쓴 설정');
++    const precisionNote=document.createElement('p');precisionNote.textContent='사진 생성 정밀도는 이 그림을 추출한 평가 추론의 정밀도입니다. 훈련 중 사용한 정밀도와는 별도 항목입니다.';training.append(trainingTitle,precisionNote,settingList(description.trainingRows));dialogBody.append(training);
++    const advanced=document.createElement('details');advanced.className='pipeline-settings-advanced';const advancedTitle=document.createElement('summary');easyText(advancedTitle,'📊 작은 그림마다 색의 숫자 보기');advanced.append(advancedTitle);
++    if(description.minmaxRows.length){const table=document.createElement('table'),thead=document.createElement('thead'),head=document.createElement('tr'),tbody=document.createElement('tbody');for(const title of ['패널','최솟값','최댓값']){const cell=document.createElement('th');cell.textContent=title;head.append(cell);}thead.append(head);for(const values of description.minmaxRows){const row=document.createElement('tr');for(const value of values){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}tbody.append(row);}table.append(thead,tbody);const scroll=document.createElement('div');scroll.className='pipeline-settings-table';scroll.append(table);advanced.append(scroll);}
++    else {const note=document.createElement('p');note.textContent='패널 범위 정보가 아직 없습니다.';advanced.append(note);}
++    const normalizationNote=document.createElement('p');normalizationNote.textContent=description.original?'원본 CT의 회색조 표시 조건입니다.':'각 패널은 자체 범위로 정규화됩니다. 같은 색이 같은 절대 반응값을 뜻하지 않습니다. 숫자는 읽기 쉽게 반올림했습니다.';advanced.append(normalizationNote);dialogBody.append(advanced);
++    if(typeof settingsDialog.showModal!=='function'){previewMessage('이 브라우저에서는 설정 창을 열 수 없습니다. 사진 아래 설명과 원본 크기 링크를 확인해 주세요.');return;}
++    dialogOpener=trigger;dialogReturnId=id;dialogReturnKind=trigger.classList.contains('pipeline-preview-image-button')?'imageButton':'thumbnail';previousBodyOverflow=document.body.style.overflow;
++    try{settingsDialog.showModal();document.body.style.overflow='hidden';dialogBody.scrollTop=0;dialogHeading.focus({preventScroll:true});}
++    catch(error){restoreDialogState(false);previewMessage('설정 창을 열지 못했습니다. 사진 아래 설명은 계속 확인할 수 있습니다.');}
++  }
++  function validPreview(item){
++    if(!item||typeof item.id!=='string'||!previewIdPattern.test(item.id)||!Number.isInteger(item.sigma)||!allowedSigmas.has(item.sigma)||!Number.isInteger(item.stage)||item.stage<0||item.stage>5)return false;
++    if(!Object.hasOwn(classLabels,item.class_key)||item.class_label!==classLabels[item.class_key])return false;
++    return item.id===`${item.sigma}-${item.class_key}-${item.stage}`&&item.image_url===`/api/feature-previews/image/${item.id}`;
++  }
++  function readySigma(sigma){
++    if(!reportedSigmas.has(sigma))return false;
++    for(const key of Object.keys(classLabels))for(let stage=0;stage<=5;stage++)if(!previewItems.has(`${sigma}-${key}-${stage}`))return false;
++    return true;
++  }
++  function renderGallery(){
++    if(disposed)return;
++    if(settingsDialog.open){galleryRenderPending=true;return;}
++    for(const [sigma,entry] of sigmaButtons){
++      const ready=completedSigmas.has(sigma),count=[...previewItems.values()].filter(item=>item.sigma===sigma).length;
++      entry.button.disabled=!ready;entry.button.setAttribute('aria-pressed',String(ready&&selectedSigma===sigma));
++      entry.note.textContent=ready?'완료 · 18장':reportedSigmas.has(sigma)?`생성 중 · ${count}/18`:'대기';
++      entry.button.setAttribute('aria-label',`블러 강도 ${sigma}, ${entry.note.textContent}`);
++    }
++    const chosen=selectedSigma===null?[]:[...previewItems.values()].filter(item=>item.sigma===selectedSigma);
++    for(const [key,entry] of classButtons){
++      const count=chosen.filter(item=>item.class_key===key).length;entry.button.disabled=selectedSigma===null;
++      entry.button.setAttribute('aria-pressed',String(selectedSigma!==null&&selectedClass===key));entry.note.textContent=selectedSigma===null?'대기':`${count}장`;
++    }
++    galleryStatistics.textContent=`완료 ${completedSigmas.size} / 10강도 · ${previewItems.size} / 180장`;
++    const visible=chosen.filter(item=>item.class_key===selectedClass).sort((a,b)=>a.stage-b.stage);
++    selectionStatistics.textContent=selectedSigma===null?'강도별 18장이 준비되면 선택할 수 있습니다.':`선택 강도 σ = ${selectedSigma}: ${chosen.length}장 · 현재 ${classLabels[selectedClass]}: ${visible.length}장 (원본 + 1~5단계)`;
++    const ids=new Set(),figures=[],thumbnails=[];galleryOverview.hidden=selectedSigma===null;
++    for(const item of visible){
++      ids.add(item.id);let entry=galleryFigures.get(item.id);
++      if(!entry){
++        const figure=document.createElement('figure'),heading=document.createElement('div'),title=document.createElement('h3'),link=document.createElement('a'),image=document.createElement('img'),caption=document.createElement('figcaption'),imageError=document.createElement('p');
++        figure.className=item.stage===0?'pipeline-preview-original':'pipeline-preview-montage';figure.dataset.previewId=item.id;figure.id=`feature-stage-${item.id}`;heading.className='pipeline-preview-heading';
++        title.textContent=item.stage===0?`0단계 · ${classLabels[item.class_key]} 원본 CT`:`${item.stage}단계 · ${classLabels[item.class_key]} 특징 맵 · 10패널`;
++        link.className='pipeline-preview-open';link.textContent='원본 크기로 보기';link.href=item.image_url;link.target='_blank';link.rel='noopener noreferrer';
++        link.setAttribute('aria-label',`${classLabels[item.class_key]} σ ${item.sigma} ${item.stage}단계 그림 원본 크기로 새 탭에서 보기`);heading.append(title,link);
++        image.alt=item.stage===0?`블러 강도 ${item.sigma} 비교에 사용하는 ${classLabels[item.class_key]} 대표 원본 CT`:`블러 강도 ${item.sigma}, ${classLabels[item.class_key]}, ${item.stage}단계의 채널 평균·최대·8개 채널 10패널`;
++        image.loading='lazy';image.decoding='async';image.referrerPolicy='same-origin';imageError.className='pipeline-preview-error';imageError.hidden=true;imageError.textContent='이 그림을 불러오지 못했습니다. 다음 갱신 때 다시 확인합니다.';
++        image.onerror=()=>{if(disposed)return;image.dataset.failed='true';image.hidden=true;imageError.hidden=false;};
++        image.onload=()=>{if(disposed)return;image.dataset.failed='false';image.hidden=false;imageError.hidden=true;};
++        const thumbnail=document.createElement('button'),thumbImage=document.createElement('img'),thumbLabel=document.createElement('span');
++        thumbnail.type='button';thumbnail.className='pipeline-preview-thumbnail';thumbnail.dataset.previewId=item.id;thumbnail.setAttribute('aria-haspopup','dialog');thumbnail.setAttribute('aria-label',`${classLabels[item.class_key]} ${item.stage}단계 사진 설정과 설명 열기`);thumbnail.addEventListener('click',()=>openPreviewSettings(item.id,thumbnail));
++        thumbImage.alt=item.stage===0?'원본 CT 미리보기':`${item.stage}단계 10패널 특징 맵 미리보기`;thumbImage.loading='eager';thumbImage.decoding='async';thumbImage.referrerPolicy='same-origin';
++        thumbLabel.textContent=item.stage===0?'0 · 원본 CT':`${item.stage} · 특징 맵`;thumbnail.append(thumbImage,thumbLabel);
++        const imageButton=document.createElement('button');imageButton.type='button';imageButton.className='pipeline-preview-image-button';imageButton.dataset.previewId=item.id;imageButton.setAttribute('aria-haspopup','dialog');imageButton.setAttribute('aria-label',`${classLabels[item.class_key]} ${item.stage}단계 사진 설정과 설명 열기`);imageButton.append(image);imageButton.addEventListener('click',()=>openPreviewSettings(item.id,imageButton));
++        const short=document.createElement('p');short.className='pipeline-preview-easy';const exact=document.createElement('details'),exactTitle=document.createElement('summary');exact.className='pipeline-preview-exact';exactTitle.textContent='정확한 생성 설명 보기';exact.append(exactTitle,caption);figure.append(heading,imageButton,imageError,short,exact);entry={figure,image,caption,short,link,thumbnail,thumbImage,imageButton};galleryFigures.set(item.id,entry);
++      }
++      entry.short.textContent=previewDescription(item).summary[0]+(item.stage===0?' 원본은 그대로예요.':' 작은 그림 10개를 모아 놓았어요. 사진을 누르면 설명이 열려요.');
++      entry.caption.textContent=typeof item.caption==='string'?item.caption:'이 단계의 생성 조건과 설명을 기다리는 중입니다.';
++      entry.image.width=Number.isInteger(item.width)&&item.width>0&&item.width<=16384?item.width:item.stage===0?512:2288;
++      entry.image.height=Number.isInteger(item.height)&&item.height>0&&item.height<=16384?item.height:512;
++      if(entry.image.getAttribute('src')!==item.image_url||entry.image.dataset.failed==='true')entry.image.src=item.image_url;
++      if(entry.thumbImage.getAttribute('src')!==item.image_url)entry.thumbImage.src=item.image_url;
++      figures.push(entry.figure);thumbnails.push(entry.thumbnail);
++    }
++    for(const [id,entry] of galleryFigures)if(!ids.has(id)){entry.image.onload=null;entry.image.onerror=null;entry.figure.remove();galleryFigures.delete(id);}
++    if(galleryGrid.children.length!==figures.length||figures.some((figure,index)=>galleryGrid.children[index]!==figure))galleryGrid.replaceChildren(...figures);
++    if(galleryThumbnails.children.length!==thumbnails.length||thumbnails.some((thumbnail,index)=>galleryThumbnails.children[index]!==thumbnail))galleryThumbnails.replaceChildren(...thumbnails);
++  }
++  async function refreshPreviews(){
++    if(disposed||galleryBusy||document.hidden)return;galleryBusy=true;const controller=new AbortController();galleryController=controller;
++    galleryTimeout=window.setTimeout(()=>controller.abort(),8000);
++    try{
++      const response=await fetch('/api/feature-previews',{credentials:'same-origin',cache:'no-store',signal:controller.signal});if(disposed)return;
++      if(response.status===404){previewMessage('완료된 강도의 전체 사진을 기다리는 중입니다.');return;}
++      if(!response.ok)throw new Error('preview unavailable');
++      const payload=await response.json();if(disposed)return;
++      if(typeof payload.run_id!=='string'||!previewRunPattern.test(payload.run_id)||!Array.isArray(payload.items)){previewMessage('현재 실행에 맞는 전체 특징 맵을 기다리는 중입니다.');return;}
++      if(currentPreviewRun!==payload.run_id){closePreviewSettings(false);for(const entry of galleryFigures.values()){entry.image.onload=null;entry.image.onerror=null;}galleryFigures.clear();galleryGrid.replaceChildren();galleryThumbnails.replaceChildren();selectedSigma=null;currentPreviewRun=payload.run_id;}
++      const valid=new Map();for(const item of payload.items)if(validPreview(item))valid.set(item.id,item);previewItems=valid;
++      reportedSigmas=new Set(Array.isArray(payload.completed_sigmas)?payload.completed_sigmas.filter(sigma=>Number.isInteger(sigma)&&allowedSigmas.has(sigma)):[]);
++      completedSigmas=new Set(sigmaOrder.filter(readySigma));
++      if(selectedSigma===null||!completedSigmas.has(selectedSigma))selectedSigma=sigmaOrder.find(sigma=>completedSigmas.has(sigma))??null;
++      renderGallery();
++      previewMessage(completedSigmas.size?'완료된 강도와 범주를 선택하면 원본부터 5단계까지 6개 그림이 아래에 모두 표시됩니다.':'완료된 강도당 18장의 사진이 준비되기를 기다리는 중입니다.');
++    }catch(error){
++      if(!disposed)previewMessage(galleryFigures.size?'선택한 그림을 표시하고 있습니다. 목록을 잠시 갱신하지 못했습니다.':'전체 특징 맵을 기다리는 중입니다. 현재 미리보기를 불러올 수 없습니다.');
++    }finally{window.clearTimeout(galleryTimeout);galleryTimeout=0;galleryBusy=false;if(galleryController===controller)galleryController=null;}
++  }
++  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:'low-power'});
++  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.outputColorSpace=THREE.SRGBColorSpace;
++  renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
++  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
++  const scene=new THREE.Scene(),root=new THREE.Group();scene.add(root);
++  const camera=new THREE.OrthographicCamera(-10,10,3,-3,.1,60);camera.position.set(.7,5.5,19);camera.lookAt(0,.5,0);camera.updateMatrixWorld();
++  const ambient=new THREE.HemisphereLight(0xf2f6ff,0x8b98ad,1.3);scene.add(ambient);
++  const key=new THREE.DirectionalLight(0xfffcf8,2.6);key.position.set(-5,10,8);key.castShadow=true;
++  Object.assign(key.shadow.camera,{left:-11,right:11,top:4,bottom:-4,near:.5,far:30});key.shadow.mapSize.set(1024,512);key.shadow.normalBias=.025;scene.add(key);
++  const fill=new THREE.DirectionalLight(0xd5e4ff,1.2);fill.position.set(7,5,-4);scene.add(fill);
++  const geometries=new Set(),materials=new Set(),textures=new Set(),themed=[],labels=[],modules=[];
++  const colors={paper:[0xf0f3f8,0x7d8ca4],frame:[0x637790,0x394b66],blue:[0x7895bd,0x97b5df],line:[0x506b91,0xb8ccea],soft:[0xc1cfe2,0x7188aa]};
++  function material(type,options={}){const m=new THREE.MeshStandardMaterial({color:colors[type][0],roughness:.55,metalness:.1,...options});materials.add(m);themed.push({m,type});return m;}
++  const shell=material('paper'),frameMat=material('frame'),blue=material('blue'),lineMat=material('line'),soft=material('soft');
++  const geometryCache=new Map();
++  function box(w,h,d,m,x,y,z,parent=root){
++    const cacheKey=[w,h,d].join(':');let geometry=geometryCache.get(cacheKey);
++    if(!geometry){geometry=new THREE.BoxGeometry(w,h,d);geometries.add(geometry);geometryCache.set(cacheKey,geometry);}
++    const mesh=new THREE.Mesh(geometry,m);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
++  }
++  function tube(points,r=.025,m=lineMat,parent=root){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)),false,'centripetal');const g=new THREE.TubeGeometry(curve,20,r,8,false);geometries.add(g);const mesh=new THREE.Mesh(g,m);parent.add(mesh);return mesh;}
++  function label(text,x,y,width=1.4,parent=root){
++    const c=document.createElement('canvas');c.height=112;let ctx=c.getContext('2d');ctx.font='700 64px Nanum, sans-serif';c.width=Math.ceil(ctx.measureText(text).width+32);ctx=c.getContext('2d');
++    const texture=new THREE.CanvasTexture(c);texture.colorSpace=THREE.SRGBColorSpace;textures.add(texture);
++    const m=new THREE.SpriteMaterial({map:texture,transparent:true,depthTest:false,depthWrite:false,toneMapped:false});materials.add(m);
++    const sprite=new THREE.Sprite(m);sprite.position.set(x,y,.8);sprite.scale.set(width,width*c.height/c.width,1);parent.add(sprite);labels.push({ctx,texture,text});return sprite;
++  }
++  const centers=[-6.6,-2.2,2.2,6.6];
++  for(let i=0;i<4;i++){
++    const group=new THREE.Group();group.position.x=centers[i];root.add(group);
++    const rail=material('soft');box(3.1,.045,.12,rail,0,-.43,.9,group);modules.push({group,rail});
++  }
++  // CT 표시는 문서 아이콘일 뿐 영상이나 영상의 대체 무늬가 아닙니다.
++  const input=modules[0].group;
++  box(1.55,1.8,.1,frameMat,0,.54,0,input);box(1.37,1.62,.03,shell,0,.54,.075,input);
++  label('CT',0,.76,1.02,input);box(.82,.035,.025,soft,0,.18,.11,input);box(.6,.035,.025,soft,-.11,-.02,.11,input);
++  // 64개 모두를 모사하지 않고 무늬 없는 시트 묶음과 숫자로 개념을 표시합니다.
++  const sheets=modules[1].group;
++  for(let i=0;i<5;i++)box(1.5,1.5,.055,i===4?shell:soft,-.32+i*.16,.52,-.4+i*.18,sheets);
++  label('64',.18,.67,1.12,sheets);
++  // 단순한 선 하나의 경계가 넓고 부드러워지는 개념입니다. 실제 특징 영상은 아닙니다.
++  const blur=modules[2].group;
++  box(1.12,1.5,.06,shell,-.78,.52,0,blur);box(1.12,1.5,.06,shell,.78,.52,0,blur);
++  box(.045,.96,.025,lineMat,-.78,.52,.06,blur);
++  const blurred=[];
++  for(let i=-5;i<=5;i++){
++    const m=material('line',{transparent:true,opacity:.68*Math.exp(-i*i/8),depthWrite:false});
++    blurred.push(box(.026,.96,.025,m,.78+i*.026,.52,.06,blur));
++  }
++  tube([[-.15,.52,.1],[.15,.52,.1]],.018,lineMat,blur);
++  const arrowGeometry=new THREE.ConeGeometry(.065,.14,4);geometries.add(arrowGeometry);
++  const blurArrow=new THREE.Mesh(arrowGeometry,lineMat);blurArrow.rotation.z=-Math.PI/2;blurArrow.position.set(.16,.52,.1);blur.add(blurArrow);
++  label('적용 전',-.78,1.61,1.05,blur);label('적용 후',.78,1.61,1.05,blur);
++  // 정상·양성과 악성의 분류 이름만 표시하며 확률이나 성능을 만들지 않습니다.
++  const output=modules[3].group;
++  box(2.25,1.65,.28,frameMat,0,.54,0,output);
++  box(.91,1.22,.06,shell,-.54,.54,.18,output);box(.91,1.22,.06,soft,.54,.54,.18,output);
++  label('OK',-.54,.62,.74,output);label('NG',.54,.62,.74,output);
++  for(let i=0;i<3;i++){
++    tube([[centers[i]+1.65,.5,0],[centers[i+1]-1.65,.5,0]],.022,lineMat);
++    const arrow=new THREE.Mesh(arrowGeometry,lineMat);arrow.rotation.z=-Math.PI/2;arrow.position.set(centers[i+1]-1.65,.5,0);root.add(arrow);
++  }
++  const floorGeometry=new THREE.PlaneGeometry(22,8);geometries.add(floorGeometry);
++  const floorMaterial=new THREE.ShadowMaterial({color:0x4f617b,opacity:.14});materials.add(floorMaterial);
++  const floor=new THREE.Mesh(floorGeometry,floorMaterial);floor.rotation.x=-Math.PI/2;floor.position.y=-.49;floor.receiveShadow=true;scene.add(floor);
++  let dark=false,paused=false,running=false,active=-1,status='waiting',phase=0,last=0,dirty=true,disposed=false,raf=0,lastWidth=0,lastHeight=0;
++  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
++  const bounds=new THREE.Box3().setFromObject(root),corners=[];
++  for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z])corners.push(new THREE.Vector3(x,y,z).applyMatrix4(camera.matrixWorldInverse));
++  const edges={left:Math.min(...corners.map(p=>p.x)),right:Math.max(...corners.map(p=>p.x)),bottom:Math.min(...corners.map(p=>p.y)),top:Math.max(...corners.map(p=>p.y))};
++  function resize(){
++    const rect=canvas.getBoundingClientRect(),w=Math.round(rect.width),h=Math.round(rect.height);if(!w||!h||w===lastWidth&&h===lastHeight||disposed)return;
++    lastWidth=w;lastHeight=h;renderer.setSize(w,h,false);const aspect=w/h,height=Math.max((edges.top-edges.bottom)/.8,(edges.right-edges.left)/(aspect*.94)),x=(edges.left+edges.right)/2,y=(edges.top+edges.bottom)/2;
++    camera.left=x-height*aspect/2;camera.right=x+height*aspect/2;camera.top=y+height/2;camera.bottom=y-height/2;camera.updateProjectionMatrix();dirty=true;
++  }
++  function repaintLabels(){for(const item of labels){const ctx=item.ctx;ctx.clearRect(0,0,ctx.canvas.width,112);ctx.font='700 64px Nanum, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=dark?'#e1eaf7':'#304967';ctx.fillText(item.text,ctx.canvas.width/2,58);item.texture.needsUpdate=true;}}
++  function updateState(){
++    for(let i=0;i<4;i++){
++      const selected=i===active;modules[i].rail.color.setHex(selected?(dark?0xbed3ef:0x5d80b1):(dark?0x5e7392:0xb7c8de));
++      cards[i].classList.toggle('is-active',selected&&running);
++    }
++    easyText(learningTitle,running?'✏️ 지금 배우는 곳: 모델 맨 뒤의 두 부분':'✏️ 배우는 곳: 모델 맨 뒤의 두 부분');
++    viewport.dataset.pipelineState=running?'running':status;dirty=true;
++  }
++  function setTheme(theme){dark=theme==='dark';for(const {m,type} of themed)m.color.setHex(colors[type][dark?1:0]);ambient.intensity=dark?1.1:1.3;key.intensity=dark?2.1:2.6;fill.intensity=dark?1.5:1.2;floorMaterial.opacity=dark?.25:.14;repaintLabels();updateState();}
++  const observer=new ResizeObserver(resize);observer.observe(viewport);observer.observe(canvas);
++  function resetClock(){last=0;dirty=true;}reduced.addEventListener('change',resetClock);document.addEventListener('visibilitychange',resetClock);document.addEventListener('keydown',onDialogKey,true);
++  function dispose(){if(disposed)return;disposed=true;closePreviewSettings(false);document.removeEventListener('keydown',onDialogKey,true);settingsDialog.remove();window.clearInterval(galleryInterval);window.clearTimeout(galleryTimeout);galleryController?.abort();for(const entry of galleryFigures.values()){entry.image.onload=null;entry.image.onerror=null;}galleryFigures.clear();cancelAnimationFrame(raf);observer.disconnect();reduced.removeEventListener('change',resetClock);document.removeEventListener('visibilitychange',resetClock);for(const g of geometries)g.dispose();for(const m of materials)m.dispose();for(const t of textures)t.dispose();key.shadow.dispose();renderer.dispose();if(canvas.__pipelineDispose===dispose)delete canvas.__pipelineDispose;}
++  canvas.__pipelineDispose=dispose;
++  function frame(time){
++    if(disposed)return;if(!canvas.isConnected){dispose();return;}raf=requestAnimationFrame(frame);
++    const elapsed=last?Math.min((time-last)/1000,.05):0;last=time;
++    if(running&&!paused&&!reduced.matches&&!document.hidden){phase+=elapsed;dirty=true;}
++    if(!dirty||document.hidden)return;
++    // 선의 느린 변화는 구조 설명이며 실제 처리량이나 현재 블러 수치와 연결하지 않습니다.
++    const width=1+Math.sin(phase*.8)*.12;for(const line of blurred)line.scale.x=width;
++    renderer.render(scene,camera);dirty=false;
++  }
++  setTheme(document.documentElement.dataset.theme||'light');resize();raf=requestAnimationFrame(frame);renderGallery();refreshPreviews();galleryInterval=window.setInterval(refreshPreviews,15000);
++  return {setPaused(value){paused=Boolean(value);last=0;dirty=true;},setStatus(index,nextStatus,isRunning){const changed=active!==index||status!==nextStatus||running!==Boolean(isRunning);active=index;status=nextStatus;running=Boolean(isRunning);if(changed)updateState();},setTheme};
++}
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/style.css" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/style.css"
+index 01e88c0..22dce3e 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/web/style.css"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/style.css"	
+@@ -1,13 +1,28 @@
+-@font-face{font-family:Nanum;src:url('/fonts/NanumGothic-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+-:root{color-scheme:light;--bg:#fff;--sidebar:#f8f9fb;--surface:#f3f5f8;--ink:#1b2230;--muted:#788190;--line:#dce1e8;--soft-line:#e9ecf1;--accent:#6b82a4;--accent-strong:#506a92;--selected:#e8edf4;--progress:#7a91b0;--warning:#8b6738;--warning-bg:#faf4e9;--error:#a5655e;--error-bg:#fbf0ee;--nav:180px;--header:88px}
+-:root[data-theme=dark]{color-scheme:dark;--bg:#151a22;--sidebar:#171e28;--surface:#202936;--ink:#e3e8f0;--muted:#8d9bad;--line:#343e4e;--soft-line:#293240;--accent:#8da5c7;--accent-strong:#a0b5d4;--selected:#2a374b;--progress:#8b9fbd;--warning:#d2b687;--warning-bg:#322d25;--error:#dda79e;--error-bg:#352829}
+-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:110px}body{margin:0;background:var(--bg);color:var(--ink);font:700 14px/1.65 Nanum,'Malgun Gothic',sans-serif}button,a{font:inherit;outline-offset:5px}button{cursor:pointer;color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--accent)}a{color:inherit;text-decoration:none}[hidden]{display:none!important}h1,h2,h3,p{margin:0}h1,h2,h3{letter-spacing:-.8px}h1{font-size:28px;line-height:1.25}h2{font-size:25px;line-height:1.35}h3{font-size:13px}strong{font-weight:700}.topbar{height:var(--header);position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 29px;border-bottom:1px solid var(--line)}.identity{display:flex;align-items:center;gap:27px}.identity>p{padding-left:27px;border-left:1px solid var(--line);font-size:14px;color:var(--muted);line-height:1.5}.top-actions{display:flex;align-items:center;gap:25px;flex-shrink:0}.top-actions button{border:0;background:transparent}.theme-toggle{display:flex;align-items:center;gap:9px;font-size:12px;padding:5px}.theme-track{width:39px;height:22px;border:1px solid var(--accent);border-radius:20px;padding:2px;background:var(--selected)}.theme-track>span{display:block;width:16px;height:16px;background:var(--accent);border-radius:50%;transform:translateX(0)}[data-theme=dark] .theme-track>span{transform:translateX(16px)}.icon-button{border-left:1px solid var(--line)!important;padding:4px 0 4px 22px}.icon-button svg{width:23px;height:23px;display:block;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.sidebar{position:absolute;left:0;top:var(--header);bottom:0;width:var(--nav);min-height:1050px;background:var(--sidebar);border-right:1px solid var(--line);padding:30px 0;display:flex;flex-direction:column}.sidebar nav{display:grid;gap:8px}.sidebar nav a{display:flex;align-items:center;gap:16px;padding:16px 21px;color:var(--muted);font-size:16px;border-left:4px solid transparent}.sidebar nav a.active{background:var(--selected);border-left-color:var(--accent);color:var(--ink)}.sidebar nav svg{width:23px;height:23px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.sidebar-note{margin-top:370px;padding:20px 22px;color:var(--muted);font-size:11px}.sidebar-note span,.sidebar-note small{display:block;font-size:9px;margin-top:4px}main{margin-left:var(--nav);padding:25px 28px 0;max-width:1900px;position:relative}section{min-width:0}.alert{display:none;padding:10px 13px;background:var(--warning-bg);color:var(--warning);font-size:12px;border-left:3px solid currentColor;margin-bottom:16px}.alert.visible{display:block}.alert.failed{background:var(--error-bg);color:var(--error)}.status-row{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:28px;border-bottom:1px solid var(--line);padding:4px 0 23px;min-height:131px}.current-heading{border-left:5px solid var(--accent);padding-left:18px;display:flex;flex-direction:column;justify-content:center}.current-heading h2{font-size:29px;line-height:1.4;letter-spacing:-1px}.status-title{display:flex;flex-direction:column;gap:3px}.pill{font-size:10px;color:var(--accent-strong);letter-spacing:.03em}.current-heading>p:not(.sr-only){font-size:16px;color:var(--muted);margin-top:5px}.training-progress{border-left:1px solid var(--line);padding-left:28px;display:flex;flex-direction:column;justify-content:center}.progress-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}.progress-top>strong{font-size:23px;letter-spacing:-.8px}.process{font-size:9px;color:var(--muted);margin-left:auto}progress{display:block;width:100%;height:10px;border:0;border-radius:3px;overflow:hidden;background:var(--surface)}progress::-webkit-progress-bar{background:var(--surface)}progress::-webkit-progress-value{background:var(--progress);border-radius:3px}progress::-moz-progress-bar{background:var(--progress)}.progress-bottom{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:11px;color:var(--muted)}.progress-bottom>span:last-child{color:var(--ink);font-size:10px;text-align:right;max-width:190px}.batch-note{font-size:9px;color:var(--muted);margin-top:3px}.model-workspace{position:relative;padding-top:18px;border-bottom:1px solid var(--line)}.model-tools{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:10px}.text-button{border:0;background:transparent;color:var(--muted);padding:4px 0;font-size:10px}.text-button:hover{color:var(--accent-strong)}#scene{display:block;width:100%;height:305px;touch-action:pan-y}#sceneError{font-size:12px;color:var(--warning);padding:0 15px}.steps{display:grid;grid-template-columns:17% 15% 25% 43%;margin:0 1.5%;padding:0 0 9px}.steps>div{position:relative;text-align:center;border-top:1px solid var(--line);padding-top:8px;margin:0 5px}.steps>div:before,.steps>div:after{content:'';position:absolute;width:1px;height:6px;background:var(--line);top:-6px}.steps>div:before{left:0}.steps>div:after{right:0}.steps strong{font-size:13px}.steps small{display:block;font-size:9px;color:var(--muted)}.steps>div.active{border-color:var(--accent)}.steps>div.active strong,.steps>div.complete small{color:var(--accent-strong)}.steps>div.failed strong{color:var(--error)}.model-footnote{display:flex;justify-content:space-between;gap:15px;padding-bottom:11px;font-size:9px;color:var(--muted)}.sigma-row{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding:15px 0}.sigma-label{font-size:11px;color:var(--muted);white-space:nowrap}.queue{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;flex:1}.queue>div{display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 2px;color:var(--muted);font-size:10px;border-bottom:2px solid var(--soft-line)}.queue strong{font-size:11px}.queue small{font-size:8px}.queue .running{color:var(--accent-strong);border-color:var(--accent);background:var(--selected)}.queue .completed{color:var(--accent-strong);border-color:var(--accent)}.queue .failed{color:var(--error);border-color:var(--error)}.queue-count{font-size:9px;color:var(--muted);white-space:nowrap}.lower-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);padding:25px 0;gap:29px;border-bottom:1px solid var(--line)}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}.section-heading h2{padding-left:12px;border-left:4px solid var(--accent);font-size:23px;line-height:1.3}.section-heading>span{font-size:10px;color:var(--muted);text-align:right}.data-section{border-left:1px solid var(--line);padding-left:29px}.legend{display:flex;gap:18px;font-size:9px;margin-bottom:8px;padding-left:38px;color:var(--muted)}.legend span:before{content:'';display:inline-block;vertical-align:middle;width:16px;height:2px;background:#647fba;margin-right:5px}.legend span:nth-child(2):before{background:#4c83cf}.legend span:nth-child(3):before{background:#c49b48}.chart-wrap{position:relative;height:208px}#chart{width:100%;height:208px;display:block}#emptyChart{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--muted);font-size:13px;background:repeating-linear-gradient(0deg,transparent 0,transparent 49px,var(--soft-line) 50px);border-bottom:1px solid var(--line)}#emptyChart span{font-size:10px;margin-top:8px}.chart-note{font-size:9px;color:var(--muted);padding-left:38px;margin-top:7px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:center;font-size:15px}th{padding:9px 8px;font-size:13px;background:var(--selected);border-right:1px solid var(--line)}th:last-child{border-right:0}td{padding:10px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--soft-line)}td:last-child{border-right:0}td:first-child{font-size:13px}.data-labels{font-size:10px;color:var(--muted);margin-top:13px;display:flex;gap:6px;align-items:center}.data-labels span{width:1px;height:10px;background:var(--line);margin:0 6px}.data-labels strong{color:var(--ink)}.sample-target{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-top:18px;font-size:10px;color:var(--muted)}.sample-target strong{font-size:13px;color:var(--ink)}.sample-target small{flex-basis:100%;font-size:9px}.bottom-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr);gap:29px;padding:23px 0}.metrics{display:flex;gap:50px;padding-left:16px}.metrics>div{font-size:10px;color:var(--muted)}.metrics strong{display:block;font-size:23px;color:var(--ink);margin-top:5px}.record-section{border-left:1px solid var(--line);padding-left:29px}.record-section>p{font-size:10px;line-height:1.8;overflow-wrap:anywhere;color:var(--muted)}.record-section>p.error{color:var(--error)}.freshness{margin-top:5px}footer{margin:0 -28px;padding:15px 28px;border-top:1px solid var(--line);display:flex;gap:13px;color:var(--muted);font-size:10px}footer strong{color:var(--ink)}footer small{font-size:9px;margin-left:auto}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+-@media(min-width:1600px){#scene{height:340px}.status-row{min-height:140px}.current-heading h2{font-size:32px}.topbar{padding-left:30px}.identity h1{font-size:30px}.lower-grid{padding-top:28px}}
+-@media(max-width:1200px){:root{--nav:156px}.topbar{padding:0 20px}.identity{gap:18px}.identity h1{font-size:24px}.identity>p{font-size:11px;padding-left:18px;max-width:270px}.sidebar nav a{padding:15px 15px;font-size:14px;gap:10px}main{padding:23px 22px 0}.current-heading h2{font-size:25px}.current-heading>p:not(.sr-only){font-size:13px}.status-row{gap:20px}.training-progress{padding-left:20px}.progress-top>strong{font-size:20px}.process{display:none}.progress-bottom{font-size:10px}.progress-bottom>span:last-child{font-size:9px;max-width:135px}.queue{gap:3px}.queue>div{flex-direction:column;gap:0}.queue-count{font-size:8px}.lower-grid{gap:22px}.data-section{padding-left:22px}.section-heading h2{font-size:21px}.section-heading>span{font-size:9px}.legend{gap:10px;font-size:8px}.model-footnote{font-size:8px}.record-section{padding-left:22px}footer{margin:0 -22px;padding:14px 22px}}
+-@media(max-width:900px){:root{--nav:140px;--header:78px}.identity>p{display:none}.identity h1{font-size:24px}.sidebar nav a{font-size:12px;padding-left:12px;gap:9px}.sidebar nav svg{width:20px;height:20px}.sidebar-note{padding-left:16px}.status-row{grid-template-columns:1fr;gap:19px}.training-progress{padding-left:0;border-left:0}.current-heading h2{font-size:27px}.current-heading>p:not(.sr-only){font-size:15px}.progress-top{margin-bottom:7px}.progress-top>strong{margin-left:auto}.process{display:block;margin-left:0}.progress-bottom>span:last-child{max-width:none}.lower-grid{grid-template-columns:1fr;gap:25px}.data-section{padding-left:0;border-left:0;padding-top:23px;border-top:1px solid var(--line)}.bottom-grid{grid-template-columns:1fr;gap:22px}.record-section{border-left:0;padding-left:0;padding-top:22px;border-top:1px solid var(--line)}.queue-count{display:none}.sigma-row{gap:10px}.queue strong{font-size:10px}#scene{height:255px}.steps strong{font-size:11px}.sidebar{min-height:1510px}.sidebar-note{margin-top:650px}footer{flex-wrap:wrap;gap:5px 10px}footer small{margin-left:0;width:100%}}
+-@media(max-width:600px){:root{--header:76px;--nav:0px}html{scroll-padding-top:15px}.topbar{padding:0 15px;gap:8px}.identity h1{font-size:21px;letter-spacing:-1px}.top-actions{gap:7px}.theme-toggle{font-size:9px;gap:5px;padding:3px}.theme-track{width:31px;height:19px;padding:2px}.theme-track>span{width:13px;height:13px}[data-theme=dark] .theme-track>span{transform:translateX(12px)}.icon-button{padding-left:10px!important}.icon-button svg{width:19px;height:19px}.sidebar{position:relative;inset:auto;width:auto;min-height:0;padding:0;border-right:0;border-bottom:1px solid var(--line)}.sidebar nav{display:flex;justify-content:space-between;gap:0;padding:0 8px}.sidebar nav a{flex:1;justify-content:center;border-left:0;border-bottom:2px solid transparent;padding:12px 3px;font-size:11px;gap:6px}.sidebar nav a.active{border-bottom-color:var(--accent)}.sidebar nav svg{width:16px;height:16px}.sidebar-note{display:none}main{margin:0;padding:22px 15px 0}.status-row{padding-bottom:18px;gap:18px}.current-heading{padding-left:12px;border-left-width:4px}.current-heading h2{font-size:24px;letter-spacing:-.8px}.current-heading>p:not(.sr-only){font-size:13px}.pill{font-size:9px}.progress-top h3{font-size:11px}.progress-top>strong{font-size:19px}.process{font-size:8px}.progress-bottom{font-size:9px}.progress-bottom>span:last-child{font-size:8px;max-width:130px}.batch-note{font-size:8px}#scene{height:150px}.model-workspace{padding-top:12px}.model-tools{font-size:9px}.text-button{font-size:9px}.steps{grid-template-columns:19% 17% 23% 41%;margin:0}.steps strong{font-size:10px}.steps small{font-size:8px}.steps>div{margin:0 3px;padding-top:7px}.model-footnote{font-size:7px;gap:8px;padding-top:2px}.sigma-row{gap:9px;align-items:start;padding:13px 0}.sigma-label{font-size:9px;padding-top:6px}.queue{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.queue>div{flex-direction:row;padding:4px 0;gap:3px}.queue strong{font-size:9px}.queue small{font-size:7px}.lower-grid{padding:22px 0}.section-heading h2{font-size:20px;border-left-width:3px;padding-left:10px}.section-heading{margin-bottom:16px}.legend{padding-left:30px;gap:9px;font-size:8px}.legend span:before{width:10px;margin-right:4px}.chart-wrap,#chart{height:195px}#emptyChart{font-size:12px}#emptyChart span{font-size:9px}.chart-note{font-size:8px;padding-left:30px}.data-section{padding-top:22px}table{font-size:14px}th{font-size:12px}.sample-target{margin-top:16px}.sample-target strong{font-size:12px}.metrics strong{font-size:22px}.metrics{gap:45px}.section-heading>span{max-width:180px}.alert{font-size:10px;padding:9px 11px}footer{margin:0 -15px;padding:12px 15px;font-size:9px}.record-section>p{font-size:9px}}
+-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+-
+-/* 실제 종료 기준과 관측값을 구분하며 작은 화면에서도 값을 줄이지 않습니다. */
+-.training-policy{padding:15px 0 12px;border-bottom:1px solid var(--line)}.training-policy dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}.training-policy dl>div{min-width:0}.training-policy dt{font-size:10px;color:var(--muted)}.training-policy dd{font-size:14px;margin:4px 0 0;overflow-wrap:anywhere}.training-policy>p{font-size:9px;color:var(--muted);margin-top:10px}.steps>div.interrupted strong,.steps>div.interrupted small{color:var(--muted)}.text-button:disabled{cursor:default;color:var(--muted)}#latestLoss{display:inline-block;margin-top:4px;color:var(--ink)}
+-@media(max-width:900px){.training-policy dl{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}}@media(max-width:600px){.identity h1{font-size:17px}.training-policy dt{font-size:9px}.training-policy dd{font-size:12px}.training-policy>p{font-size:8px}.progress-top>strong{font-size:16px}}
++@font-face{font-family:Nanum;src:url('/fonts/NanumGothic-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
++:root{color-scheme:light;--bg:#fff;--sidebar:#f8f9fb;--surface:#f3f5f8;--ink:#1b2230;--muted:#788190;--line:#dce1e8;--soft-line:#e9ecf1;--accent:#6b82a4;--accent-strong:#506a92;--selected:#e8edf4;--progress:#7a91b0;--warning:#8b6738;--warning-bg:#faf4e9;--error:#a5655e;--error-bg:#fbf0ee;--nav:180px;--header:88px}
++:root[data-theme=dark]{color-scheme:dark;--bg:#151a22;--sidebar:#171e28;--surface:#202936;--ink:#e3e8f0;--muted:#8d9bad;--line:#343e4e;--soft-line:#293240;--accent:#8da5c7;--accent-strong:#a0b5d4;--selected:#2a374b;--progress:#8b9fbd;--warning:#d2b687;--warning-bg:#322d25;--error:#dda79e;--error-bg:#352829}
++*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:110px}body{margin:0;background:var(--bg);color:var(--ink);font:700 14px/1.65 Nanum,'Malgun Gothic',sans-serif}button,a{font:inherit;outline-offset:5px}button{cursor:pointer;color:inherit}button:focus-visible,a:focus-visible{outline:2px solid var(--accent)}a{color:inherit;text-decoration:none}[hidden]{display:none!important}h1,h2,h3,p{margin:0}h1,h2,h3{letter-spacing:-.8px}h1{font-size:28px;line-height:1.25}h2{font-size:25px;line-height:1.35}h3{font-size:13px}strong{font-weight:700}.topbar{height:var(--header);position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 29px;border-bottom:1px solid var(--line)}.identity{display:flex;align-items:center;gap:27px}.identity>p{padding-left:27px;border-left:1px solid var(--line);font-size:14px;color:var(--muted);line-height:1.5}.top-actions{display:flex;align-items:center;gap:25px;flex-shrink:0}.top-actions button{border:0;background:transparent}.theme-toggle{display:flex;align-items:center;gap:9px;font-size:12px;padding:5px}.theme-track{width:39px;height:22px;border:1px solid var(--accent);border-radius:20px;padding:2px;background:var(--selected)}.theme-track>span{display:block;width:16px;height:16px;background:var(--accent);border-radius:50%;transform:translateX(0)}[data-theme=dark] .theme-track>span{transform:translateX(16px)}.icon-button{border-left:1px solid var(--line)!important;padding:4px 0 4px 22px}.icon-button svg{width:23px;height:23px;display:block;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.sidebar{position:absolute;left:0;top:var(--header);bottom:0;width:var(--nav);min-height:1050px;background:var(--sidebar);border-right:1px solid var(--line);padding:30px 0;display:flex;flex-direction:column}.sidebar nav{display:grid;gap:8px}.sidebar nav a{display:flex;align-items:center;gap:16px;padding:16px 21px;color:var(--muted);font-size:16px;border-left:4px solid transparent}.sidebar nav a.active{background:var(--selected);border-left-color:var(--accent);color:var(--ink)}.sidebar nav svg{width:23px;height:23px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.sidebar-note{margin-top:370px;padding:20px 22px;color:var(--muted);font-size:11px}.sidebar-note span,.sidebar-note small{display:block;font-size:9px;margin-top:4px}main{margin-left:var(--nav);padding:25px 28px 0;max-width:1900px;position:relative}section{min-width:0}.alert{display:none;padding:10px 13px;background:var(--warning-bg);color:var(--warning);font-size:12px;border-left:3px solid currentColor;margin-bottom:16px}.alert.visible{display:block}.alert.failed{background:var(--error-bg);color:var(--error)}.status-row{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:28px;border-bottom:1px solid var(--line);padding:4px 0 23px;min-height:131px}.current-heading{border-left:5px solid var(--accent);padding-left:18px;display:flex;flex-direction:column;justify-content:center}.current-heading h2{font-size:29px;line-height:1.4;letter-spacing:-1px}.status-title{display:flex;flex-direction:column;gap:3px}.pill{font-size:10px;color:var(--accent-strong);letter-spacing:.03em}.current-heading>p:not(.sr-only){font-size:16px;color:var(--muted);margin-top:5px}.training-progress{border-left:1px solid var(--line);padding-left:28px;display:flex;flex-direction:column;justify-content:center}.progress-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}.progress-top>strong{font-size:23px;letter-spacing:-.8px}.process{font-size:9px;color:var(--muted);margin-left:auto}progress{display:block;width:100%;height:10px;border:0;border-radius:3px;overflow:hidden;background:var(--surface)}progress::-webkit-progress-bar{background:var(--surface)}progress::-webkit-progress-value{background:var(--progress);border-radius:3px}progress::-moz-progress-bar{background:var(--progress)}.progress-bottom{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:11px;color:var(--muted)}.progress-bottom>span:last-child{color:var(--ink);font-size:10px;text-align:right;max-width:190px}.batch-note{font-size:9px;color:var(--muted);margin-top:3px}.model-workspace{position:relative;padding-top:18px;border-bottom:1px solid var(--line)}.model-tools{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:10px}.text-button{border:0;background:transparent;color:var(--muted);padding:4px 0;font-size:10px}.text-button:hover{color:var(--accent-strong)}#scene{display:block;width:100%;height:305px;touch-action:pan-y}#sceneError{font-size:12px;color:var(--warning);padding:0 15px}.steps{display:grid;grid-template-columns:17% 15% 25% 43%;margin:0 1.5%;padding:0 0 9px}.steps>div{position:relative;text-align:center;border-top:1px solid var(--line);padding-top:8px;margin:0 5px}.steps>div:before,.steps>div:after{content:'';position:absolute;width:1px;height:6px;background:var(--line);top:-6px}.steps>div:before{left:0}.steps>div:after{right:0}.steps strong{font-size:13px}.steps small{display:block;font-size:9px;color:var(--muted)}.steps>div.active{border-color:var(--accent)}.steps>div.active strong,.steps>div.complete small{color:var(--accent-strong)}.steps>div.failed strong{color:var(--error)}.model-footnote{display:flex;justify-content:space-between;gap:15px;padding-bottom:11px;font-size:9px;color:var(--muted)}.sigma-row{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding:15px 0}.sigma-label{font-size:11px;color:var(--muted);white-space:nowrap}.queue{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;flex:1}.queue>div{display:flex;align-items:center;justify-content:center;gap:5px;padding:5px 2px;color:var(--muted);font-size:10px;border-bottom:2px solid var(--soft-line)}.queue strong{font-size:11px}.queue small{font-size:8px}.queue .running{color:var(--accent-strong);border-color:var(--accent);background:var(--selected)}.queue .completed{color:var(--accent-strong);border-color:var(--accent)}.queue .failed{color:var(--error);border-color:var(--error)}.queue-count{font-size:9px;color:var(--muted);white-space:nowrap}.lower-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);padding:25px 0;gap:29px;border-bottom:1px solid var(--line)}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:18px}.section-heading h2{padding-left:12px;border-left:4px solid var(--accent);font-size:23px;line-height:1.3}.section-heading>span{font-size:10px;color:var(--muted);text-align:right}.data-section{border-left:1px solid var(--line);padding-left:29px}.legend{display:flex;gap:18px;font-size:9px;margin-bottom:8px;padding-left:38px;color:var(--muted)}.legend span:before{content:'';display:inline-block;vertical-align:middle;width:16px;height:2px;background:#647fba;margin-right:5px}.legend span:nth-child(2):before{background:#4c83cf}.legend span:nth-child(3):before{background:#c49b48}.chart-wrap{position:relative;height:208px}#chart{width:100%;height:208px;display:block}#emptyChart{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--muted);font-size:13px;background:repeating-linear-gradient(0deg,transparent 0,transparent 49px,var(--soft-line) 50px);border-bottom:1px solid var(--line)}#emptyChart span{font-size:10px;margin-top:8px}.chart-note{font-size:9px;color:var(--muted);padding-left:38px;margin-top:7px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:center;font-size:15px}th{padding:9px 8px;font-size:13px;background:var(--selected);border-right:1px solid var(--line)}th:last-child{border-right:0}td{padding:10px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--soft-line)}td:last-child{border-right:0}td:first-child{font-size:13px}.data-labels{font-size:10px;color:var(--muted);margin-top:13px;display:flex;gap:6px;align-items:center}.data-labels span{width:1px;height:10px;background:var(--line);margin:0 6px}.data-labels strong{color:var(--ink)}.sample-target{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-top:18px;font-size:10px;color:var(--muted)}.sample-target strong{font-size:13px;color:var(--ink)}.sample-target small{flex-basis:100%;font-size:9px}.bottom-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.3fr);gap:29px;padding:23px 0}.metrics{display:flex;gap:50px;padding-left:16px}.metrics>div{font-size:10px;color:var(--muted)}.metrics strong{display:block;font-size:23px;color:var(--ink);margin-top:5px}.record-section{border-left:1px solid var(--line);padding-left:29px}.record-section>p{font-size:10px;line-height:1.8;overflow-wrap:anywhere;color:var(--muted)}.record-section>p.error{color:var(--error)}.freshness{margin-top:5px}footer{margin:0 -28px;padding:15px 28px;border-top:1px solid var(--line);display:flex;gap:13px;color:var(--muted);font-size:10px}footer strong{color:var(--ink)}footer small{font-size:9px;margin-left:auto}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
++@media(min-width:1600px){#scene{height:340px}.status-row{min-height:140px}.current-heading h2{font-size:32px}.topbar{padding-left:30px}.identity h1{font-size:30px}.lower-grid{padding-top:28px}}
++@media(max-width:1200px){:root{--nav:156px}.topbar{padding:0 20px}.identity{gap:18px}.identity h1{font-size:24px}.identity>p{font-size:11px;padding-left:18px;max-width:270px}.sidebar nav a{padding:15px 15px;font-size:14px;gap:10px}main{padding:23px 22px 0}.current-heading h2{font-size:25px}.current-heading>p:not(.sr-only){font-size:13px}.status-row{gap:20px}.training-progress{padding-left:20px}.progress-top>strong{font-size:20px}.process{display:none}.progress-bottom{font-size:10px}.progress-bottom>span:last-child{font-size:9px;max-width:135px}.queue{gap:3px}.queue>div{flex-direction:column;gap:0}.queue-count{font-size:8px}.lower-grid{gap:22px}.data-section{padding-left:22px}.section-heading h2{font-size:21px}.section-heading>span{font-size:9px}.legend{gap:10px;font-size:8px}.model-footnote{font-size:8px}.record-section{padding-left:22px}footer{margin:0 -22px;padding:14px 22px}}
++@media(max-width:900px){:root{--nav:140px;--header:78px}.identity>p{display:none}.identity h1{font-size:24px}.sidebar nav a{font-size:12px;padding-left:12px;gap:9px}.sidebar nav svg{width:20px;height:20px}.sidebar-note{padding-left:16px}.status-row{grid-template-columns:1fr;gap:19px}.training-progress{padding-left:0;border-left:0}.current-heading h2{font-size:27px}.current-heading>p:not(.sr-only){font-size:15px}.progress-top{margin-bottom:7px}.progress-top>strong{margin-left:auto}.process{display:block;margin-left:0}.progress-bottom>span:last-child{max-width:none}.lower-grid{grid-template-columns:1fr;gap:25px}.data-section{padding-left:0;border-left:0;padding-top:23px;border-top:1px solid var(--line)}.bottom-grid{grid-template-columns:1fr;gap:22px}.record-section{border-left:0;padding-left:0;padding-top:22px;border-top:1px solid var(--line)}.queue-count{display:none}.sigma-row{gap:10px}.queue strong{font-size:10px}#scene{height:255px}.steps strong{font-size:11px}.sidebar{min-height:1510px}.sidebar-note{margin-top:650px}footer{flex-wrap:wrap;gap:5px 10px}footer small{margin-left:0;width:100%}}
++@media(max-width:600px){:root{--header:76px;--nav:0px}html{scroll-padding-top:15px}.topbar{padding:0 15px;gap:8px}.identity h1{font-size:21px;letter-spacing:-1px}.top-actions{gap:7px}.theme-toggle{font-size:9px;gap:5px;padding:3px}.theme-track{width:31px;height:19px;padding:2px}.theme-track>span{width:13px;height:13px}[data-theme=dark] .theme-track>span{transform:translateX(12px)}.icon-button{padding-left:10px!important}.icon-button svg{width:19px;height:19px}.sidebar{position:relative;inset:auto;width:auto;min-height:0;padding:0;border-right:0;border-bottom:1px solid var(--line)}.sidebar nav{display:flex;justify-content:space-between;gap:0;padding:0 8px}.sidebar nav a{flex:1;justify-content:center;border-left:0;border-bottom:2px solid transparent;padding:12px 3px;font-size:11px;gap:6px}.sidebar nav a.active{border-bottom-color:var(--accent)}.sidebar nav svg{width:16px;height:16px}.sidebar-note{display:none}main{margin:0;padding:22px 15px 0}.status-row{padding-bottom:18px;gap:18px}.current-heading{padding-left:12px;border-left-width:4px}.current-heading h2{font-size:24px;letter-spacing:-.8px}.current-heading>p:not(.sr-only){font-size:13px}.pill{font-size:9px}.progress-top h3{font-size:11px}.progress-top>strong{font-size:19px}.process{font-size:8px}.progress-bottom{font-size:9px}.progress-bottom>span:last-child{font-size:8px;max-width:130px}.batch-note{font-size:8px}#scene{height:150px}.model-workspace{padding-top:12px}.model-tools{font-size:9px}.text-button{font-size:9px}.steps{grid-template-columns:19% 17% 23% 41%;margin:0}.steps strong{font-size:10px}.steps small{font-size:8px}.steps>div{margin:0 3px;padding-top:7px}.model-footnote{font-size:7px;gap:8px;padding-top:2px}.sigma-row{gap:9px;align-items:start;padding:13px 0}.sigma-label{font-size:9px;padding-top:6px}.queue{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.queue>div{flex-direction:row;padding:4px 0;gap:3px}.queue strong{font-size:9px}.queue small{font-size:7px}.lower-grid{padding:22px 0}.section-heading h2{font-size:20px;border-left-width:3px;padding-left:10px}.section-heading{margin-bottom:16px}.legend{padding-left:30px;gap:9px;font-size:8px}.legend span:before{width:10px;margin-right:4px}.chart-wrap,#chart{height:195px}#emptyChart{font-size:12px}#emptyChart span{font-size:9px}.chart-note{font-size:8px;padding-left:30px}.data-section{padding-top:22px}table{font-size:14px}th{font-size:12px}.sample-target{margin-top:16px}.sample-target strong{font-size:12px}.metrics strong{font-size:22px}.metrics{gap:45px}.section-heading>span{max-width:180px}.alert{font-size:10px;padding:9px 11px}footer{margin:0 -15px;padding:12px 15px;font-size:9px}.record-section>p{font-size:9px}}
++@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
++
++/* 실제 종료 기준과 관측값을 구분하며 작은 화면에서도 값을 줄이지 않습니다. */
++.training-policy{padding:15px 0 12px;border-bottom:1px solid var(--line)}.training-policy dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}.training-policy dl>div{min-width:0}.training-policy dt{font-size:10px;color:var(--muted)}.training-policy dd{font-size:14px;margin:4px 0 0;overflow-wrap:anywhere}.training-policy>p{font-size:9px;color:var(--muted);margin-top:10px}.steps>div.interrupted strong,.steps>div.interrupted small{color:var(--muted)}.text-button:disabled{cursor:default;color:var(--muted)}#latestLoss{display:inline-block;margin-top:4px;color:var(--ink)}
++@media(max-width:900px){.training-policy dl{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 18px}}@media(max-width:600px){.identity h1{font-size:17px}.training-policy dt{font-size:9px}.training-policy dd{font-size:12px}.training-policy>p{font-size:8px}.progress-top>strong{font-size:16px}}
++/* 처리 순서는 큰 한글로 읽고 입체 모형은 보조 설명으로 사용합니다. */
++.model-workspace{padding-top:16px}.model-workspace .model-tools{padding:0 0 10px;font-size:11px}.pipeline-guide{margin:0 0 13px}.pipeline-core{font-size:18px;line-height:1.65;letter-spacing:-.4px;max-width:1000px;color:var(--ink);margin-bottom:18px}.pipeline-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;list-style:none;padding:0;margin:0}.pipeline-cards>li{position:relative;min-width:0;border-top:3px solid var(--line);padding:13px 0 10px}.pipeline-cards>li:not(:last-child):after{content:'→';position:absolute;right:-16px;top:14px;font-size:17px;color:var(--muted)}.pipeline-cards h3{font-size:17px;line-height:1.5;letter-spacing:-.5px;margin:0 0 8px}.pipeline-cards p{font-size:12px;line-height:1.9;color:var(--muted);margin:0 0 9px;min-height:68px}.pipeline-card-note{font-size:10px;color:var(--accent-strong);border:1px solid var(--line);padding:3px 7px;border-radius:3px;display:inline-block}.pipeline-cards>li.is-active{border-top-color:var(--accent)}.pipeline-cards>li.is-active h3{color:var(--accent-strong)}.pipeline-learning{padding:12px 15px;background:var(--selected);border-left:3px solid var(--accent);margin:4px 0 10px;display:flex;flex-direction:column;gap:5px}.pipeline-learning>strong{font-size:14px;line-height:1.6}.pipeline-learning>span{font-size:10px;line-height:1.8;color:var(--muted)}.pipeline-viewport{position:relative;width:100%;max-width:100%;min-width:0;overflow:hidden;border:0;border-radius:0;background:none}.pipeline-viewport #scene{display:block;width:100%;min-width:0;max-width:100%;height:190px;touch-action:pan-y}.pipeline-technical{font-size:10px;color:var(--muted);padding:4px 0 10px}.pipeline-technical summary{cursor:pointer;color:var(--ink);padding:7px 0}.pipeline-technical p{line-height:1.9;margin:4px 0}.model-workspace .model-footnote{padding-top:3px;padding-bottom:13px;font-size:10px;line-height:1.8}.model-workspace .steps[hidden]{display:none!important}
++@media(min-width:1600px){.pipeline-viewport #scene{height:210px}.pipeline-cards h3{font-size:19px}.pipeline-cards p{font-size:13px}}@media(max-width:1100px){.pipeline-cards{gap:16px}.pipeline-cards h3{font-size:15px}.pipeline-cards p{font-size:11px;min-height:88px}.pipeline-cards>li:not(:last-child):after{right:-13px;font-size:14px}.pipeline-core{font-size:16px}}@media(max-width:850px){.pipeline-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px}.pipeline-cards p{min-height:0}.pipeline-cards h3{font-size:17px}.pipeline-cards>li:not(:last-child):after{content:none}.pipeline-viewport #scene{height:150px}.pipeline-learning>strong{font-size:13px}}@media(max-width:520px){.pipeline-cards{grid-template-columns:1fr;gap:0}.pipeline-core{font-size:16px;margin-bottom:13px}.pipeline-cards>li{padding:11px 0;border-top-width:1px}.pipeline-cards h3{font-size:17px;margin-bottom:4px}.pipeline-cards p{font-size:12px;line-height:1.8;margin-bottom:5px}.pipeline-card-note{font-size:9px;padding:1px 6px}.pipeline-learning{padding:10px 11px;margin-top:5px}.pipeline-learning>strong{font-size:12px}.pipeline-learning>span{font-size:10px}.pipeline-viewport #scene{height:125px}.pipeline-technical{font-size:10px}.model-workspace .model-footnote{font-size:9px}.model-workspace .model-tools{font-size:10px}}/* 전체 180장 구성은 선택기로 탐색하며 특징 몽타주는 한 줄 전체 폭을 사용합니다. */
++.pipeline-gallery{--preview-button-bg:var(--bg);--preview-button-hover:var(--surface);--preview-button-selected:var(--selected);border-top:1px solid var(--line);padding:23px 0 20px;margin-top:6px;min-width:0;max-width:100%}.pipeline-gallery>h2{font-size:23px;line-height:1.45;margin:0 0 12px}.pipeline-gallery-description{max-width:1100px;font-size:13px;line-height:1.95;color:var(--ink);margin:0 0 8px}.pipeline-gallery-normalization{max-width:1100px;font-size:11px;line-height:1.95;color:var(--muted);margin:0 0 11px}.pipeline-gallery-status{font-size:11px;line-height:1.85;color:var(--muted);margin:0 0 10px}.pipeline-gallery-statistics{font-size:17px;color:var(--ink);line-height:1.6;padding:13px 0;border-top:1px solid var(--soft-line);border-bottom:1px solid var(--soft-line);margin:0 0 18px}.pipeline-gallery-controls{display:block;min-width:0;border:0;padding:0;margin:0 0 16px}.pipeline-gallery-controls>legend{float:none;display:block;width:auto;padding:0;margin:0 0 9px;font-size:14px;line-height:1.6;color:var(--ink)}.pipeline-gallery-options{display:flex;flex-wrap:wrap;gap:9px;min-width:0}.pipeline-gallery .pipeline-gallery-choice{appearance:none;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;min-width:88px;min-height:61px;max-width:100%;margin:0;padding:10px 13px;border:1px solid var(--line);border-radius:5px;background:var(--preview-button-bg);color:var(--ink);font:inherit;line-height:1.4;text-align:left;cursor:pointer;box-shadow:none;transform:none;transition:none;outline-offset:3px}.pipeline-gallery .pipeline-gallery-choice>span{display:block;font-size:15px;line-height:1.4;white-space:nowrap}.pipeline-gallery .pipeline-gallery-choice>small{display:block;font-size:10px;line-height:1.5;color:var(--muted);white-space:nowrap}.pipeline-gallery .pipeline-gallery-choice:hover:not(:disabled){background:var(--preview-button-hover);border-color:var(--accent);color:var(--ink);box-shadow:none;transform:none}.pipeline-gallery .pipeline-gallery-choice:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px;box-shadow:none;transform:none}.pipeline-gallery .pipeline-gallery-choice:active:not(:disabled){background:var(--preview-button-selected);border-color:var(--accent-strong);box-shadow:inset 0 0 0 1px var(--accent);transform:none}.pipeline-gallery .pipeline-gallery-choice[aria-pressed=true]{background:var(--preview-button-selected);border-color:var(--accent-strong);color:var(--accent-strong);box-shadow:inset 0 0 0 1px var(--accent);transform:none}.pipeline-gallery .pipeline-gallery-choice[aria-pressed=true]>small{color:var(--accent-strong)}.pipeline-gallery .pipeline-gallery-choice:disabled,.pipeline-gallery .pipeline-gallery-choice:disabled:hover,.pipeline-gallery .pipeline-gallery-choice:disabled:active{background:var(--surface);border-color:var(--line);border-style:dashed;color:var(--muted);cursor:not-allowed;opacity:.7;box-shadow:none;transform:none}.pipeline-gallery-class-options .pipeline-gallery-choice{min-width:132px}.pipeline-gallery-selection{font-size:14px;line-height:1.85;color:var(--ink);margin:2px 0 17px}.pipeline-gallery-grid{display:flex;flex-direction:column;gap:25px;min-width:0;width:100%;max-width:100%}.pipeline-gallery-grid:empty{display:none}.pipeline-gallery figure{display:block;width:100%;max-width:100%;min-width:0;margin:0;padding:17px 0 20px;border:0;border-top:1px solid var(--line);border-radius:0;background:var(--bg)}.pipeline-preview-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 14px}.pipeline-preview-heading>h3{font-size:17px;line-height:1.6;margin:0;color:var(--ink);letter-spacing:-.4px}.pipeline-gallery .pipeline-preview-open{display:inline-block;flex-shrink:0;font-size:12px;line-height:1.6;color:var(--accent-strong);background:var(--bg);padding:6px 10px;border:1px solid var(--line);border-radius:4px;text-decoration:underline;text-underline-offset:3px;outline-offset:3px;box-shadow:none;transform:none}.pipeline-gallery .pipeline-preview-open:hover{background:var(--surface);border-color:var(--accent);color:var(--accent-strong);box-shadow:none;transform:none}.pipeline-gallery .pipeline-preview-open:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}.pipeline-gallery .pipeline-preview-open:active{background:var(--selected);border-color:var(--accent-strong);transform:none}.pipeline-gallery img{display:block;width:100%;max-width:100%;height:auto;margin:0 auto 13px;background:var(--surface)}.pipeline-gallery .pipeline-preview-original img{width:512px;max-width:100%}.pipeline-gallery .pipeline-preview-montage img{width:100%;max-width:none}.pipeline-gallery img[hidden]{display:none}.pipeline-gallery figcaption{font-size:12px;line-height:1.95;color:var(--muted);white-space:pre-line;overflow-wrap:anywhere;max-width:1100px}.pipeline-preview-error{font-size:12px;line-height:1.9;color:var(--muted);padding:25px 0;margin:0}[data-theme=dark] .pipeline-gallery .pipeline-gallery-choice:disabled{opacity:.8}
++@media(max-width:600px){.pipeline-gallery{padding-top:21px}.pipeline-gallery>h2{font-size:21px}.pipeline-gallery-description{font-size:12px}.pipeline-gallery-normalization{font-size:11px}.pipeline-gallery-status{font-size:10px}.pipeline-gallery-statistics{font-size:15px}.pipeline-gallery-options{gap:8px}.pipeline-gallery .pipeline-gallery-choice{min-width:86px;min-height:61px;padding:10px 12px}.pipeline-gallery .pipeline-gallery-choice>span{font-size:15px}.pipeline-gallery .pipeline-gallery-choice>small{font-size:10px}.pipeline-gallery-class-options .pipeline-gallery-choice{flex:1;min-width:82px}.pipeline-gallery-selection{font-size:12px}.pipeline-gallery-grid{gap:17px}.pipeline-gallery figure{padding:14px 0 17px}.pipeline-preview-heading{align-items:flex-start;gap:8px}.pipeline-preview-heading>h3{font-size:16px}.pipeline-gallery .pipeline-preview-open{font-size:11px;padding:5px 9px}.pipeline-gallery figcaption{font-size:11px}}.pipeline-gallery .pipeline-gallery-choice[aria-pressed=true]:hover:not(:disabled){background:var(--preview-button-selected);border-color:var(--accent-strong);color:var(--accent-strong);box-shadow:inset 0 0 0 1px var(--accent);transform:none}
++/* 여섯 장 개요를 먼저 보여 주고 아래 상세 그림으로 바로 이동합니다. */
++.pipeline-gallery-overview{margin:4px 0 22px}.pipeline-gallery-overview[hidden]{display:none}.pipeline-gallery-overview>p{font-size:12px;line-height:1.8;color:var(--muted);margin:0 0 10px}.pipeline-gallery-thumbnails{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;min-width:0}.pipeline-gallery .pipeline-preview-thumbnail{display:flex;flex-direction:column;min-width:0;align-items:center;justify-content:space-between;gap:7px;margin:0;padding:9px 7px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);text-decoration:none;outline-offset:3px;box-shadow:none;transform:none}.pipeline-gallery .pipeline-preview-thumbnail img{display:block;width:100%;max-width:100%;height:84px;margin:0;object-fit:contain;background:var(--surface)}.pipeline-preview-thumbnail>span{font-size:11px;line-height:1.6;text-align:center;color:var(--ink)}.pipeline-gallery .pipeline-preview-thumbnail:hover{background:var(--surface);border-color:var(--accent);box-shadow:none;transform:none}.pipeline-gallery .pipeline-preview-thumbnail:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}.pipeline-gallery .pipeline-preview-thumbnail:active{background:var(--selected);border-color:var(--accent-strong);transform:none}.pipeline-gallery .pipeline-preview-original img{width:auto;height:auto;max-width:100%;max-height:450px;object-fit:contain}.pipeline-gallery figure[id]{scroll-margin-top:24px}
++@media(max-width:900px){.pipeline-gallery-thumbnails{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.pipeline-gallery .pipeline-preview-thumbnail img{height:90px}}@media(max-width:600px){.pipeline-gallery-thumbnails{gap:8px}.pipeline-gallery .pipeline-preview-thumbnail{padding:7px 5px}.pipeline-gallery .pipeline-preview-thumbnail img{height:76px}.pipeline-preview-thumbnail>span{font-size:10px}.pipeline-gallery-overview>p{font-size:11px}}
++/* 사진 설정 창은 읽기 전용이며 전역 버튼 규칙과 분리합니다. */
++.pipeline-gallery .pipeline-preview-thumbnail{font:inherit;cursor:pointer;transition:none}.pipeline-gallery .pipeline-preview-image-button{appearance:none;display:block;width:100%;max-width:100%;min-width:0;margin:0 0 13px;padding:0;border:1px solid transparent;border-radius:3px;background:transparent;color:inherit;font:inherit;line-height:0;cursor:pointer;box-shadow:none;transform:none;transition:none;outline-offset:3px}.pipeline-gallery .pipeline-preview-image-button>img{margin:0 auto}.pipeline-gallery .pipeline-preview-image-button:hover{border-color:var(--accent);background:var(--surface);box-shadow:none;transform:none}.pipeline-gallery .pipeline-preview-image-button:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}.pipeline-gallery .pipeline-preview-image-button:active{border-color:var(--accent-strong);background:var(--selected);transform:none}.pipeline-settings-dialog{box-sizing:border-box;width:min(1100px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:min(92dvh,1000px);padding:0;margin:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);box-shadow:0 20px 90px #0b142b4d;overflow:hidden;font:700 14px/1.7 Nanum,'Malgun Gothic',sans-serif}.pipeline-settings-dialog:not([open]){display:none}.pipeline-settings-dialog[open]{display:flex;flex-direction:column}.pipeline-settings-dialog::backdrop{background:#101a2db3}.pipeline-settings-header{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:17px 21px;border-bottom:1px solid var(--line);flex-shrink:0}.pipeline-settings-header>h2{font-size:22px;line-height:1.4;letter-spacing:-.6px;margin:0;min-width:0;overflow-wrap:anywhere;outline-offset:3px}.pipeline-settings-dialog .pipeline-settings-close{appearance:none;flex-shrink:0;min-height:38px;margin:0;padding:7px 13px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);font:inherit;font-size:13px;line-height:1.6;cursor:pointer;outline-offset:3px;box-shadow:none;transform:none;transition:none}.pipeline-settings-dialog .pipeline-settings-close:hover{background:var(--surface);border-color:var(--accent);color:var(--ink);box-shadow:none;transform:none}.pipeline-settings-dialog .pipeline-settings-close:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}.pipeline-settings-dialog .pipeline-settings-close:active{background:var(--selected);border-color:var(--accent-strong);transform:none}.pipeline-settings-body{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:18px 23px 24px;max-height:calc(92dvh - 82px);scrollbar-width:thin}.pipeline-settings-identity{font-size:12px;color:var(--accent-strong);margin:0 0 11px}.pipeline-settings-summary{font-size:14px;line-height:1.9;margin-bottom:17px;color:var(--ink)}.pipeline-settings-summary>p{margin:0 0 7px}.pipeline-settings-image{display:block;width:100%;height:auto;max-width:100%;max-height:430px;object-fit:contain;background:var(--surface);margin:0 auto 12px}.pipeline-settings-dialog .pipeline-preview-open{display:inline-block;color:var(--accent-strong);font-size:12px;line-height:1.7;padding:5px 8px;border:1px solid var(--line);border-radius:3px;text-decoration:underline;text-underline-offset:3px;background:var(--bg);outline-offset:3px}.pipeline-settings-dialog .pipeline-preview-open:hover{background:var(--surface);border-color:var(--accent)}.pipeline-settings-dialog .pipeline-preview-open:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}.pipeline-settings-caption{font-size:11px;line-height:1.9;color:var(--muted);white-space:pre-line;overflow-wrap:anywhere;margin:12px 0}.pipeline-settings-help{padding:12px 14px;margin:15px 0;background:var(--selected);font-size:13px;line-height:1.9;color:var(--ink)}.pipeline-settings-list{margin:15px 0 20px}.pipeline-settings-list>div{display:grid;grid-template-columns:minmax(140px,.42fr) minmax(0,1fr);gap:17px;padding:10px 0;border-bottom:1px solid var(--soft-line)}.pipeline-settings-list dt{font-size:12px;color:var(--muted);line-height:1.8}.pipeline-settings-list dd{margin:0;min-width:0;font-size:13px;line-height:1.8;overflow-wrap:anywhere}.pipeline-settings-advanced{margin:12px 0 0;padding:0;border:1px solid var(--line);border-radius:4px}.pipeline-settings-advanced>summary{padding:11px 13px;font-size:13px;line-height:1.7;cursor:pointer;outline-offset:3px}.pipeline-settings-advanced>summary:hover{background:var(--surface)}.pipeline-settings-advanced>summary:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}.pipeline-settings-advanced[open]>summary{border-bottom:1px solid var(--line);background:var(--selected)}.pipeline-settings-advanced>p{padding:0 13px;margin:11px 0;font-size:11px;line-height:1.9;color:var(--muted)}.pipeline-settings-advanced>.pipeline-settings-list{padding:0 13px;margin:4px 0 13px}.pipeline-settings-table{max-width:100%;overflow-x:auto;padding:10px 13px}.pipeline-settings-table table{width:100%;font-size:12px;border-collapse:collapse}.pipeline-settings-table th,.pipeline-settings-table td{padding:8px 9px;text-align:left;white-space:nowrap;font-size:12px}.pipeline-settings-table th{background:var(--selected);color:var(--ink)}.pipeline-settings-table td{color:var(--ink)}[data-theme=dark] .pipeline-settings-dialog{box-shadow:0 20px 90px #0009}[data-theme=dark] .pipeline-settings-dialog::backdrop{background:#050a14c9}
++@media(max-width:600px){.pipeline-settings-dialog{width:calc(100vw - 18px);max-width:calc(100vw - 18px);max-height:94dvh;border-radius:6px}.pipeline-settings-header{padding:14px 13px;gap:10px}.pipeline-settings-header>h2{font-size:18px}.pipeline-settings-dialog .pipeline-settings-close{font-size:12px;padding:6px 10px}.pipeline-settings-body{padding:14px 14px 20px;max-height:calc(94dvh - 78px)}.pipeline-settings-summary{font-size:13px;line-height:1.85}.pipeline-settings-image{max-height:310px}.pipeline-settings-help{font-size:12px;padding:11px 12px}.pipeline-settings-list>div{grid-template-columns:1fr;gap:3px;padding:9px 0}.pipeline-settings-list dt{font-size:11px}.pipeline-settings-list dd{font-size:12px}.pipeline-settings-advanced>summary{font-size:12px}.pipeline-settings-caption{font-size:10px}}
++
++/* 쉬운 설명을 먼저 읽고 정확한 생성 수치는 펼쳐서 확인합니다. */
++.pipeline-emoji{font-family:'Segoe UI Emoji','Apple Color Emoji',sans-serif;font-weight:400}.pipeline-core{padding:14px 17px;background:var(--selected);border-radius:7px}.pipeline-cards>li{padding:14px 10px 11px}.pipeline-cards p{font-size:13px;line-height:1.85}.pipeline-settings-summary{display:grid;gap:12px}.pipeline-settings-summary>section{padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 5px 5px 0}.pipeline-settings-summary h3{font-size:15px;line-height:1.6;margin:0 0 5px}.pipeline-settings-summary p{margin:0;font-size:14px;line-height:1.85}.pipeline-panel-guide>span{display:block}.pipeline-panel-guide{font-size:13px;line-height:1.9;color:var(--ink);padding:12px 0;margin:0;font-family:Nanum,'Segoe UI Emoji','Malgun Gothic',sans-serif}.pipeline-preview-easy{font-size:14px;line-height:1.9;color:var(--ink);margin:9px 0 11px}.pipeline-preview-exact{color:var(--muted);font-size:12px;line-height:1.8}.pipeline-preview-exact>summary{display:list-item;padding:7px 0;cursor:pointer;outline-offset:3px}.pipeline-preview-exact>summary:hover{color:var(--accent-strong)}.pipeline-preview-exact>summary:focus-visible{outline:2px solid var(--accent-strong)}.pipeline-preview-exact[open]>summary{color:var(--accent-strong)}.pipeline-settings-advanced>.pipeline-settings-help,.pipeline-settings-advanced>.pipeline-settings-caption{margin:12px 13px}.pipeline-gallery-description{max-width:900px}.pipeline-gallery-normalization{max-width:950px}
++@media(max-width:600px){.pipeline-core{padding:12px 13px}.pipeline-cards>li{padding:12px 0}.pipeline-settings-summary>section{padding:10px 11px}.pipeline-settings-summary h3{font-size:14px}.pipeline-settings-summary p,.pipeline-preview-easy{font-size:13px}.pipeline-panel-guide{font-size:12px}}
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"
+index 1a29ee6..04c5e9c 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/2\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"	
+@@ -1,20 +1,55 @@
+-# 2차 변경 기록
+-
+-2026-11-10. 1차를 보존하고 별도 2차에서 학습 정책과 평가·분할을 보완했습니다.
+-
+-- 최대35→100회, 조기 종료7→15회. 종료 판단의 절대 개선량0.0001과 실제 최저 손실 체크포인트 선택을 분리합니다.
+-- Adam→AdamW, 학습률0.00008→0.00003, 가중치 감쇠0.0001. 검증 미개선4회를 허용한 뒤 다음 미개선에서0.5배 감소, 최저학습률0.000001.
+-- 배치2→8로 epoch당 가중치 갱신5000→1250회. OK·NG 학습 표본은 각각5000개를 유지합니다.
+-- 완전 중복에 고정64px 회색조 RMSE≤5 유사 그룹을 추가해 분할하고 세 원본 범주의 평가를 구분합니다. 유사 그룹을 환자 ID로 해석하지 않습니다.
+-- FP32 평가와 FP64 안정 손실, 로짓 순위 기반 AUC·AP로 수치 포화 영향을 줄입니다. 학습률·종료 상태·scheduler 재개 정보를 기록합니다.
+-- 화면에서2차·최대 에폭·학습률·조기 종료 대기·최적 회차·가중치 갱신 횟수와 중단 상태를 표시합니다. 기존 테마·3D·글꼴·라이선스를 보존합니다.
+-
+-세부 실제 파일 차이는 공개 차수 설명의 전체 비교에서 확인합니다. 검증 결과는 구현과 독립 검사 이후 기록합니다. 장시간 학습 전체 완료와 환자 독립 성능을 사전에 주장하지 않습니다. 의료 원본·영상별 자료·가중치·운영 로그·접속정보·개인 지침은 공개하지 않습니다. 새 논문 원고는 없습니다.
+-
+-## 구현 검증
+-
+-2차 전체 단위·통합 검사 43개가 통과했습니다. 새 분할에서 실제 512픽셀·배치8·BF16 학습20번과 검증164장 FP32 추론/FP64 손실 연결을 확인했습니다. 이는 완성된 epoch나 연구 성능이 아닌 실행 연결 검사입니다. 합성 포화 로짓, 작은 양수 손실, 유사 그룹 분할, 종료 제어 분리, optimizer·scheduler·RNG 재개, HTTP 경계와 동시 상태 읽기/쓰기를 검사했습니다.
+-
+-실제 분할은 학습769장(양성84·정상292·악성393), 검증164장과 시험164장(각 양성18·정상62·악성84)입니다. 원본1097장·완전 중복 그룹1054개·고정 유사 그룹820개이며 최대 유사 그룹은26장입니다.
+-
+-공개 반영 전에는 구현자와 다른 검증자가 최종 소스와 요구 사항을 다시 대조하고 전체 검사를 실행합니다. 검토문과 운영 영수증은 비공개 로컬 기록에 별도로 보존합니다.
++# 🧩 특징맵 전체 구성과 대시보드 · 공개 코드 3차
++
++**학습 2차의 결과를 읽는 시각화 소프트웨어**를 보완했습니다. 새로운 학습 차수를 시작한 변경이 아닙니다. 학습 코드·설정·분할·실행 식별자와 체크포인트는 그대로 사용합니다.
++
++화면에서는 **📷 몸속 사진 → 🔎 선·무늬 찾기 → 🌫️ 찾은 무늬를 부드럽게 → 🗂️ 두 상자로 분류** 순서로 먼저 설명합니다. 이해를 돕는 비유이며 의학적 진단을 뜻하지 않습니다. 64채널·잔차 블록 같은 실제 기술 조건은 상세 설정에서 그대로 확인합니다.
++
++## 달라진 표시와 저장 방식
++
++이전 미리보기는 블러 직후 특징 중 한 채널을 대표 이미지로 보여 주었습니다. 이번에는 원본 범주와 처리 단계별 PNG를 저장하고, 특징맵 한 그림 안에 여러 채널의 반응을 함께 배치합니다.
++
++| 구분 | 구성 |
++|---|---|
++| 조건 | 원본 기준과 블러 강도 1·2·4·8·16·32·64·128·256 |
++| 원본 범주 | 양성·악성·정상 각각 대표 CT 한 장 |
++| 추출 단계 | 입력 영상, 첫 합성곱의 블러 직후, 잔차 블록 묶음 1~4의 출력 |
++| 조건별 PNG | 원본 범주 3개 × 단계 6개 = 18개 |
++| 전체 구성 | 조건 10개 × 18개 = 180개 |
++| 특징맵 그림 | 전체 채널 평균·채널별 최댓값·균등 간격의 개별 채널 8개, 총 10패널 |
++
++참고 자료와 동일한 조건별 폴더·범주별 하위 폴더·단계별 파일 배열을 사용합니다. 과거 PNG를 현재 실험의 결과로 복사하지 않고, 현재 실험의 완료된 최적 체크포인트로 실제 특징을 계산합니다. 참고 자료와 모델·전처리·추출 경계가 다르므로 수치적으로 동일한 재현이나 같은 사진이라고 주장하지 않습니다. 첫 합성곱의 출력은 64채널이며 이후 잔차 블록 묶음에서는 채널 수와 공간 크기가 달라집니다.
++
++원본 기준의 폴더 이름은 `원본 파일 생성`, 블러 조건은 `sigma1 블러 파일 생성` 등으로 참고 구조를 유지합니다. 각 조건 안의 `피쳐맵`에는 `Bengin_cases`, `Malignant_cases`, `Normal_cases` 범주가 있고 단계 0~5 그림이 들어갑니다. 참고 자료의 고유 이름과 철자는 경로 대응을 위해 보존합니다.
++
++## 사진 아래 설명을 읽는 방법
++
++그림에는 추출 지점·텐서 크기·패널 구성·실제 체크포인트와 연결되는 정보를 표시합니다. 사진 아래에는 해당 단계의 역할과 색의 의미를 설명합니다. 원본 입력의 회색은 픽셀 밝기입니다. 특징맵의 색은 특징의 상대 반응이며 병변 위치나 악성 확률, 프라이버시 보장값이 아닙니다. 특징맵의 각 패널을 자체 최솟값·최댓값으로 표시하므로 서로 다른 패널의 같은 색을 같은 수치로 비교하지 않습니다.
++
++대시보드는 블러 강도·원본 범주·처리 단계를 선택해 사진과 설명을 보여 줍니다. 완료된 조건의 18장 묶음이 모두 준비되어야 공개하고, 아직 학습 중이거나 출력이 준비되지 않은 조건은 완료 사진으로 표시하지 않습니다. 내부 파일 경로와 영상별 원본 목록은 HTTP 응답에 포함하지 않습니다.
++
++각 사진을 선택하면 그 그림을 만든 조건을 확인할 수 있습니다. 블러 강도, 추출 단계, 텐서 크기, 선택 채널과 패널 범위, 체크포인트 회차, CPU·FP32 추론 조건과 학습 정책을 구분해 표시합니다. 사진을 만든 평가 추론 설정을 학습 정밀도와 혼동하지 않습니다. 설정은 서버가 허용한 항목만 제공하며 원본 CT 파일 경로나 인증정보는 보내지 않습니다.
++
++## 변경 파일과 실행 경계
++
++- `dashboard.py`: 완료 상태·실행 식별자·18장 묶음·정해진 파일 경로를 대조해 인증된 요청에 특징맵을 제공합니다.
++- `web/scene.js`, `web/style.css`: 특징맵 탐색과 설명, 입력부터 분류까지의 처리 흐름을 표시합니다.
++- `생성 도구/단계별_특징맵_저장.py`: 완료한 조건의 최적 체크포인트를 CPU에서 읽어 같은 대표 CT의 단계별 특징을 저장합니다. 학습 코드·설정·체크포인트는 쓰지 않습니다.
++- `README.md`, 차수 설명·전체 목차·변경 기록과 비교 자료: 소프트웨어 차수와 실제 학습 차수를 구분합니다.
++
++3차 폴더는 이전 2차의 공개 실행 묶음을 보존해 복사한 뒤 위 파일과 설명을 갱신한 사본입니다. `src/`, `run_training.py`, `config.example.json`과 의존성은 2차 공개본과 같습니다. 로컬 학습 디렉터리를 이 공개 사본으로 교체하거나 실행 중 소스를 옮기지 않습니다.
++
++공개 저장 도구에서는 개인 절대 참고 경로와 특정 실행 식별자 기본값만 제거했습니다. 실행할 때 `--experiment-root`, `--output-root`, `--reference-root`, `--run-id`를 실제 로컬 값으로 지정합니다. 참고 PNG와 실제 CT·특징맵 PNG·가중치·영상별 목록·실행 기록은 공개 저장소에 포함하지 않습니다.
++
++## 검증과 해석 범위
++
++출력 도구는 전체 PNG 경로 180개, 조건별 결과 18개, 실행·원본·체크포인트 해시, 유한 텐서와 이미지 크기를 대조합니다. 저장 순서는 학습 분할에서 범주별 상대 경로 정렬 첫 원본을 선택하며, 이 대표 사진을 전체 데이터나 환자의 대표성으로 일반화하지 않습니다. 완료되지 않은 조건의 결과를 미리 만들지 않습니다.
++
++직접 수행한 검사와 독립 검토의 상세 결과는 별도 검증 기록에서 관리합니다. 전체 학습 완료와 임상 성능을 소프트웨어 검사 통과로 대신하지 않습니다. 원본 환자 ID가 없어 영상 단위 예비실험이라는 한계가 유지됩니다. 새 논문 원고와 기존 공개 논문·PDF의 수정은 이번 묶음에 없습니다.
++
++## 전체 파일 비교
++
++[이번 공개 변경의 전체 비교](../../docs/revision-diffs/conv1-okng-round3.diff)와 [같은 파일별 2차 대비 비교](../../docs/revision-diffs/conv1-okng-round3-vs-round2.diff)를 제공합니다. 주석·공백을 포함한 모든 실제 바이트 차이와 상위 안내 문서의 변경을 담으며, 비교 파일 자신의 재귀 비교만 제외합니다. 이전 공개 1·2차는 수정하지 않습니다. 3차 폴더에 추가한 글꼴 바이너리는 이전 공개본을 그대로 복사한 파일입니다. 새 의료 이미지나 새로운 내용의 바이너리를 추가하지 않고 글꼴과 라이선스를 보존합니다.
++
++| 복사한 바이너리 | 바이트 | SHA-256 |
++|---|---:|---|
++| web/fonts/NanumGothic-Bold.ttf | 2073868 | f96298f9fb18e364d2370f4c3ce948ac67a2b61af992d7234bc15c42b033c674 |
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\354\203\235\354\204\261 \353\217\204\352\265\254/\353\213\250\352\263\204\353\263\204_\355\212\271\354\247\225\353\247\265_\354\240\200\354\236\245.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\354\203\235\354\204\261 \353\217\204\352\265\254/\353\213\250\352\263\204\353\263\204_\355\212\271\354\247\225\353\247\265_\354\240\200\354\236\245.py"
+new file mode 100644
+index 0000000..bdcd2ef
+--- /dev/null
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\354\203\235\354\204\261 \353\217\204\352\265\254/\353\213\250\352\263\204\353\263\204_\355\212\271\354\247\225\353\247\265_\354\240\200\354\236\245.py"	
+@@ -0,0 +1,235 @@
++"""완료한 실험만 CPU에서 읽어 참고 자료와 같은 폴더·패널 구성으로 저장합니다."""
++import argparse
++from datetime import datetime, timezone, timedelta
++import hashlib
++import json
++import os
++from pathlib import Path
++import sys
++import time
++import traceback
++
++HERE = Path(__file__).resolve().parent
++PROJECT = HERE.parents[1]
++TRAIN = PROJECT / '2차'
++REFERENCE = Path('참고 특징맵')
++RUN = ''
++SIGMAS = [0, 1, 2, 4, 8, 16, 32, 64, 128, 256]
++CLASSES = [('Bengin_cases', 'Bengin cases', '양성 · OK'),
++           ('Malignant_cases', 'Malignant cases', '악성 · NG'),
++           ('Normal_cases', 'Normal cases', '정상 · OK')]
++LAYERS = ['입력 회색조 CT', 'conv1 → GaussianDCTBlur 직후',
++          'cloud.layer1 출력', 'cloud.layer2 출력', 'cloud.layer3 출력', 'cloud.layer4 출력']
++MEANINGS = ['실제 입력 CT를 512×512 회색조로 맞춘 영상입니다. 3채널에 같은 값을 복제해 모델에 입력합니다.',
++            '첫 합성곱이 추출한 윤곽·질감 반응에 블러를 적용한 전송 특징입니다. 아직 BN·ReLU·최대 풀링을 거치지 않았습니다.',
++            '전송 특징이 BN·ReLU·최대 풀링과 첫 잔차 블록 묶음을 통과한 결과입니다.',
++            '두 번째 잔차 블록 묶음이 공간 크기를 줄이며 조합한 특징입니다.',
++            '세 번째 잔차 블록 묶음이 더 넓은 영역의 반응을 조합한 특징입니다.',
++            '마지막 잔차 블록 묶음의 출력입니다. 이후 전역 평균 풀링과 분류기로 OK·NG를 계산합니다.']
++
++def now():
++    return datetime.now(timezone(timedelta(hours=9))).isoformat(timespec='seconds')
++
++def digest(path):
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++def read_json(path):
++    return json.loads(Path(path).read_text(encoding='utf-8'))
++
++def atomic_json(path, value):
++    temporary = path.with_suffix('.tmp')
++    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + '\n', encoding='utf-8')
++    # 대시보드의 짧은 읽기 핸들과 충돌하면 제한된 횟수만 재시도합니다.
++    for attempt in range(6):
++        try:
++            os.replace(temporary, path)
++            return
++        except PermissionError:
++            if attempt == 5:
++                raise
++            time.sleep(0.1 * (attempt + 1))
++
++def prepare():
++    paths = sorted(p.relative_to(REFERENCE).as_posix() for p in REFERENCE.rglob('*.png'))
++    if len(paths) != 180:
++        raise ValueError('참고 자료의 PNG 180개 계약이 다릅니다.')
++    template_path = HERE / '참고_폴더구성_비공개.json'
++    template = {'reference': str(REFERENCE), 'relative_paths': paths}
++    if template_path.exists():
++        if read_json(template_path) != template:
++            raise ValueError('동결한 참고 폴더 구성과 현재 구성이 다릅니다.')
++    else:
++        atomic_json(template_path, template)
++    for relative in paths:
++        (HERE / '블러 피쳐맵 저장 파일' / relative).parent.mkdir(parents=True, exist_ok=True)
++    return paths
++
++def render(array, stage, sigma, label, destination):
++    channels = array.shape[0]
++    shape = list(array.shape)
++    caption = MEANINGS[stage]
++    if stage:
++        caption += ' 색은 특징의 상대적인 반응을 뜻하며 병변 위치나 프라이버시 보장을 뜻하지 않습니다.'
++        indices = [i * channels // 8 for i in range(8)]
++        panels = [array.mean(axis=0), array.max(axis=0)] + [array[i] for i in indices]
++        titles = ['전체 채널 평균', '채널별 최댓값'] + [f'채널 {i} / {channels}' for i in indices]
++        fig, axes = plt.subplots(2, 5, figsize=(20, 11), dpi=120)
++        for i, (axis, panel, title) in enumerate(zip(axes.flat, panels, titles)):
++            axis.imshow(panel, cmap='hot' if i == 1 else 'viridis', interpolation='nearest')
++            axis.set_title(title, fontproperties=FONT, fontsize=13, pad=10)
++            axis.axis('off')
++        fig.subplots_adjust(left=.025, right=.975, top=.83, bottom=.17, wspace=.12, hspace=.20)
++        caption += ' 각 패널은 자기 최솟값·최댓값으로 정규화하므로 서로 다른 패널의 색 크기를 직접 비교할 수 없습니다.'
++        note = '전체 채널 평균 · 채널별 최댓값 · 균등 간격의 개별 채널 8개 (총 10패널)'
++    else:
++        caption += ' 회색조의 밝기는 입력 픽셀 밝기이며 악성 확률이 아닙니다.'
++        indices = []
++        panels = [array[0]]
++        fig, axis = plt.subplots(figsize=(9, 10), dpi=120)
++        axis.imshow(array[0], cmap='gray', vmin=0, vmax=1)
++        axis.axis('off')
++        fig.subplots_adjust(top=.83, bottom=.21, left=.08, right=.92)
++        note = '원본 입력 1장 · 평가 전처리 · 증강 없음'
++    fig.suptitle(f'{label}  |  블러 강도 {sigma}  |  단계 {stage}: {LAYERS[stage]}', fontproperties=FONT, fontsize=18, y=.965)
++    fig.text(.5, .90, f'{note}\n텐서: {shape[0]}채널 × {shape[1]} × {shape[2]} · 완료한 최적 체크포인트 · FP32 평가',
++             ha='center', va='center', fontproperties=FONT, fontsize=12, linespacing=1.6)
++    import textwrap
++    wrapped = '\n'.join(textwrap.wrap(caption, width=103 if stage else 57))
++    fig.text(.035, .11 if stage else .14, wrapped, va='top', fontproperties=FONT, fontsize=12, linespacing=1.7)
++    if stage == 1:
++        fig.text(.035, .025, '추출 지점 안내: 참고 자료와 프레임워크·전송 경계가 달라 현재 모델의 실제 추출 지점을 표시했습니다.', fontproperties=FONT, fontsize=11)
++    temporary = destination.with_suffix('.tmp')
++    fig.savefig(temporary, format='png', facecolor='white')
++    plt.close(fig)
++    os.replace(temporary, destination)
++    return caption, indices, [{'min': float(p.min()), 'max': float(p.max())} for p in panels]
++
++def run_once(paths):
++    state = read_json(TRAIN / 'work/runtime/status.json')
++    if state.get('run_id') != RUN:
++        raise ValueError('현재 학습 run_id가 지정 실행과 다릅니다.')
++    manifest_path = TRAIN / 'work/results/dataset_manifest_private.json'
++    manifest = read_json(manifest_path)
++    samples = [sorted((r for r in manifest['splits']['train'] if r['source_class'] == source), key=lambda r: r['relative_path'])[0]
++               for _, source, _ in CLASSES]
++    index_path = HERE / 'export_index_private.json'
++    index = read_json(index_path) if index_path.exists() else {
++        'schema_version': 1, 'run_id': RUN, 'items': [], 'completed_sigmas': [], 'pending_sigmas': SIGMAS,
++        'sample_selection': '학습 분할에서 원본 클래스별 relative_path 정렬 첫 영상',
++        'source_manifest_sha256': digest(manifest_path), 'samples_private': samples,
++        'model_source_sha256': digest(TRAIN / 'src/model.py'),
++        'data_source_sha256': digest(TRAIN / 'src/data.py'),
++        'generator_sha256': digest(Path(__file__)),
++        'reference_panel_layout': '2행 5열: 채널 평균·최댓값·균등 간격 8채널',
++        'stage1_boundary_note': '현재 conv1→DCT 블러 직후이며 참고 자료와 추출 지점·프레임워크가 다를 수 있습니다.'}
++    if index['run_id'] != RUN or index['source_manifest_sha256'] != digest(manifest_path) or index['samples_private'] != samples:
++        raise ValueError('기존 출력의 실행·입력 목록이 현재 계약과 다릅니다.')
++    for item in index['items']:
++        if digest(HERE / item['relative_path']) != item['sha256']:
++            raise ValueError('기존 출력 파일의 해시 불일치: ' + item['relative_path'])
++    for sigma in SIGMAS:
++        eligible = any(q['sigma'] == sigma and q['status'] == 'completed' for q in state['sigma_queue'])
++        metrics_path = TRAIN / f'work/results/run_{RUN}/sigma_{sigma}_metrics.json'
++        if not eligible or not metrics_path.is_file():
++            continue
++        metrics = read_json(metrics_path)
++        if metrics['run_id'] != RUN or metrics['sigma'] != sigma or not metrics.get('completed_at'):
++            raise ValueError('완료 지표의 실행 식별자가 다릅니다.')
++        if sigma in index['completed_sigmas']:
++            continue
++        checkpoint_path = TRAIN / f'work/checkpoints/run_{RUN}/sigma_{sigma}_best.pt'
++        checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=False)
++        if checkpoint['run_id'] != RUN or checkpoint['sigma'] != sigma or checkpoint['epoch'] != metrics['best_epoch']:
++            raise ValueError('완료 지표와 체크포인트가 일치하지 않습니다.')
++        model = SplitResNet50(sigma=sigma, pretrained=False).eval()
++        model.load_state_dict(checkpoint['model'], strict=True)
++        model_hash = digest(checkpoint_path)
++        batch_items = []
++        for (key, source, label), row in zip(CLASSES, samples):
++            if digest(row['path']) != row['byte_sha256']:
++                raise ValueError('원본 CT 파일 해시가 manifest와 다릅니다.')
++            x, _ = CTDataset([row], image_size=512, training=False)[0]
++            stages = [x.numpy().copy()]
++            with torch.inference_mode():
++                y = model.blur(model.edge((x[None] - model.rgb_mean) / model.rgb_std))
++                stages.append(y[0].numpy().copy())
++                y = model.cloud.maxpool(model.cloud.relu(model.cloud.bn1(y)))
++                for layer in [model.cloud.layer1, model.cloud.layer2, model.cloud.layer3, model.cloud.layer4]:
++                    y = layer(y)
++                    stages.append(y[0].numpy().copy())
++            for stage, array in enumerate(stages):
++                if not np.isfinite(array).all():
++                    raise ValueError('특징 텐서에 비유한 값이 있습니다.')
++                folder = '원본 파일 생성' if sigma == 0 else f'sigma{sigma} 블러 파일 생성'
++                matches = [p for p in paths if p.startswith(folder + '/피쳐맵/' + key + '/') and Path(p).name.startswith(f'stage{stage}_')]
++                if len(matches) != 1:
++                    raise ValueError('참고 경로가 단계별 한 개가 아닙니다.')
++                relative = '블러 피쳐맵 저장 파일/' + matches[0]
++                destination = HERE / relative
++                if destination.exists():
++                    raise FileExistsError('색인에 없는 출력은 덮어쓰지 않습니다: ' + relative)
++                caption, selected, ranges = render(array, stage, sigma, label, destination)
++                with Image.open(destination) as image:
++                    width, height = image.size
++                batch_items.append({'id': f'{sigma}-{key}-{stage}', 'sigma': sigma, 'class_key': key,
++                    'class_label': label, 'stage': stage, 'relative_path': relative, 'sha256': digest(destination),
++                    'width': width, 'height': height, 'caption': caption, 'layer': LAYERS[stage], 'shape': list(array.shape),
++                    'panel_indices': selected, 'panel_count': 1 if stage == 0 else 10, 'panel_minmax': ranges,
++                    'checkpoint_sha256': model_hash, 'source_sha256': row['byte_sha256'], 'checkpoint_epoch': checkpoint['epoch']})
++        if len(batch_items) != 18:
++            raise ValueError('강도별 PNG 18개가 완성되지 않았습니다.')
++        index['items'].extend(batch_items)
++        index['completed_sigmas'].append(sigma)
++        index['pending_sigmas'] = [s for s in SIGMAS if s not in index['completed_sigmas']]
++        index['updated_at'] = now()
++        atomic_json(index_path, index)
++        print(json.dumps({'sigma': sigma, 'saved_png': 18, 'completed_sigmas': index['completed_sigmas']}, ensure_ascii=False), flush=True)
++        del model, checkpoint, stages
++    if not index_path.exists():
++        index['updated_at'] = now()
++        atomic_json(index_path, index)
++    return not index['pending_sigmas']
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser(description=__doc__)
++    mode = parser.add_mutually_exclusive_group(required=True)
++    mode.add_argument('--once', action='store_true')
++    mode.add_argument('--watch', action='store_true')
++    parser.add_argument('--experiment-root', type=Path, default=TRAIN)
++    parser.add_argument('--output-root', type=Path, default=HERE)
++    parser.add_argument('--reference-root', type=Path, default=REFERENCE)
++    parser.add_argument('--run-id', default=RUN)
++    args = parser.parse_args()
++    TRAIN = args.experiment_root.resolve()
++    HERE = args.output_root.resolve()
++    REFERENCE = args.reference_root.resolve()
++    RUN = args.run_id
++    if not HERE.is_dir() or HERE == TRAIN or HERE == REFERENCE:
++        parser.error('출력은 기존의 별도 차수 폴더여야 합니다.')
++    try:
++        # 기존 환경만 사용하며 GPU·다운로드·학습 상태 변경을 하지 않습니다.
++        os.environ['CUDA_VISIBLE_DEVICES'] = ''
++        sys.path.insert(0, str(TRAIN))
++        import torch
++        torch.set_num_threads(2)
++        import numpy as np
++        import matplotlib
++        matplotlib.use('Agg')
++        import matplotlib.pyplot as plt
++        from matplotlib.font_manager import FontProperties
++        from PIL import Image
++        from src.model import SplitResNet50
++        from src.data import CTDataset
++        FONT = FontProperties(fname=str(TRAIN / 'web/fonts/NanumGothic-Bold.ttf'), weight='bold')
++        paths = prepare()
++        while True:
++            complete = run_once(paths)
++            if args.once or complete:
++                break
++            time.sleep(30)
++    except Exception:
++        failure = {'time_kst': now(), 'argv': sys.argv, 'cwd': os.getcwd(),
++                   'exit_code': 1, 'error': traceback.format_exc(), 'output_root': str(HERE)}
++        with (HERE / '실패기록_비공개.jsonl').open('a', encoding='utf-8') as stream:
++            stream.write(json.dumps(failure, ensure_ascii=False) + '\n')
++        raise
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\354\203\235\354\204\261 \353\217\204\352\265\254/\354\202\254\354\232\251\353\260\251\353\262\225.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\354\203\235\354\204\261 \353\217\204\352\265\254/\354\202\254\354\232\251\353\260\251\353\262\225.md"
+new file mode 100644
+index 0000000..b09eba5
+--- /dev/null
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\354\203\235\354\204\261 \353\217\204\352\265\254/\354\202\254\354\232\251\353\260\251\353\262\225.md"	
+@@ -0,0 +1,13 @@
++# 단계별 특징맵 저장
++
++완료한 학습 조건의 최적 체크포인트를 CPU에서 읽습니다. 참고 자료는 10조건·3원본 범주·6단계의 PNG 상대 경로 180개가 있는 로컬 폴더여야 합니다. 출력 폴더는 미리 준비한 별도 일반 폴더를 지정합니다. 원본 학습 폴더나 참고 자료 폴더를 출력으로 지정하지 않습니다.
++
++```powershell
++python -B -X utf8 "생성 도구/단계별_특징맵_저장.py" --experiment-root "학습 폴더" --output-root "특징맵 출력 폴더" --reference-root "참고 특징맵 폴더" --run-id "실제 실행 식별자" --once
++```
++
++계속 확인하려면 --once 대신 --watch를 사용합니다. 기존 학습 환경의 torch·torchvision·NumPy·Matplotlib·Pillow와 학습 폴더의 src 코드, 글꼴 파일이 필요합니다. 학습 분할 목록과 완료 지표·최적 체크포인트를 확인한 조건만 내보냅니다. 원본 CT와 체크포인트의 해시가 맞지 않거나 같은 실행으로 확인되지 않으면 실패를 보고합니다. 원본 코드의 pickle 체크포인트를 읽으므로 자신이 생성하고 검증한 로컬 체크포인트만 사용합니다.
++
++대시보드의 기본 저장 위치는 실행 폴더의 상위에 있는 블러 강도별 대표 특징맵/2차입니다. 출력 위치를 그 경로에 맞추면 대시보드가 export_index_private.json과 18장 묶음을 읽습니다. 공개 3차 코드만 내려받아 기존 학습을 새로 실행하면 학습 코드 해시로 실행 식별자가 달라질 수 있으므로, 진행 중 학습 폴더를 공개 사본으로 교체하지 않습니다.
++
++실제 PNG·영상별 목록·체크포인트·비공개 색인은 저장소에 추가하지 않습니다. 모든 조건이 끝나기 전에는 전체 180개가 생성되었다고 해석하지 않습니다.

@@ -55,6 +55,7 @@
 | [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-block.diff) |
 | Conv1 블러 OK-NG 실험 · 1차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round1.md) | [전체 비교](docs/revision-diffs/conv1-okng-round1.diff) |
 | Conv1 블러 OK-NG 실험 · 2차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round2.md) | [전체 비교](docs/revision-diffs/conv1-okng-round2.diff) |
+| Conv1 블러 OK-NG 실험 · 3차 (시각화) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round3.md) | [전체 비교](docs/revision-diffs/conv1-okng-round3.diff) |
 
 ## ✨ 연구 핵심
 
