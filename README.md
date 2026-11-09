@@ -53,6 +53,7 @@
 | [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. | [폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-14.diff) |
 | [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-blur.diff) |
 | [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-block.diff) |
+| Conv1 블러 OK-NG 실험 · 1차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round1.md) | [전체 비교](docs/revision-diffs/conv1-okng-round1.diff) |
 
 ## ✨ 연구 핵심
 

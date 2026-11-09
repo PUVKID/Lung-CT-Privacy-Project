@@ -1,0 +1,45 @@
+{
+  "dataset_root": "./dataset",
+  "expected_source_counts": {
+    "Bengin cases": 120,
+    "Normal cases": 416,
+    "Malignant cases": 561
+  },
+  "seed": 42,
+  "image_size": 512,
+  "batch_size": 2,
+  "samples_per_class": 5000,
+  "validation_ratio": 0.15,
+  "test_ratio": 0.15,
+  "epochs": 35,
+  "early_stopping_patience": 7,
+  "learning_rate": 8e-05,
+  "sigmas": [
+    0,
+    1,
+    2,
+    4,
+    8,
+    16,
+    32,
+    64,
+    128,
+    256
+  ],
+  "num_workers": 0,
+  "cpu_threads": 4,
+  "precision": "bf16",
+  "status_every_batches": 10,
+  "pretrained_weights": "torchvision.ResNet50_Weights.IMAGENET1K_V1",
+  "framework": "PyTorch CUDA",
+  "protocol": "image-level stratified duplicate-group holdout; online training augmentation only",
+  "port_notes": [
+    "RTX 4090에서 FP16 기본 GradScaler 65536은 실제 512 학습 연속 배치에 비유한 기울기를 발생시켰습니다. 지원이 확인된 BF16 autocast를 명시하며 BF16에는 GradScaler를 사용하지 않습니다. 손실·기울기의 비유한 값 검사는 유지합니다.",
+    "Windows 네이티브 TensorFlow 최신판은 CUDA GPU를 지원하지 않아 PyTorch CUDA로 이식합니다.",
+    "torchvision ResNet50은 V1.5이며 Keras ResNet50과 stride·가중치·RGB 정규화 전처리가 다릅니다. 원본 결과의 수치상 재현을 주장하지 않습니다.",
+    "첫 합성곱만 Edge에 두고 BN/활성화/풀링부터는 Cloud에 둡니다. 첫 합성곱과 모든 BN은 고정하고 layer4의 비BN 가중치와 분류 헤드만 학습합니다.",
+    "sigma는 특징맵 픽셀 단위이며 DCT-II 반사/Neumann 경계의 Gaussian heat filter입니다.",
+    "환자 ID가 없어 이미지 단위 예비실험입니다. 원본의 환자 7-fold 70조건, fixed 대조군, 매칭, 복원 공격과 프라이버시 임계점 선택은 이번 실행에 포함되지 않습니다.",
+    "클래스당 5000은 epoch별 온라인 증강 표본 수이며 독립 원본/환자 수가 아닙니다. 시험셋으로 sigma 또는 임계값을 선택하지 않습니다."
+  ]
+}

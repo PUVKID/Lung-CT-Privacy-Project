@@ -36,3 +36,9 @@
 [📄 최신 논문·발표·편집 원본](PAPERS.md)
 
 [📝 안내 변경 기록](changes/2026-11-03-%EC%B0%A8%EC%88%98%EB%B3%84%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%95%88%EB%82%B4.md)
+
+## 🧪 Conv1 OK/NG 예비실험
+
+| 차수 | 폴더 | 설명 | 비교 |
+|---|---|---|---|
+| Conv1 블러 OK-NG 실험 · 1차 | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](revisions/conv1-okng-round1.md) | [전체 비교](revision-diffs/conv1-okng-round1.diff) |
