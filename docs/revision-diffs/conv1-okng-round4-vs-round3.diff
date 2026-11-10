@@ -1,0 +1,1656 @@
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/README.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/README.md"
+index d916f73..ce8c690 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/README.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/README.md"	
+@@ -1,9 +1,9 @@
+-# 폐 CT 특징맵 시각화 · 공개 코드 3차
++# 🔎 블러 강도별 결과 선택 · 공개 코드 4차
+ 
+-학습 2차에서 완료한 블러 조건의 특징맵을 범주·단계별로 저장하고 대시보드에서 살펴보는 소프트웨어 변경 묶음입니다. 학습 3차를 새로 시작한 결과가 아닙니다.
++강도 버튼을 고르면 📷 사진·📈 학습 곡선·📊 시험 결과가 같은 강도로 바뀝니다. 상단의 마지막 실행 상태와 선택한 결과를 나눠 표시하고 자동 갱신에도 선택을 유지합니다.
+ 
+-한 조건은 양성·악성·정상 대표 CT 3장과 입력부터 마지막 잔차 블록 묶음까지 6개 단계로 구성해 PNG 18개를 저장합니다. 원본 기준을 포함한 10조건이 모두 끝나면 180개입니다. 입력 영상은 1패널, 특징맵은 평균·최댓값·개별 채널 8개의 10패널이며 사진 아래에 추출 위치와 해석을 설명합니다.
++실제 학습 2차의 대시보드 로컬 수리 3차를 공개 코드 4차로 보존한 사본입니다. 새 학습 차수를 시작하지 않습니다. 학습 코드·설정·가중치와 이전 공개 1~3차를 보존합니다. 누락·미완료·다른 실행의 결과는 미측정 또는 대기로 표시하고 직전 시험 수치를 재사용하지 않습니다.
+ 
+-코드 폴더의 src·학습 실행기·설정 예제와 의존성은 앞선 공개 2차와 같습니다. 실제 학습 소스·설정·체크포인트를 바꾸지 않고 별도 CPU 저장 도구가 완료한 결과만 읽습니다. 원본 의료영상·특징맵 PNG·영상별 목록·가중치·운영 기록은 포함하지 않습니다. 환자 ID가 없어 영상 단위 예비실험이며 특징의 색을 병변 위치나 프라이버시 보장으로 해석하지 않습니다.
++[이번 변경과 검사](변경기록.md) · [특징맵 저장 도구](생성%20도구/사용방법.md) · [기존 학습 실행 방법](docs/실행방법.md)
+ 
+-[3차 변경 기록](변경기록.md) · [저장 도구 안내](생성%20도구/사용방법.md) · [기존 학습 실행 방법](docs/실행방법.md) · [검토 근거](docs/검토근거.md)
++의료영상·특징맵 PNG·가중치·영상별 목록·접속정보·개인 학위계획서는 공개하지 않습니다. 환자 ID가 없어 영상 단위 예비실험이며, 시험 수치로 학습 조건을 고르는 기능은 아닙니다.
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/dashboard.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/dashboard.py"
+index aa79118..5904240 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/dashboard.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/dashboard.py"	
+@@ -5,6 +5,7 @@ import argparse
+ import ctypes
+ import hashlib
+ import json
++import math
+ import mimetypes
+ import os
+ from pathlib import Path
+@@ -218,6 +219,125 @@ def read_status(root: Path):
+     return data
+ 
+ 
++SIGMA_VALUES = (0,) + PREVIEW_SIGMAS
++
++
++def sigma_results(root, sigma):
++    """현재 실행의 고정 강도별 공개 가능 숫자만 읽습니다."""
++    state = read_status(root)
++    run_id = state.get("run_id")
++    valid_run = isinstance(run_id, str) and len(run_id) == 16 and all(c in "0123456789abcdef" for c in run_id)
++    valid_sigma = type(sigma) is int and sigma in SIGMA_VALUES
++    result = {"run_id": run_id if valid_run else None, "sigma": sigma if valid_sigma else None, "history": [], "metrics": None,
++              "status": "unavailable", "message": "이 강도의 결과를 아직 확인할 수 없습니다."}
++    if not valid_sigma:
++        result["message"] = "등록된 블러 강도를 골라 주세요."
++        return result
++    if not valid_run:
++        result["message"] = "현재 실험의 기록을 기다리고 있어요."
++        return result
++    folder = root / "work" / "results" / f"run_{run_id}"
++    try:
++        queue = state.get("sigma_queue", [])
++        if not isinstance(queue, list) or any(not isinstance(item, dict) or type(item.get("sigma")) is not int
++                                              or item["sigma"] not in SIGMA_VALUES for item in queue):
++            raise ValueError("강도 대기열 형식 오류")
++        entries = [item for item in queue if item["sigma"] == sigma]
++        if len(entries) > 1:
++            raise ValueError("강도 대기열 중복")
++        entry = entries[0] if entries else {}
++        status = entry.get("status", "pending")
++        if not isinstance(status, str) or status not in ("completed", "pending", "running", "interrupted", "failed"):
++            raise ValueError("강도 상태 형식 오류")
++
++        def number(value, minimum=0, maximum=None, nullable=False, integer=False):
++            # bool과 숫자 모양 문자열은 수치가 아닙니다. 정수는 화면의 정확한 표현 범위도 지킵니다.
++            if nullable and value is None:
++                return None
++            if type(value) not in (int, float) or (integer and type(value) is not int):
++                raise ValueError("결과 수치 형식 오류")
++            if (type(value) is int and abs(value) > 2**53 - 1) or not math.isfinite(value):
++                raise ValueError("결과 수치 범위 오류")
++            if value < minimum or (maximum is not None and value > maximum):
++                raise ValueError("결과 수치 범위 오류")
++            return value
++
++        def public_history(history):
++            if not isinstance(history, list):
++                raise ValueError("곡선 목록 형식 오류")
++            selected = []
++            for row in history:
++                if not isinstance(row, dict) or type(row.get("sigma")) is not int or row["sigma"] not in SIGMA_VALUES:
++                    raise ValueError("곡선 강도 오류")
++                if row["sigma"] != sigma:
++                    raise ValueError("곡선 강도 불일치")
++                if "run_id" in row and row["run_id"] != run_id:
++                    raise ValueError("곡선 실행 불일치")
++                epoch = number(row.get("epoch"), minimum=1, integer=True)
++                if epoch != len(selected) + 1:
++                    raise ValueError("곡선 회차 불일치")
++                public = {"sigma": sigma, "epoch": epoch}
++                for key in ("train_loss", "val_loss", "learning_rate", "next_learning_rate"):
++                    public[key] = number(row.get(key))
++                public["val_accuracy"] = number(row.get("val_accuracy"), maximum=1)
++                public["val_auc"] = number(row.get("val_auc"), maximum=1, nullable=True)
++                public["optimizer_steps"] = number(row.get("optimizer_steps"), integer=True)
++                public["early_stopping_wait"] = number(row.get("early_stopping_wait"), maximum=epoch, integer=True)
++                if selected and public["optimizer_steps"] < selected[-1]["optimizer_steps"]:
++                    raise ValueError("곡선 갱신 횟수 불일치")
++                selected.append(public)
++            return selected
++
++        for part in (root / "work", root / "work" / "results", folder):
++            if part.is_symlink() or not part.resolve().is_relative_to(root.resolve()):
++                raise ValueError("결과 경계 오류")
++        def read_json(name):
++            path = folder / name
++            if path.is_symlink() or not path.resolve().is_relative_to(folder.resolve()):
++                raise ValueError("결과 경계 오류")
++            with open_status_file(path) as stream:
++                payload = stream.read(MAX_STATUS_BYTES + 1)
++            if len(payload) > MAX_STATUS_BYTES:
++                raise ValueError("결과 크기 오류")
++            return json.loads(payload.decode("utf-8"), parse_constant=reject_nonfinite)
++        if status == "completed":
++            metrics = read_json(f"sigma_{sigma}_metrics.json")
++            if not isinstance(metrics, dict) or metrics.get("run_id") != run_id or type(metrics.get("sigma")) is not int or metrics["sigma"] != sigma:
++                raise ValueError("결과 실행 식별자 오류")
++            stamp = metrics.get("completed_at")
++            if not isinstance(stamp, str) or not 20 <= len(stamp) <= 40 or stamp[10] != "T" or any(c not in "0123456789-T:+.Z" for c in stamp):
++                raise ValueError("결과 완료 시각 형식 오류")
++            if datetime.fromisoformat(stamp.replace("Z", "+00:00")).tzinfo is None:
++                raise ValueError("결과 완료 시각 시간대 누락")
++            history = public_history(read_json(f"sigma_{sigma}_history.json"))
++            epochs_ran = number(metrics.get("epochs_ran"), minimum=1, integer=True)
++            selected = {"best_epoch": number(metrics.get("best_epoch"), minimum=1, maximum=epochs_ran, integer=True),
++                        "epochs_ran": epochs_ran,
++                        "optimizer_steps": number(metrics.get("optimizer_steps"), integer=True), "completed_at": stamp}
++            if len(history) != epochs_ran or history[-1]["optimizer_steps"] != selected["optimizer_steps"]:
++                raise ValueError("완료 결과와 곡선 불일치")
++            test = metrics.get("test")
++            if not isinstance(test, dict):
++                raise ValueError("시험 결과 형식 오류")
++            selected["test"] = {"accuracy": number(test.get("accuracy"), maximum=1),
++                                "auc": number(test.get("auc"), maximum=1, nullable=True),
++                                "loss": number(test.get("loss")),
++                                "n_images": number(test.get("n_images"), minimum=1, integer=True)}
++            result.update(history=history, metrics=selected, status="completed", message="선택한 강도의 완료 결과예요.")
++        else:
++            history = state.get("history", [])
++            if not isinstance(history, list) or any(not isinstance(row, dict) or type(row.get("sigma")) is not int
++                                                   or row["sigma"] not in SIGMA_VALUES for row in history):
++                raise ValueError("진행 곡선 형식 오류")
++            selected = public_history([row for row in history if row["sigma"] == sigma])
++            result.update(history=selected, status=status, message="아직 시험 결과가 없어요. 기록된 학습 곡선만 보여 드려요.")
++    except FileNotFoundError:
++        result.update(history=[], metrics=None, message="이 강도의 결과 파일을 기다리고 있어요.")
++    except (OSError, ValueError, TypeError, AttributeError):
++        result.update(history=[], metrics=None, message="이 강도의 결과 기록을 확인할 수 없어요.")
++    return result
++
++
+ def make_server(root=ROOT, port=8766, token=None):
+     root = Path(root).resolve()
+     session_token = token or secrets.token_urlsafe(32)
+@@ -264,6 +384,14 @@ def make_server(root=ROOT, port=8766, token=None):
+                 payload = json.dumps(read_status(root), ensure_ascii=False, allow_nan=False).encode("utf-8")
+                 self.send_content(HTTPStatus.OK, payload, "application/json; charset=utf-8")
+                 return
++            if parts.path.startswith("/api/sigma-results/"):
++                suffix = parts.path.removeprefix("/api/sigma-results/")
++                if parts.query or suffix not in {str(value) for value in SIGMA_VALUES}:
++                    self.send_content(HTTPStatus.BAD_REQUEST, "등록된 블러 강도가 아닙니다".encode())
++                    return
++                payload = json.dumps(sigma_results(root, int(suffix)), ensure_ascii=False, allow_nan=False).encode("utf-8")
++                self.send_content(HTTPStatus.OK, payload, "application/json; charset=utf-8")
++                return
+             if parts.path == "/api/feature-previews" and not parts.query:
+                 payload = json.dumps(feature_previews(root), ensure_ascii=False, allow_nan=False).encode("utf-8")
+                 self.send_content(HTTPStatus.OK, payload, "application/json; charset=utf-8")
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/tests/test_dashboard.py" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/tests/test_dashboard.py"
+index 153b217..2eee962 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/tests/test_dashboard.py"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/tests/test_dashboard.py"	
+@@ -1,299 +1,532 @@
+-"""대시보드의 상태 읽기 및 HTTP 경계를 검증합니다."""
+-import http.client
+-import ctypes
+-import json
+-import os
+-import shutil
+-import subprocess
+-from pathlib import Path
+-import tempfile
+-import threading
+-import unittest
+-from datetime import datetime, timedelta, timezone
+-from types import SimpleNamespace
+-from unittest import mock
+-
+-from dashboard import MAX_STATUS_BYTES, make_server, open_status_file, read_status
+-from src.state import atomic_json
+-
+-
+-class DashboardTests(unittest.TestCase):
+-    def setUp(self):
+-        self.temp = tempfile.TemporaryDirectory()
+-        self.root = Path(self.temp.name)
+-        (self.root / "work" / "runtime").mkdir(parents=True)
+-        (self.root / "web").mkdir()
+-        (self.root / "web" / "index.html").write_text("실험 현황", encoding="utf-8")
+-        self.server = make_server(self.root, port=0, token="test-session-token")
+-        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+-        self.thread.start()
+-
+-    def tearDown(self):
+-        self.server.shutdown()
+-        self.server.server_close()
+-        self.thread.join(timeout=3)
+-        self.temp.cleanup()
+-
+-    def status(self, **changes):
+-        data = {"updated_at": datetime.now(timezone.utc).isoformat(), "pid": os.getpid(),
+-                "stage": "training", "status": "running", "history": [], "message": "학습 중"}
+-        data.update(changes)
+-        path = self.root / "work" / "runtime" / "status.json"
+-        path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+-        return path
+-
+-    def get(self, path, authenticated=True, host=None):
+-        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=3)
+-        headers = {"Host": host or f"127.0.0.1:{self.server.server_port}"}
+-        if authenticated:
+-            headers["Cookie"] = "dashboard_session=test-session-token"
+-        connection.request("GET", path, headers=headers)
+-        response = connection.getresponse()
+-        result = response.status, dict(response.getheaders()), response.read()
+-        connection.close()
+-        return result
+-
+-    @unittest.skipUnless(os.name == "nt", "Windows 삭제 공유 핸들 검사")
+-    def test_open_reader_allows_replace_and_preserves_complete_versions(self):
+-        path = self.status(epoch=1)
+-        old = json.loads(path.read_text(encoding="utf-8"))
+-        new = dict(old, epoch=2, message="다음 학습 상태")
+-        with open_status_file(path) as old_reader:
+-            atomic_json(path, new)
+-            self.assertEqual(json.loads(old_reader.read().decode("utf-8")), old)
+-            with open_status_file(path) as new_reader:
+-                self.assertEqual(json.loads(new_reader.read().decode("utf-8")), new)
+-        self.assertEqual(read_status(self.root)["epoch"], 2)
+-
+-    @unittest.skipUnless(os.name == "nt", "Windows 일시적 파일 부재 재시도 검사")
+-    def test_transient_missing_open_retries_then_reads_complete_json(self):
+-        path = self.status(epoch=7)
+-        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+-        kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
+-                                      ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32,
+-                                      ctypes.c_void_p]
+-        kernel.CreateFileW.restype = ctypes.c_void_p
+-        attempts = []
+-
+-        def controlled_open(*args):
+-            attempts.append(args)
+-            if len(attempts) <= 2:
+-                ctypes.set_last_error(2)
+-                return ctypes.c_void_p(-1).value
+-            return kernel.CreateFileW(*args)
+-
+-        controlled_kernel = SimpleNamespace(CreateFileW=mock.Mock(side_effect=controlled_open),
+-                                            CloseHandle=kernel.CloseHandle)
+-        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
+-                mock.patch("dashboard.time.sleep") as sleep:
+-            with open_status_file(path) as stream:
+-                self.assertEqual(json.loads(stream.read().decode("utf-8"))["epoch"], 7)
+-        self.assertEqual(len(attempts), 3)
+-        self.assertEqual(sleep.call_args_list, [mock.call(0.01), mock.call(0.02)])
+-
+-    @unittest.skipUnless(os.name == "nt", "Windows 영구 파일 부재 한계 검사")
+-    def test_permanent_missing_open_raises_after_bounded_attempts(self):
+-        def missing_open(*_args):
+-            ctypes.set_last_error(3)
+-            return ctypes.c_void_p(-1).value
+-
+-        controlled_open = mock.Mock(side_effect=missing_open)
+-        controlled_kernel = SimpleNamespace(CreateFileW=controlled_open, CloseHandle=mock.Mock())
+-        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
+-                mock.patch("dashboard.time.sleep") as sleep:
+-            with self.assertRaises(FileNotFoundError) as raised:
+-                open_status_file(self.root / "missing.json")
+-        self.assertEqual(raised.exception.winerror, 3)
+-        self.assertEqual(controlled_open.call_count, 5)
+-        self.assertEqual(sleep.call_args_list,
+-                         [mock.call(0.01), mock.call(0.02), mock.call(0.04), mock.call(0.08)])
+-        controlled_kernel.CloseHandle.assert_not_called()
+-
+-    @unittest.skipUnless(os.name == "nt", "Windows 일시적 공유 위반 재시도 검사")
+-    def test_transient_sharing_violation_retries_then_reads_complete_json(self):
+-        path = self.status(epoch=8)
+-        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+-        kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
+-                                      ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32,
+-                                      ctypes.c_void_p]
+-        kernel.CreateFileW.restype = ctypes.c_void_p
+-        attempts = []
+-
+-        def controlled_open(*args):
+-            attempts.append(args)
+-            if len(attempts) <= 2:
+-                ctypes.set_last_error(32)
+-                return ctypes.c_void_p(-1).value
+-            return kernel.CreateFileW(*args)
+-
+-        controlled_kernel = SimpleNamespace(CreateFileW=mock.Mock(side_effect=controlled_open),
+-                                            CloseHandle=kernel.CloseHandle)
+-        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
+-                mock.patch("dashboard.time.sleep") as sleep:
+-            with open_status_file(path) as stream:
+-                self.assertEqual(json.loads(stream.read().decode("utf-8"))["epoch"], 8)
+-        self.assertEqual(len(attempts), 3)
+-        self.assertEqual(sleep.call_args_list, [mock.call(0.01), mock.call(0.02)])
+-
+-    @unittest.skipUnless(os.name == "nt", "Windows 영구 공유 위반 한계 검사")
+-    def test_permanent_sharing_violation_raises_after_bounded_attempts(self):
+-        def locked_open(*_args):
+-            ctypes.set_last_error(32)
+-            return ctypes.c_void_p(-1).value
+-
+-        controlled_open = mock.Mock(side_effect=locked_open)
+-        controlled_kernel = SimpleNamespace(CreateFileW=controlled_open, CloseHandle=mock.Mock())
+-        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
+-                mock.patch("dashboard.time.sleep") as sleep:
+-            with self.assertRaises(PermissionError) as raised:
+-                open_status_file(self.root / "locked.json")
+-        self.assertEqual(raised.exception.winerror, 32)
+-        self.assertEqual(controlled_open.call_count, 5)
+-        self.assertEqual(sleep.call_args_list,
+-                         [mock.call(0.01), mock.call(0.02), mock.call(0.04), mock.call(0.08)])
+-        controlled_kernel.CloseHandle.assert_not_called()
+-
+-    def test_status_size_limit_remains_enforced(self):
+-        path = self.status()
+-        path.write_bytes(b" " * (MAX_STATUS_BYTES + 1))
+-        state = read_status(self.root)
+-        self.assertEqual(state["status"], "failed")
+-        self.assertIsNotNone(state["_dashboard"]["read_error"])
+-
+-    @unittest.skipUnless(shutil.which("node"), "화면 상태 검사에 Node.js가 필요합니다")
+-    def test_ui_policy_zero_missing_interrupted_and_zero_loss(self):
+-        script = r"""
+-const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+-const html=fs.readFileSync('web/index.html','utf8');
+-const ids=[...html.matchAll(/id="([^"]+)"/g)].map(x=>x[1]);
+-const plot=[];
+-const context={scale(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},fillText(){},arc(...args){plot.push(args);},fill(){}};
+-function element(){return {textContent:'',className:'',children:[],attributes:{},parentElement:{},addEventListener(){},setAttribute(k,v){this.attributes[k]=v;},replaceChildren(){this.children=[];},append(...items){this.children.push(...items);},getBoundingClientRect(){return {width:600,height:210};},getContext(){return context;}};}
+-const nodes=Object.fromEntries(ids.map(id=>[id,element()]));
+-const motion=[];
+-const pipeline={setStatus(...args){motion.push(args);},setPaused(){},setTheme(){}};
+-const sandbox={console,createPipeline(){return pipeline;},document:{getElementById(id){return nodes[id];},createElement:element,querySelectorAll(){return [];},querySelector(){return null;},fonts:{ready:Promise.resolve()}},window:{matchMedia(){return {matches:false,addEventListener(){}};},addEventListener(){},ctTheme:{current(){return 'light';}},devicePixelRatio:1},setInterval(){}};
+-let code=fs.readFileSync('web/app.js','utf8').replace(/^import[^\n]*\n/,'').replace('await document.fonts.ready;','').replace('refresh();setInterval(refresh,3000);','');
+-vm.runInNewContext(code+'\nglobalThis.testAPI={render};',sandbox);
+-const state={stage:'training',status:'running',sigma:0,epoch:0,epochs:35,training_policy:{max_epochs:20,patience:7},learning_rate:0,early_stopping_wait:0,best_epoch:0,optimizer_steps:0,history:[{sigma:0,epoch:1,train_loss:0,val_loss:1e-16,val_accuracy:1}],_dashboard:{stale:false,process_alive:true},updated_at:'2026-11-10T00:00:00+09:00'};
+-const original=JSON.stringify(state.history);
+-sandbox.testAPI.render(state);
+-assert.match(html,/<title>폐 CT 특징 블러 실험 · 2차<\/title>/);
+-assert.equal(nodes.epoch.textContent,'0회 / 최대 20회');
+-assert.equal(nodes.learningRate.textContent,'0');
+-assert.equal(nodes.earlyStopping.textContent,'0 / 7회');
+-assert.equal(nodes.bestEpoch.textContent,'0회');
+-assert.equal(nodes.optimizerSteps.textContent,'0');
+-assert.match(nodes.latestLoss.textContent,/학습 손실 0 · 검증 손실 1\.000e-16/);
+-assert.equal(JSON.stringify(state.history),original);
+-assert.ok(plot.some(point=>point[1]===180));
+-sandbox.testAPI.render({...state,learning_rate:null,early_stopping_wait:null,best_epoch:null,optimizer_steps:null,training_policy:{}});
+-assert.equal(nodes.learningRate.textContent,'미측정');
+-assert.equal(nodes.earlyStopping.textContent,'미측정');
+-assert.equal(nodes.bestEpoch.textContent,'미측정');
+-assert.equal(nodes.optimizerSteps.textContent,'미측정');
+-assert.equal(nodes.epoch.textContent,'0회 / 최대 35회');
+-sandbox.testAPI.render({...state,early_stopping_wait:0,training_policy:{max_epochs:100,patience:15}});
+-assert.equal(nodes.earlyStopping.textContent,'0 / 15회');
+-sandbox.testAPI.render({...state,stage:'interrupted',status:'interrupted'});
+-assert.equal(nodes.currentTitle.textContent,'학습을 중단했습니다');
+-assert.equal(nodes.badge.textContent,'중단');
+-assert.equal(nodes.motion.disabled,true);
+-assert.equal(nodes.motion.attributes['aria-pressed'],'true');
+-assert.equal(motion.at(-1)[2],false);
+-assert.match(nodes.alert.textContent,/중단/);
+-assert.equal(nodes.step0.textContent,'중단');
+-console.log('화면 상태 0/미측정/상한/중단/선형0손실 검증 통과');
+-"""
+-        result = subprocess.run([shutil.which("node"), "-"], input=script, text=True,
+-                                encoding="utf-8", capture_output=True, timeout=20,
+-                                cwd=Path(__file__).resolve().parents[1])
+-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+-
+-    def test_state_is_read_only_and_process_is_observed(self):
+-        path = self.status(epoch=2, seen_per_class={"OK": 5000, "NG": 5000})
+-        before = path.read_bytes()
+-        code, headers, body = self.get("/api/status")
+-        data = json.loads(body)
+-        self.assertEqual(code, 200)
+-        self.assertEqual(data["epoch"], 2)
+-        self.assertEqual(data["seen_per_class"], {"OK": 5000, "NG": 5000})
+-        self.assertFalse(data["_dashboard"]["stale"])
+-        self.assertTrue(data["_dashboard"]["process_alive"])
+-        self.assertEqual(path.read_bytes(), before)
+-        self.assertNotIn("Access-Control-Allow-Origin", headers)
+-        self.assertEqual(headers["Cache-Control"], "no-store")
+-
+-    def test_missing_and_malformed_status_are_explicit(self):
+-        state = read_status(self.root)
+-        self.assertEqual(state["history"], [])
+-        self.assertEqual(state["_dashboard"]["read_error"], "상태 파일 대기")
+-        path = self.root / "work" / "runtime" / "status.json"
+-        path.write_text('{"private":"D:/medical/', encoding="utf-8")
+-        code, _, body = self.get("/api/status")
+-        self.assertEqual(code, 200)
+-        self.assertEqual(json.loads(body)["status"], "failed")
+-        self.assertNotIn(b"medical", body)
+-
+-    def test_nonfinite_status_is_reported_as_read_error(self):
+-        path = self.status()
+-        path.write_text('{"updated_at":"2026-11-10T00:00:00+09:00","loss":NaN}', encoding="utf-8")
+-        code, _, body = self.get("/api/status")
+-        self.assertEqual(code, 200)
+-        self.assertEqual(json.loads(body)["status"], "failed")
+-
+-    def test_deliberately_idle_states_are_not_stale(self):
+-        old_stamp = (datetime.now(timezone.utc) - timedelta(minutes=3)).isoformat()
+-        for status in ("ready", "interrupted", "completed"):
+-            with self.subTest(status=status):
+-                self.status(updated_at=old_stamp, stage=status, status=status, pid=None)
+-                state = read_status(self.root)
+-                self.assertGreaterEqual(state["_dashboard"]["age_seconds"], 179)
+-                self.assertFalse(state["_dashboard"]["stale"])
+-                self.assertIsNone(state["_dashboard"]["read_error"])
+-
+-    def test_stale_and_dead_process_are_observable(self):
+-        self.status(updated_at=(datetime.now(timezone.utc)-timedelta(minutes=3)).isoformat(), pid=2147483647)
+-        state = read_status(self.root)
+-        self.assertTrue(state["_dashboard"]["stale"])
+-        self.assertGreaterEqual(state["_dashboard"]["age_seconds"], 179)
+-        self.assertFalse(state["_dashboard"]["process_alive"])
+-
+-    def test_token_redirect_then_cookie_and_no_token_echo(self):
+-        code, headers, body = self.get("/?token=test-session-token", authenticated=False)
+-        self.assertEqual(code, 303)
+-        self.assertEqual(headers["Location"], "/")
+-        self.assertIn("HttpOnly", headers["Set-Cookie"])
+-        self.assertIn("SameSite=Strict", headers["Set-Cookie"])
+-        self.assertEqual(body, b"")
+-        self.assertEqual(self.get("/", authenticated=False)[0], 401)
+-        self.assertEqual(self.get("/?token=wrong", authenticated=False)[0], 401)
+-        self.assertEqual(self.get("/")[0], 200)
+-
+-    def test_unlisted_and_traversal_paths_never_expose_files(self):
+-        secret = self.root / "private.json"
+-        secret.write_text("private-secret", encoding="utf-8")
+-        for route in ("/../private.json", "/%2e%2e/private.json", "/work/runtime/status.json", "/private.json", "/api/status?file=private.json", "/web/index.html"):
+-            with self.subTest(route=route):
+-                code, _, body = self.get(route)
+-                self.assertEqual(code, 404)
+-                self.assertNotIn(b"private-secret", body)
+-
+-    def test_invalid_host_and_write_method_are_rejected(self):
+-        self.assertEqual(self.get("/api/status", host="example.com")[0], 403)
+-        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=3)
+-        connection.request("POST", "/api/status", body=b"{}", headers={"Cookie": "dashboard_session=test-session-token"})
+-        response = connection.getresponse()
+-        self.assertEqual(response.status, 501)
+-        response.read()
+-        connection.close()
+-
+-    def test_status_requires_timezone_and_object(self):
+-        self.status(updated_at="2026-11-10T01:00:00")
+-        self.assertEqual(read_status(self.root)["status"], "failed")
+-        (self.root / "work" / "runtime" / "status.json").write_text("[]", encoding="utf-8")
+-        self.assertEqual(read_status(self.root)["status"], "failed")
+-
+-
+-if __name__ == "__main__":
+-    unittest.main()
++"""대시보드의 상태 읽기 및 HTTP 경계를 검증합니다."""
++import http.client
++import ctypes
++import copy
++import io
++import json
++import os
++import shutil
++import subprocess
++from pathlib import Path
++import tempfile
++import threading
++import unittest
++from datetime import datetime, timedelta, timezone
++from types import SimpleNamespace
++from unittest import mock
++
++from dashboard import MAX_STATUS_BYTES, make_server, open_status_file, read_status, sigma_results, SIGMA_VALUES
++from src.state import atomic_json
++
++
++class DashboardTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.root = Path(self.temp.name)
++        (self.root / "work" / "runtime").mkdir(parents=True)
++        (self.root / "web").mkdir()
++        (self.root / "web" / "index.html").write_text("실험 현황", encoding="utf-8")
++        self.server = make_server(self.root, port=0, token="test-session-token")
++        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
++        self.thread.start()
++
++    def tearDown(self):
++        self.server.shutdown()
++        self.server.server_close()
++        self.thread.join(timeout=3)
++        self.temp.cleanup()
++
++    def status(self, **changes):
++        data = {"updated_at": datetime.now(timezone.utc).isoformat(), "pid": os.getpid(),
++                "stage": "training", "status": "running", "history": [], "message": "학습 중"}
++        data.update(changes)
++        path = self.root / "work" / "runtime" / "status.json"
++        path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
++        return path
++
++    def get(self, path, authenticated=True, host=None):
++        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=3)
++        headers = {"Host": host or f"127.0.0.1:{self.server.server_port}"}
++        if authenticated:
++            headers["Cookie"] = "dashboard_session=test-session-token"
++        connection.request("GET", path, headers=headers)
++        response = connection.getresponse()
++        result = response.status, dict(response.getheaders()), response.read()
++        connection.close()
++        return result
++
++    @unittest.skipUnless(os.name == "nt", "Windows 삭제 공유 핸들 검사")
++    def test_open_reader_allows_replace_and_preserves_complete_versions(self):
++        path = self.status(epoch=1)
++        old = json.loads(path.read_text(encoding="utf-8"))
++        new = dict(old, epoch=2, message="다음 학습 상태")
++        with open_status_file(path) as old_reader:
++            atomic_json(path, new)
++            self.assertEqual(json.loads(old_reader.read().decode("utf-8")), old)
++            with open_status_file(path) as new_reader:
++                self.assertEqual(json.loads(new_reader.read().decode("utf-8")), new)
++        self.assertEqual(read_status(self.root)["epoch"], 2)
++
++    @unittest.skipUnless(os.name == "nt", "Windows 일시적 파일 부재 재시도 검사")
++    def test_transient_missing_open_retries_then_reads_complete_json(self):
++        path = self.status(epoch=7)
++        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
++        kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
++                                      ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32,
++                                      ctypes.c_void_p]
++        kernel.CreateFileW.restype = ctypes.c_void_p
++        attempts = []
++
++        def controlled_open(*args):
++            attempts.append(args)
++            if len(attempts) <= 2:
++                ctypes.set_last_error(2)
++                return ctypes.c_void_p(-1).value
++            return kernel.CreateFileW(*args)
++
++        controlled_kernel = SimpleNamespace(CreateFileW=mock.Mock(side_effect=controlled_open),
++                                            CloseHandle=kernel.CloseHandle)
++        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
++                mock.patch("dashboard.time.sleep") as sleep:
++            with open_status_file(path) as stream:
++                self.assertEqual(json.loads(stream.read().decode("utf-8"))["epoch"], 7)
++        self.assertEqual(len(attempts), 3)
++        self.assertEqual(sleep.call_args_list, [mock.call(0.01), mock.call(0.02)])
++
++    @unittest.skipUnless(os.name == "nt", "Windows 영구 파일 부재 한계 검사")
++    def test_permanent_missing_open_raises_after_bounded_attempts(self):
++        def missing_open(*_args):
++            ctypes.set_last_error(3)
++            return ctypes.c_void_p(-1).value
++
++        controlled_open = mock.Mock(side_effect=missing_open)
++        controlled_kernel = SimpleNamespace(CreateFileW=controlled_open, CloseHandle=mock.Mock())
++        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
++                mock.patch("dashboard.time.sleep") as sleep:
++            with self.assertRaises(FileNotFoundError) as raised:
++                open_status_file(self.root / "missing.json")
++        self.assertEqual(raised.exception.winerror, 3)
++        self.assertEqual(controlled_open.call_count, 5)
++        self.assertEqual(sleep.call_args_list,
++                         [mock.call(0.01), mock.call(0.02), mock.call(0.04), mock.call(0.08)])
++        controlled_kernel.CloseHandle.assert_not_called()
++
++    @unittest.skipUnless(os.name == "nt", "Windows 일시적 공유 위반 재시도 검사")
++    def test_transient_sharing_violation_retries_then_reads_complete_json(self):
++        path = self.status(epoch=8)
++        kernel = ctypes.WinDLL("kernel32", use_last_error=True)
++        kernel.CreateFileW.argtypes = [ctypes.c_wchar_p, ctypes.c_uint32, ctypes.c_uint32,
++                                      ctypes.c_void_p, ctypes.c_uint32, ctypes.c_uint32,
++                                      ctypes.c_void_p]
++        kernel.CreateFileW.restype = ctypes.c_void_p
++        attempts = []
++
++        def controlled_open(*args):
++            attempts.append(args)
++            if len(attempts) <= 2:
++                ctypes.set_last_error(32)
++                return ctypes.c_void_p(-1).value
++            return kernel.CreateFileW(*args)
++
++        controlled_kernel = SimpleNamespace(CreateFileW=mock.Mock(side_effect=controlled_open),
++                                            CloseHandle=kernel.CloseHandle)
++        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
++                mock.patch("dashboard.time.sleep") as sleep:
++            with open_status_file(path) as stream:
++                self.assertEqual(json.loads(stream.read().decode("utf-8"))["epoch"], 8)
++        self.assertEqual(len(attempts), 3)
++        self.assertEqual(sleep.call_args_list, [mock.call(0.01), mock.call(0.02)])
++
++    @unittest.skipUnless(os.name == "nt", "Windows 영구 공유 위반 한계 검사")
++    def test_permanent_sharing_violation_raises_after_bounded_attempts(self):
++        def locked_open(*_args):
++            ctypes.set_last_error(32)
++            return ctypes.c_void_p(-1).value
++
++        controlled_open = mock.Mock(side_effect=locked_open)
++        controlled_kernel = SimpleNamespace(CreateFileW=controlled_open, CloseHandle=mock.Mock())
++        with mock.patch("dashboard.ctypes.WinDLL", return_value=controlled_kernel), \
++                mock.patch("dashboard.time.sleep") as sleep:
++            with self.assertRaises(PermissionError) as raised:
++                open_status_file(self.root / "locked.json")
++        self.assertEqual(raised.exception.winerror, 32)
++        self.assertEqual(controlled_open.call_count, 5)
++        self.assertEqual(sleep.call_args_list,
++                         [mock.call(0.01), mock.call(0.02), mock.call(0.04), mock.call(0.08)])
++        controlled_kernel.CloseHandle.assert_not_called()
++
++    def test_status_size_limit_remains_enforced(self):
++        path = self.status()
++        path.write_bytes(b" " * (MAX_STATUS_BYTES + 1))
++        state = read_status(self.root)
++        self.assertEqual(state["status"], "failed")
++        self.assertIsNotNone(state["_dashboard"]["read_error"])
++
++    @unittest.skipUnless(shutil.which("node"), "화면 상태 검사에 Node.js가 필요합니다")
++    def test_ui_policy_zero_missing_interrupted_and_zero_loss(self):
++        script = r"""
++const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
++(async()=>{
++const html=fs.readFileSync('web/index.html','utf8');
++const ids=[...html.matchAll(/id="([^"]+)"/g)].map(x=>x[1]);
++const plot=[];
++const context={scale(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},fillText(){},arc(...args){plot.push(args);},fill(){}};
++function element(){return {textContent:'',className:'',children:[],dataset:{},attributes:{},querySelector(selector){if(selector==='small')return this.children[1];return this.children.find(x=>String(x.dataset.sigma)===selector.match(/"(\d+)"/)?.[1]);},parentElement:{},addEventListener(){},setAttribute(k,v){this.attributes[k]=v;},replaceChildren(){this.children=[];},append(...items){this.children.push(...items);},getBoundingClientRect(){return {width:600,height:210};},getContext(){return context;}};}
++const nodes=Object.fromEntries(ids.map(id=>[id,element()]));
++const motion=[];
++const pipeline={setSelectedSigma(){},setStatus(...args){motion.push(args);},setPaused(){},setTheme(){}};
++const sandbox={console,AbortController,setTimeout,clearTimeout,fetch:async()=>({ok:true,json:async()=>({run_id:state.run_id,sigma:state.sigma,history:state.history,metrics:{best_epoch:2,epochs_ran:3,test:{accuracy:1,auc:1}}})}),createPipeline(){return pipeline;},document:{getElementById(id){return nodes[id];},createElement:element,querySelectorAll(){return [];},querySelector(){return null;},fonts:{ready:Promise.resolve()}},window:{matchMedia(){return {matches:false,addEventListener(){}};},addEventListener(){},ctTheme:{current(){return 'light';}},devicePixelRatio:1},setInterval(){}};
++let code=fs.readFileSync('web/app.js','utf8').replace(/^import[^\n]*\n/,'').replace('await document.fonts.ready;','').replace('refresh();setInterval(refresh,3000);','');
++vm.runInNewContext(code+'\nglobalThis.testAPI={render};',sandbox);
++const state={run_id:'0123456789abcdef',stage:'training',status:'running',sigma:0,epoch:0,epochs:35,training_policy:{max_epochs:20,patience:7},learning_rate:0,early_stopping_wait:0,best_epoch:0,optimizer_steps:0,history:[{sigma:0,epoch:1,train_loss:0,val_loss:1e-16,val_accuracy:1}],_dashboard:{stale:false,process_alive:true},updated_at:'2026-11-10T00:00:00+09:00'};
++const original=JSON.stringify(state.history);
++sandbox.testAPI.render(state);
++await new Promise(resolve=>setImmediate(resolve));
++assert.match(html,/<title>폐 CT 특징 블러 실험 · 2차<\/title>/);
++assert.equal(nodes.epoch.textContent,'0회 / 최대 20회');
++assert.equal(nodes.learningRate.textContent,'0');
++assert.equal(nodes.earlyStopping.textContent,'0 / 7회');
++assert.equal(nodes.bestEpoch.textContent,'0회');
++assert.equal(nodes.optimizerSteps.textContent,'0');
++assert.match(nodes.latestLoss.textContent,/학습 손실 0 · 검증 손실 1e-16/);
++assert.equal(JSON.stringify(state.history),original);
++assert.ok(plot.some(point=>point[1]===180));
++sandbox.testAPI.render({...state,learning_rate:null,early_stopping_wait:null,best_epoch:null,optimizer_steps:null,training_policy:{}});
++assert.equal(nodes.learningRate.textContent,'미측정');
++assert.equal(nodes.earlyStopping.textContent,'미측정');
++assert.equal(nodes.bestEpoch.textContent,'미측정');
++assert.equal(nodes.optimizerSteps.textContent,'미측정');
++assert.equal(nodes.epoch.textContent,'0회 / 최대 35회');
++sandbox.testAPI.render({...state,early_stopping_wait:0,training_policy:{max_epochs:100,patience:15}});
++assert.equal(nodes.earlyStopping.textContent,'0 / 15회');
++sandbox.testAPI.render({...state,stage:'interrupted',status:'interrupted'});
++assert.equal(nodes.currentTitle.textContent,'학습을 중단했습니다');
++assert.equal(nodes.badge.textContent,'중단');
++assert.equal(nodes.motion.disabled,true);
++assert.equal(nodes.motion.attributes['aria-pressed'],'true');
++assert.equal(motion.at(-1)[2],false);
++assert.match(nodes.alert.textContent,/중단/);
++assert.equal(nodes.step0.textContent,'중단');
++assert.equal(nodes.testAccuracy.textContent,'100.00%');
++assert.equal(nodes.testAuc.textContent,'1');
++sandbox.testAPI.render({...state,run_id:'fedcba9876543210',sigma:256});
++assert.equal(nodes.testAccuracy.textContent,'미측정');
++assert.equal(nodes.testAuc.textContent,'미측정');
++assert.equal(nodes.latestLoss.textContent,'최근 손실 미측정');
++assert.match(nodes.selectionNote.textContent,/새 실험/);
++await new Promise(resolve=>setImmediate(resolve));
++assert.equal(nodes.testAccuracy.textContent,'미측정');
++assert.equal(nodes.testAuc.textContent,'미측정');
++assert.equal(nodes.latestLoss.textContent,'최근 손실 미측정');
++console.log('화면 상태 0/미측정/상한/중단/선형0손실 및 새 실행 응답 전 잔상 제거 검증 통과');
++})().catch(error=>{console.error(error);process.exitCode=1;});
++"""
++        result = subprocess.run([shutil.which("node"), "-"], input=script, text=True,
++                                encoding="utf-8", capture_output=True, timeout=20,
++                                cwd=Path(__file__).resolve().parents[1])
++        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
++
++    def test_state_is_read_only_and_process_is_observed(self):
++        path = self.status(epoch=2, seen_per_class={"OK": 5000, "NG": 5000})
++        before = path.read_bytes()
++        code, headers, body = self.get("/api/status")
++        data = json.loads(body)
++        self.assertEqual(code, 200)
++        self.assertEqual(data["epoch"], 2)
++        self.assertEqual(data["seen_per_class"], {"OK": 5000, "NG": 5000})
++        self.assertFalse(data["_dashboard"]["stale"])
++        self.assertTrue(data["_dashboard"]["process_alive"])
++        self.assertEqual(path.read_bytes(), before)
++        self.assertNotIn("Access-Control-Allow-Origin", headers)
++        self.assertEqual(headers["Cache-Control"], "no-store")
++
++    def test_missing_and_malformed_status_are_explicit(self):
++        state = read_status(self.root)
++        self.assertEqual(state["history"], [])
++        self.assertEqual(state["_dashboard"]["read_error"], "상태 파일 대기")
++        path = self.root / "work" / "runtime" / "status.json"
++        path.write_text('{"private":"D:/medical/', encoding="utf-8")
++        code, _, body = self.get("/api/status")
++        self.assertEqual(code, 200)
++        self.assertEqual(json.loads(body)["status"], "failed")
++        self.assertNotIn(b"medical", body)
++
++    def test_nonfinite_status_is_reported_as_read_error(self):
++        path = self.status()
++        path.write_text('{"updated_at":"2026-11-10T00:00:00+09:00","loss":NaN}', encoding="utf-8")
++        code, _, body = self.get("/api/status")
++        self.assertEqual(code, 200)
++        self.assertEqual(json.loads(body)["status"], "failed")
++
++    def test_deliberately_idle_states_are_not_stale(self):
++        old_stamp = (datetime.now(timezone.utc) - timedelta(minutes=3)).isoformat()
++        for status in ("ready", "interrupted", "completed"):
++            with self.subTest(status=status):
++                self.status(updated_at=old_stamp, stage=status, status=status, pid=None)
++                state = read_status(self.root)
++                self.assertGreaterEqual(state["_dashboard"]["age_seconds"], 179)
++                self.assertFalse(state["_dashboard"]["stale"])
++                self.assertIsNone(state["_dashboard"]["read_error"])
++
++    def test_stale_and_dead_process_are_observable(self):
++        self.status(updated_at=(datetime.now(timezone.utc)-timedelta(minutes=3)).isoformat(), pid=2147483647)
++        state = read_status(self.root)
++        self.assertTrue(state["_dashboard"]["stale"])
++        self.assertGreaterEqual(state["_dashboard"]["age_seconds"], 179)
++        self.assertFalse(state["_dashboard"]["process_alive"])
++
++    def test_token_redirect_then_cookie_and_no_token_echo(self):
++        code, headers, body = self.get("/?token=test-session-token", authenticated=False)
++        self.assertEqual(code, 303)
++        self.assertEqual(headers["Location"], "/")
++        self.assertIn("HttpOnly", headers["Set-Cookie"])
++        self.assertIn("SameSite=Strict", headers["Set-Cookie"])
++        self.assertEqual(body, b"")
++        self.assertEqual(self.get("/", authenticated=False)[0], 401)
++        self.assertEqual(self.get("/?token=wrong", authenticated=False)[0], 401)
++        self.assertEqual(self.get("/")[0], 200)
++
++    def test_unlisted_and_traversal_paths_never_expose_files(self):
++        secret = self.root / "private.json"
++        secret.write_text("private-secret", encoding="utf-8")
++        for route in ("/../private.json", "/%2e%2e/private.json", "/work/runtime/status.json", "/private.json", "/api/status?file=private.json", "/web/index.html"):
++            with self.subTest(route=route):
++                code, _, body = self.get(route)
++                self.assertEqual(code, 404)
++                self.assertNotIn(b"private-secret", body)
++
++    def test_invalid_host_and_write_method_are_rejected(self):
++        self.assertEqual(self.get("/api/status", host="example.com")[0], 403)
++        connection = http.client.HTTPConnection("127.0.0.1", self.server.server_port, timeout=3)
++        connection.request("POST", "/api/status", body=b"{}", headers={"Cookie": "dashboard_session=test-session-token"})
++        response = connection.getresponse()
++        self.assertEqual(response.status, 501)
++        response.read()
++        connection.close()
++
++    def test_status_requires_timezone_and_object(self):
++        self.status(updated_at="2026-11-10T01:00:00")
++        self.assertEqual(read_status(self.root)["status"], "failed")
++        (self.root / "work" / "runtime" / "status.json").write_text("[]", encoding="utf-8")
++        self.assertEqual(read_status(self.root)["status"], "failed")
++
++    def result_fixture(self, sigma=0):
++        run_id = "0123456789abcdef"
++        self.status(run_id=run_id, sigma_queue=[{"sigma": n, "status": "completed"} for n in SIGMA_VALUES])
++        folder = self.root / "work" / "results" / f"run_{run_id}"
++        folder.mkdir(parents=True, exist_ok=True)
++        metrics = {"run_id": run_id, "sigma": sigma, "best_epoch": 2, "epochs_ran": 3,
++                   "optimizer_steps": 30, "completed_at": "2026-11-10T01:00:00+09:00",
++                   "test": {"accuracy": 1-sigma/512, "auc": 1-sigma/1024, "loss": 0, "n_images": 164},
++                   "source_path": "PRIVATE", "hash": "PRIVATE"}
++        (folder / f"sigma_{sigma}_metrics.json").write_text(json.dumps(metrics), encoding="utf-8")
++        (folder / f"sigma_{sigma}_history.json").write_text(json.dumps([
++            {"sigma": sigma, "epoch": epoch, "train_loss": 0, "val_loss": 0, "val_accuracy": 1,
++             "val_auc": 1, "learning_rate": 0, "next_learning_rate": 0, "optimizer_steps": 10*epoch,
++             "early_stopping_wait": 0, "source_path": "PRIVATE"} for epoch in (1, 2, 3)]), encoding="utf-8")
++        return folder, metrics
++
++    def test_all_sigma_results_and_endpoint_auth(self):
++        for sigma in SIGMA_VALUES:
++            self.result_fixture(sigma)
++            result = sigma_results(self.root, sigma)
++            self.assertEqual(result["sigma"], sigma)
++            self.assertEqual(result["status"], "completed")
++            self.assertEqual(result["history"][0]["sigma"], sigma)
++            self.assertEqual(result["history"][0]["train_loss"], 0)
++            self.assertEqual(result["metrics"]["test"]["accuracy"], 1-sigma/512)
++            self.assertNotIn("PRIVATE", json.dumps(result))
++        self.assertEqual(self.get("/api/sigma-results/0", authenticated=False)[0], 401)
++        self.assertEqual(self.get("/api/sigma-results/0", host="example.com")[0], 403)
++        for suffix in ("-1", "3", "00", "0?file=private.json", "../status", "%30"):
++            self.assertEqual(self.get("/api/sigma-results/"+suffix)[0], 400)
++        code, _, payload = self.get("/api/sigma-results/256")
++        self.assertEqual(code, 200)
++        self.assertEqual(json.loads(payload)["sigma"], 256)
++
++    def test_result_missing_wrong_run_nonfinite_and_history_sigma_fail_closed(self):
++        folder, metrics = self.result_fixture()
++        path = folder / "sigma_0_metrics.json"
++        original = path.read_bytes()
++        for change in ({"run_id": "fedcba9876543210"}, {"sigma": 1}, {"test": {"auc": float("nan")}}):
++            path.write_text(json.dumps(dict(metrics, **change)), encoding="utf-8")
++            result = sigma_results(self.root, 0)
++            self.assertEqual(result["history"], [])
++            self.assertIsNone(result["metrics"])
++            self.assertEqual(result["status"], "unavailable")
++        path.write_bytes(original)
++        (folder / "sigma_0_history.json").write_text('[{"sigma":1}]', encoding="utf-8")
++        self.assertIsNone(sigma_results(self.root, 0)["metrics"])
++        path.unlink()
++        self.assertEqual(sigma_results(self.root, 0)["history"], [])
++        self.assertIsNone(sigma_results(self.root, 3)["metrics"])
++        self.assertIsNone(sigma_results(self.root, True)["metrics"])
++
++    def test_pending_result_does_not_reuse_last_test_metrics(self):
++        self.status(run_id="0123456789abcdef", sigma=256,
++                    sigma_queue=[{"sigma": 0, "status": "pending"}],
++                    history=[{"sigma": 256, "epoch": 1}], evaluation={"test": {"auc": 1}})
++        result = sigma_results(self.root, 0)
++        self.assertEqual(result["status"], "pending")
++        self.assertEqual(result["history"], [])
++        self.assertIsNone(result["metrics"])
++
++    def test_result_symlink_escape_is_rejected(self):
++        folder, _ = self.result_fixture()
++        path = folder / "sigma_0_metrics.json"
++        path.unlink()
++        outside = self.root / "outside.json"
++        outside.write_text('{"secret":"PRIVATE"}', encoding="utf-8")
++        # 권한에 의존하지 않고 실제 경계 분기를 고정해 검사합니다.
++        original = Path.is_symlink
++        with mock.patch.object(Path, "is_symlink", lambda target: target == path or original(target)):
++            result = sigma_results(self.root, 0)
++        self.assertIsNone(result["metrics"])
++        self.assertNotIn("PRIVATE", json.dumps(result))
++
++    def test_result_nested_metric_value_is_not_returned(self):
++        folder, metrics = self.result_fixture()
++        metrics["test"]["accuracy"] = {"source_path": "D:/medical/private-example"}
++        payload = json.dumps(metrics).encode("utf-8")
++        original_open = open_status_file
++
++        def memory_open(path):
++            if path == folder / "sigma_0_metrics.json":
++                return io.BytesIO(payload)
++            return original_open(path)
++
++        # 측정 파일을 바꾸지 않고 HTTP 응답 경계에 오염된 값만 주입합니다.
++        with mock.patch("dashboard.open_status_file", side_effect=memory_open):
++            code, _, body = self.get("/api/sigma-results/0")
++        self.assertEqual(code, 200)
++        result = json.loads(body)
++        self.assertEqual(result["status"], "unavailable")
++        self.assertEqual(result["history"], [])
++        self.assertIsNone(result["metrics"])
++        self.assertNotIn(b"private-example", body)
++        self.assertNotIn(b"source_path", body)
++
++    def result_memory_response(self, folder, metrics, history):
++        records = {folder / "sigma_0_metrics.json": metrics, folder / "sigma_0_history.json": history}
++        original_open = open_status_file
++
++        def memory_open(path):
++            if path in records:
++                return io.BytesIO(json.dumps(records[path]).encode("utf-8"))
++            return original_open(path)
++
++        with mock.patch("dashboard.open_status_file", side_effect=memory_open):
++            code, _, body = self.get("/api/sigma-results/0")
++        self.assertEqual(code, 200)
++        return json.loads(body), body
++
++    def test_result_public_fields_reject_invalid_types_and_nonfinite_values(self):
++        folder, original_metrics = self.result_fixture()
++        original_history = json.loads((folder / "sigma_0_history.json").read_text(encoding="utf-8"))
++        fields = [("test", key) for key in ("accuracy", "auc", "loss", "n_images")]
++        fields += [("metrics", key) for key in ("best_epoch", "epochs_ran", "optimizer_steps", "completed_at", "run_id", "sigma")]
++        fields += [("history", key) for key in ("sigma", "epoch", "train_loss", "val_loss", "val_accuracy", "val_auc",
++                                                "learning_rate", "next_learning_rate", "optimizer_steps", "early_stopping_wait")]
++        invalid = ({"source_path": "D:/medical/private-example"}, ["D:/medical/private-example"],
++                   "D:/medical/private-example", True, False, float("nan"), float("inf"), float("-inf"), None)
++        before = {path: path.read_bytes() for path in (folder / "sigma_0_metrics.json", folder / "sigma_0_history.json")}
++        for group, key in fields:
++            for value in invalid:
++                if value is None and key in ("auc", "val_auc"):
++                    continue
++                with self.subTest(group=group, key=key, value=value):
++                    metrics, history = copy.deepcopy(original_metrics), copy.deepcopy(original_history)
++                    target = metrics["test"] if group == "test" else metrics if group == "metrics" else history[0]
++                    target[key] = value
++                    result, body = self.result_memory_response(folder, metrics, history)
++                    self.assertEqual(result["status"], "unavailable")
++                    self.assertEqual(result["history"], [])
++                    self.assertIsNone(result["metrics"])
++                    self.assertNotIn(b"private-example", body)
++                    self.assertNotIn(b"source_path", body)
++        for path, payload in before.items():
++            self.assertEqual(path.read_bytes(), payload)
++
++    def test_result_numeric_ranges_epoch_alignment_and_timestamp_are_checked(self):
++        folder, original_metrics = self.result_fixture()
++        original_history = json.loads((folder / "sigma_0_history.json").read_text(encoding="utf-8"))
++        cases = [("test", "accuracy", -0.1), ("test", "accuracy", 1.1), ("test", "auc", -0.1),
++                 ("test", "auc", 1.1), ("test", "loss", -1), ("test", "n_images", 0),
++                 ("test", "n_images", 1.5), ("test", "n_images", 2**53),
++                 ("metrics", "best_epoch", 0), ("metrics", "best_epoch", 4),
++                 ("metrics", "epochs_ran", 2), ("metrics", "optimizer_steps", 29),
++                 ("metrics", "completed_at", "2026-11-10T01:00:00"),
++                 ("metrics", "completed_at", "2026-99-10T01:00:00+09:00"),
++                 ("metrics", "completed_at", "2026-11-10T01:00:00+09:00" + "0"*50),
++                 ("history", "epoch", 2), ("history", "epoch", 1.0), ("history", "sigma", 0.0),
++                 ("history", "train_loss", -1), ("history", "val_loss", -1),
++                 ("history", "val_accuracy", 2), ("history", "val_auc", -1),
++                 ("history", "learning_rate", -1), ("history", "next_learning_rate", -1),
++                 ("history", "optimizer_steps", -1), ("history", "early_stopping_wait", 2),
++                 ("history", "early_stopping_wait", 0.5), ("history", "run_id", "fedcba9876543210")]
++        for group, key, value in cases:
++            with self.subTest(group=group, key=key, value=value):
++                metrics, history = copy.deepcopy(original_metrics), copy.deepcopy(original_history)
++                target = metrics["test"] if group == "test" else metrics if group == "metrics" else history[0]
++                target[key] = value
++                result, _ = self.result_memory_response(folder, metrics, history)
++                self.assertEqual(result["status"], "unavailable")
++                self.assertEqual(result["history"], [])
++                self.assertIsNone(result["metrics"])
++        for history in ([], original_history[:2], original_history[::-1],
++                        [original_history[0], original_history[0], original_history[2]]):
++            result, _ = self.result_memory_response(folder, original_metrics, history)
++            self.assertEqual(result["status"], "unavailable")
++        history = copy.deepcopy(original_history)
++        history[1]["optimizer_steps"] = 1
++        self.assertEqual(self.result_memory_response(folder, original_metrics, history)[0]["status"], "unavailable")
++
++    def test_result_zero_and_undefined_auc_keep_valid_values(self):
++        folder, metrics = self.result_fixture()
++        history = json.loads((folder / "sigma_0_history.json").read_text(encoding="utf-8"))
++        metrics["test"].update(accuracy=0, auc=None, loss=0)
++        history[0].update(val_accuracy=0, val_auc=None, optimizer_steps=0)
++        result, body = self.result_memory_response(folder, metrics, history)
++        self.assertEqual(result["status"], "completed")
++        self.assertEqual(result["metrics"]["test"], {"accuracy": 0, "auc": None, "loss": 0, "n_images": 164})
++        self.assertEqual(result["history"][0]["val_accuracy"], 0)
++        self.assertIsNone(result["history"][0]["val_auc"])
++        self.assertEqual(result["history"][0]["learning_rate"], 0)
++        self.assertEqual(result["history"][0]["optimizer_steps"], 0)
++        self.assertNotIn(b"PRIVATE", body)
++
++    def test_result_container_and_pending_state_values_fail_closed(self):
++        folder, metrics = self.result_fixture()
++        history = json.loads((folder / "sigma_0_history.json").read_text(encoding="utf-8"))
++        for bad in (None, [], "D:/medical/private-example", True):
++            with self.subTest(container="test", value=bad):
++                changed = dict(metrics, test=bad)
++                result, body = self.result_memory_response(folder, changed, history)
++                self.assertEqual(result["status"], "unavailable")
++                self.assertNotIn(b"private-example", body)
++            for bad_metrics, bad_history in ((bad, history), (metrics, bad)):
++                result, body = self.result_memory_response(folder, bad_metrics, bad_history)
++                self.assertEqual(result["status"], "unavailable")
++                self.assertNotIn(b"private-example", body)
++        state = {"run_id": "0123456789abcdef", "sigma_queue": [{"sigma": 0, "status": "running"}], "history": history}
++        with mock.patch("dashboard.read_status", return_value=state):
++            self.assertEqual(self.get("/api/sigma-results/0")[0], 200)
++            self.assertEqual(sigma_results(self.root, 0)["status"], "running")
++        for change in ({"run_id": {"source_path": "D:/medical/private-example"}},
++                       {"sigma_queue": [{"sigma": 0, "status": {"source_path": "D:/medical/private-example"}}]},
++                       {"sigma_queue": [{"sigma": False, "status": "completed"}]},
++                       {"sigma_queue": [{"sigma": 0, "status": "running"}]*2},
++                       {"sigma_queue": {}}, {"history": None},
++                       {"history": [dict(history[0], val_loss={"source_path": "D:/medical/private-example"})]}):
++            with self.subTest(change=change), mock.patch("dashboard.read_status", return_value=dict(state, **change)):
++                code, _, body = self.get("/api/sigma-results/0")
++                result = json.loads(body)
++                self.assertEqual(code, 200)
++                self.assertEqual(result["status"], "unavailable")
++                self.assertEqual(result["history"], [])
++                self.assertIsNone(result["metrics"])
++                self.assertNotIn(b"private-example", body)
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/tests/test_sigma_selection.mjs" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/tests/test_sigma_selection.mjs"
+new file mode 100644
+index 0000000..5e58021
+--- /dev/null
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/tests/test_sigma_selection.mjs"	
+@@ -0,0 +1,57 @@
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import vm from 'node:vm';
++// 실제 선택 함수와 응답 처리를 읽어 지연 응답의 순서만 제어합니다.
++const source=fs.readFileSync('web/app.js','utf8');
++class Element {
++  constructor(){this.children=[];this.dataset={};this.attrs={};this.textContent='';}
++  append(...nodes){this.children.push(...nodes);}
++  querySelector(selector){return selector==='small'?this.children[1]:this.children.find(x=>String(x.dataset.sigma)===selector.match(/"(\d+)"/)?.[1]);}
++  replaceChildren(...nodes){this.children=nodes;}
++  addEventListener(){}
++  setAttribute(key,value){this.attrs[key]=value;}
++}
++const nodes=new Map(),requests=[],charts=[];
++const context={console,AbortController,setTimeout,clearTimeout,
++  $:id=>{if(!nodes.has(id))nodes.set(id,new Element());return nodes.get(id);},
++  states:{completed:'완료'},document:{createElement:()=>new Element()},
++  pipeline:{setSelectedSigma(){}},drawChart:s=>charts.push(s),
++  fetch:(url)=>new Promise(resolve=>requests.push({url,resolve}))};
++vm.createContext(context);
++const start=source.indexOf('const number ='),end=source.indexOf('let pipeline =');
++vm.runInContext(source.slice(start,end)+`;globalThis.api={selectSigma,loadSelectedResult,renderQueue,percent,fullPercent,rawNumber,decimalShift,getSigma:()=>selectedSigma,getResult:()=>selectedResult,setState:s=>{latest=s;selectionRun=s.run_id;}};`,context);
++const display=context.api;
++const percentCases=[
++ [.9878048780487805,'98.78%'],[.5365853658536586,'53.65%'],[1,'100.00%'],[0,'0.00%'],[.99999,'99.99%'],[.25,'25.00%'],[1e-7,'0.00%'],
++ [.9878,'98.78%'],[.29,'29.00%'],[131/164,'79.87%'],[102/164,'62.19%'],[163/164,'99.39%'],[159/164,'96.95%'],[.0001,'0.01%']
++];
++for(const [value,expected] of percentCases)assert.equal(display.percent(value),expected);
++for(const value of [null,undefined,NaN,Infinity,-.01,1.01])assert.equal(display.percent(value),'미측정');
++assert.equal(display.fullPercent(.9878048780487805),'98.78048780487805%');
++assert.equal(display.fullPercent(1e-7),'0.00001%');
++assert.equal(display.rawNumber(.9999999999999999),'0.9999999999999999');
++assert.equal(display.rawNumber(3e-5),'0.00003');
++assert.equal(display.rawNumber(1e-16),'1e-16');
++assert.equal(display.rawNumber(0),'0');
++assert.equal(display.rawNumber(null),'미측정');
++const api=context.api,run='0123456789abcdef',sigmas=[0,1,2,4,8,16,32,64,128,256];
++const state={run_id:run,sigma:256,sigma_queue:sigmas.map(sigma=>({sigma,status:'completed'}))};api.setState(state);
++const payload=(sigma,run_id=run)=>({run_id,sigma,status:'completed',message:'완료',history:[{sigma,epoch:sigma===256?16:17}],metrics:{best_epoch:15,epochs_ran:sigma===256?16:17,optimizer_steps:10,test:{accuracy:sigma===256?.537:1,auc:sigma===256?.573:1}}});
++const settle=async(req,data)=>{req.resolve({ok:true,json:async()=>data});await new Promise(resolve=>setImmediate(resolve));};
++for(const sigma of sigmas){api.selectSigma(sigma);const req=requests.at(-1);assert.equal(req.url,`/api/sigma-results/${sigma}`);await settle(req,payload(sigma));assert.equal(api.getResult().sigma,sigma);assert.equal(charts.at(-1).sigma,sigma);}
++api.selectSigma(0);const old=requests.at(-1);api.selectSigma(256);const middle=requests.at(-1);api.selectSigma(0);const newest=requests.at(-1);
++await settle(newest,payload(0));await settle(middle,payload(256));await settle(old,payload(0));assert.equal(api.getResult().sigma,0);assert.equal(nodes.get('testAccuracy').textContent,'100.00%');
++const queueNodes=[...nodes.get('queue').children];api.renderQueue(state);assert.deepEqual(nodes.get('queue').children,queueNodes);assert.equal(api.getSigma(),0);
++const count=requests.length;api.loadSelectedResult();api.loadSelectedResult();assert.equal(requests.length,count+1);await settle(requests.at(-1),payload(0,'fedcba9876543210'));assert.equal(api.getResult(),null);assert.equal(nodes.get('testAccuracy').textContent,'미측정');
++api.selectSigma(3);assert.equal(api.getSigma(),0);
++api.selectSigma(8);const precise=payload(8);precise.metrics.test={accuracy:.9878048780487805,auc:.9999999999999999,loss:1e-16};await settle(requests.at(-1),precise);
++assert.equal(nodes.get('testAccuracy').textContent,'98.78%');
++assert.equal(nodes.get('testAccuracyRaw').textContent,'0.9878048780487805');
++assert.equal(nodes.get('testAccuracyFull').textContent,'98.78048780487805%');
++assert.equal(nodes.get('testAuc').textContent,'0.9999999999999999');
++assert.equal(nodes.get('testLossRaw').textContent,'1e-16');
++api.selectSigma(16);const undefinedAuc=payload(16);undefinedAuc.metrics.test.auc=null;await settle(requests.at(-1),undefinedAuc);assert.equal(nodes.get('testAuc').textContent,'정의 불가');
++
++// 새 실행의 응답 전 비우기와 이전 실행 응답 거부는 Python의 실제 render 실행 회귀에 결합합니다.
++console.log(`수치 표시 PASS: 백분율 ${percentCases.length}개·미측정/범위 6개·원값 7개·실제결과표시 6개`);
++console.log('선택 회귀 PASS: 강도10개, 0→256→0 역순응답, 중복요청, 다른실행, 잘못된강도, 버튼재사용');
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/app.js" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/app.js"
+index f4c235c..f0faeee 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/app.js"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/app.js"	
+@@ -1,148 +1,223 @@
+-import { createPipeline } from './scene.js';
+-const $ = id => document.getElementById(id);
+-const stages = {preparing:'학습 데이터를 준비하고 있습니다',ready:'학습 준비를 마쳤습니다',loading_model:'모델을 불러오고 있습니다',training:'분류기를 학습하고 있습니다',validation:'검증 결과를 확인하고 있습니다',testing:'시험 영상을 평가하고 있습니다',completed:'실험을 마쳤습니다',interrupted:'학습을 중단했습니다',error:'학습을 멈췄습니다'};
+-const states = {running:'진행 중',ready:'준비 완료',completed:'완료',failed:'오류',pending:'대기',waiting:'기록 대기',interrupted:'중단'};
+-const number = v => typeof v === 'number' && Number.isFinite(v);
+-const shown = v => number(v) ? v.toLocaleString('ko-KR') : '—';
+-const measured = v => number(v) ? v.toLocaleString('ko-KR') : '미측정';
+-const lossText = v => !number(v) ? '미측정' : v===0 ? '0' : Math.abs(v)<0.001 || Math.abs(v)>=10000 ? v.toExponential(3) : v.toPrecision(4);
+-const percent = v => number(v) ? `${(v * 100).toFixed(1)}%` : '미측정';
+-let latest = null;
+-let pipeline = null;
+-let refreshing = false;
+-let manualPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+-function setMotion() {
+-  $('motion').textContent = manualPaused ? '움직임 재생' : '움직임 정지';
+-  $('motion').setAttribute('aria-pressed', String(manualPaused));
+-  pipeline?.setPaused(manualPaused);
+-}
+-$('motion').addEventListener('click', () => { manualPaused = !manualPaused; setMotion(); });
+-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+-reduced.addEventListener('change', e => { manualPaused = e.matches; setMotion(); });
+-await document.fonts.ready;
+-try { pipeline = createPipeline($('scene')); setMotion(); pipeline.setTheme(window.ctTheme?.current() || 'light'); }
+-catch { $('sceneError').textContent = '이 브라우저에서 3D 모형을 표시할 수 없습니다. 아래 단계와 실제 상태는 계속 확인할 수 있습니다.'; }
+-function updateTheme() {
+-  const dark=window.ctTheme?.current()==='dark';
+-  $('theme')?.setAttribute('aria-pressed',String(dark));
+-  $('theme')?.setAttribute('aria-label',dark?'밝은 화면으로 전환':'어두운 화면으로 전환');
+-  if($('themeText'))$('themeText').textContent=dark?'라이트':'다크';
+-  pipeline?.setTheme(dark?'dark':'light');
+-  if(latest)drawChart(latest);
+-}
+-$('theme')?.addEventListener('click',()=>window.ctTheme?.toggle());
+-window.addEventListener('ct-theme-change',updateTheme);updateTheme();
+-function stageVisual(s, blocked) {
+-  const active = s.status==='waiting'?-1:({preparing:0,ready:0,loading_model:1,training:3,validation:3,testing:3,completed:4,error:3}[s.stage] ?? -1);
+-  const interrupted=s.status==='interrupted' || s.stage==='interrupted';
+-  for (let i=0;i<4;i++) {
+-    const node = $('step'+i).parentElement;
+-    node.className = interrupted ? 'interrupted' : i<active ? 'complete' : i===active ? (blocked?'failed':'active') : '';
+-    $('step'+i).textContent = interrupted ? '중단' : i<active ? '완료' : i===active ? (blocked?'확인 필요':'진행 중') : '대기';
+-  }
+-  // 모형의 순서는 연산 구조이며, 학습 중 앞 단계도 실제 배치마다 함께 실행됩니다.
+-  pipeline?.setStatus(active, interrupted ? 'interrupted' : blocked ? 'failed' : s.status, !blocked && !interrupted && s.status==='running');
+-  $('motion').disabled=interrupted;
+-  if(interrupted){$('motion').textContent='모형 정지 · 학습 중단';$('motion').setAttribute('aria-pressed','true');}
+-  else setMotion();
+-}
+-function drawChart(s) {
+-  const rows = (Array.isArray(s.history) ? s.history : []).filter(row => row.sigma === s.sigma);
+-  const canvas = $('chart');
+-  const rect = canvas.getBoundingClientRect();
+-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+-  canvas.width = Math.max(1, Math.floor(rect.width*dpr)); canvas.height = Math.floor(210*dpr);
+-  const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
+-  const width=rect.width, height=210, left=38, right=40, top=16, bottom=30;
+-  const metrics=[['train_loss','#647fba'],['val_loss','#4c83cf'],['val_accuracy','#c49b48']];
+-  const measured = rows.some(r=>metrics.some(([key])=>number(r[key])));
+-  $('emptyChart').hidden = measured;
+-  $('curveSigma').textContent = number(s.sigma) ? `σ = ${s.sigma}` : '현재 σ 미측정';
+-  if (!measured) {$('latestLoss').textContent='최근 손실 미측정';return;}
+-  const recent=rows.at(-1);
+-  $('latestLoss').textContent=recent ? `최근 학습 손실 ${lossText(recent.train_loss)} · 검증 손실 ${lossText(recent.val_loss)}` : '최근 손실 미측정';
+-  const lossValues=rows.flatMap(r=>[r.train_loss,r.val_loss]).filter(number);
+-  const maxLoss=Math.max(1,...lossValues)*1.1;
+-  const maxEpoch=Math.max(1,...rows.map(r=>number(r.epoch)?r.epoch:0));
+-  const chartWidth=width-left-right, chartHeight=height-top-bottom;
+-  ctx.font='700 9px Nanum'; ctx.lineWidth=1;
+-  for(let i=0;i<5;i++) {
+-    const y=top+chartHeight*i/4;
+-    ctx.strokeStyle=window.ctTheme?.current()==='dark'?'#293346':'#e5e9f0';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(width-right,y);ctx.stroke();
+-    ctx.fillStyle=window.ctTheme?.current()==='dark'?'#8391a8':'#8793a7';ctx.textAlign='right';ctx.fillText((maxLoss*(1-i/4)).toFixed(2),left-7,y+3);
+-    ctx.textAlign='left';ctx.fillText(`${100-i*25}%`,width-right+6,y+3);
+-  }
+-  for (const [key,color] of metrics) {
+-    ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=2;ctx.beginPath();let started=false;
+-    for(const row of rows) {
+-      if(!number(row[key]) || !number(row.epoch)) {started=false;continue;}
+-      const x=left+(row.epoch-1)/Math.max(1,maxEpoch-1)*chartWidth;
+-      const y=top+chartHeight*(1-row[key]/(key==='val_accuracy'?1:maxLoss));
+-      if(started)ctx.lineTo(x,y);else ctx.moveTo(x,y);started=true;
+-    }
+-    ctx.stroke();
+-    for(const row of rows){if(!number(row[key])||!number(row.epoch))continue;ctx.beginPath();ctx.arc(left+(row.epoch-1)/Math.max(1,maxEpoch-1)*chartWidth,top+chartHeight*(1-row[key]/(key==='val_accuracy'?1:maxLoss)),3,0,Math.PI*2);ctx.fill();}
+-  }
+-  ctx.fillStyle=window.ctTheme?.current()==='dark'?'#8391a8':'#8793a7';ctx.textAlign='left';ctx.fillText('1회',left,height-7);ctx.textAlign='right';ctx.fillText(`${maxEpoch}회`,width-right,height-7);
+-}
+-function render(s) {
+-  latest=s;
+-  const meta=s._dashboard || {};
+-  const dead=meta.process_alive===false && s.status==='running';
+-  const interrupted=s.status==='interrupted' || s.stage==='interrupted';
+-  const failed=!interrupted && (s.status==='failed' || Boolean(s.error));
+-  const blocked=failed || dead || meta.stale || interrupted;
+-  $('currentTitle').textContent=interrupted ? '학습을 중단했습니다' : s.stage==='ready' && s.status==='waiting' ? '학습 상태를 기다리고 있습니다' : stages[s.stage] || '학습 상태를 확인하고 있습니다';
+-  $('message').textContent=interrupted?'학습과 모형의 움직임을 멈추고 마지막 기록을 표시합니다.':s.status==='failed'?'오류를 확인한 뒤 다시 시작합니다. 실행 기록은 보존되어 있습니다.':s.stage==='training'?`현재 블러 강도에서 학습과 검증을 반복합니다.`:'첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.';
+-  $('badge').textContent=interrupted?'중단':states[s.status] || '상태 확인 중';
+-  let warning=interrupted ? '학습이 중단되었습니다. 마지막 기록을 표시하며 모형의 움직임도 멈췄습니다.' : failed ? '실험이 오류로 중단되었습니다. 작업 기록을 확인해 주세요.' : dead ? '학습 프로세스가 종료되었습니다. 마지막 기록을 표시합니다.' : meta.read_error ? meta.read_error : meta.stale ? '60초 이상 새 기록이 없습니다. 실행 상태를 확인해 주세요.' : '';
+-  $('alert').textContent=warning;$('alert').className=warning?`alert visible${failed||dead?' failed':''}`:'alert';
+-  $('sigmaLabel').textContent=number(s.sigma)?`σ ${s.sigma} · ${shown(s.sigma_index)} / ${Array.isArray(s.sigmas)?s.sigmas.length:'—'}번째 실험`:'블러 강도 기록 대기';
+-  const policy=s.training_policy || {};
+-  const maximum=number(policy.max_epochs)?policy.max_epochs:s.epochs;
+-  $('epoch').textContent=`${measured(s.epoch)}회 / 최대 ${measured(maximum)}회`;
+-  $('learningRate').textContent=number(s.learning_rate)?(s.learning_rate===0?'0':s.learning_rate.toExponential(3)):'미측정';
+-  $('earlyStopping').textContent=!number(s.early_stopping_wait) && !number(policy.patience) ? '미측정' : `${measured(s.early_stopping_wait)} / ${measured(policy.patience)}회`;
+-  $('bestEpoch').textContent=number(s.best_epoch)?`${s.best_epoch}회`:'미측정';
+-  $('optimizerSteps').textContent=measured(s.optimizer_steps);
+-  $('batch').textContent=`배치 ${shown(s.batch)} / ${shown(s.batches)}`;
+-  $('progress').value=number(s.batch)&&number(s.batches)&&s.batches>0?Math.min(100,s.batch/s.batches*100):0;
+-  const device=s.device || {};
+-  $('device').textContent=typeof device==='string'?device:device.name || device.type || '미확인';
+-  $('process').textContent=interrupted?'학습 중단':meta.process_alive===true?'학습 프로세스 실행 중':meta.process_alive===false?'학습 프로세스 종료':'학습 프로세스 확인 대기';
+-  $('seen').textContent=`이번 회차 OK ${shown(s.seen_per_class?.OK)} / NG ${shown(s.seen_per_class?.NG)}`;
+-  const stamp=new Date(s.updated_at);
+-  const stampText=Number.isNaN(stamp.getTime())?'갱신 시각 미확인':stamp.toLocaleString('ko-KR',{timeZone:'Asia/Seoul',hour12:false});
+-  $('updated').textContent=`최근 갱신 ${stampText}`;
+-  $('freshness').textContent=`한국 시각 ${stampText} · ${number(meta.age_seconds)?Math.floor(meta.age_seconds)+'초 전 관측':'관측 대기'}`;
+-  stageVisual(s,blocked);
+-  const queue=Array.isArray(s.sigma_queue)?s.sigma_queue:[];
+-  $('queue').replaceChildren();
+-  if(!queue.length){const el=document.createElement('p');el.className='muted';el.textContent='실제 블러 강도 순서 기록 대기';$('queue').append(el);}
+-  for(const item of queue){const div=document.createElement('div');div.className=['running','completed','failed'].includes(item.status)?item.status:'';const strong=document.createElement('strong');strong.textContent=`σ ${item.sigma}`;const small=document.createElement('small');small.textContent=states[item.status] || '대기';div.append(strong,small);$('queue').append(div);}
+-  $('queueCount').textContent=queue.length?`${queue.filter(x=>x.status==='completed').length} / ${queue.length} 완료`:'10단계 · 기록 대기';
+-  drawChart(s);
+-  const test=s.evaluation?.test;
+-  $('testAccuracy').textContent=percent(test?.accuracy);
+-  $('testAuc').textContent=number(test?.auc)?test.auc.toFixed(3):'미측정';
+-  $('evaluationNote').textContent=test?`σ ${s.evaluation.sigma} · 학습에 사용하지 않은 영상`:'시험 평가가 끝나면 표시됩니다.';
+-  const splits=s.dataset?.splits;
+-  $('splits').replaceChildren();
+-  if(splits){for(const [key,label] of [['train','학습'],['validation','검증'],['test','시험']]){const row=document.createElement('tr');for(const value of [label,shown(splits[key]?.OK),shown(splits[key]?.NG),shown(splits[key]?.total)]){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}$('splits').append(row);}}
+-  else {const row=document.createElement('tr');const cell=document.createElement('td');cell.colSpan=4;cell.textContent='분할 결과 대기 · 미측정';row.append(cell);$('splits').append(row);}
+-  $('record').textContent=`${stampText} · ${states[s.status] || '기록 대기'} · ${stages[s.stage] || '상태 확인 중'}`;
+-  $('error').textContent=s.error ? `오류 유형: ${typeof s.error==='object' ? s.error.error_type || '실행 오류' : '실행 오류'} · 상세 원문은 이 PC의 실행 기록에 보관됩니다.` : '';
+-  if($('quickSigma'))$('quickSigma').textContent=number(s.sigma)?`σ ${s.sigma}`:'—';
+-  if($('quickEpoch'))$('quickEpoch').textContent=number(s.epoch)?`${s.epoch} / ${shown(s.epochs)}`:'—';
+-  if($('originalCount'))$('originalCount').textContent=number(s.dataset?.original_total)?s.dataset.original_total.toLocaleString('ko-KR'):'1,097';
+-}
+-async function refresh() {
+-  if(refreshing)return;refreshing=true;
+-  try {const response=await fetch('/api/status',{cache:'no-store'});if(!response.ok)throw new Error(String(response.status));render(await response.json());}
+-  catch { $('alert').className='alert visible failed';$('alert').textContent='상태 서버에 연결할 수 없습니다. 마지막 관측값을 표시합니다. 세션 URL과 서버 실행 상태를 확인해 주세요.';pipeline?.setStatus(0,'failed',false); }
+-  finally {refreshing=false;}
+-}
+-$('refresh').addEventListener('click',refresh);
+-window.addEventListener('resize',()=>{if(latest)drawChart(latest);});
+-for(const link of document.querySelectorAll('nav a'))link.addEventListener('click',()=>{document.querySelector('nav .active')?.classList.remove('active');link.classList.add('active');});
+-refresh();setInterval(refresh,3000);
++import { createPipeline } from './scene.js';
++const $ = id => document.getElementById(id);
++const stages = {preparing:'학습 데이터를 준비하고 있습니다',ready:'학습 준비를 마쳤습니다',loading_model:'모델을 불러오고 있습니다',training:'분류기를 학습하고 있습니다',validation:'검증 결과를 확인하고 있습니다',testing:'시험 영상을 평가하고 있습니다',completed:'실험을 마쳤습니다',interrupted:'학습을 중단했습니다',error:'학습을 멈췄습니다'};
++const states = {running:'진행 중',ready:'준비 완료',completed:'완료',failed:'오류',pending:'대기',waiting:'기록 대기',interrupted:'중단'};
++const number = v => typeof v === 'number' && Number.isFinite(v);
++const shown = v => number(v) ? v.toLocaleString('ko-KR') : '—';
++const measured = v => number(v) ? v.toLocaleString('ko-KR') : '미측정';
++const rawNumber = v => number(v) ? String(v) : '미측정';
++const lossText = rawNumber;
++// 저장 숫자의 십진 문자열에서 소수점만 옮깁니다. 부동소수 곱셈이나 올림 보정은 하지 않습니다.
++function decimalShift(value, places=0){
++  if(!number(value))return null;
++  const raw=String(value),negative=raw.startsWith('-');
++  const [mantissa,exponent='0']=(negative?raw.slice(1):raw).toLowerCase().split('e');
++  const [whole,fraction='']=mantissa.split('.'),digits=whole+fraction;
++  const point=whole.length+Number(exponent)+places;
++  const expanded=point<=0?'0.'+'0'.repeat(-point)+digits:point>=digits.length?digits+'0'.repeat(point-digits.length):digits.slice(0,point)+'.'+digits.slice(point);
++  return (negative?'-':'')+expanded.replace(/^0+(?=\d)/,'');
++}
++function percent(value){
++  if(!number(value)||value<0||value>1)return '미측정';
++  const [whole,fraction='']=decimalShift(value,2).split('.');
++  return `${whole}.${fraction.padEnd(2,'0').slice(0,2)}%`;
++}
++function fullPercent(value){return number(value)&&value>=0&&value<=1?decimalShift(value,2)+'%':'미측정';}
++
++let latest = null;
++let selectedSigma=null,selectionRun=null,selectedResult=null,resultRequest=0,resultController=null,pendingResultKey=null;
++const sigmaChoices=[0,1,2,4,8,16,32,64,128,256];
++function drawSelectedResults(result,message=''){
++  selectedResult=result;
++  const sigma=selectedSigma,metrics=result?.metrics,test=metrics?.test;
++  $('selectedSigma').textContent=number(sigma)?`🔎 지금 보는 강도: σ ${sigma}`:'🔎 강도를 골라 주세요';
++  $('selectionNote').textContent=message||result?.message||'결과를 불러오고 있어요.';
++  $('selectedBestEpoch').textContent=number(metrics?.best_epoch)?`${metrics.best_epoch}회`:'미측정';
++  $('selectedEpochs').textContent=number(metrics?.epochs_ran)?`${metrics.epochs_ran}회`:'미측정';
++  $('selectedSteps').textContent=measured(metrics?.optimizer_steps);
++  $('testAccuracy').textContent=percent(test?.accuracy);
++  $('testAuc').textContent=test?.auc===null?'정의 불가':rawNumber(test?.auc);
++  $('testAccuracyRaw').textContent=rawNumber(test?.accuracy);
++  $('testAccuracyFull').textContent=fullPercent(test?.accuracy);
++  $('testAucRaw').textContent=test?.auc===null?'정의 불가':rawNumber(test?.auc);
++  $('testLossRaw').textContent=rawNumber(test?.loss);
++  $('evaluationNote').textContent=number(sigma)?`σ ${sigma} · ${test?'학습에 쓰지 않은 영상의 결과':'시험 결과 대기'}`:'강도를 골라 주세요';
++  drawChart({sigma,history:result?.history||[]});
++}
++async function loadSelectedResult(){
++  if(!latest||!sigmaChoices.includes(selectedSigma))return;
++  const sigma=selectedSigma,run=selectionRun,key=`${run}:${sigma}`;
++  if(pendingResultKey===key)return;
++  const request=++resultRequest;pendingResultKey=key;
++  resultController?.abort();const controller=new AbortController();resultController=controller;
++  const timeout=setTimeout(()=>controller.abort(),8000);
++  try{
++    const response=await fetch(`/api/sigma-results/${sigma}`,{cache:'no-store',credentials:'same-origin',signal:controller.signal});
++    if(!response.ok)throw new Error('결과 응답 오류');
++    const result=await response.json();
++    if(request!==resultRequest||sigma!==selectedSigma||run!==selectionRun)return;
++    if(result.run_id!==run||result.sigma!==sigma||!Array.isArray(result.history))throw new Error('선택 결과 불일치');
++    drawSelectedResults(result);
++  }catch(error){if(request===resultRequest)drawSelectedResults(null,'결과를 불러오지 못했어요. 잠시 뒤 다시 확인해요.');}
++  finally{clearTimeout(timeout);if(resultController===controller){resultController=null;pendingResultKey=null;}}
++}
++function selectSigma(sigma){
++  if(!sigmaChoices.includes(sigma)||!latest)return;
++  const changed=selectedSigma!==sigma;selectedSigma=sigma;selectionRun=latest.run_id;
++  pipeline?.setSelectedSigma(sigma,selectionRun);renderQueue(latest);
++  if(changed||!selectedResult)drawSelectedResults(null,'선택한 강도의 곡선과 결과를 불러오고 있어요.');
++  loadSelectedResult();
++}
++function renderQueue(s){
++  const queue=Array.isArray(s.sigma_queue)?s.sigma_queue:[];
++  const nodes=[];
++  for(const sigma of sigmaChoices){
++    const item=queue.find(x=>x.sigma===sigma);let button=$('queue').querySelector(`[data-sigma="${sigma}"]`);
++    if(!button){button=document.createElement('button');button.type='button';button.dataset.sigma=String(sigma);const strong=document.createElement('strong'),small=document.createElement('small');strong.textContent=`σ ${sigma}`;button.append(strong,small);button.addEventListener('click',()=>selectSigma(sigma));}
++    button.className=['running','completed','failed'].includes(item?.status)?item.status:'';
++    button.querySelector('small').textContent=states[item?.status]||'대기';button.setAttribute('aria-pressed',String(selectedSigma===sigma));button.setAttribute('aria-label',`블러 강도 ${sigma}, ${states[item?.status]||'대기'} 결과 보기`);nodes.push(button);
++  }
++  if(nodes.some((node,i)=>$('queue').children[i]!==node)||$('queue').children.length!==nodes.length)$('queue').replaceChildren(...nodes);
++  $('queueCount').textContent=`${queue.filter(x=>x.status==='completed').length} / 10 완료`;
++}
++let pipeline = null;
++let refreshing = false;
++let manualPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
++function setMotion() {
++  $('motion').textContent = manualPaused ? '움직임 재생' : '움직임 정지';
++  $('motion').setAttribute('aria-pressed', String(manualPaused));
++  pipeline?.setPaused(manualPaused);
++}
++$('motion').addEventListener('click', () => { manualPaused = !manualPaused; setMotion(); });
++const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
++reduced.addEventListener('change', e => { manualPaused = e.matches; setMotion(); });
++await document.fonts.ready;
++try { pipeline = createPipeline($('scene')); setMotion(); pipeline.setTheme(window.ctTheme?.current() || 'light'); }
++catch { $('sceneError').textContent = '이 브라우저에서 3D 모형을 표시할 수 없습니다. 아래 단계와 실제 상태는 계속 확인할 수 있습니다.'; }
++function updateTheme() {
++  const dark=window.ctTheme?.current()==='dark';
++  $('theme')?.setAttribute('aria-pressed',String(dark));
++  $('theme')?.setAttribute('aria-label',dark?'밝은 화면으로 전환':'어두운 화면으로 전환');
++  if($('themeText'))$('themeText').textContent=dark?'라이트':'다크';
++  pipeline?.setTheme(dark?'dark':'light');
++  if(latest)drawChart({sigma:selectedSigma,history:selectedResult?.history||[]});
++}
++$('theme')?.addEventListener('click',()=>window.ctTheme?.toggle());
++window.addEventListener('ct-theme-change',updateTheme);updateTheme();
++function stageVisual(s, blocked) {
++  const active = s.status==='waiting'?-1:({preparing:0,ready:0,loading_model:1,training:3,validation:3,testing:3,completed:4,error:3}[s.stage] ?? -1);
++  const interrupted=s.status==='interrupted' || s.stage==='interrupted';
++  for (let i=0;i<4;i++) {
++    const node = $('step'+i).parentElement;
++    node.className = interrupted ? 'interrupted' : i<active ? 'complete' : i===active ? (blocked?'failed':'active') : '';
++    $('step'+i).textContent = interrupted ? '중단' : i<active ? '완료' : i===active ? (blocked?'확인 필요':'진행 중') : '대기';
++  }
++  // 모형의 순서는 연산 구조이며, 학습 중 앞 단계도 실제 배치마다 함께 실행됩니다.
++  pipeline?.setStatus(active, interrupted ? 'interrupted' : blocked ? 'failed' : s.status, !blocked && !interrupted && s.status==='running');
++  $('motion').disabled=interrupted;
++  if(interrupted){$('motion').textContent='모형 정지 · 학습 중단';$('motion').setAttribute('aria-pressed','true');}
++  else setMotion();
++}
++function drawChart(s) {
++  const rows = (Array.isArray(s.history) ? s.history : []).filter(row => row.sigma === s.sigma);
++  const historyBody=$('observedHistory'),historyRows=[];
++  for(const row of rows){const tr=document.createElement('tr');for(const value of [row.epoch,row.train_loss,row.val_loss,row.val_accuracy,row.val_auc,row.learning_rate]){const td=document.createElement('td');td.textContent=rawNumber(value);tr.append(td);}historyRows.push(tr);}
++  if(!historyRows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=6;td.textContent='선택한 강도의 기록은 아직 없어요.';tr.append(td);historyRows.push(tr);}
++  historyBody.replaceChildren(...historyRows);
++  const canvas = $('chart');
++  const rect = canvas.getBoundingClientRect();
++  const dpr = Math.min(window.devicePixelRatio || 1, 2);
++  canvas.width = Math.max(1, Math.floor(rect.width*dpr)); canvas.height = Math.floor(210*dpr);
++  const ctx = canvas.getContext('2d'); ctx.scale(dpr,dpr);
++  const width=rect.width, height=210, left=38, right=40, top=16, bottom=30;
++  const metrics=[['train_loss','#647fba'],['val_loss','#4c83cf'],['val_accuracy','#c49b48']];
++  const measured = rows.some(r=>metrics.some(([key])=>number(r[key])));
++  $('emptyChart').hidden = measured;
++  $('curveSigma').textContent = number(s.sigma) ? `σ = ${s.sigma}` : '현재 σ 미측정';
++  if (!measured) {$('latestLoss').textContent='최근 손실 미측정';return;}
++  const recent=rows.at(-1);
++  $('latestLoss').textContent=recent ? `최근 학습 손실 ${lossText(recent.train_loss)} · 검증 손실 ${lossText(recent.val_loss)}` : '최근 손실 미측정';
++  const lossValues=rows.flatMap(r=>[r.train_loss,r.val_loss]).filter(number);
++  const maxLoss=Math.max(1,...lossValues)*1.1;
++  const maxEpoch=Math.max(1,...rows.map(r=>number(r.epoch)?r.epoch:0));
++  const chartWidth=width-left-right, chartHeight=height-top-bottom;
++  ctx.font='700 9px Nanum'; ctx.lineWidth=1;
++  for(let i=0;i<5;i++) {
++    const y=top+chartHeight*i/4;
++    ctx.strokeStyle=window.ctTheme?.current()==='dark'?'#293346':'#e5e9f0';ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(width-right,y);ctx.stroke();
++    ctx.fillStyle=window.ctTheme?.current()==='dark'?'#8391a8':'#8793a7';ctx.textAlign='right';ctx.fillText((maxLoss*(1-i/4)).toFixed(2),left-7,y+3);
++    ctx.textAlign='left';ctx.fillText(`${100-i*25}%`,width-right+6,y+3);
++  }
++  for (const [key,color] of metrics) {
++    ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=2;ctx.beginPath();let started=false;
++    for(const row of rows) {
++      if(!number(row[key]) || !number(row.epoch)) {started=false;continue;}
++      const x=left+(row.epoch-1)/Math.max(1,maxEpoch-1)*chartWidth;
++      const y=top+chartHeight*(1-row[key]/(key==='val_accuracy'?1:maxLoss));
++      if(started)ctx.lineTo(x,y);else ctx.moveTo(x,y);started=true;
++    }
++    ctx.stroke();
++    for(const row of rows){if(!number(row[key])||!number(row.epoch))continue;ctx.beginPath();ctx.arc(left+(row.epoch-1)/Math.max(1,maxEpoch-1)*chartWidth,top+chartHeight*(1-row[key]/(key==='val_accuracy'?1:maxLoss)),3,0,Math.PI*2);ctx.fill();}
++  }
++  ctx.fillStyle=window.ctTheme?.current()==='dark'?'#8391a8':'#8793a7';ctx.textAlign='left';ctx.fillText('1회',left,height-7);ctx.textAlign='right';ctx.fillText(`${maxEpoch}회`,width-right,height-7);
++}
++function render(s) {
++  latest=s;
++  const meta=s._dashboard || {};
++  const dead=meta.process_alive===false && s.status==='running';
++  const interrupted=s.status==='interrupted' || s.stage==='interrupted';
++  const failed=!interrupted && (s.status==='failed' || Boolean(s.error));
++  const blocked=failed || dead || meta.stale || interrupted;
++  $('currentTitle').textContent=interrupted ? '학습을 중단했습니다' : s.stage==='ready' && s.status==='waiting' ? '학습 상태를 기다리고 있습니다' : stages[s.stage] || '학습 상태를 확인하고 있습니다';
++  $('message').textContent=interrupted?'학습과 모형의 움직임을 멈추고 마지막 기록을 표시합니다.':s.status==='failed'?'오류를 확인한 뒤 다시 시작합니다. 실행 기록은 보존되어 있습니다.':s.stage==='training'?`현재 블러 강도에서 학습과 검증을 반복합니다.`:'첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.';
++  $('badge').textContent=interrupted?'중단':states[s.status] || '상태 확인 중';
++  let warning=interrupted ? '학습이 중단되었습니다. 마지막 기록을 표시하며 모형의 움직임도 멈췄습니다.' : failed ? '실험이 오류로 중단되었습니다. 작업 기록을 확인해 주세요.' : dead ? '학습 프로세스가 종료되었습니다. 마지막 기록을 표시합니다.' : meta.read_error ? meta.read_error : meta.stale ? '60초 이상 새 기록이 없습니다. 실행 상태를 확인해 주세요.' : '';
++  $('alert').textContent=warning;$('alert').className=warning?`alert visible${failed||dead?' failed':''}`:'alert';
++  $('sigmaLabel').textContent=number(s.sigma)?`마지막 실행 상태 · σ ${s.sigma} · ${shown(s.sigma_index)} / ${Array.isArray(s.sigmas)?s.sigmas.length:'—'}번째 실험`:'블러 강도 기록 대기';
++  const policy=s.training_policy || {};
++  const maximum=number(policy.max_epochs)?policy.max_epochs:s.epochs;
++  $('epoch').textContent=`${measured(s.epoch)}회 / 최대 ${measured(maximum)}회`;
++  $('learningRate').textContent=rawNumber(s.learning_rate);
++  $('earlyStopping').textContent=!number(s.early_stopping_wait) && !number(policy.patience) ? '미측정' : `${measured(s.early_stopping_wait)} / ${measured(policy.patience)}회`;
++  $('bestEpoch').textContent=number(s.best_epoch)?`${s.best_epoch}회`:'미측정';
++  $('optimizerSteps').textContent=measured(s.optimizer_steps);
++  $('batch').textContent=`배치 ${shown(s.batch)} / ${shown(s.batches)}`;
++  $('progress').value=number(s.batch)&&number(s.batches)&&s.batches>0?Math.min(100,s.batch/s.batches*100):0;
++  const device=s.device || {};
++  $('device').textContent=typeof device==='string'?device:device.name || device.type || '미확인';
++  $('process').textContent=interrupted?'학습 중단':meta.process_alive===true?'학습 프로세스 실행 중':meta.process_alive===false?'학습 프로세스 종료':'학습 프로세스 확인 대기';
++  $('seen').textContent=`이번 회차 OK ${shown(s.seen_per_class?.OK)} / NG ${shown(s.seen_per_class?.NG)}`;
++  const stamp=new Date(s.updated_at);
++  const stampText=Number.isNaN(stamp.getTime())?'갱신 시각 미확인':stamp.toLocaleString('ko-KR',{timeZone:'Asia/Seoul',hour12:false});
++  $('updated').textContent=`최근 갱신 ${stampText}`;
++  $('freshness').textContent=`한국 시각 ${stampText} · ${number(meta.age_seconds)?Math.floor(meta.age_seconds)+'초 전 관측':'관측 대기'}`;
++  stageVisual(s,blocked);
++  renderQueue(s);
++  const changedRun=selectionRun!==s.run_id;
++  if(changedRun){
++    selectionRun=s.run_id;selectedSigma=null;selectedResult=null;++resultRequest;resultController?.abort();pendingResultKey=null;
++  }
++  if(selectedSigma===null){const first=(s.sigma_queue||[]).find(x=>x.status==='completed'&&sigmaChoices.includes(x.sigma));selectedSigma=first?.sigma??(sigmaChoices.includes(s.sigma)?s.sigma:0);}
++  if(changedRun)drawSelectedResults(null,'새 실험의 결과를 불러오고 있어요.');
++  pipeline?.setSelectedSigma(selectedSigma,selectionRun);renderQueue(s);loadSelectedResult();
++  const splits=s.dataset?.splits;
++  $('splits').replaceChildren();
++  if(splits){for(const [key,label] of [['train','학습'],['validation','검증'],['test','시험']]){const row=document.createElement('tr');for(const value of [label,shown(splits[key]?.OK),shown(splits[key]?.NG),shown(splits[key]?.total)]){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}$('splits').append(row);}}
++  else {const row=document.createElement('tr');const cell=document.createElement('td');cell.colSpan=4;cell.textContent='분할 결과 대기 · 미측정';row.append(cell);$('splits').append(row);}
++  $('record').textContent=`${stampText} · ${states[s.status] || '기록 대기'} · ${stages[s.stage] || '상태 확인 중'}`;
++  $('error').textContent=s.error ? `오류 유형: ${typeof s.error==='object' ? s.error.error_type || '실행 오류' : '실행 오류'} · 상세 원문은 이 PC의 실행 기록에 보관됩니다.` : '';
++  if($('quickSigma'))$('quickSigma').textContent=number(s.sigma)?`σ ${s.sigma}`:'—';
++  if($('quickEpoch'))$('quickEpoch').textContent=number(s.epoch)?`${s.epoch} / ${shown(s.epochs)}`:'—';
++  if($('originalCount'))$('originalCount').textContent=number(s.dataset?.original_total)?s.dataset.original_total.toLocaleString('ko-KR'):'1,097';
++}
++async function refresh() {
++  if(refreshing)return;refreshing=true;
++  try {const response=await fetch('/api/status',{cache:'no-store'});if(!response.ok)throw new Error(String(response.status));render(await response.json());}
++  catch { $('alert').className='alert visible failed';$('alert').textContent='상태 서버에 연결할 수 없습니다. 마지막 관측값을 표시합니다. 세션 URL과 서버 실행 상태를 확인해 주세요.';pipeline?.setStatus(0,'failed',false); }
++  finally {refreshing=false;}
++}
++$('scene').addEventListener('ct-sigma-select',event=>{if(event.detail?.run_id===selectionRun)selectSigma(event.detail.sigma);});
++$('refresh').addEventListener('click',refresh);
++window.addEventListener('resize',()=>{if(latest)drawChart({sigma:selectedSigma,history:selectedResult?.history||[]});});
++for(const link of document.querySelectorAll('nav a'))link.addEventListener('click',()=>{document.querySelector('nav .active')?.classList.remove('active');link.classList.add('active');});
++refresh();setInterval(refresh,3000);
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/index.html" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/index.html"
+index 6711c14..be2cfec 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/index.html"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/index.html"	
+@@ -1,12 +1,12 @@
+-<!doctype html>
+-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>폐 CT 특징 블러 실험 · 2차</title><script src="/theme.js"></script><link rel="stylesheet" href="/style.css"></head>
+-<body><header class="topbar"><div class="identity"><h1>폐 CT 특징 블러 실험 · 2차</h1><p>첫 합성곱 특징을 흐린 뒤 분류 성능을 비교합니다</p></div><div class="top-actions"><button id="theme" class="theme-toggle" aria-label="어두운 화면으로 전환" aria-pressed="false"><span class="theme-track"><span></span></span><span id="themeText">다크</span></button><button id="refresh" class="icon-button" aria-label="상태 새로고침"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 2M5 16a8 8 0 0 0 13 2"/></svg></button></div></header>
+-<aside class="sidebar"><nav aria-label="실험 메뉴"><a class="active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 5-7 6 4 7-10"/><circle cx="3" cy="17" r="1"/><circle cx="8" cy="10" r="1"/><circle cx="14" cy="14" r="1"/><circle cx="21" cy="4" r="1"/></svg>실험 현황</a><a href="#analysis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10m6 10V4m6 16v-7m5 7H2"/></svg>학습 결과</a><a href="#data"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/></svg>데이터</a><a href="#records"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="15" height="18" rx="2"/><path d="M9 8h7m-7 4h7m-7 4h4M3 7h3m-3 5h3m-3 5h3"/></svg>기록</a></nav><div class="sidebar-note">폐 CT 실험실<span>Conv1 · ResNet-50</span><small>이 PC에서 실행</small></div></aside>
+-<main><section id="overview"><div id="alert" class="alert" role="status"></div><div class="status-row"><div class="current-heading"><div class="status-title"><span id="badge" class="pill">기록 대기</span><h2 id="currentTitle">학습 상태를 기다리고 있습니다</h2></div><p id="sigmaLabel">블러 강도 기록 대기</p><p id="message" class="sr-only">첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.</p></div><div class="training-progress"><div class="progress-top"><h3>학습 진행</h3><strong id="epoch">—</strong><span id="process" class="process">프로세스 확인 대기</span></div><progress id="progress" value="0" max="100" aria-label="이번 학습 회차의 배치 진행률"></progress><div class="progress-bottom"><span id="seen">이번 회차 OK — / NG —</span><span id="device">장치 확인 중</span></div><span id="batch" class="batch-note">배치 미측정</span></div></div>
+-<div class="training-policy" aria-label="학습 설정과 실제 진행"><dl><div><dt>현재 학습률</dt><dd id="learningRate">미측정</dd></div><div><dt>개선 없이 지난 회차 / 종료 기준</dt><dd id="earlyStopping">미측정 / 미측정</dd></div><div><dt>최적 검증 회차</dt><dd id="bestEpoch">미측정</dd></div><div><dt>가중치 갱신 횟수</dt><dd id="optimizerSteps">미측정</dd></div></dl><p>최대 회차는 설정 상한입니다. 검증 손실이 개선되지 않으면 조기 종료할 수 있습니다.</p></div>
+-<div class="model-workspace"><div class="model-tools"><span>연산 구조</span><button id="motion" class="text-button" aria-pressed="false" title="실행 상태에 맞춰 흐르는 모형입니다. 실제 계산 속도를 나타내지 않습니다.">움직임 정지</button></div><canvas id="scene" aria-label="영상 입력에서 7곱하기7 합성곱, 64채널 특징, 가우시안 블러, ResNet 잔차 블록, 분류로 이어지는 입체 모형"></canvas><p id="sceneError" role="status"></p><div class="steps"><div><strong>입력 영상</strong><small id="step0">대기</small></div><div><strong>첫 합성곱</strong><small id="step1">대기</small></div><div><strong>특징 블러</strong><small id="step2">대기</small></div><div><strong>분류</strong><small id="step3">대기</small></div></div><div class="model-footnote"><span>입력 영상은 추상 모형입니다.</span><span>Conv1 고정 · 특징 블러 · ResNet 후단 학습</span></div></div>
+-<div class="sigma-row"><span class="sigma-label">블러 강도</span><div id="queue" class="queue"></div><span id="queueCount" class="queue-count">기록 대기</span></div></section>
+-<div class="lower-grid"><section id="analysis" class="chart-section"><div class="section-heading"><h2>학습 곡선</h2><span id="curveSigma">현재 σ</span></div><div class="legend"><span>학습 손실</span><span>검증 손실</span><span>검증 정확도</span></div><div class="chart-wrap"><canvas id="chart" aria-label="현재 블러 강도의 학습 회차별 손실과 정확도"></canvas><p id="emptyChart">완료된 학습 회차가 없습니다<span>첫 회차가 끝나면 곡선이 표시됩니다.</span></p></div><p class="chart-note">왼쪽 축: 손실(선형) · 오른쪽 축: 정확도<br><span id="latestLoss">최근 손실 미측정</span></p></section>
+-<section id="data" class="data-section"><div class="section-heading"><h2>데이터 구성</h2><span>원본 <strong id="originalCount">1,097</strong>장</span></div><div class="table-scroll"><table><thead><tr><th>분할</th><th>OK</th><th>NG</th><th>합계</th></tr></thead><tbody id="splits"><tr><td colspan="4">분할 기록 대기</td></tr></tbody></table></div><p class="data-labels">OK 양성·정상 <strong>536</strong><span></span>NG 악성 <strong>561</strong></p><div class="sample-target"><span>이번 회차 학습량</span><strong>클래스당 5,000개</strong><small>학습에만 온라인 증강 적용</small></div></section></div>
+-<div class="bottom-grid"><section class="evaluation"><div class="section-heading"><h2>시험 결과</h2><span id="evaluationNote">시험 평가 후 표시</span></div><div class="metrics"><div>정확도<strong id="testAccuracy">미측정</strong></div><div>AUC<strong id="testAuc">미측정</strong></div></div></section><section id="records" class="record-section"><div class="section-heading"><h2>작업 기록</h2><span id="updated">갱신 시각 확인 중</span></div><p id="record">기록 대기</p><p class="error" id="error"></p><p id="freshness" class="freshness">관측 대기</p></section></div>
+-<footer><strong>영상 단위 예비실험</strong><span>환자 단위 독립성은 확인되지 않았습니다.</span><small>읽기 전용 · 3초마다 갱신</small></footer></main><script type="module" src="/app.js"></script></body></html>
++<!doctype html>
++<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>폐 CT 특징 블러 실험 · 2차</title><script src="/theme.js"></script><link rel="stylesheet" href="/style.css"></head>
++<body><header class="topbar"><div class="identity"><h1>폐 CT 특징 블러 실험 · 2차</h1><p>첫 합성곱 특징을 흐린 뒤 분류 성능을 비교합니다</p></div><div class="top-actions"><button id="theme" class="theme-toggle" aria-label="어두운 화면으로 전환" aria-pressed="false"><span class="theme-track"><span></span></span><span id="themeText">다크</span></button><button id="refresh" class="icon-button" aria-label="상태 새로고침"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 2M5 16a8 8 0 0 0 13 2"/></svg></button></div></header>
++<aside class="sidebar"><nav aria-label="실험 메뉴"><a class="active" href="#overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 5-7 6 4 7-10"/><circle cx="3" cy="17" r="1"/><circle cx="8" cy="10" r="1"/><circle cx="14" cy="14" r="1"/><circle cx="21" cy="4" r="1"/></svg>실험 현황</a><a href="#analysis"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10m6 10V4m6 16v-7m5 7H2"/></svg>학습 결과</a><a href="#data"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 4 16 4 16 0V5M4 12c0 4 16 4 16 0"/></svg>데이터</a><a href="#records"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="15" height="18" rx="2"/><path d="M9 8h7m-7 4h7m-7 4h4M3 7h3m-3 5h3m-3 5h3"/></svg>기록</a></nav><div class="sidebar-note">폐 CT 실험실<span>Conv1 · ResNet-50</span><small>이 PC에서 실행</small></div></aside>
++<main><section id="overview"><div id="alert" class="alert" role="status"></div><div class="status-row"><div class="current-heading"><div class="status-title"><span id="badge" class="pill">기록 대기</span><h2 id="currentTitle">학습 상태를 기다리고 있습니다</h2></div><p id="sigmaLabel">블러 강도 기록 대기</p><p id="message" class="sr-only">첫 합성곱 특징에 블러를 적용해 분류 성능을 비교합니다.</p></div><div class="training-progress"><div class="progress-top"><h3>학습 진행</h3><strong id="epoch">—</strong><span id="process" class="process">프로세스 확인 대기</span></div><progress id="progress" value="0" max="100" aria-label="이번 학습 회차의 배치 진행률"></progress><div class="progress-bottom"><span id="seen">이번 회차 OK — / NG —</span><span id="device">장치 확인 중</span></div><span id="batch" class="batch-note">배치 미측정</span></div></div>
++<div class="training-policy" aria-label="학습 설정과 실제 진행"><dl><div><dt>현재 학습률</dt><dd id="learningRate">미측정</dd></div><div><dt>개선 없이 지난 회차 / 종료 기준</dt><dd id="earlyStopping">미측정 / 미측정</dd></div><div><dt>최적 검증 회차</dt><dd id="bestEpoch">미측정</dd></div><div><dt>가중치 갱신 횟수</dt><dd id="optimizerSteps">미측정</dd></div></dl><p>최대 회차는 설정 상한입니다. 검증 손실이 개선되지 않으면 조기 종료할 수 있습니다.</p></div>
++<div class="model-workspace"><div class="model-tools"><span>연산 구조</span><button id="motion" class="text-button" aria-pressed="false" title="실행 상태에 맞춰 흐르는 모형입니다. 실제 계산 속도를 나타내지 않습니다.">움직임 정지</button></div><canvas id="scene" aria-label="영상 입력에서 7곱하기7 합성곱, 64채널 특징, 가우시안 블러, ResNet 잔차 블록, 분류로 이어지는 입체 모형"></canvas><p id="sceneError" role="status"></p><div class="steps"><div><strong>입력 영상</strong><small id="step0">대기</small></div><div><strong>첫 합성곱</strong><small id="step1">대기</small></div><div><strong>특징 블러</strong><small id="step2">대기</small></div><div><strong>분류</strong><small id="step3">대기</small></div></div><div class="model-footnote"><span>입력 영상은 추상 모형입니다.</span><span>Conv1 고정 · 특징 블러 · ResNet 후단 학습</span></div></div>
++<div class="sigma-row"><span class="sigma-label">블러 강도</span><div id="queue" class="queue"></div><span id="queueCount" class="queue-count">기록 대기</span></div></section>
++<section class="selected-result" aria-label="선택한 블러 강도의 결과"><h2 id="selectedSigma">🔎 강도를 골라 주세요</h2><p id="selectionNote" role="status">위 강도 버튼이나 사진의 강도를 누르면 곡선과 시험 결과도 함께 바뀌어요.</p><dl><div><dt>가장 좋았던 회차</dt><dd id="selectedBestEpoch">미측정</dd></div><div><dt>끝난 학습 회차</dt><dd id="selectedEpochs">미측정</dd></div><div><dt>가중치 갱신 횟수</dt><dd id="selectedSteps">미측정</dd></div></dl><p>위쪽은 마지막 실행 상태예요. 아래 곡선·시험 결과·사진은 고른 강도의 기록이에요. 시험 수치로 강도를 고르는 실험은 아닙니다.</p></section><div class="lower-grid"><section id="analysis" class="chart-section"><div class="section-heading"><h2>학습 곡선</h2><span id="curveSigma">현재 σ</span></div><div class="legend"><span>학습 손실</span><span>검증 손실</span><span>검증 정확도</span></div><div class="chart-wrap"><canvas id="chart" aria-label="선택한 블러 강도의 학습 회차별 손실과 정확도"></canvas><p id="emptyChart">완료된 학습 회차가 없습니다<span>첫 회차가 끝나면 곡선이 표시됩니다.</span></p></div><p class="chart-note">그래프는 학습 중 확인한 검증 성적이에요. 아래 시험 결과는 학습과 모델 선택에 쓰지 않은 영상의 성적이에요.<br>왼쪽 축: 손실(선형) · 오른쪽 축: 정확도<br><span id="latestLoss">최근 손실 미측정</span></p><details class="observed-values"><summary>🔢 곡선에 쓰인 원값 보기</summary><p>축의 눈금은 읽기 위한 간격입니다. 아래 값은 저장된 숫자를 반올림하지 않고 표시합니다. 정확도 원비율은 0~1이며, 1은 100%입니다.</p><div class="observed-values-scroll"><table><thead><tr><th>학습 회차</th><th>학습 손실</th><th>검증 손실</th><th>검증 정확도 원비율</th><th>검증 AUC</th><th>학습률</th></tr></thead><tbody id="observedHistory"></tbody></table></div></details></section>
++<section id="data" class="data-section"><div class="section-heading"><h2>데이터 구성</h2><span>원본 <strong id="originalCount">1,097</strong>장</span></div><div class="table-scroll"><table><thead><tr><th>분할</th><th>OK</th><th>NG</th><th>합계</th></tr></thead><tbody id="splits"><tr><td colspan="4">분할 기록 대기</td></tr></tbody></table></div><p class="data-labels">OK 양성·정상 <strong>536</strong><span></span>NG 악성 <strong>561</strong></p><div class="sample-target"><span>이번 회차 학습량</span><strong>클래스당 5,000개</strong><small>학습에만 온라인 증강 적용</small></div></section></div>
++<div class="bottom-grid"><section class="evaluation"><div class="section-heading"><h2>시험 결과</h2><span id="evaluationNote">시험 평가 후 표시</span></div><div class="metrics"><div>정확도<strong id="testAccuracy">미측정</strong></div><div>AUC<strong id="testAuc">미측정</strong></div></div><p class="precision-note">정확도는 소수 둘째 자리 아래를 버려 표시해요. 올림하지 않습니다.</p><details class="observed-values"><summary>🔢 저장된 원값과 표시 방법 보기</summary><p>정확도 요약만 두 자리까지 잘라 표시합니다. 아래 원비율·AUC·손실은 받은 숫자의 전체 자릿수입니다. 지수 표기(e)는 작은 수를 짧게 쓰는 방식입니다.</p><dl><div><dt>정확도 원비율</dt><dd id="testAccuracyRaw">미측정</dd></div><div><dt>백분율 전체 자릿수</dt><dd id="testAccuracyFull">미측정</dd></div><div><dt>AUC 원값</dt><dd id="testAucRaw">미측정</dd></div><div><dt>시험 손실 원값</dt><dd id="testLossRaw">미측정</dd></div></dl></details></section><section id="records" class="record-section"><div class="section-heading"><h2>작업 기록</h2><span id="updated">갱신 시각 확인 중</span></div><p id="record">기록 대기</p><p class="error" id="error"></p><p id="freshness" class="freshness">관측 대기</p></section></div>
++<footer><strong>영상 단위 예비실험</strong><span>환자 단위 독립성은 확인되지 않았습니다.</span><small>읽기 전용 · 3초마다 갱신</small></footer></main><script type="module" src="/app.js"></script></body></html>
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/scene.js" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/scene.js"
+index 184c20c..c6c8d2e 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/scene.js"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/scene.js"	
+@@ -71,7 +71,7 @@ export function createPipeline(canvas) {
+   const classLabels={Bengin_cases:'양성',Malignant_cases:'악성',Normal_cases:'정상'};
+   const previewIdPattern=/^(0|1|2|4|8|16|32|64|128|256)-(Bengin_cases|Malignant_cases|Normal_cases)-[0-5]$/;
+   const previewRunPattern=/^[a-f0-9]{16}$/,galleryFigures=new Map(),sigmaButtons=new Map(),classButtons=new Map();
+-  let currentPreviewRun=null;
++  let currentPreviewRun=null,externalSigma=null,externalRun=null;
+   let previewItems=new Map(),completedSigmas=new Set(),reportedSigmas=new Set(),selectedSigma=null,selectedClass='Bengin_cases';
+   let galleryController=null,galleryInterval=0,galleryTimeout=0,galleryBusy=false;
+   function previewMessage(text){if(galleryStatus.textContent!==text)galleryStatus.textContent=text;}
+@@ -81,19 +81,14 @@ export function createPipeline(canvas) {
+   }
+   for(const sigma of sigmaOrder){
+     const entry=choiceButton(sigmaControls);entry.name.textContent=`σ ${sigma}`;entry.note.textContent='대기';sigmaButtons.set(sigma,entry);
+-    entry.button.addEventListener('click',()=>{if(disposed||!completedSigmas.has(sigma))return;selectedSigma=sigma;renderGallery();});
++    entry.button.addEventListener('click',()=>{if(disposed||!completedSigmas.has(sigma))return;externalSigma=sigma;selectedSigma=sigma;renderGallery();canvas.dispatchEvent(new CustomEvent('ct-sigma-select',{detail:{sigma,run_id:currentPreviewRun}}));});
+   }
+   for(const [key,label] of Object.entries(classLabels)){
+     const entry=choiceButton(classControls);entry.name.textContent=label;entry.note.textContent='대기';classButtons.set(key,entry);
+     entry.button.addEventListener('click',()=>{if(disposed||selectedSigma===null)return;selectedClass=key;renderGallery();});
+   }
+   // 화면에는 허용된 생성 설정만 옮기며 경로·해시·원자료 목록은 열거하지 않습니다.
+-  function settingNumber(value){
+-    if(typeof value!=='number'||!Number.isFinite(value))return '미확인';
+-    if(value===0)return '0';
+-    if(Math.abs(value)<.001||Math.abs(value)>=100000)return value.toExponential(3).replace(/\.?0+(?=e)/,'');
+-    return Number(value.toPrecision(6)).toLocaleString('ko-KR',{maximumSignificantDigits:6});
+-  }
++  function settingNumber(value){return typeof value==='number'&&Number.isFinite(value)?String(value):'미확인';}
+   function settingText(value){return typeof value==='string'&&value.trim()?value:typeof value==='number'?settingNumber(value):'미확인';}
+   function previewDescription(item){
+     const settings=item.settings&&typeof item.settings==='object'&&!Array.isArray(item.settings)?item.settings:{};
+@@ -170,7 +165,7 @@ export function createPipeline(canvas) {
+     const advanced=document.createElement('details');advanced.className='pipeline-settings-advanced';const advancedTitle=document.createElement('summary');easyText(advancedTitle,'📊 작은 그림마다 색의 숫자 보기');advanced.append(advancedTitle);
+     if(description.minmaxRows.length){const table=document.createElement('table'),thead=document.createElement('thead'),head=document.createElement('tr'),tbody=document.createElement('tbody');for(const title of ['패널','최솟값','최댓값']){const cell=document.createElement('th');cell.textContent=title;head.append(cell);}thead.append(head);for(const values of description.minmaxRows){const row=document.createElement('tr');for(const value of values){const cell=document.createElement('td');cell.textContent=value;row.append(cell);}tbody.append(row);}table.append(thead,tbody);const scroll=document.createElement('div');scroll.className='pipeline-settings-table';scroll.append(table);advanced.append(scroll);}
+     else {const note=document.createElement('p');note.textContent='패널 범위 정보가 아직 없습니다.';advanced.append(note);}
+-    const normalizationNote=document.createElement('p');normalizationNote.textContent=description.original?'원본 CT의 회색조 표시 조건입니다.':'각 패널은 자체 범위로 정규화됩니다. 같은 색이 같은 절대 반응값을 뜻하지 않습니다. 숫자는 읽기 쉽게 반올림했습니다.';advanced.append(normalizationNote);dialogBody.append(advanced);
++    const normalizationNote=document.createElement('p');normalizationNote.textContent=description.original?'원본 CT의 회색조 표시 조건입니다.':'각 패널은 자체 범위로 정규화됩니다. 같은 색이 같은 절대 반응값을 뜻하지 않습니다. 숫자는 반올림하지 않은 원값입니다.';advanced.append(normalizationNote);dialogBody.append(advanced);
+     if(typeof settingsDialog.showModal!=='function'){previewMessage('이 브라우저에서는 설정 창을 열 수 없습니다. 사진 아래 설명과 원본 크기 링크를 확인해 주세요.');return;}
+     dialogOpener=trigger;dialogReturnId=id;dialogReturnKind=trigger.classList.contains('pipeline-preview-image-button')?'imageButton':'thumbnail';previousBodyOverflow=document.body.style.overflow;
+     try{settingsDialog.showModal();document.body.style.overflow='hidden';dialogBody.scrollTop=0;dialogHeading.focus({preventScroll:true});}
+@@ -202,7 +197,7 @@ export function createPipeline(canvas) {
+     }
+     galleryStatistics.textContent=`완료 ${completedSigmas.size} / 10강도 · ${previewItems.size} / 180장`;
+     const visible=chosen.filter(item=>item.class_key===selectedClass).sort((a,b)=>a.stage-b.stage);
+-    selectionStatistics.textContent=selectedSigma===null?'강도별 18장이 준비되면 선택할 수 있습니다.':`선택 강도 σ = ${selectedSigma}: ${chosen.length}장 · 현재 ${classLabels[selectedClass]}: ${visible.length}장 (원본 + 1~5단계)`;
++    selectionStatistics.textContent=selectedSigma!==null&&!completedSigmas.has(selectedSigma)?`σ ${selectedSigma}의 사진은 아직 준비되지 않았어요.`:selectedSigma===null?'강도별 18장이 준비되면 선택할 수 있습니다.':`선택 강도 σ = ${selectedSigma}: ${chosen.length}장 · 현재 ${classLabels[selectedClass]}: ${visible.length}장 (원본 + 1~5단계)`;
+     const ids=new Set(),figures=[],thumbnails=[];galleryOverview.hidden=selectedSigma===null;
+     for(const item of visible){
+       ids.add(item.id);let entry=galleryFigures.get(item.id);
+@@ -244,11 +239,12 @@ export function createPipeline(canvas) {
+       if(!response.ok)throw new Error('preview unavailable');
+       const payload=await response.json();if(disposed)return;
+       if(typeof payload.run_id!=='string'||!previewRunPattern.test(payload.run_id)||!Array.isArray(payload.items)){previewMessage('현재 실행에 맞는 전체 특징 맵을 기다리는 중입니다.');return;}
+-      if(currentPreviewRun!==payload.run_id){closePreviewSettings(false);for(const entry of galleryFigures.values()){entry.image.onload=null;entry.image.onerror=null;}galleryFigures.clear();galleryGrid.replaceChildren();galleryThumbnails.replaceChildren();selectedSigma=null;currentPreviewRun=payload.run_id;}
++      if(externalRun!==null&&payload.run_id!==externalRun){previewMessage('새 실험의 사진을 기다리고 있어요.');return;}
++      if(currentPreviewRun!==payload.run_id){closePreviewSettings(false);for(const entry of galleryFigures.values()){entry.image.onload=null;entry.image.onerror=null;}galleryFigures.clear();galleryGrid.replaceChildren();galleryThumbnails.replaceChildren();selectedSigma=null;if(currentPreviewRun!==null)externalSigma=null;currentPreviewRun=payload.run_id;}
+       const valid=new Map();for(const item of payload.items)if(validPreview(item))valid.set(item.id,item);previewItems=valid;
+       reportedSigmas=new Set(Array.isArray(payload.completed_sigmas)?payload.completed_sigmas.filter(sigma=>Number.isInteger(sigma)&&allowedSigmas.has(sigma)):[]);
+       completedSigmas=new Set(sigmaOrder.filter(readySigma));
+-      if(selectedSigma===null||!completedSigmas.has(selectedSigma))selectedSigma=sigmaOrder.find(sigma=>completedSigmas.has(sigma))??null;
++      if(externalSigma!==null)selectedSigma=externalSigma;else if(selectedSigma===null||!completedSigmas.has(selectedSigma))selectedSigma=sigmaOrder.find(sigma=>completedSigmas.has(sigma))??null;
+       renderGallery();
+       previewMessage(completedSigmas.size?'완료된 강도와 범주를 선택하면 원본부터 5단계까지 6개 그림이 아래에 모두 표시됩니다.':'완료된 강도당 18장의 사진이 준비되기를 기다리는 중입니다.');
+     }catch(error){
+@@ -354,5 +350,5 @@ export function createPipeline(canvas) {
+     renderer.render(scene,camera);dirty=false;
+   }
+   setTheme(document.documentElement.dataset.theme||'light');resize();raf=requestAnimationFrame(frame);renderGallery();refreshPreviews();galleryInterval=window.setInterval(refreshPreviews,15000);
+-  return {setPaused(value){paused=Boolean(value);last=0;dirty=true;},setStatus(index,nextStatus,isRunning){const changed=active!==index||status!==nextStatus||running!==Boolean(isRunning);active=index;status=nextStatus;running=Boolean(isRunning);if(changed)updateState();},setTheme};
++  return {setSelectedSigma(value,runId){if(!allowedSigmas.has(value))return;externalRun=runId;if(currentPreviewRun&&runId!==currentPreviewRun){closePreviewSettings(false);for(const entry of galleryFigures.values()){entry.image.onload=null;entry.image.onerror=null;}galleryFigures.clear();galleryGrid.replaceChildren();galleryThumbnails.replaceChildren();previewItems=new Map();completedSigmas=new Set();reportedSigmas=new Set();currentPreviewRun=runId;previewMessage('새 실험의 사진을 기다리고 있어요.');}externalSigma=value;selectedSigma=value;renderGallery();},setPaused(value){paused=Boolean(value);last=0;dirty=true;},setStatus(index,nextStatus,isRunning){const changed=active!==index||status!==nextStatus||running!==Boolean(isRunning);active=index;status=nextStatus;running=Boolean(isRunning);if(changed)updateState();},setTheme};
+ }
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/style.css" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/style.css"
+index 22dce3e..758de01 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/web/style.css"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/web/style.css"	
+@@ -26,3 +26,11 @@
+ /* 쉬운 설명을 먼저 읽고 정확한 생성 수치는 펼쳐서 확인합니다. */
+ .pipeline-emoji{font-family:'Segoe UI Emoji','Apple Color Emoji',sans-serif;font-weight:400}.pipeline-core{padding:14px 17px;background:var(--selected);border-radius:7px}.pipeline-cards>li{padding:14px 10px 11px}.pipeline-cards p{font-size:13px;line-height:1.85}.pipeline-settings-summary{display:grid;gap:12px}.pipeline-settings-summary>section{padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 5px 5px 0}.pipeline-settings-summary h3{font-size:15px;line-height:1.6;margin:0 0 5px}.pipeline-settings-summary p{margin:0;font-size:14px;line-height:1.85}.pipeline-panel-guide>span{display:block}.pipeline-panel-guide{font-size:13px;line-height:1.9;color:var(--ink);padding:12px 0;margin:0;font-family:Nanum,'Segoe UI Emoji','Malgun Gothic',sans-serif}.pipeline-preview-easy{font-size:14px;line-height:1.9;color:var(--ink);margin:9px 0 11px}.pipeline-preview-exact{color:var(--muted);font-size:12px;line-height:1.8}.pipeline-preview-exact>summary{display:list-item;padding:7px 0;cursor:pointer;outline-offset:3px}.pipeline-preview-exact>summary:hover{color:var(--accent-strong)}.pipeline-preview-exact>summary:focus-visible{outline:2px solid var(--accent-strong)}.pipeline-preview-exact[open]>summary{color:var(--accent-strong)}.pipeline-settings-advanced>.pipeline-settings-help,.pipeline-settings-advanced>.pipeline-settings-caption{margin:12px 13px}.pipeline-gallery-description{max-width:900px}.pipeline-gallery-normalization{max-width:950px}
+ @media(max-width:600px){.pipeline-core{padding:12px 13px}.pipeline-cards>li{padding:12px 0}.pipeline-settings-summary>section{padding:10px 11px}.pipeline-settings-summary h3{font-size:14px}.pipeline-settings-summary p,.pipeline-preview-easy{font-size:13px}.pipeline-panel-guide{font-size:12px}}
++
++/* 강도 선택은 사진·곡선·시험 결과에 함께 적용됩니다. */
++.queue>button{appearance:none;display:flex;flex:1;min-width:0;flex-direction:column;align-items:center;gap:4px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--ink);padding:9px 3px;font:inherit;cursor:pointer;box-shadow:none;transform:none;transition:none;outline-offset:3px}.queue>button strong{font-size:12px}.queue>button small{font-size:9px;color:var(--muted)}.queue>button:hover{background:var(--surface);border-color:var(--accent);transform:none}.queue>button:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}.queue>button:active,.queue>button[aria-pressed=true]{background:var(--selected);border-color:var(--accent-strong);box-shadow:inset 0 0 0 1px var(--accent);transform:none}.selected-result{margin-top:24px;padding:18px;background:var(--selected);border:1px solid var(--line);border-radius:6px}.selected-result h2{font-size:21px;margin:0 0 8px}.selected-result p{font-size:12px;line-height:1.9;margin:7px 0}.selected-result dl{display:flex;flex-wrap:wrap;gap:16px 35px;margin:15px 0}.selected-result dt{font-size:11px;color:var(--muted)}.selected-result dd{margin:4px 0 0;font-size:17px}
++@media(max-width:600px){.queue{flex-wrap:wrap;gap:6px}.queue>button{flex:0 0 calc(20% - 6px);min-height:48px;padding:6px 2px}.queue>button strong{font-size:11px}.queue>button small{font-size:9px}.selected-result{padding:13px}.selected-result h2{font-size:18px}.selected-result p{font-size:11px}}
++
++/* 요약 절삭과 저장 원값을 구분하고 긴 관측값은 영역 안에서 읽습니다. */
++.metrics>div{min-width:0}.metrics strong{overflow-wrap:anywhere}.precision-note{font-size:11px;line-height:1.8;color:var(--muted);margin:12px 0}.observed-values{margin:14px 0 0;border-top:1px solid var(--line);min-width:0;max-width:100%;font-size:12px}.observed-values>summary{padding:11px 0;cursor:pointer;outline-offset:3px;line-height:1.8;color:var(--ink)}.observed-values>summary:hover{color:var(--accent-strong)}.observed-values>summary:focus-visible{outline:2px solid var(--accent-strong)}.observed-values[open]>summary{color:var(--accent-strong)}.observed-values>p{font-size:11px;line-height:1.9;color:var(--muted);margin:5px 0 12px}.observed-values dl{margin:0}.observed-values dl>div{padding:9px 0;border-bottom:1px solid var(--soft-line)}.observed-values dt{font-size:11px;color:var(--muted)}.observed-values dd{margin:4px 0 0;font-size:13px;overflow-wrap:anywhere}.observed-values-scroll{overflow-x:auto;max-width:100%;min-width:0}.observed-values table{font-size:11px}.observed-values th,.observed-values td{font-size:11px;padding:8px;white-space:nowrap}.training-policy dd{overflow-wrap:anywhere}
++@media(max-width:600px){.metrics{gap:20px}.metrics strong{font-size:20px}.observed-values dd{font-size:12px}.precision-note{font-size:10px}}
+diff --git "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md" "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"
+index 04c5e9c..13417ef 100644
+--- "a/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/3\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"	
++++ "b/Conv1 \353\270\224\353\237\254 OK-NG \354\213\244\355\227\230/4\354\260\250/\353\263\200\352\262\275\352\270\260\353\241\235.md"	
+@@ -1,55 +1,50 @@
+-# 🧩 특징맵 전체 구성과 대시보드 · 공개 코드 3차
++# 🔎 블러 강도별 결과 선택 · 공개 코드 4차
+ 
+-**학습 2차의 결과를 읽는 시각화 소프트웨어**를 보완했습니다. 새로운 학습 차수를 시작한 변경이 아닙니다. 학습 코드·설정·분할·실행 식별자와 체크포인트는 그대로 사용합니다.
++블러 강도를 바꿔도 사진만 바뀌고 학습 곡선·시험 수치는 마지막 강도에 남던 문제를 수정했습니다. 이제 **강도 하나를 고르면 📷 사진·📈 학습 곡선·📊 시험 결과가 함께 바뀝니다.** 상단의 마지막 실행 상태와 사용자가 고른 결과를 구분해 표시합니다.
+ 
+-화면에서는 **📷 몸속 사진 → 🔎 선·무늬 찾기 → 🌫️ 찾은 무늬를 부드럽게 → 🗂️ 두 상자로 분류** 순서로 먼저 설명합니다. 이해를 돕는 비유이며 의학적 진단을 뜻하지 않습니다. 64채널·잔차 블록 같은 실제 기술 조건은 상세 설정에서 그대로 확인합니다.
++이 자료는 **학습 2차를 읽는 대시보드의 로컬 수정 3차를 공개 코드 4차로 보존한 묶음**입니다. 새로운 학습 실험 3·4차를 시작한 변경이 아닙니다. 이전 공개 1~3차와 그 설명·비교 자료를 유지합니다.
+ 
+-## 달라진 표시와 저장 방식
++## 바뀐 동작
+ 
+-이전 미리보기는 블러 직후 특징 중 한 채널을 대표 이미지로 보여 주었습니다. 이번에는 원본 범주와 처리 단계별 PNG를 저장하고, 특징맵 한 그림 안에 여러 채널의 반응을 함께 배치합니다.
+-
+-| 구분 | 구성 |
++| 선택과 상황 | 화면과 서버 동작 |
+ |---|---|
+-| 조건 | 원본 기준과 블러 강도 1·2·4·8·16·32·64·128·256 |
+-| 원본 범주 | 양성·악성·정상 각각 대표 CT 한 장 |
+-| 추출 단계 | 입력 영상, 첫 합성곱의 블러 직후, 잔차 블록 묶음 1~4의 출력 |
+-| 조건별 PNG | 원본 범주 3개 × 단계 6개 = 18개 |
+-| 전체 구성 | 조건 10개 × 18개 = 180개 |
+-| 특징맵 그림 | 전체 채널 평균·채널별 최댓값·균등 간격의 개별 채널 8개, 총 10패널 |
+-
+-참고 자료와 동일한 조건별 폴더·범주별 하위 폴더·단계별 파일 배열을 사용합니다. 과거 PNG를 현재 실험의 결과로 복사하지 않고, 현재 실험의 완료된 최적 체크포인트로 실제 특징을 계산합니다. 참고 자료와 모델·전처리·추출 경계가 다르므로 수치적으로 동일한 재현이나 같은 사진이라고 주장하지 않습니다. 첫 합성곱의 출력은 64채널이며 이후 잔차 블록 묶음에서는 채널 수와 공간 크기가 달라집니다.
+-
+-원본 기준의 폴더 이름은 `원본 파일 생성`, 블러 조건은 `sigma1 블러 파일 생성` 등으로 참고 구조를 유지합니다. 각 조건 안의 `피쳐맵`에는 `Bengin_cases`, `Malignant_cases`, `Normal_cases` 범주가 있고 단계 0~5 그림이 들어갑니다. 참고 자료의 고유 이름과 철자는 경로 대응을 위해 보존합니다.
++| 10개 강도 중 하나 선택 | 같은 강도의 사진·곡선·시험 수치와 최적·종료 회차·가중치 갱신 횟수 표시 |
++| 사진 영역의 강도 선택 | 상단 결과 선택과 같은 값을 사용 |
++| 3초 자동 갱신·테마·화면 크기 변경 | 사용자가 고른 강도 유지 |
++| 빠르게 0 → 256 → 0 선택 | 늦게 도착한 이전 응답을 반영하지 않음 |
++| 실행 식별자가 바뀜 | 이전 실행의 수치와 곡선을 먼저 비우고 새 결과를 읽음 |
++| 미완료·누락·다른 실행·잘못된 데이터 | 마지막 시험 결과를 재사용하지 않고 대기 또는 미측정 표시 |
+ 
+-## 사진 아래 설명을 읽는 방법
++등록된 강도는 0·1·2·4·8·16·32·64·128·256입니다. 결과를 살펴보는 선택 기능이며 시험 수치를 이용해 학습 조건을 정하는 기능은 아닙니다. 실제 학습 코드·설정·분할·기록·결과·체크포인트는 수정하지 않습니다.
+ 
+-그림에는 추출 지점·텐서 크기·패널 구성·실제 체크포인트와 연결되는 정보를 표시합니다. 사진 아래에는 해당 단계의 역할과 색의 의미를 설명합니다. 원본 입력의 회색은 픽셀 밝기입니다. 특징맵의 색은 특징의 상대 반응이며 병변 위치나 악성 확률, 프라이버시 보장값이 아닙니다. 특징맵의 각 패널을 자체 최솟값·최댓값으로 표시하므로 서로 다른 패널의 같은 색을 같은 수치로 비교하지 않습니다.
++## 수치를 올림하지 않고 확인하기
+ 
+-대시보드는 블러 강도·원본 범주·처리 단계를 선택해 사진과 설명을 보여 줍니다. 완료된 조건의 18장 묶음이 모두 준비되어야 공개하고, 아직 학습 중이거나 출력이 준비되지 않은 조건은 완료 사진으로 표시하지 않습니다. 내부 파일 경로와 영상별 원본 목록은 HTTP 응답에 포함하지 않습니다.
++정확도 요약은 백분율 소수 둘째 자리까지 표시하고 이후 자리는 버립니다. 예를 들어 저장 비율이 0.98789이면 요약은 98.78%이며 98.79%로 올리지 않습니다. 이 값은 표시 방법을 설명하는 예시로 실제 실험 성능이 아닙니다. 요약을 잘라 표시했다는 안내와 함께 원비율·백분율의 전체 자릿수를 확인할 수 있습니다.
+ 
+-각 사진을 선택하면 그 그림을 만든 조건을 확인할 수 있습니다. 블러 강도, 추출 단계, 텐서 크기, 선택 채널과 패널 범위, 체크포인트 회차, CPU·FP32 추론 조건과 학습 정책을 구분해 표시합니다. 사진을 만든 평가 추론 설정을 학습 정밀도와 혼동하지 않습니다. 설정은 서버가 허용한 항목만 제공하며 원본 CT 파일 경로나 인증정보는 보내지 않습니다.
++AUC·손실·학습률과 사진 생성 설정의 수치는 저장된 숫자의 문자열을 표시합니다. 학습 곡선 아래 표에서도 회차별 원값을 확인합니다. 미측정과 AUC 정의 불가를 구분하고 표시 목적 때문에 결과 파일의 값이나 시험 결과를 바꾸지 않습니다.
+ 
+-## 변경 파일과 실행 경계
++## 실제 변경 파일
+ 
+-- `dashboard.py`: 완료 상태·실행 식별자·18장 묶음·정해진 파일 경로를 대조해 인증된 요청에 특징맵을 제공합니다.
+-- `web/scene.js`, `web/style.css`: 특징맵 탐색과 설명, 입력부터 분류까지의 처리 흐름을 표시합니다.
+-- `생성 도구/단계별_특징맵_저장.py`: 완료한 조건의 최적 체크포인트를 CPU에서 읽어 같은 대표 CT의 단계별 특징을 저장합니다. 학습 코드·설정·체크포인트는 쓰지 않습니다.
+-- `README.md`, 차수 설명·전체 목차·변경 기록과 비교 자료: 소프트웨어 차수와 실제 학습 차수를 구분합니다.
++- `dashboard.py`: 인증된 읽기 전용 `/api/sigma-results/<강도>`에서 현재 실행과 일치하는 숫자만 제공합니다. 등록된 강도·경로 경계·파일 크기·결과 식별자와 수치의 타입·유한성·범위를 검사합니다. 정확도·AUC는 0~1, 손실·학습률은 음수가 아닌 유한수, 회차·갱신 횟수·영상 수는 불리언과 구분한 정수로 확인합니다. 원본 경로·개별 예측·가중치를 반환하지 않습니다.
++- `web/app.js`: 선택한 강도·실행과 결과 응답을 함께 관리하고 곡선·시험 수치·회차 정보를 갱신합니다. 요청 취소·응답 순서 확인·중복 요청 방지와 새 실행 전환 시 이전 수치 제거를 추가했습니다.
++- `web/scene.js`: 사진의 강도 선택과 결과 선택을 연결하고 다른 실행의 사진 응답을 거부합니다.
++- `web/index.html`, `web/style.css`: 선택 결과 안내와 회차 표시, 키보드로 누를 수 있는 강도 버튼과 선택 상태를 추가했습니다.
++- `tests/test_dashboard.py`, `tests/test_sigma_selection.mjs`: 10강도·인증과 경계·누락 및 잘못된 결과·실행 전환·역순 응답·버튼 재사용을 검사합니다.
+ 
+-3차 폴더는 이전 2차의 공개 실행 묶음을 보존해 복사한 뒤 위 파일과 설명을 갱신한 사본입니다. `src/`, `run_training.py`, `config.example.json`과 의존성은 2차 공개본과 같습니다. 로컬 학습 디렉터리를 이 공개 사본으로 교체하거나 실행 중 소스를 옮기지 않습니다.
++공개 4차는 공개 3차의 코드·자원을 복사하고 위 7개 파일과 설명을 갱신한 사본입니다. 학습 소스와 설정 예제·의존성·특징맵 생성 도구는 이전 공개본과 같습니다. 실제 학습 폴더를 이 공개 사본으로 교체하지 않습니다.
+ 
+-공개 저장 도구에서는 개인 절대 참고 경로와 특정 실행 식별자 기본값만 제거했습니다. 실행할 때 `--experiment-root`, `--output-root`, `--reference-root`, `--run-id`를 실제 로컬 값으로 지정합니다. 참고 PNG와 실제 CT·특징맵 PNG·가중치·영상별 목록·실행 기록은 공개 저장소에 포함하지 않습니다.
++## 검사와 한계
+ 
+-## 검증과 해석 범위
++최종 구현자 직접 검사에서 대시보드 단위 검사 25개를 포함한 전체 명세 52개, app.js·scene.js Node 문법, 실제 선택 함수의 지연 응답 회귀와 수치 표시 조건을 통과했습니다. 실제 저장 결과 10강도의 응답 값과 학습 곡선 원값도 대조했습니다. 새 표시 기준에 따라 기존 UI 기대 22개 중 표현 3개를 조정하고 나머지 19개와 0·미측정·상한·중단의 의미는 유지했습니다.
+ 
+-출력 도구는 전체 PNG 경로 180개, 조건별 결과 18개, 실행·원본·체크포인트 해시, 유한 텐서와 이미지 크기를 대조합니다. 저장 순서는 학습 분할에서 범주별 상대 경로 정렬 첫 원본을 선택하며, 이 대표 사진을 전체 데이터나 환자의 대표성으로 일반화하지 않습니다. 완료되지 않은 조건의 결과를 미리 만들지 않습니다.
++초기 모의 DOM API 누락과 구현 문구에 의존하던 회귀 검사 실패 2건을 보존했습니다. 이후 독립 제어 검사에서 숫자 필드에 중첩 객체가 들어오면 그대로 반환되는 결함을 발견해, 타입·유한성·범위와 완료 회차의 일관성 검사를 추가했습니다. 실제 의료 파일을 변조하거나 실제 정보 유출을 관측했다는 뜻은 아닙니다. 잘못된 값에는 고정 안내와 미측정 상태를 반환하며 입력 객체·경로·오류 원문을 응답에 넣지 않습니다. 검사 통과를 임상 성능이나 전체 무오류 보장으로 해석하지 않습니다.
+ 
+-직접 수행한 검사와 독립 검토의 상세 결과는 별도 검증 기록에서 관리합니다. 전체 학습 완료와 임상 성능을 소프트웨어 검사 통과로 대신하지 않습니다. 원본 환자 ID가 없어 영상 단위 예비실험이라는 한계가 유지됩니다. 새 논문 원고와 기존 공개 논문·PDF의 수정은 이번 묶음에 없습니다.
++의료 원영상·특징맵 PNG·가중치·영상별 목록·실행 기록·접속정보는 공개하지 않습니다. 학위논문 계획서 HWP·DOCX·PDF와 그 이전본은 사용자의 외부 업로드 금지 자료로 이번 코드 공개 범위에서 제외합니다. 이번 수리에는 새 원고 작성이나 기존 공개 논문·PDF의 변경이 없습니다. 환자 ID가 없어 영상 단위 예비실험이라는 한계도 유지됩니다.
+ 
+-## 전체 파일 비교
++## 전체 비교와 복사 자원
+ 
+-[이번 공개 변경의 전체 비교](../../docs/revision-diffs/conv1-okng-round3.diff)와 [같은 파일별 2차 대비 비교](../../docs/revision-diffs/conv1-okng-round3-vs-round2.diff)를 제공합니다. 주석·공백을 포함한 모든 실제 바이트 차이와 상위 안내 문서의 변경을 담으며, 비교 파일 자신의 재귀 비교만 제외합니다. 이전 공개 1·2차는 수정하지 않습니다. 3차 폴더에 추가한 글꼴 바이너리는 이전 공개본을 그대로 복사한 파일입니다. 새 의료 이미지나 새로운 내용의 바이너리를 추가하지 않고 글꼴과 라이선스를 보존합니다.
++[이번 공개 변경 전체](../../docs/revision-diffs/conv1-okng-round4.diff)와 [같은 파일별 공개 3차 대비 비교](../../docs/revision-diffs/conv1-okng-round4-vs-round3.diff)를 제공합니다. 주석·공백·상위 안내 문서의 변경까지 포함하며 비교 파일 자신의 재귀 비교만 제외합니다.
+ 
+-| 복사한 바이너리 | 바이트 | SHA-256 |
++| 그대로 복사한 바이너리 | 바이트 | SHA-256 |
+ |---|---:|---|
+ | web/fonts/NanumGothic-Bold.ttf | 2073868 | f96298f9fb18e364d2370f4c3ce948ac67a2b61af992d7234bc15c42b033c674 |
