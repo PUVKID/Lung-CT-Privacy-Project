@@ -14,7 +14,9 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 
 ## 연구 목적
 
-이 단계의 핵심은 pool1_pool 특징 블러입니다. 원본 test를 먼저 분리하고 학습 쪽을 증강합니다. σ32·64·128·256은 전역 평균 분기로 처리됩니다. REUSE_COLLAPSED_RESULTS를 켜면 같은 분기의 결과를 재사용합니다.
+이 단계의 핵심은 pool1_pool 특징 블러입니다. 원본 test를 먼저 분리하고 학습 쪽을 증강합니다.
+
+σ32·64·128·256은 전역 평균 분기로 처리됩니다. REUSE_COLLAPSED_RESULTS를 켜면 같은 분기의 결과를 재사용합니다.
 
 <a name="features"></a>
 
