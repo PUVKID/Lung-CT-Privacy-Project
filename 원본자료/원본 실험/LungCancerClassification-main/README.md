@@ -31,7 +31,7 @@ In the realm of medical imaging and cancer diagnosis, the ability to accurately 
 #### Key Components
 
 - **Convolutional Neural Network (CNN):** The engine driving the classification system, the CNN has been trained on a diverse dataset of lung cancer images to recognize distinct patterns indicative of different cancer types.
-  
+
 - **Streamlit Deployment:** Utilizing Streamlit for deployment offers a user-friendly interface where medical professionals and researchers can easily upload images for analysis and receive detailed predictions.
 
 - **Probability Distribution:** The system produces predictions in the form of a probability distribution displayed in a pie chart, providing insights into the likelihood of different cancer types based on the input image.
@@ -66,7 +66,4 @@ Stay tuned for updates and enhancements to the Lung Cancer Classification system
 
 *Thank you for exploring the Lung Cancer Classification repository!*
 
-🔬🧠👨‍⚕️📊👩‍💻
-
 ---
-

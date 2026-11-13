@@ -1,4 +1,6 @@
-# 📁 블러 스테이지 1 엣지
+<a id="-블러-스테이지-1-엣지"></a>
+
+# 블러 스테이지 1 엣지
 
 ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다.
 
@@ -13,7 +15,9 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 | 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
 | 추가 분석 | 특징 SSIM·cosine과 선택적 디코더 복원의 PSNR/SSIM 경로를 제공합니다. 설정과 저장된 결과를 구분합니다. |
 
-## 📖 이용 순서
+<a id="-이용-순서"></a>
+
+## 이용 순서
 
 1. 설정 셀에서 입력·작업·결과 경로와 변환 조건을 확인합니다.
 2. 분할·증강 함수의 호출 순서와 시험 자료가 분리되는 지점을 읽습니다.
@@ -21,8 +25,8 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 4. 기존 결과의 재사용 조건을 확인한 뒤 필요한 조건을 선택합니다.
 5. 조건별 JSON과 혼동행렬·ROC-AUC·Recall을 같은 분모와 클래스 순서로 비교합니다.
 
-| 단계 | 이 단계의 목적 | 자료 | 직전 변화 |
+| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
 | [블러 스테이지 1 엣지 · 기본](../docs/revisions/experiment-12.md) | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. | [폴더](.) | [전체 비교](../docs/revision-diffs/experiment-12.diff) |
 
-[🏠 프로젝트](../README.md) · [🗂️ 전체 차수](../docs/REVISION_INDEX.md)
+[프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md)

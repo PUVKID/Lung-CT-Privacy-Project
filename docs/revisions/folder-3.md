@@ -1,24 +1,26 @@
-<div align="center">
+<a id="-자료-3차--privacy-score의-소규모-계산-확인"></a>
 
-# 📐 자료 3차 · Privacy Score의 소규모 계산 확인
+# 자료 3차 · Privacy Score의 소규모 계산 확인
 
-**SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다.**
+SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다.
 
-**기술 분류:** 영상 지표 › SSIM·DSSIM › 소규모 계산·표·그래프
+분야: 영상 지표 › SSIM·DSSIM › 소규모 계산·표·그래프
 
 [목적](#purpose) · [기능](#features) · [입출력](#flow) · [구성](#files) · [준비](#setup) · [사용법](#usage) · [결과](#results) · [제약](#limits) · [변경](#changes)
 
-</div>
-
 <a name="purpose"></a>
 
-## 🎯 이 단계에서 하는 일
+<a id="-이-단계에서-하는-일"></a>
+
+## 연구 목적
 
 블록 2조건·블러 2조건·조합 4조건을 대상으로 계산한 CSV·통합표·비의료 도표를 읽습니다. 의료 원영상의 비교 그림은 첨부하지 않습니다.
 
 <a name="features"></a>
 
-## 🧩 주요 기능과 처리 방식
+<a id="-주요-기능과-처리-방식"></a>
+
+## 방법과 구현
 
 | 구성 | 실제 역할 |
 | --- | --- |
@@ -29,9 +31,11 @@
 
 <a name="flow"></a>
 
-## 🔄 입력 → 처리 → 출력
+<a id="-입력--처리--출력"></a>
 
-| 입력 | 처리 | 출력·읽을 결과 |
+## 입력·처리·출력
+
+| 입력 | 처리 | 출력 |
 | --- | --- | --- |
 | 3장과 8개 조건 | 원본/변환 SSIM·PSNR 계산 | 조건별 지표 |
 | SSIM | DSSIM×100 변환 | Privacy Score |
@@ -39,7 +43,9 @@
 
 <a name="files"></a>
 
-## 📁 파일과 핵심 처리
+<a id="-파일과-핵심-처리"></a>
+
+## 파일별 역할
 
 | 파일 | 이용 방법 |
 | --- | --- |
@@ -49,9 +55,11 @@
 | [자료차수/3차/tables/privacy_scores_combo_pivot.csv](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables/privacy_scores_combo_pivot.csv) | 원정밀도 표 |
 | [자료차수/3차/tables/privacy_scores_best_conditions.csv](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables/privacy_scores_best_conditions.csv) | 원정밀도 표 |
 
-### 🔎 함수·셀로 찾아가기
+<a id="-함수셀로-찾아가기"></a>
 
-아래 이름은 해당 파일의 실제 정의입니다. 위 처리 설명과 함께 설정·호출 순서·출력 경로를 따라 읽습니다.
+### 관련 함수와 셀
+
+관련 함수와 셀을 파일별로 정리했습니다. 실행 전 설정과 호출 순서, 출력 경로를 확인하세요.
 
 | 파일 | 핵심 정의 |
 | --- | --- |
@@ -59,7 +67,9 @@
 
 <a name="setup"></a>
 
-## ⚙️ 환경과 설정
+<a id="️-환경과-설정"></a>
+
+## 실행 환경과 설정
 
 | 항목 | 조건·기본값 |
 | --- | --- |
@@ -70,7 +80,9 @@
 
 <a name="usage"></a>
 
-## 🚀 준비와 사용 순서
+<a id="-준비와-사용-순서"></a>
+
+## 실행 순서
 
 1. long CSV의 condition·method·n_images·ssim_mean·privacy_score 열을 확인합니다.
 2. Block512·σ0 항등 조건과 Block32·조합 B32_S0의 대응을 비교합니다.
@@ -79,7 +91,9 @@
 
 <a name="results"></a>
 
-## 📊 결과를 읽는 방법
+<a id="-결과를-읽는-방법"></a>
+
+## 결과와 해석
 
 저장표에서 Block32와 B32+σ0는 같은 점수 35.3667978…이고 항등 조건은 0입니다. 이는 3장 입력에 대한 계산 확인값입니다.
 
@@ -87,7 +101,9 @@
 
 <a name="limits"></a>
 
-## 🛠️ 알려진 제약과 확인 지점
+<a id="️-알려진-제약과-확인-지점"></a>
+
+## 제약과 확인 사항
 
 | 상황 | 확인할 내용 |
 | --- | --- |
@@ -97,14 +113,16 @@
 
 <a name="changes"></a>
 
-## 🔀 이전 단계와의 변화
+<a id="-이전-단계와의-변화"></a>
+
+## 직전 단계와 비교
 
 자료 2차의 실험 노트북 구성 이후 유사도 기반점수 계산과 소규모 결과 읽기를 정리했습니다.
 
-[🔎 직전 단계 전체 비교·구성](../revision-diffs/folder-3.diff) · [📋 전체 파일 크기·해시](../revision-manifests/folder-3.json)
+[직전 단계 전체 비교·구성](../revision-diffs/folder-3.diff) · [전체 파일 크기·해시](../revision-manifests/folder-3.json)
 
 <details>
-<summary>📎 이 단계의 파일 기록과 전체 해시</summary>
+<summary>이 단계의 파일 기록과 전체 해시</summary>
 
 아래 표는 해당 단계가 기록될 당시의 파일 정보입니다. 현재 첨부는 [프로젝트 자료 안내](../PAPERS.md)에서 확인할 수 있습니다.
 
@@ -133,4 +151,4 @@
 
 ---
 
-[🏠 프로젝트](../../README.md) · [🗂️ 전체 차수](../REVISION_INDEX.md) · [📁 자료 폴더](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) · [⬅️ 폴더 2차](folder-2.md) · [➡️ 폴더 4차](folder-4.md)
+[프로젝트](../../README.md) · [전체 차수](../REVISION_INDEX.md) · [자료 폴더](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) · [폴더 2차](folder-2.md) · [폴더 4차](folder-4.md)

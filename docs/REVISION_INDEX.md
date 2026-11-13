@@ -1,17 +1,15 @@
-<div align="center">
+<a id="️-차수별-프로젝트-안내"></a>
 
-# 🗂️ 차수별 프로젝트 안내
+# 전체 차수
 
 연구 원고·실험 코드·발표 자료의 목적과 사용 순서를 단계별로 살펴봅니다.
 
-</div>
+[프로젝트 전체 소개](../README.md)
 
-[🏠 프로젝트 전체 소개](../README.md)
-
-| 단계 | 이 단계의 목적 | 자료 | 직전 변화 |
+| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
-| [연구1 · 하계 EfficientNetV2-S](revisions/study-1.md) | EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-1.diff) |
-| [연구2 · ResNet50 후속 원고](revisions/study-2.md) | ResNet50에서 Block·Blur 단독 20조건과 Block→Blur 조합 100조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-2.diff) |
+| [연구 1 · 하계 EfficientNetV2-S](revisions/study-1.md) | EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-1.diff) |
+| [연구 2 · ResNet50 후속 원고](revisions/study-2.md) | ResNet50에서 Block·Blur 단독 20조건과 Block→Blur 조합 100조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-2.diff) |
 | [1차](revisions/folder-1.md) | 블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다. | [폴더](../1%EC%B0%A8) | [전체 비교](revision-diffs/folder-1.diff) |
 | [폴더 2차](revisions/folder-2.md) | 기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다. | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](revision-diffs/folder-2.diff) |
 | [폴더 3차](revisions/folder-3.md) | SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다. | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](revision-diffs/folder-3.diff) |
@@ -28,16 +26,19 @@
 | [블러 · 1차 실험](revisions/experiment-original-blur.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) | [전체 비교](revision-diffs/experiment-original-blur.diff) |
 | [블록 · 1차 실험](revisions/experiment-original-block.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](revision-diffs/experiment-original-block.diff) |
 
+<a id="-자료-이용"></a>
 
-## 📚 자료 이용
+## 자료 이용
 
 각 상세 설명은 입력·처리·출력과 파일 구성, 설정·사용법 및 결과 해석을 연결합니다. 원고는 연구별 최신 전체 문서로, 코드와 실험 기록은 해당 단계의 자료로 연결합니다.
 
-[📄 최신 논문·발표·편집 원본](PAPERS.md)
+[최신 논문·발표·편집 원본](PAPERS.md)
 
-[📝 안내 변경 기록](changes/2026-11-03-%EC%B0%A8%EC%88%98%EB%B3%84%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%95%88%EB%82%B4.md)
+[안내 변경 기록](changes/2026-11-03-%EC%B0%A8%EC%88%98%EB%B3%84%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%95%88%EB%82%B4.md)
 
-## 🧪 Conv1 OK/NG 예비실험
+<a id="-conv1-okng-예비실험"></a>
+
+## Conv1 OK/NG 예비실험
 
 | 차수 | 폴더 | 설명 | 비교 |
 |---|---|---|---|
