@@ -66,9 +66,9 @@ Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라�
 3. 환경과 일치하는 모델을 준비하고 해당 폴더에서 Streamlit 앱을 엽니다.
 4. 업로드 영상의 전처리와 확률 표시를 읽으며 학습 노트북의 모델과 혼합하지 않습니다.
 
-| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
-| --- | --- | --- | --- |
-| [원본 실험 · 기본](../../docs/revisions/experiment-13.md) | [상세 설명](#layout18-table-2-row-1-field-1) | [폴더](.) | [전체 비교](../../docs/revision-diffs/experiment-13.diff) |
+| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| --- |
+| **차수·단계**<br>[원본 실험 · 기본](../../docs/revisions/experiment-13.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-2-row-1-field-1)<br><br>**자료**<br>[폴더](.)<br><br>**직전 비교**<br>[전체 비교](../../docs/revision-diffs/experiment-13.diff) |
 
 <a id="layout18-table-2-row-1-field-1"></a>
 

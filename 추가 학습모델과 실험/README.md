@@ -66,9 +66,9 @@ SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다.
 3. 설치·데이터 생성·학습·파일 쓰기 셀을 구분합니다.
 4. 지표식과 캐시·출력 파일을 읽고 같은 조건의 결과만 비교합니다.
 
-| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
-| --- | --- | --- | --- |
-| [추가 학습모델과 실험 · 기본](../docs/revisions/experiment-14.md) | [상세 설명](#layout18-table-2-row-1-field-1) | [폴더](.) | [전체 비교](../docs/revision-diffs/experiment-14.diff) |
+| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| --- |
+| **차수·단계**<br>[추가 학습모델과 실험 · 기본](../docs/revisions/experiment-14.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-2-row-1-field-1)<br><br>**자료**<br>[폴더](.)<br><br>**직전 비교**<br>[전체 비교](../docs/revision-diffs/experiment-14.diff) |
 
 <a id="layout18-table-2-row-1-field-1"></a>
 

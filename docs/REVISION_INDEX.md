@@ -10,25 +10,25 @@
 
 [프로젝트 전체 소개](../README.md)
 
-| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
-| --- | --- | --- | --- |
-| [연구 1 · 하계 EfficientNetV2-S](revisions/study-1.md) | [상세 설명](#layout18-table-1-row-1-field-1) | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-1.diff) |
-| [연구 2 · ResNet50 후속 원고](revisions/study-2.md) | [상세 설명](#layout18-table-1-row-2-field-1) | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-2.diff) |
-| [1차](revisions/folder-1.md) | [상세 설명](#layout18-table-1-row-3-field-1) | [폴더](../1%EC%B0%A8) | [전체 비교](revision-diffs/folder-1.diff) |
-| [폴더 2차](revisions/folder-2.md) | [상세 설명](#layout18-table-1-row-4-field-1) | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](revision-diffs/folder-2.diff) |
-| [폴더 3차](revisions/folder-3.md) | [상세 설명](#layout18-table-1-row-5-field-1) | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](revision-diffs/folder-3.diff) |
-| [폴더 4차](revisions/folder-4.md) | [상세 설명](#layout18-table-1-row-6-field-1) | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](revision-diffs/folder-4.diff) |
-| [블러 · 2차 실험](revisions/experiment-6.md) | [상세 설명](#layout18-table-1-row-7-field-1) | [폴더](../%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](revision-diffs/experiment-6.diff) |
-| [블록 · 2차 실험](revisions/experiment-7.md) | [상세 설명](#layout18-table-1-row-8-field-1) | [폴더](../%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](revision-diffs/experiment-7.diff) |
-| [블록+블러 · 기본](revisions/experiment-8.md) | [상세 설명](#layout18-table-1-row-9-field-1) | [폴더](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) | [전체 비교](revision-diffs/experiment-8.diff) |
-| [블러 엣지 · 기본](revisions/experiment-9.md) | [상세 설명](#layout18-table-1-row-10-field-1) | [폴더](../%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](revision-diffs/experiment-9.diff) |
-| [블록 엣지 · 기본](revisions/experiment-10.md) | [상세 설명](#layout18-table-1-row-11-field-1) | [폴더](../%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80) | [전체 비교](revision-diffs/experiment-10.diff) |
-| [블록+블러 엣지 · 기본](revisions/experiment-11.md) | [상세 설명](#layout18-table-1-row-12-field-1) | [폴더](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](revision-diffs/experiment-11.diff) |
-| [블러 스테이지 1 엣지 · 기본](revisions/experiment-12.md) | [상세 설명](#layout18-table-1-row-13-field-1) | [폴더](../%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80) | [전체 비교](revision-diffs/experiment-12.diff) |
-| [원본 실험 · 기본](revisions/experiment-13.md) | [상세 설명](#layout18-table-1-row-14-field-1) | [폴더](../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer) | [전체 비교](revision-diffs/experiment-13.diff) |
-| [추가 학습모델과 실험 · 기본](revisions/experiment-14.md) | [상세 설명](#layout18-table-1-row-15-field-1) | [폴더](../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98) | [전체 비교](revision-diffs/experiment-14.diff) |
-| [블러 · 1차 실험](revisions/experiment-original-blur.md) | [상세 설명](#layout18-table-1-row-16-field-1) | [폴더](../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) | [전체 비교](revision-diffs/experiment-original-blur.diff) |
-| [블록 · 1차 실험](revisions/experiment-original-block.md) | [상세 설명](#layout18-table-1-row-17-field-1) | [폴더](../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](revision-diffs/experiment-original-block.diff) |
+| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| --- |
+| **차수·단계**<br>[연구 1 · 하계 EfficientNetV2-S](revisions/study-1.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-1-field-1)<br><br>**자료**<br>[폴더](../%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/study-1.diff) |
+| **차수·단계**<br>[연구 2 · ResNet50 후속 원고](revisions/study-2.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-2-field-1)<br><br>**자료**<br>[폴더](../%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/study-2.diff) |
+| **차수·단계**<br>[1차](revisions/folder-1.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-3-field-1)<br><br>**자료**<br>[폴더](../1%EC%B0%A8)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/folder-1.diff) |
+| **차수·단계**<br>[폴더 2차](revisions/folder-2.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-4-field-1)<br><br>**자료**<br>[폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/folder-2.diff) |
+| **차수·단계**<br>[폴더 3차](revisions/folder-3.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-5-field-1)<br><br>**자료**<br>[폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/folder-3.diff) |
+| **차수·단계**<br>[폴더 4차](revisions/folder-4.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-6-field-1)<br><br>**자료**<br>[폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/folder-4.diff) |
+| **차수·단계**<br>[블러 · 2차 실험](revisions/experiment-6.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-7-field-1)<br><br>**자료**<br>[폴더](../%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-6.diff) |
+| **차수·단계**<br>[블록 · 2차 실험](revisions/experiment-7.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-8-field-1)<br><br>**자료**<br>[폴더](../%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-7.diff) |
+| **차수·단계**<br>[블록+블러 · 기본](revisions/experiment-8.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-9-field-1)<br><br>**자료**<br>[폴더](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-8.diff) |
+| **차수·단계**<br>[블러 엣지 · 기본](revisions/experiment-9.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-10-field-1)<br><br>**자료**<br>[폴더](../%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-9.diff) |
+| **차수·단계**<br>[블록 엣지 · 기본](revisions/experiment-10.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-11-field-1)<br><br>**자료**<br>[폴더](../%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-10.diff) |
+| **차수·단계**<br>[블록+블러 엣지 · 기본](revisions/experiment-11.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-12-field-1)<br><br>**자료**<br>[폴더](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-11.diff) |
+| **차수·단계**<br>[블러 스테이지 1 엣지 · 기본](revisions/experiment-12.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-13-field-1)<br><br>**자료**<br>[폴더](../%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-12.diff) |
+| **차수·단계**<br>[원본 실험 · 기본](revisions/experiment-13.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-14-field-1)<br><br>**자료**<br>[폴더](../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-13.diff) |
+| **차수·단계**<br>[추가 학습모델과 실험 · 기본](revisions/experiment-14.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-15-field-1)<br><br>**자료**<br>[폴더](../%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-14.diff) |
+| **차수·단계**<br>[블러 · 1차 실험](revisions/experiment-original-blur.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-16-field-1)<br><br>**자료**<br>[폴더](../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-original-blur.diff) |
+| **차수·단계**<br>[블록 · 1차 실험](revisions/experiment-original-block.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-17-field-1)<br><br>**자료**<br>[폴더](../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/experiment-original-block.diff) |
 
 <a id="layout18-table-1-row-1-field-1"></a>
 
@@ -181,10 +181,10 @@ EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-S
 
 ## Conv1 OK/NG 예비실험
 
-| 차수 | 폴더 | 설명 | 비교 |
-|---|---|---|---|
-| Conv1 블러 OK-NG 실험 · 1차 | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](revisions/conv1-okng-round1.md) | [전체 비교](revision-diffs/conv1-okng-round1.diff) |
-| Conv1 블러 OK-NG 실험 · 2차 | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) | [설명](revisions/conv1-okng-round2.md) | [전체 비교](revision-diffs/conv1-okng-round2.diff) |
-| Conv1 블러 OK-NG 실험 · 3차 (시각화) | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8) | [설명](revisions/conv1-okng-round3.md) | [전체 비교](revision-diffs/conv1-okng-round3.diff) |
-| Conv1 블러 OK-NG 실험 · 4차 (강도별 결과 선택) | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8) | [설명](revisions/conv1-okng-round4.md) | [전체 비교](revision-diffs/conv1-okng-round4.diff) |
-| Conv1 블러 OK-NG 실험 · 5차 (실험 4차 고정 100회) | [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8) | [설명](revisions/conv1-okng-round5.md) | [전체 비교](revision-diffs/conv1-okng-round5.diff) |
+| 차수 · 폴더 · 설명 · 비교 |
+| --- |
+| **차수**<br>Conv1 블러 OK-NG 실험 · 1차<br><br>**폴더**<br>[폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8)<br><br>**설명**<br>[설명](revisions/conv1-okng-round1.md)<br><br>**비교**<br>[전체 비교](revision-diffs/conv1-okng-round1.diff) |
+| **차수**<br>Conv1 블러 OK-NG 실험 · 2차<br><br>**폴더**<br>[폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8)<br><br>**설명**<br>[설명](revisions/conv1-okng-round2.md)<br><br>**비교**<br>[전체 비교](revision-diffs/conv1-okng-round2.diff) |
+| **차수**<br>Conv1 블러 OK-NG 실험 · 3차 (시각화)<br><br>**폴더**<br>[폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8)<br><br>**설명**<br>[설명](revisions/conv1-okng-round3.md)<br><br>**비교**<br>[전체 비교](revision-diffs/conv1-okng-round3.diff) |
+| **차수**<br>Conv1 블러 OK-NG 실험 · 4차 (강도별 결과 선택)<br><br>**폴더**<br>[폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8)<br><br>**설명**<br>[설명](revisions/conv1-okng-round4.md)<br><br>**비교**<br>[전체 비교](revision-diffs/conv1-okng-round4.diff) |
+| **차수**<br>Conv1 블러 OK-NG 실험 · 5차 (실험 4차 고정 100회)<br><br>**폴더**<br>[폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8)<br><br>**설명**<br>[설명](revisions/conv1-okng-round5.md)<br><br>**비교**<br>[전체 비교](revision-diffs/conv1-okng-round5.diff) |

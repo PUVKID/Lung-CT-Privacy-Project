@@ -8,13 +8,13 @@
 **블러·블록 변환이 폐 CT 분류 성능과 프라이버시에 미치는 영향을 비교합니다.**
 
 <!-- reading-levels17:start -->
-| 읽기 수준 | 안내 내용 |
-| --- | --- |
-| [LEVEL 1 - Beginner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
-| [LEVEL 2 - Explorer](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 핵심 개념과 처리 흐름의 관계 이해 |
-| [LEVEL 3 - Practitioner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 실험·사용 절차와 결과 해석 따라가기 |
-| [LEVEL 4 - Advanced](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 코드 구조·설정·설계 선택과 제약 검토 |
-| [LEVEL 5 - Expert](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 논문·프로토콜·분모·누수·미검증 범위 대조 |
+| 읽기 수준 · 안내 내용 |
+| --- |
+| **읽기 수준**<br>[LEVEL 1 - Beginner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)<br><br>**안내 내용**<br>낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
+| **읽기 수준**<br>[LEVEL 2 - Explorer](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)<br><br>**안내 내용**<br>핵심 개념과 처리 흐름의 관계 이해 |
+| **읽기 수준**<br>[LEVEL 3 - Practitioner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)<br><br>**안내 내용**<br>실험·사용 절차와 결과 해석 따라가기 |
+| **읽기 수준**<br>[LEVEL 4 - Advanced](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)<br><br>**안내 내용**<br>코드 구조·설정·설계 선택과 제약 검토 |
+| **읽기 수준**<br>[LEVEL 5 - Expert](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)<br><br>**안내 내용**<br>논문·프로토콜·분모·누수·미검증 범위 대조 |
 <!-- reading-levels17:end -->
 
 분야: 컴퓨터 비전 › 딥러닝 영상 분류 › 입력·특징 변환과 프라이버시 평가
@@ -73,27 +73,57 @@
 
 ## 입력·처리·출력
 
-| 구분 | 내용 |
-| :--- | :--- |
-| 문제 | 영상 변환의 강도와 적용 위치에 따라 분류 성능과 프라이버시 지표가 어떻게 달라지는지 비교합니다. |
-| 입력 | CT 영상·클래스 라벨 |
-| 처리 | EfficientNetV2-S·ResNet50 분류, 블러·블록 변환, 구조 유사도 비교 |
-| 출력 | 조건별 분류 지표·Privacy Score·그래프 |
+**구분**
+
+문제
+
+**내용**
+
+영상 변환의 강도와 적용 위치에 따라 분류 성능과 프라이버시 지표가 어떻게 달라지는지 비교합니다.
+
+
+**구분**
+
+입력
+
+**내용**
+
+CT 영상·클래스 라벨
+
+
+**구분**
+
+처리
+
+**내용**
+
+EfficientNetV2-S·ResNet50 분류, 블러·블록 변환, 구조 유사도 비교
+
+
+**구분**
+
+출력
+
+**내용**
+
+조건별 분류 지표·Privacy Score·그래프
+
+
 
 <a id="-논문과-최신-자료"></a>
 
 ## 논문과 최신 자료
 
-| 자료 | 원문 파일 |
-|---|---|
-| 연구 1 최종 논문 · EfficientNetV2-S | [PDF 다운로드](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) |
-| 연구 1 최종 논문 · EfficientNetV2-S | [HWP 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
-| 연구 2 최종 논문 · ResNet50 | [PDF 다운로드](%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) |
-| 연구 2 최종 논문 · ResNet50 | [HWP 다운로드](%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
-| 최종 발표 · 하계 연구 | [PDF 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pdf) |
-| 최종 발표 · 하계 연구 | [PPTX 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pptx) |
-| 완성 대본 · 하계 연구 | [PDF 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20%EB%B0%9C%ED%91%9C%20%EB%8C%80%EB%B3%B8.pdf) |
-| 완성 대본 · 하계 연구 | [DOCX 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20%EB%B0%9C%ED%91%9C%20%EB%8C%80%EB%B3%B8.docx) |
+| 자료 · 원문 파일 |
+| --- |
+| **자료**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**원문 파일**<br>[PDF 다운로드](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) |
+| **자료**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**원문 파일**<br>[HWP 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
+| **자료**<br>연구 2 최종 논문 · ResNet50<br><br>**원문 파일**<br>[PDF 다운로드](%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) |
+| **자료**<br>연구 2 최종 논문 · ResNet50<br><br>**원문 파일**<br>[HWP 다운로드](%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
+| **자료**<br>최종 발표 · 하계 연구<br><br>**원문 파일**<br>[PDF 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pdf) |
+| **자료**<br>최종 발표 · 하계 연구<br><br>**원문 파일**<br>[PPTX 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pptx) |
+| **자료**<br>완성 대본 · 하계 연구<br><br>**원문 파일**<br>[PDF 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20%EB%B0%9C%ED%91%9C%20%EB%8C%80%EB%B3%B8.pdf) |
+| **자료**<br>완성 대본 · 하계 연구<br><br>**원문 파일**<br>[DOCX 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20%EB%B0%9C%ED%91%9C%20%EB%8C%80%EB%B3%B8.docx) |
 
 [자료별 설명](docs/PAPERS.md) · [코드 차수와 변경 이력](docs/REVISION_INDEX.md)
 
@@ -101,30 +131,30 @@
 
 ## 전체 차수
 
-| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
-| --- | --- | --- | --- |
-| [연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | [상세 설명](#layout18-table-4-row-1-field-1) | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-1.diff) |
-| [연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md) | [상세 설명](#layout18-table-4-row-2-field-1) | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-2.diff) |
-| [1차](docs/revisions/folder-1.md) | [상세 설명](#layout18-table-4-row-3-field-1) | [폴더](1%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-1.diff) |
-| [폴더 2차](docs/revisions/folder-2.md) | [상세 설명](#layout18-table-4-row-4-field-1) | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-2.diff) |
-| [폴더 3차](docs/revisions/folder-3.md) | [상세 설명](#layout18-table-4-row-5-field-1) | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](docs/revision-diffs/folder-3.diff) |
-| [폴더 4차](docs/revisions/folder-4.md) | [상세 설명](#layout18-table-4-row-6-field-1) | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](docs/revision-diffs/folder-4.diff) |
-| [블러 · 2차 실험](docs/revisions/experiment-6.md) | [상세 설명](#layout18-table-4-row-7-field-1) | [폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-6.diff) |
-| [블록 · 2차 실험](docs/revisions/experiment-7.md) | [상세 설명](#layout18-table-4-row-8-field-1) | [폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-7.diff) |
-| [블록+블러 · 기본](docs/revisions/experiment-8.md) | [상세 설명](#layout18-table-4-row-9-field-1) | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) | [전체 비교](docs/revision-diffs/experiment-8.diff) |
-| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | [상세 설명](#layout18-table-4-row-10-field-1) | [폴더](%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-9.diff) |
-| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | [상세 설명](#layout18-table-4-row-11-field-1) | [폴더](%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-10.diff) |
-| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | [상세 설명](#layout18-table-4-row-12-field-1) | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-11.diff) |
-| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | [상세 설명](#layout18-table-4-row-13-field-1) | [폴더](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-12.diff) |
-| [원본 실험 · 기본](docs/revisions/experiment-13.md) | [상세 설명](#layout18-table-4-row-14-field-1) | [폴더](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer) | [전체 비교](docs/revision-diffs/experiment-13.diff) |
-| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | [상세 설명](#layout18-table-4-row-15-field-1) | [폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-14.diff) |
-| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | [상세 설명](#layout18-table-4-row-16-field-1) | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-blur.diff) |
-| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | [상세 설명](#layout18-table-4-row-17-field-1) | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-block.diff) |
-| Conv1 블러 OK-NG 실험 · 1차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round1.md) | [전체 비교](docs/revision-diffs/conv1-okng-round1.diff) |
-| Conv1 블러 OK-NG 실험 · 2차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round2.md) | [전체 비교](docs/revision-diffs/conv1-okng-round2.diff) |
-| Conv1 블러 OK-NG 실험 · 3차 (시각화) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round3.md) | [전체 비교](docs/revision-diffs/conv1-okng-round3.diff) |
-| Conv1 블러 OK-NG 실험 · 4차 (강도별 결과 선택) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round4.md) | [전체 비교](docs/revision-diffs/conv1-okng-round4.diff) |
-| Conv1 블러 OK-NG 실험 · 5차 (실험 4차 고정 100회) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round5.md) | [전체 비교](docs/revision-diffs/conv1-okng-round5.diff) |
+| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| --- |
+| **차수·단계**<br>[연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-1-field-1)<br><br>**자료**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/study-1.diff) |
+| **차수·단계**<br>[연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-2-field-1)<br><br>**자료**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/study-2.diff) |
+| **차수·단계**<br>[1차](docs/revisions/folder-1.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-3-field-1)<br><br>**자료**<br>[폴더](1%EC%B0%A8)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/folder-1.diff) |
+| **차수·단계**<br>[폴더 2차](docs/revisions/folder-2.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-4-field-1)<br><br>**자료**<br>[폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/folder-2.diff) |
+| **차수·단계**<br>[폴더 3차](docs/revisions/folder-3.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-5-field-1)<br><br>**자료**<br>[폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/folder-3.diff) |
+| **차수·단계**<br>[폴더 4차](docs/revisions/folder-4.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-6-field-1)<br><br>**자료**<br>[폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/folder-4.diff) |
+| **차수·단계**<br>[블러 · 2차 실험](docs/revisions/experiment-6.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-7-field-1)<br><br>**자료**<br>[폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-6.diff) |
+| **차수·단계**<br>[블록 · 2차 실험](docs/revisions/experiment-7.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-8-field-1)<br><br>**자료**<br>[폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-7.diff) |
+| **차수·단계**<br>[블록+블러 · 기본](docs/revisions/experiment-8.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-9-field-1)<br><br>**자료**<br>[폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-8.diff) |
+| **차수·단계**<br>[블러 엣지 · 기본](docs/revisions/experiment-9.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-10-field-1)<br><br>**자료**<br>[폴더](%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-9.diff) |
+| **차수·단계**<br>[블록 엣지 · 기본](docs/revisions/experiment-10.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-11-field-1)<br><br>**자료**<br>[폴더](%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-10.diff) |
+| **차수·단계**<br>[블록+블러 엣지 · 기본](docs/revisions/experiment-11.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-12-field-1)<br><br>**자료**<br>[폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-11.diff) |
+| **차수·단계**<br>[블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-13-field-1)<br><br>**자료**<br>[폴더](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-12.diff) |
+| **차수·단계**<br>[원본 실험 · 기본](docs/revisions/experiment-13.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-14-field-1)<br><br>**자료**<br>[폴더](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-13.diff) |
+| **차수·단계**<br>[추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-15-field-1)<br><br>**자료**<br>[폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-14.diff) |
+| **차수·단계**<br>[블러 · 1차 실험](docs/revisions/experiment-original-blur.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-16-field-1)<br><br>**자료**<br>[폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-original-blur.diff) |
+| **차수·단계**<br>[블록 · 1차 실험](docs/revisions/experiment-original-block.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-17-field-1)<br><br>**자료**<br>[폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/experiment-original-block.diff) |
+| **차수·단계**<br>Conv1 블러 OK-NG 실험 · 1차<br><br>**주요 내용**<br>[폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8)<br><br>**자료**<br>[설명](docs/revisions/conv1-okng-round1.md)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/conv1-okng-round1.diff) |
+| **차수·단계**<br>Conv1 블러 OK-NG 실험 · 2차<br><br>**주요 내용**<br>[폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8)<br><br>**자료**<br>[설명](docs/revisions/conv1-okng-round2.md)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/conv1-okng-round2.diff) |
+| **차수·단계**<br>Conv1 블러 OK-NG 실험 · 3차 (시각화)<br><br>**주요 내용**<br>[폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8)<br><br>**자료**<br>[설명](docs/revisions/conv1-okng-round3.md)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/conv1-okng-round3.diff) |
+| **차수·단계**<br>Conv1 블러 OK-NG 실험 · 4차 (강도별 결과 선택)<br><br>**주요 내용**<br>[폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8)<br><br>**자료**<br>[설명](docs/revisions/conv1-okng-round4.md)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/conv1-okng-round4.diff) |
+| **차수·단계**<br>Conv1 블러 OK-NG 실험 · 5차 (실험 4차 고정 100회)<br><br>**주요 내용**<br>[폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8)<br><br>**자료**<br>[설명](docs/revisions/conv1-okng-round5.md)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/conv1-okng-round5.diff) |
 
 <a id="layout18-table-4-row-1-field-1"></a>
 
@@ -403,13 +433,91 @@ Block 10조건, Blur 10조건, Block→Blur 100조합
 
 [최신 PDF](%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf)은 단독 20조건과 조합 100조건을 비교합니다. **100조합 노트북 하나가 120조건 전체를 수행하는 구조는 아닙니다.** 블록 변환은 고정 시드 순열로 블록의 위치를 바꾸며, 조합에서는 그 뒤 PIL GaussianBlur를 적용합니다.
 
-| 원고의 실험·조건 | 정확도 | Privacy Score | 해석 |
-| :--- | ---: | ---: | :--- |
-| 원본 | 98.17% | 기준 조건 | 논문 평가 절차의 기준 성능 |
-| 조합 실험 Block256 + σ0 | 98.17% | 49.65 | 원고가 실질적인 절충점으로 제시한 조건 |
-| 조합 실험 Block256 + σ16 | 62.39% | 49.70 | 점수 0.05 상승에 큰 정확도 손실 |
-| 조합 실험 Block256 + σ32 | 58.72% | 49.85 | 점수 0.20 상승에 큰 정확도 손실 |
-| Blur 단독 σ256 | 51.38% | 34.62 | 강한 정보 손실 조건 |
+**원고의 실험·조건**
+
+원본
+
+**정확도**
+
+98.17%
+
+**Privacy Score**
+
+기준 조건
+
+**해석**
+
+논문 평가 절차의 기준 성능
+
+
+**원고의 실험·조건**
+
+조합 실험 Block256 + σ0
+
+**정확도**
+
+98.17%
+
+**Privacy Score**
+
+49.65
+
+**해석**
+
+원고가 실질적인 절충점으로 제시한 조건
+
+
+**원고의 실험·조건**
+
+조합 실험 Block256 + σ16
+
+**정확도**
+
+62.39%
+
+**Privacy Score**
+
+49.70
+
+**해석**
+
+점수 0.05 상승에 큰 정확도 손실
+
+
+**원고의 실험·조건**
+
+조합 실험 Block256 + σ32
+
+**정확도**
+
+58.72%
+
+**Privacy Score**
+
+49.85
+
+**해석**
+
+점수 0.20 상승에 큰 정확도 손실
+
+
+**원고의 실험·조건**
+
+Blur 단독 σ256
+
+**정확도**
+
+51.38%
+
+**Privacy Score**
+
+34.62
+
+**해석**
+
+강한 정보 손실 조건
+
+
 
 100조합 중 53조건에서 51.38%가 보고됩니다. 테스트 109장 중 Malignant 56장에 해당하는 `56/109`와 같아, 원고는 혼동행렬과 함께 다수 클래스 붕괴로 해석합니다. 모든 조건의 보편적인 하한은 아닙니다.
 
@@ -421,15 +529,69 @@ Privacy Score는 `50 × (1 − MS-SSIM)`입니다. 원고에서는 전체 1,097�
 
 ## 기술과 처리 흐름
 
-| 기술 | 역할과 구현 범위 |
-| :--- | :--- |
-| Python·Jupyter | 조건별 실험, 결과 정리, 시각화 |
-| TensorFlow/Keras | EfficientNetV2-S·ResNet50·MobileNetV2 학습 및 모델 구성 |
-| Pillow·NumPy | 블록 재배열과 입력 영상 Gaussian Blur |
-| scikit-learn | 층화 분할, 혼동행렬, ROC-AUC 등 |
-| Matplotlib·Seaborn | 학습 곡선, 조건별 그래프, 히트맵 |
-| SSIM·MS-SSIM·PSNR | 원본과 변환·복원 결과 사이의 영상 유사도 |
-| Streamlit | 초기 5클래스 조직 영상 분류 화면 |
+**기술**
+
+Python·Jupyter
+
+**역할과 구현 범위**
+
+조건별 실험, 결과 정리, 시각화
+
+
+**기술**
+
+TensorFlow/Keras
+
+**역할과 구현 범위**
+
+EfficientNetV2-S·ResNet50·MobileNetV2 학습 및 모델 구성
+
+
+**기술**
+
+Pillow·NumPy
+
+**역할과 구현 범위**
+
+블록 재배열과 입력 영상 Gaussian Blur
+
+
+**기술**
+
+scikit-learn
+
+**역할과 구현 범위**
+
+층화 분할, 혼동행렬, ROC-AUC 등
+
+
+**기술**
+
+Matplotlib·Seaborn
+
+**역할과 구현 범위**
+
+학습 곡선, 조건별 그래프, 히트맵
+
+
+**기술**
+
+SSIM·MS-SSIM·PSNR
+
+**역할과 구현 범위**
+
+원본과 변환·복원 결과 사이의 영상 유사도
+
+
+**기술**
+
+Streamlit
+
+**역할과 구현 범위**
+
+초기 5클래스 조직 영상 분류 화면
+
+
 
 ```mermaid
 flowchart TD
@@ -760,12 +922,12 @@ GPU 그래프에서 키 오류
 
 현재 제공하는 원문과 직전 공개본의 비교입니다. 이전 원고·발표와 코드는 전체 차수 표에서 확인할 수 있습니다.
 
-| 문서 | 자료 폴더 | 상세 | 직전 공개본 전체 비교 |
-|---|---|---|---|
-| 연구 1 최종 논문 · EfficientNetV2-S | [폴더](%EB%85%BC%EB%AC%B8) | [설명](docs/latest/lung-study1-efficientnet.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 연구 2 최종 논문 · ResNet50 | [폴더](%EB%85%BC%EB%AC%B8) | [설명](docs/latest/lung-study2-resnet.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 최종 발표 · 하계 연구 | [폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](docs/latest/lung-study1-presentation.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 완성 대본 · 하계 연구 | [폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](docs/latest/lung-complete-talk-script.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 문서 · 자료 폴더 · 상세 · 직전 공개본 전체 비교 |
+| --- |
+| **문서**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**자료 폴더**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**상세**<br>[설명](docs/latest/lung-study1-efficientnet.md)<br><br>**직전 공개본 전체 비교**<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| **문서**<br>연구 2 최종 논문 · ResNet50<br><br>**자료 폴더**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**상세**<br>[설명](docs/latest/lung-study2-resnet.md)<br><br>**직전 공개본 전체 비교**<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| **문서**<br>최종 발표 · 하계 연구<br><br>**자료 폴더**<br>[폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C)<br><br>**상세**<br>[설명](docs/latest/lung-study1-presentation.md)<br><br>**직전 공개본 전체 비교**<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| **문서**<br>완성 대본 · 하계 연구<br><br>**자료 폴더**<br>[폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C)<br><br>**상세**<br>[설명](docs/latest/lung-complete-talk-script.md)<br><br>**직전 공개본 전체 비교**<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
 
 [최신 문서 구성 변경](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C.md)
 
@@ -786,19 +948,79 @@ GPU 그래프에서 키 오류
 
 EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 블러 비교 | σ0·1·2·4·8·16·32·64·128·256의 입력 블러를 비교합니다. |
-| 블록 비교 | 512에서 1까지 10개 블록 크기로 재배열한 입력을 비교합니다. |
-| 지표 읽기 | 정확도·ROC-AUC·클래스별 Recall과 혼동행렬을 함께 봅니다. |
-| 발표 연결 | 완성 발표 19장·전체 대본 9쪽·그래프 노트북을 같은 연구의 설명 자료로 연결합니다. |
+**구성**
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 원고 | 하계 최종 3쪽 PDF/HWP |
-| 입력 | 512×512 CT3분류 |
-| 조건 | Blur10·Block10 단독 비교 |
-| 결과 자료 | 조건별 JSON·그래프 노트북·발표/대본 |
+블러 비교
+
+**처리 내용**
+
+σ0·1·2·4·8·16·32·64·128·256의 입력 블러를 비교합니다.
+
+
+**구성**
+
+블록 비교
+
+**처리 내용**
+
+512에서 1까지 10개 블록 크기로 재배열한 입력을 비교합니다.
+
+
+**구성**
+
+지표 읽기
+
+**처리 내용**
+
+정확도·ROC-AUC·클래스별 Recall과 혼동행렬을 함께 봅니다.
+
+
+**구성**
+
+발표 연결
+
+**처리 내용**
+
+완성 발표 19장·전체 대본 9쪽·그래프 노트북을 같은 연구의 설명 자료로 연결합니다.
+
+
+
+**입력·실행 조건**
+
+원고
+
+**내용**
+
+하계 최종 3쪽 PDF/HWP
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+512×512 CT3분류
+
+
+**입력·실행 조건**
+
+조건
+
+**내용**
+
+Blur10·Block10 단독 비교
+
+
+**입력·실행 조건**
+
+결과 자료
+
+**내용**
+
+조건별 JSON·그래프 노트북·발표/대본
+
+
 
 원고는 원본 92.5%, Blurσ32 53.3%, Block32 79.2%, Block1 52.9% 등을 보고합니다.
 
@@ -806,11 +1028,33 @@ EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 
 
 저장된 Block512의 정확도 0.929166…와 Blurσ0의 0.925는 서로 다른 실행의 기준값입니다. 같은 원본 조건이라는 이유로 합치지 않고 실행과 지표를 구분해 읽습니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 연구 간 조건 | 연구 2의 1,097장·ResNet50 설정을 이 하계 연구에 소급하지 않습니다. |
-| 프라이버시 해석 | 입력 변환의 분류 유용성 분석이며 실제 개인정보 공격 저항성의 입증과 구분합니다. |
-| 자료 범위 | 의료 원영상·환자 기록은 포함하지 않습니다. |
+**제약**
+
+연구 간 조건
+
+**확인할 내용**
+
+연구 2의 1,097장·ResNet50 설정을 이 하계 연구에 소급하지 않습니다.
+
+
+**제약**
+
+프라이버시 해석
+
+**확인할 내용**
+
+입력 변환의 분류 유용성 분석이며 실제 개인정보 공격 저항성의 입증과 구분합니다.
+
+
+**제약**
+
+자료 범위
+
+**확인할 내용**
+
+의료 원영상·환자 기록은 포함하지 않습니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/study-1.md) · [이 단계 전체 비교](docs/revision-diffs/study-1.diff)
 
@@ -825,19 +1069,79 @@ EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 
 
 ResNet50에서 Block·Blur 단독 20조건과 Block→Blur 조합 100조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 단독·조합 | 블록 10개·블러 10개와 Block→Blur100조합을 비교합니다. |
-| 분류 평가 | 정확도·macro OvR ROC-AUC·클래스별 Recall·혼동행렬을 봅니다. |
-| 영상 유사도 | 입력 1,097장에 대한 MS-SSIM과 Privacy Score를 정리합니다. |
-| 절충 분석 | 정확도와 구조 변화의 두 축에서 조건을 선택하는 Pareto 결과를 읽습니다. |
+**구성**
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 원고 | 19쪽 최종 PDF/HWP |
-| 조건 | 단독 20·조합 100 |
-| 유사도 입력 | 원고의 전체 1,097장 |
-| 점수식 | Privacy Score=((1−MS-SSIM)/2)×100 |
+단독·조합
+
+**처리 내용**
+
+블록 10개·블러 10개와 Block→Blur100조합을 비교합니다.
+
+
+**구성**
+
+분류 평가
+
+**처리 내용**
+
+정확도·macro OvR ROC-AUC·클래스별 Recall·혼동행렬을 봅니다.
+
+
+**구성**
+
+영상 유사도
+
+**처리 내용**
+
+입력 1,097장에 대한 MS-SSIM과 Privacy Score를 정리합니다.
+
+
+**구성**
+
+절충 분석
+
+**처리 내용**
+
+정확도와 구조 변화의 두 축에서 조건을 선택하는 Pareto 결과를 읽습니다.
+
+
+
+**입력·실행 조건**
+
+원고
+
+**내용**
+
+19쪽 최종 PDF/HWP
+
+
+**입력·실행 조건**
+
+조건
+
+**내용**
+
+단독 20·조합 100
+
+
+**입력·실행 조건**
+
+유사도 입력
+
+**내용**
+
+원고의 전체 1,097장
+
+
+**입력·실행 조건**
+
+점수식
+
+**내용**
+
+Privacy Score=((1−MS-SSIM)/2)×100
+
+
 
 원고는 원본 정확도 98.17%와 Block256+σ0의 98.17%·Privacy Score49.65점 등을 보고합니다.
 
@@ -845,11 +1149,33 @@ ResNet50에서 Block·Blur 단독 20조건과 Block→Blur 조합 100조건을 �
 
 Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대 지표입니다. 복원 공격·신원 재식별·암호학적 안전성을 직접 측정한 값과 구분합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 점수 정의 | SSIM 기반 소규모 점검 자료와 최종 MS-SSIM 점수식을 구분합니다. |
-| 기준 영상 | 의료 원영상은 별도로 준비해야 하며 공개 첨부에 포함하지 않습니다. |
-| 후속 코드 | pool1_pool 특징 블러·복원 코드를 원고의 입력 변환 실험 결과와 섞지 않습니다. |
+**제약**
+
+점수 정의
+
+**확인할 내용**
+
+SSIM 기반 소규모 점검 자료와 최종 MS-SSIM 점수식을 구분합니다.
+
+
+**제약**
+
+기준 영상
+
+**확인할 내용**
+
+의료 원영상은 별도로 준비해야 하며 공개 첨부에 포함하지 않습니다.
+
+
+**제약**
+
+후속 코드
+
+**확인할 내용**
+
+pool1_pool 특징 블러·복원 코드를 원고의 입력 변환 실험 결과와 섞지 않습니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/study-2.md) · [이 단계 전체 비교](docs/revision-diffs/study-2.diff)
 
@@ -913,22 +1239,74 @@ metric_matched 블러는 블록 변환의 평균 SSIM/PSNR에 맞는 sigma를 �
 노트북 생성·콜백·반복 학습·과적합 제어를 수정하는 보조 스크립트가 있습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 입력 크기 | 512 |
-| 변환 | 블록 512~1·블러 조건별 sigma |
-| 비교 목적 | same_settings와 metric_matched 구분 |
-| 수정 도구 | Python 및 Node.js·실제 notebook 경로 |
+**입력·실행 조건**
+
+입력 크기
+
+**내용**
+
+512
+
+
+**입력·실행 조건**
+
+변환
+
+**내용**
+
+블록 512~1·블러 조건별 sigma
+
+
+**입력·실행 조건**
+
+비교 목적
+
+**내용**
+
+same_settings와 metric_matched 구분
+
+
+**입력·실행 조건**
+
+수정 도구
+
+**내용**
+
+Python 및 Node.js·실제 notebook 경로
+
+
 
 노트북 변형은 실험 조건을 정리한 코드입니다. 설정이 달라졌다고 새 성능 결과가 이미 확보된 것으로 보지 않습니다.
 
 영상 유사도를 맞추는 보정은 분류 성능이나 프라이버시가 동등하다는 보장이 아닙니다. 보정에 사용하는 자료와 시험 자료의 관계도 확인해야 합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 이름과 역할 | rebuilt·same_settings·metric_matched가 같은 실행이라는 뜻은 아닙니다. |
-| 파일 쓰기 | 보조 도구는 지정 노트북을 덮어쓸 수 있으므로 사본과 경로를 준비합니다. |
-| 평가 기준 | 유사도 매칭과 독립 분류 시험을 구분합니다. |
+**제약**
+
+이름과 역할
+
+**확인할 내용**
+
+rebuilt·same_settings·metric_matched가 같은 실행이라는 뜻은 아닙니다.
+
+
+**제약**
+
+파일 쓰기
+
+**확인할 내용**
+
+보조 도구는 지정 노트북을 덮어쓸 수 있으므로 사본과 경로를 준비합니다.
+
+
+**제약**
+
+평가 기준
+
+**확인할 내용**
+
+유사도 매칭과 독립 분류 시험을 구분합니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/folder-1.md) · [이 단계 전체 비교](docs/revision-diffs/folder-1.diff)
 
@@ -992,22 +1370,74 @@ replaceOrThrow가 대상 문자열이 없으면 중단하도록 구성돼 있습
 rollback_original_notebooks.mjs가 보관본과 지정 셀을 이용해 이전 구성을 복원합니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 실행기 | Node.js |
-| 입력 | 스크립트에 지정된 원본·보관 노트북 |
-| 출력 | 수정·생성된 ipynb |
-| 주의 | 입력 경로·셀 번호·치환 문자열을 먼저 확인 |
+**입력·실행 조건**
+
+실행기
+
+**내용**
+
+Node.js
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+스크립트에 지정된 원본·보관 노트북
+
+
+**입력·실행 조건**
+
+출력
+
+**내용**
+
+수정·생성된 ipynb
+
+
+**입력·실행 조건**
+
+주의
+
+**내용**
+
+입력 경로·셀 번호·치환 문자열을 먼저 확인
+
+
 
 도구의 실행 결과는 노트북 코드의 변경입니다. 학습이나 새 성능 평가의 완료를 의미하지 않습니다.
 
 공통 모니터 필드와 그래프의 호환성, 변환 순서와 원본 복원 범위를 구별해 읽습니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 경로 | 도구에 지정된 경로와 실행 위치를 확인합니다. |
-| 원문 변경 | 노트북을 직접 다시 쓰므로 원본과 작업 사본을 구분합니다. |
-| 정확한 치환 | 예상 셀이 다른 버전이면 치환 전 조건부터 확인합니다. |
+**제약**
+
+경로
+
+**확인할 내용**
+
+도구에 지정된 경로와 실행 위치를 확인합니다.
+
+
+**제약**
+
+원문 변경
+
+**확인할 내용**
+
+노트북을 직접 다시 쓰므로 원본과 작업 사본을 구분합니다.
+
+
+**제약**
+
+정확한 치환
+
+**확인할 내용**
+
+예상 셀이 다른 버전이면 치환 전 조건부터 확인합니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/folder-2.md) · [이 단계 전체 비교](docs/revision-diffs/folder-2.diff)
 
@@ -1071,22 +1501,74 @@ long·방법별 요약·조합 pivot·best_conditions의 4CSV를 제공합니다
 각 조건 n_images=3이며 동일 변환과 항등 조건의 값 대응을 읽습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 입력 수 | 각 조건 3장 |
-| 조건 수 | 블록 2·블러 2·조합 4 |
-| 크기·시드 | 512·42 |
-| 지표 | SSIM·PSNR·DSSIM 기반점수 |
+**입력·실행 조건**
+
+입력 수
+
+**내용**
+
+각 조건 3장
+
+
+**입력·실행 조건**
+
+조건 수
+
+**내용**
+
+블록 2·블러 2·조합 4
+
+
+**입력·실행 조건**
+
+크기·시드
+
+**내용**
+
+512·42
+
+
+**입력·실행 조건**
+
+지표
+
+**내용**
+
+SSIM·PSNR·DSSIM 기반점수
+
+
 
 저장표에서 Block32와 B32+σ0는 같은 점수 35.3667978…이고 항등 조건은 0입니다. 이는 3장 입력에 대한 계산 확인값입니다.
 
 계산 경로를 확인한 소규모 자료이지 임상·공격 저항성 평가나 전체 1,097장 논문 결과를 대신하지 않습니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 표본 | 3장 결과를 전체 논문 수치로 일반화하지 않습니다. |
-| 점수식 | 이 자료는 SSIM이며 최종 MS-SSIM 기반점수와 구분합니다. |
-| 원영상 | 의료 원본·비교 이미지 자체는 포함하지 않습니다. |
+**제약**
+
+표본
+
+**확인할 내용**
+
+3장 결과를 전체 논문 수치로 일반화하지 않습니다.
+
+
+**제약**
+
+점수식
+
+**확인할 내용**
+
+이 자료는 SSIM이며 최종 MS-SSIM 기반점수와 구분합니다.
+
+
+**제약**
+
+원영상
+
+**확인할 내용**
+
+의료 원본·비교 이미지 자체는 포함하지 않습니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/folder-3.md) · [이 단계 전체 비교](docs/revision-diffs/folder-3.diff)
 
@@ -1150,22 +1632,74 @@ heatmaps_windows·paper_figures_resnet50·plot_privacy_metrics_split 등이 표�
 연구 2 최종 PDF/HWP와 코드의 조건·그림을 대조합니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 코드 위치 | 자료차수/4차/코드 |
-| 원고 | 연구 2 최종 19쪽 |
-| 입력 | 의료 원영상·가중치는 별도 준비 |
-| 빈 파일 | pareto_scatter.ipynb는 0바이트 |
+**입력·실행 조건**
+
+코드 위치
+
+**내용**
+
+자료차수/4차/코드
+
+
+**입력·실행 조건**
+
+원고
+
+**내용**
+
+연구 2 최종 19쪽
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+의료 원영상·가중치는 별도 준비
+
+
+**입력·실행 조건**
+
+빈 파일
+
+**내용**
+
+pareto_scatter.ipynb는 0바이트
+
+
 
 원고의 보고값과 코드의 설정·저장 결과를 대조하는 자료입니다. 도표 파일명만으로 새로운 실험 결과를 추정하지 않습니다.
 
 0바이트 pareto_scatter.ipynb는 내용 없는 원본 파일입니다. 실제 산점도·지표 계산 기능은 내용이 있는 대응 노트북을 확인해야 합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 빈 노트북 | 0바이트 파일에는 실행 가능한 분석 내용이 없습니다. |
-| 자료 범위 | 개인 실행기록과 의료 원영상은 포함하지 않습니다. |
-| 번호 구분 | 자료 4차는 코드·자료 보관 구분이며 네 번째 연구논문을 뜻하지 않습니다. |
+**제약**
+
+빈 노트북
+
+**확인할 내용**
+
+0바이트 파일에는 실행 가능한 분석 내용이 없습니다.
+
+
+**제약**
+
+자료 범위
+
+**확인할 내용**
+
+개인 실행기록과 의료 원영상은 포함하지 않습니다.
+
+
+**제약**
+
+번호 구분
+
+**확인할 내용**
+
+자료 4차는 코드·자료 보관 구분이며 네 번째 연구논문을 뜻하지 않습니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/folder-4.md) · [이 단계 전체 비교](docs/revision-diffs/folder-4.diff)
 
@@ -1265,21 +1799,123 @@ GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→
 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 이미지·배치 | 512×512·batch8 |
-| 재현 설정 | seed42·7fold·test 비율 0.10 |
-| 학습 설정 | 설정 셀의 단계별 epoch·SWA 시작 40·TTA20 |
-| 입력 | 별도 CT 데이터와 클래스 폴더 |
-| 변환 조건 | 입력 10조건 |
-| 최대 epoch | EPOCHS_S1=80·EPOCHS_S2=200 |
-| 학습 증강 | 밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5 |
-| TTA 증강 | 좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15 |
-| fold | StratifiedKFold·shuffle·seed42·클래스 가중치 |
-| 손실 | focal_loss: gamma2·학습 label smoothing0.02 |
-| 최적화 | AdamW·weight decay1e-4·학습률 1e-3→1e-4 |
-| 후속 재학습 | 학습률 3e-5·label smoothing0.05 |
-| 중단·체크포인트 | val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로 |
+**입력·실행 조건**
+
+이미지·배치
+
+**내용**
+
+512×512·batch8
+
+
+**입력·실행 조건**
+
+재현 설정
+
+**내용**
+
+seed42·7fold·test 비율 0.10
+
+
+**입력·실행 조건**
+
+학습 설정
+
+**내용**
+
+설정 셀의 단계별 epoch·SWA 시작 40·TTA20
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+별도 CT 데이터와 클래스 폴더
+
+
+**입력·실행 조건**
+
+변환 조건
+
+**내용**
+
+입력 10조건
+
+
+**입력·실행 조건**
+
+최대 epoch
+
+**내용**
+
+EPOCHS_S1=80·EPOCHS_S2=200
+
+
+**입력·실행 조건**
+
+학습 증강
+
+**내용**
+
+밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5
+
+
+**입력·실행 조건**
+
+TTA 증강
+
+**내용**
+
+좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15
+
+
+**입력·실행 조건**
+
+fold
+
+**내용**
+
+StratifiedKFold·shuffle·seed42·클래스 가중치
+
+
+**입력·실행 조건**
+
+손실
+
+**내용**
+
+focal_loss: gamma2·학습 label smoothing0.02
+
+
+**입력·실행 조건**
+
+최적화
+
+**내용**
+
+AdamW·weight decay1e-4·학습률 1e-3→1e-4
+
+
+**입력·실행 조건**
+
+후속 재학습
+
+**내용**
+
+학습률 3e-5·label smoothing0.05
+
+
+**입력·실행 조건**
+
+중단·체크포인트
+
+**내용**
+
+val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로
+
+
 
 입력 σ0~256에 따른 분류 결과를 읽습니다.
 
@@ -1456,21 +2092,123 @@ GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→
 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 이미지·배치 | 512×512·batch8 |
-| 재현 설정 | seed42·7fold·test 비율 0.10 |
-| 학습 설정 | 설정 셀의 단계별 epoch·SWA 시작 40·TTA20 |
-| 입력 | 별도 CT 데이터와 클래스 폴더 |
-| 변환 조건 | 입력 10조건 |
-| 최대 epoch | EPOCHS_S1=80·EPOCHS_S2=200 |
-| 학습 증강 | 밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5 |
-| TTA 증강 | 좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15 |
-| fold | StratifiedKFold·shuffle·seed42·클래스 가중치 |
-| 손실 | focal_loss: gamma2·학습 label smoothing0.02 |
-| 최적화 | AdamW·weight decay1e-4·학습률 1e-3→1e-4 |
-| 후속 재학습 | 학습률 3e-5·label smoothing0.05 |
-| 중단·체크포인트 | val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로 |
+**입력·실행 조건**
+
+이미지·배치
+
+**내용**
+
+512×512·batch8
+
+
+**입력·실행 조건**
+
+재현 설정
+
+**내용**
+
+seed42·7fold·test 비율 0.10
+
+
+**입력·실행 조건**
+
+학습 설정
+
+**내용**
+
+설정 셀의 단계별 epoch·SWA 시작 40·TTA20
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+별도 CT 데이터와 클래스 폴더
+
+
+**입력·실행 조건**
+
+변환 조건
+
+**내용**
+
+입력 10조건
+
+
+**입력·실행 조건**
+
+최대 epoch
+
+**내용**
+
+EPOCHS_S1=80·EPOCHS_S2=200
+
+
+**입력·실행 조건**
+
+학습 증강
+
+**내용**
+
+밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5
+
+
+**입력·실행 조건**
+
+TTA 증강
+
+**내용**
+
+좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15
+
+
+**입력·실행 조건**
+
+fold
+
+**내용**
+
+StratifiedKFold·shuffle·seed42·클래스 가중치
+
+
+**입력·실행 조건**
+
+손실
+
+**내용**
+
+focal_loss: gamma2·학습 label smoothing0.02
+
+
+**입력·실행 조건**
+
+최적화
+
+**내용**
+
+AdamW·weight decay1e-4·학습률 1e-3→1e-4
+
+
+**입력·실행 조건**
+
+후속 재학습
+
+**내용**
+
+학습률 3e-5·label smoothing0.05
+
+
+**입력·실행 조건**
+
+중단·체크포인트
+
+**내용**
+
+val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로
+
+
 
 블록 크기 512~1의 분류 결과를 비교합니다.
 
@@ -1659,21 +2397,123 @@ GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→
 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 이미지·배치 | 512×512·batch8 |
-| 재현 설정 | seed42·7fold·test 비율 0.10 |
-| 학습 설정 | 설정 셀의 단계별 epoch·SWA 시작 40·TTA20 |
-| 입력 | 별도 CT 데이터와 클래스 폴더 |
-| 변환 조건 | 입력 100조합 |
-| 최대 epoch | EPOCHS_S1=80·EPOCHS_S2=200 |
-| 학습 증강 | 밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5 |
-| TTA 증강 | 좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15 |
-| fold | StratifiedKFold·shuffle·seed42·클래스 가중치 |
-| 손실 | focal_loss: gamma2·학습 label smoothing0.02 |
-| 최적화 | AdamW·weight decay1e-4·학습률 1e-3→1e-4 |
-| 후속 재학습 | 학습률 3e-5·label smoothing0.05 |
-| 중단·체크포인트 | val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로 |
+**입력·실행 조건**
+
+이미지·배치
+
+**내용**
+
+512×512·batch8
+
+
+**입력·실행 조건**
+
+재현 설정
+
+**내용**
+
+seed42·7fold·test 비율 0.10
+
+
+**입력·실행 조건**
+
+학습 설정
+
+**내용**
+
+설정 셀의 단계별 epoch·SWA 시작 40·TTA20
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+별도 CT 데이터와 클래스 폴더
+
+
+**입력·실행 조건**
+
+변환 조건
+
+**내용**
+
+입력 100조합
+
+
+**입력·실행 조건**
+
+최대 epoch
+
+**내용**
+
+EPOCHS_S1=80·EPOCHS_S2=200
+
+
+**입력·실행 조건**
+
+학습 증강
+
+**내용**
+
+밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5
+
+
+**입력·실행 조건**
+
+TTA 증강
+
+**내용**
+
+좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15
+
+
+**입력·실행 조건**
+
+fold
+
+**내용**
+
+StratifiedKFold·shuffle·seed42·클래스 가중치
+
+
+**입력·실행 조건**
+
+손실
+
+**내용**
+
+focal_loss: gamma2·학습 label smoothing0.02
+
+
+**입력·실행 조건**
+
+최적화
+
+**내용**
+
+AdamW·weight decay1e-4·학습률 1e-3→1e-4
+
+
+**입력·실행 조건**
+
+후속 재학습
+
+**내용**
+
+학습률 3e-5·label smoothing0.05
+
+
+**입력·실행 조건**
+
+중단·체크포인트
+
+**내용**
+
+val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로
+
+
 
 같은 블러 강도에서 블록 크기를 바꾸거나 같은 블록 크기에서 블러 강도를 바꿔 읽습니다.
 
@@ -1850,22 +2690,132 @@ GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→
 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 이미지·배치 | 512×512·batch8 |
-| 재현 설정 | seed42·7fold·test 비율 0.10 |
-| 학습 설정 | 설정 셀의 단계별 epoch·SWA 시작 40·TTA20 |
-| 입력 | 별도 CT 데이터와 클래스 폴더 |
-| 변환 조건 | 입력 10조건 |
-| 최대 epoch | EPOCHS_S1=80·EPOCHS_S2=200 |
-| 학습 증강 | 밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5 |
-| TTA 증강 | 좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15 |
-| fold | StratifiedKFold·shuffle·seed42·클래스 가중치 |
-| 손실 | focal_loss: gamma2·학습 label smoothing0.02 |
-| 최적화 | AdamW·weight decay1e-4·학습률 1e-4 |
-| 후속 재학습 | 학습률 3e-5·label smoothing0.05 |
-| 중단·체크포인트 | val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로 |
-| 분리 모델의 fit | 최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습 |
+**입력·실행 조건**
+
+이미지·배치
+
+**내용**
+
+512×512·batch8
+
+
+**입력·실행 조건**
+
+재현 설정
+
+**내용**
+
+seed42·7fold·test 비율 0.10
+
+
+**입력·실행 조건**
+
+학습 설정
+
+**내용**
+
+설정 셀의 단계별 epoch·SWA 시작 40·TTA20
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+별도 CT 데이터와 클래스 폴더
+
+
+**입력·실행 조건**
+
+변환 조건
+
+**내용**
+
+입력 10조건
+
+
+**입력·실행 조건**
+
+최대 epoch
+
+**내용**
+
+EPOCHS_S1=80·EPOCHS_S2=200
+
+
+**입력·실행 조건**
+
+학습 증강
+
+**내용**
+
+밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5
+
+
+**입력·실행 조건**
+
+TTA 증강
+
+**내용**
+
+좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15
+
+
+**입력·실행 조건**
+
+fold
+
+**내용**
+
+StratifiedKFold·shuffle·seed42·클래스 가중치
+
+
+**입력·실행 조건**
+
+손실
+
+**내용**
+
+focal_loss: gamma2·학습 label smoothing0.02
+
+
+**입력·실행 조건**
+
+최적화
+
+**내용**
+
+AdamW·weight decay1e-4·학습률 1e-4
+
+
+**입력·실행 조건**
+
+후속 재학습
+
+**내용**
+
+학습률 3e-5·label smoothing0.05
+
+
+**입력·실행 조건**
+
+중단·체크포인트
+
+**내용**
+
+val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로
+
+
+**입력·실행 조건**
+
+분리 모델의 fit
+
+**내용**
+
+최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습
+
+
 
 셀 20에는 닫히지 않은 다중행 f-string이 있습니다. 실행 전에 이 문자열 구문을 확인해야 합니다.
 
@@ -2078,22 +3028,132 @@ GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→
 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 이미지·배치 | 512×512·batch8 |
-| 재현 설정 | seed42·7fold·test 비율 0.10 |
-| 학습 설정 | 설정 셀의 단계별 epoch·SWA 시작 40·TTA20 |
-| 입력 | 별도 CT 데이터와 클래스 폴더 |
-| 변환 조건 | 입력 10조건 |
-| 최대 epoch | EPOCHS_S1=80·EPOCHS_S2=200 |
-| 학습 증강 | 밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5 |
-| TTA 증강 | 좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15 |
-| fold | StratifiedKFold·shuffle·seed42·클래스 가중치 |
-| 손실 | focal_loss: gamma2·학습 label smoothing0.02 |
-| 최적화 | AdamW·weight decay1e-4·학습률 1e-4 |
-| 후속 재학습 | 학습률 3e-5·label smoothing0.05 |
-| 중단·체크포인트 | val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로 |
-| 분리 모델의 fit | 최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습 |
+**입력·실행 조건**
+
+이미지·배치
+
+**내용**
+
+512×512·batch8
+
+
+**입력·실행 조건**
+
+재현 설정
+
+**내용**
+
+seed42·7fold·test 비율 0.10
+
+
+**입력·실행 조건**
+
+학습 설정
+
+**내용**
+
+설정 셀의 단계별 epoch·SWA 시작 40·TTA20
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+별도 CT 데이터와 클래스 폴더
+
+
+**입력·실행 조건**
+
+변환 조건
+
+**내용**
+
+입력 10조건
+
+
+**입력·실행 조건**
+
+최대 epoch
+
+**내용**
+
+EPOCHS_S1=80·EPOCHS_S2=200
+
+
+**입력·실행 조건**
+
+학습 증강
+
+**내용**
+
+밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5
+
+
+**입력·실행 조건**
+
+TTA 증강
+
+**내용**
+
+좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15
+
+
+**입력·실행 조건**
+
+fold
+
+**내용**
+
+StratifiedKFold·shuffle·seed42·클래스 가중치
+
+
+**입력·실행 조건**
+
+손실
+
+**내용**
+
+focal_loss: gamma2·학습 label smoothing0.02
+
+
+**입력·실행 조건**
+
+최적화
+
+**내용**
+
+AdamW·weight decay1e-4·학습률 1e-4
+
+
+**입력·실행 조건**
+
+후속 재학습
+
+**내용**
+
+학습률 3e-5·label smoothing0.05
+
+
+**입력·실행 조건**
+
+중단·체크포인트
+
+**내용**
+
+val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로
+
+
+**입력·실행 조건**
+
+분리 모델의 fit
+
+**내용**
+
+최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습
+
+
 
 블록별 특징 그림과 edge·cloud 가중치 저장 경로를 함께 확인합니다.
 
@@ -2294,22 +3354,132 @@ GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→
 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 이미지·배치 | 512×512·batch8 |
-| 재현 설정 | seed42·7fold·test 비율 0.10 |
-| 학습 설정 | 설정 셀의 단계별 epoch·SWA 시작 40·TTA20 |
-| 입력 | 별도 CT 데이터와 클래스 폴더 |
-| 변환 조건 | 입력 100조합 |
-| 최대 epoch | EPOCHS_S1=80·EPOCHS_S2=200 |
-| 학습 증강 | 밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5 |
-| TTA 증강 | 좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15 |
-| fold | StratifiedKFold·shuffle·seed42·클래스 가중치 |
-| 손실 | focal_loss: gamma2·학습 label smoothing0.02 |
-| 최적화 | AdamW·weight decay1e-4·학습률 1e-4 |
-| 후속 재학습 | 학습률 3e-5·label smoothing0.05 |
-| 중단·체크포인트 | val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로 |
-| 분리 모델의 fit | 최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습 |
+**입력·실행 조건**
+
+이미지·배치
+
+**내용**
+
+512×512·batch8
+
+
+**입력·실행 조건**
+
+재현 설정
+
+**내용**
+
+seed42·7fold·test 비율 0.10
+
+
+**입력·실행 조건**
+
+학습 설정
+
+**내용**
+
+설정 셀의 단계별 epoch·SWA 시작 40·TTA20
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+별도 CT 데이터와 클래스 폴더
+
+
+**입력·실행 조건**
+
+변환 조건
+
+**내용**
+
+입력 100조합
+
+
+**입력·실행 조건**
+
+최대 epoch
+
+**내용**
+
+EPOCHS_S1=80·EPOCHS_S2=200
+
+
+**입력·실행 조건**
+
+학습 증강
+
+**내용**
+
+밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5
+
+
+**입력·실행 조건**
+
+TTA 증강
+
+**내용**
+
+좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15
+
+
+**입력·실행 조건**
+
+fold
+
+**내용**
+
+StratifiedKFold·shuffle·seed42·클래스 가중치
+
+
+**입력·실행 조건**
+
+손실
+
+**내용**
+
+focal_loss: gamma2·학습 label smoothing0.02
+
+
+**입력·실행 조건**
+
+최적화
+
+**내용**
+
+AdamW·weight decay1e-4·학습률 1e-4
+
+
+**입력·실행 조건**
+
+후속 재학습
+
+**내용**
+
+학습률 3e-5·label smoothing0.05
+
+
+**입력·실행 조건**
+
+중단·체크포인트
+
+**내용**
+
+val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로
+
+
+**입력·실행 조건**
+
+분리 모델의 fit
+
+**내용**
+
+최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습
+
+
 
 두 입력 변환의 순서와 특징 시각화를 같은 조건명으로 읽습니다.
 
@@ -2510,23 +3680,141 @@ GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→
 특징 SSIM·cosine과 선택적 디코더 복원의 PSNR/SSIM 경로를 제공합니다. 설정과 저장된 결과를 구분합니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 이미지·배치 | 512×512·batch8 |
-| 재현 설정 | seed42·7fold·test 비율 0.10 |
-| 학습 설정 | 설정 셀의 단계별 epoch·SWA 시작 40·TTA20 |
-| 입력 | 별도 CT 데이터와 클래스 폴더 |
-| 변환 조건 | 특징 σ 10개 |
-| 최대 epoch | EPOCHS_S1=80·EPOCHS_S2=200 |
-| 학습 증강 | 밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5 |
-| TTA 증강 | 좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15 |
-| fold | StratifiedKFold·shuffle·seed42·클래스 가중치 |
-| 손실 | focal_loss: gamma2·학습 label smoothing0.02 |
-| 최적화 | AdamW·weight decay1e-4·학습률 1e-4 |
-| 후속 재학습 | 학습률 3e-5·label smoothing0.05 |
-| 중단·체크포인트 | val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로 |
-| 분리 모델의 fit | 최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습 |
-| 선택적 복원 디코더 | AdamW 학습률 5e-4·weight decay1e-5·MAE 손실 |
+**입력·실행 조건**
+
+이미지·배치
+
+**내용**
+
+512×512·batch8
+
+
+**입력·실행 조건**
+
+재현 설정
+
+**내용**
+
+seed42·7fold·test 비율 0.10
+
+
+**입력·실행 조건**
+
+학습 설정
+
+**내용**
+
+설정 셀의 단계별 epoch·SWA 시작 40·TTA20
+
+
+**입력·실행 조건**
+
+입력
+
+**내용**
+
+별도 CT 데이터와 클래스 폴더
+
+
+**입력·실행 조건**
+
+변환 조건
+
+**내용**
+
+특징 σ 10개
+
+
+**입력·실행 조건**
+
+최대 epoch
+
+**내용**
+
+EPOCHS_S1=80·EPOCHS_S2=200
+
+
+**입력·실행 조건**
+
+학습 증강
+
+**내용**
+
+밝기 최대 0.25×255·대비 0.75~1.25·Gaussian 잡음 표준편차 5
+
+
+**입력·실행 조건**
+
+TTA 증강
+
+**내용**
+
+좌우 반전·밝기 최대 0.15×255·대비 0.85~1.15
+
+
+**입력·실행 조건**
+
+fold
+
+**내용**
+
+StratifiedKFold·shuffle·seed42·클래스 가중치
+
+
+**입력·실행 조건**
+
+손실
+
+**내용**
+
+focal_loss: gamma2·학습 label smoothing0.02
+
+
+**입력·실행 조건**
+
+최적화
+
+**내용**
+
+AdamW·weight decay1e-4·학습률 1e-4
+
+
+**입력·실행 조건**
+
+후속 재학습
+
+**내용**
+
+학습률 3e-5·label smoothing0.05
+
+
+**입력·실행 조건**
+
+중단·체크포인트
+
+**내용**
+
+val_loss 조기 중단·최선 가중치·과적합 제어·SWA/TTA 경로
+
+
+**입력·실행 조건**
+
+분리 모델의 fit
+
+**내용**
+
+최대 EPOCHS_S1+EPOCHS_S2=280epoch로 연결 학습
+
+
+**입력·실행 조건**
+
+선택적 복원 디코더
+
+**내용**
+
+AdamW 학습률 5e-4·weight decay1e-5·MAE 손실
+
+
 
 σ32·64·128·256은 전역 평균 분기로 처리됩니다. REUSE_COLLAPSED_RESULTS를 켜면 같은 분기의 결과를 재사용합니다.
 
@@ -2703,22 +3991,74 @@ preprocess_image가 영상을 224×224로 맞추고 255로 나누어 배치 차�
 Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라벨을 구분합니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 환경 | Streamlit·TensorFlow·NumPy·Matplotlib |
-| 입력 크기 | 224×224 |
-| 모델 | 화면은 Model.h5와 5라벨 |
-| 학습 노트북 | 3클래스 MobileNetV2·별도 모델 대응 확인 |
+**입력·실행 조건**
+
+환경
+
+**내용**
+
+Streamlit·TensorFlow·NumPy·Matplotlib
+
+
+**입력·실행 조건**
+
+입력 크기
+
+**내용**
+
+224×224
+
+
+**입력·실행 조건**
+
+모델
+
+**내용**
+
+화면은 Model.h5와 5라벨
+
+
+**입력·실행 조건**
+
+학습 노트북
+
+**내용**
+
+3클래스 MobileNetV2·별도 모델 대응 확인
+
+
 
 화면의 확률은 지정한 모델의 출력입니다. 5라벨 화면과 3클래스 학습 파일은 같은 모델이라는 근거가 필요합니다.
 
 이 초기 조직영상 코드는 후속 CT 비식별화 실험과 입력·모델이 다릅니다. 실제 진단 결과를 제공하는 자료로 해석하지 않습니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 모델 불일치 | 5라벨 화면과 3클래스 학습의 모델·라벨 대응을 먼저 확인합니다. |
-| 입력 범위 | 조직영상과 CT를 구분합니다. |
-| 사용 목적 | 연구용 예측 화면이며 임상 진단 승인 자료가 아닙니다. |
+**제약**
+
+모델 불일치
+
+**확인할 내용**
+
+5라벨 화면과 3클래스 학습의 모델·라벨 대응을 먼저 확인합니다.
+
+
+**제약**
+
+입력 범위
+
+**확인할 내용**
+
+조직영상과 CT를 구분합니다.
+
+
+**제약**
+
+사용 목적
+
+**확인할 내용**
+
+연구용 예측 화면이며 임상 진단 승인 자료가 아닙니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-13.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-13.diff)
 
@@ -2782,22 +4122,74 @@ SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다.
 저장된 분류 JSON과 유사도 CSV에서 막대·히트맵·논문 그림을 구성합니다.
 
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 입력 크기 | 코드별 224 또는 512 |
-| 점수식 | SSIM과 MS-SSIM 기반 변형을 구분 |
-| 모델 | 조직영상·CT 모델과 클래스 수를 각 셀에서 확인 |
-| 실행 | 선택한 입력·가중치·패키지·GPU를 준비 |
+**입력·실행 조건**
+
+입력 크기
+
+**내용**
+
+코드별 224 또는 512
+
+
+**입력·실행 조건**
+
+점수식
+
+**내용**
+
+SSIM과 MS-SSIM 기반 변형을 구분
+
+
+**입력·실행 조건**
+
+모델
+
+**내용**
+
+조직영상·CT 모델과 클래스 수를 각 셀에서 확인
+
+
+**입력·실행 조건**
+
+실행
+
+**내용**
+
+선택한 입력·가중치·패키지·GPU를 준비
+
+
 
 Train.ipynb에는 정확도나 특징 수의 비율로 만든 security 표현도 있습니다. 이 값은 실제 공격 저항성 평가와 다릅니다.
 
 첫 학습 셀 끝의 Markdown 백틱과 사본별 문법·설정 차이를 확인해야 합니다. 후속 논문 보고값과 여러 실험 코드를 한 번의 동일 실행으로 합치지 않습니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 셀 독립성 | 입력 종류·모델·클래스가 달라 모든 셀을 같은 학습으로 연속 실행하지 않습니다. |
-| 점수 정의 | 유사도·정확도·특징 수 비율로 만든 값은 서로 다른 지표입니다. |
-| 문법 | Train 첫 셀 끝의 백틱과 각 노트북의 구문을 확인합니다. |
+**제약**
+
+셀 독립성
+
+**확인할 내용**
+
+입력 종류·모델·클래스가 달라 모든 셀을 같은 학습으로 연속 실행하지 않습니다.
+
+
+**제약**
+
+점수 정의
+
+**확인할 내용**
+
+유사도·정확도·특징 수 비율로 만든 값은 서로 다른 지표입니다.
+
+
+**제약**
+
+문법
+
+**확인할 내용**
+
+Train 첫 셀 끝의 백틱과 각 노트북의 구문을 확인합니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-14.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-14.diff)
 
@@ -2812,29 +4204,111 @@ Train.ipynb에는 정확도나 특징 수의 비율로 만든 security 표현도
 
 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 조건 | 실제로 저장된 σ0·1·2·4·8·16·32·64·128·256의 10조건을 읽습니다. |
-| 분류 지표 | acc·roc_auc·per_class_acc를 조건별로 담습니다. |
-| 혼동행렬 | cm과 class_names의 순서를 함께 보며 클래스별 Recall을 확인합니다. |
-| 그래프 입력 | 연구 1의 그래프 노트북에서 같은 조건명·실행의 값을 사용하는지 확인합니다. |
+**구성**
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 읽기 | JSON 뷰어 또는 Python |
-| 조건 수 | 10 |
-| 클래스 순서 | Bengin cases·Malignant cases·Normal cases |
-| 기준 정확도 | 0.925 |
+조건
+
+**처리 내용**
+
+실제로 저장된 σ0·1·2·4·8·16·32·64·128·256의 10조건을 읽습니다.
+
+
+**구성**
+
+분류 지표
+
+**처리 내용**
+
+acc·roc_auc·per_class_acc를 조건별로 담습니다.
+
+
+**구성**
+
+혼동행렬
+
+**처리 내용**
+
+cm과 class_names의 순서를 함께 보며 클래스별 Recall을 확인합니다.
+
+
+**구성**
+
+그래프 입력
+
+**처리 내용**
+
+연구 1의 그래프 노트북에서 같은 조건명·실행의 값을 사용하는지 확인합니다.
+
+
+
+**입력·실행 조건**
+
+읽기
+
+**내용**
+
+JSON 뷰어 또는 Python
+
+
+**입력·실행 조건**
+
+조건 수
+
+**내용**
+
+10
+
+
+**입력·실행 조건**
+
+클래스 순서
+
+**내용**
+
+Bengin cases·Malignant cases·Normal cases
+
+
+**입력·실행 조건**
+
+기준 정확도
+
+**내용**
+
+0.925
+
+
 
 per_class_acc는 혼동행렬의 해당 행 정답 비율과 대응하므로 클래스별 Recall로 읽습니다.
 
 저장 JSON은 조건별 결과 기록입니다. 전체 학습을 재현하려면 원영상·가중치·분할 기록이 따로 필요하며 후속 ResNet50 원고의 결과와 구분합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 실행 범위 | 결과 기록이며 새 학습을 진행하는 코드가 아닙니다. |
-| 재현 입력 | 원영상·모델·분할·학습 기록은 별도로 필요합니다. |
-| 연구 구분 | EfficientNetV2-S 하계 결과와 후속 ResNet50 결과를 혼합하지 않습니다. |
+**제약**
+
+실행 범위
+
+**확인할 내용**
+
+결과 기록이며 새 학습을 진행하는 코드가 아닙니다.
+
+
+**제약**
+
+재현 입력
+
+**확인할 내용**
+
+원영상·모델·분할·학습 기록은 별도로 필요합니다.
+
+
+**제약**
+
+연구 구분
+
+**확인할 내용**
+
+EfficientNetV2-S 하계 결과와 후속 ResNet50 결과를 혼합하지 않습니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-original-blur.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-original-blur.diff)
 
@@ -2849,29 +4323,111 @@ per_class_acc는 혼동행렬의 해당 행 정답 비율과 대응하므로 클
 
 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 조건 | 실제로 저장된 블록 512·256·128·64·32·16·8·4·2·1의 10조건을 읽습니다. |
-| 분류 지표 | acc·roc_auc·per_class_acc를 조건별로 담습니다. |
-| 혼동행렬 | cm과 class_names의 순서를 함께 보며 클래스별 Recall을 확인합니다. |
-| 그래프 입력 | 연구 1의 그래프 노트북에서 같은 조건명·실행의 값을 사용하는지 확인합니다. |
+**구성**
 
-| 입력·실행 조건 | 내용 |
-| --- | --- |
-| 읽기 | JSON 뷰어 또는 Python |
-| 조건 수 | 10 |
-| 클래스 순서 | Bengin cases·Malignant cases·Normal cases |
-| 기준 정확도 | 0.9291666666666667 |
+조건
+
+**처리 내용**
+
+실제로 저장된 블록 512·256·128·64·32·16·8·4·2·1의 10조건을 읽습니다.
+
+
+**구성**
+
+분류 지표
+
+**처리 내용**
+
+acc·roc_auc·per_class_acc를 조건별로 담습니다.
+
+
+**구성**
+
+혼동행렬
+
+**처리 내용**
+
+cm과 class_names의 순서를 함께 보며 클래스별 Recall을 확인합니다.
+
+
+**구성**
+
+그래프 입력
+
+**처리 내용**
+
+연구 1의 그래프 노트북에서 같은 조건명·실행의 값을 사용하는지 확인합니다.
+
+
+
+**입력·실행 조건**
+
+읽기
+
+**내용**
+
+JSON 뷰어 또는 Python
+
+
+**입력·실행 조건**
+
+조건 수
+
+**내용**
+
+10
+
+
+**입력·실행 조건**
+
+클래스 순서
+
+**내용**
+
+Bengin cases·Malignant cases·Normal cases
+
+
+**입력·실행 조건**
+
+기준 정확도
+
+**내용**
+
+0.9291666666666667
+
+
 
 per_class_acc는 혼동행렬의 해당 행 정답 비율과 대응하므로 클래스별 Recall로 읽습니다.
 
 저장 JSON은 조건별 결과 기록입니다. 전체 학습을 재현하려면 원영상·가중치·분할 기록이 따로 필요하며 후속 ResNet50 원고의 결과와 구분합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 실행 범위 | 결과 기록이며 새 학습을 진행하는 코드가 아닙니다. |
-| 재현 입력 | 원영상·모델·분할·학습 기록은 별도로 필요합니다. |
-| 연구 구분 | EfficientNetV2-S 하계 결과와 후속 ResNet50 결과를 혼합하지 않습니다. |
+**제약**
+
+실행 범위
+
+**확인할 내용**
+
+결과 기록이며 새 학습을 진행하는 코드가 아닙니다.
+
+
+**제약**
+
+재현 입력
+
+**확인할 내용**
+
+원영상·모델·분할·학습 기록은 별도로 필요합니다.
+
+
+**제약**
+
+연구 구분
+
+**확인할 내용**
+
+EfficientNetV2-S 하계 결과와 후속 ResNet50 결과를 혼합하지 않습니다.
+
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-original-block.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-original-block.diff)
 
