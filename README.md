@@ -5,7 +5,17 @@
 
 # Lung CT Privacy Project
 
-블러·블록 변환이 폐 CT 분류 성능과 프라이버시에 미치는 영향을 비교합니다.
+**블러·블록 변환이 폐 CT 분류 성능과 프라이버시에 미치는 영향을 비교합니다.**
+
+<!-- reading-levels17:start -->
+| 읽기 수준 | 안내 내용 |
+| --- | --- |
+| [LEVEL 1 - Beginner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
+| [LEVEL 2 - Explorer](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 핵심 개념과 처리 흐름의 관계 이해 |
+| [LEVEL 3 - Practitioner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 실험·사용 절차와 결과 해석 따라가기 |
+| [LEVEL 4 - Advanced](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 코드 구조·설정·설계 선택과 제약 검토 |
+| [LEVEL 5 - Expert](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 논문·프로토콜·분모·누수·미검증 범위 대조 |
+<!-- reading-levels17:end -->
 
 분야: 컴퓨터 비전 › 딥러닝 영상 분류 › 입력·특징 변환과 프라이버시 평가
 
@@ -93,28 +103,165 @@
 
 | 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
-| [연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-1.diff) |
-| [연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md) | ResNet50에서 Block·Blur 단독 20조건과 Block→Blur 조합 100조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-2.diff) |
-| [1차](docs/revisions/folder-1.md) | 블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다. | [폴더](1%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-1.diff) |
-| [폴더 2차](docs/revisions/folder-2.md) | 기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-2.diff) |
-| [폴더 3차](docs/revisions/folder-3.md) | SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](docs/revision-diffs/folder-3.diff) |
-| [폴더 4차](docs/revisions/folder-4.md) | ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 읽는 자료 차수입니다. 실제 코드 폴더는 자료차수/4차/코드에 있습니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](docs/revision-diffs/folder-4.diff) |
-| [블러 · 2차 실험](docs/revisions/experiment-6.md) | 입력 영상에 PIL GaussianBlur를 적용하는 10조건 실험입니다. σ0은 원본 배열을 복사합니다. | [폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-6.diff) |
-| [블록 · 2차 실험](docs/revisions/experiment-7.md) | 시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다. 영상보다 작지 않은 블록은 원본을 복사합니다. | [폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-7.diff) |
-| [블록+블러 · 기본](docs/revisions/experiment-8.md) | 블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) | [전체 비교](docs/revision-diffs/experiment-8.diff) |
-| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | 입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다. | [폴더](%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-9.diff) |
-| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | 입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다. | [폴더](%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-10.diff) |
-| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | 입력 Block→Blur의 100조합 뒤에 분리 모델을 연결합니다. 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다. | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-11.diff) |
-| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. | [폴더](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-12.diff) |
-| [원본 실험 · 기본](docs/revisions/experiment-13.md) | Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다. | [폴더](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer) | [전체 비교](docs/revision-diffs/experiment-13.diff) |
-| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. | [폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-14.diff) |
-| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-blur.diff) |
-| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-block.diff) |
+| [연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | [상세 설명](#layout18-table-4-row-1-field-1) | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-1.diff) |
+| [연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md) | [상세 설명](#layout18-table-4-row-2-field-1) | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-2.diff) |
+| [1차](docs/revisions/folder-1.md) | [상세 설명](#layout18-table-4-row-3-field-1) | [폴더](1%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-1.diff) |
+| [폴더 2차](docs/revisions/folder-2.md) | [상세 설명](#layout18-table-4-row-4-field-1) | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-2.diff) |
+| [폴더 3차](docs/revisions/folder-3.md) | [상세 설명](#layout18-table-4-row-5-field-1) | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](docs/revision-diffs/folder-3.diff) |
+| [폴더 4차](docs/revisions/folder-4.md) | [상세 설명](#layout18-table-4-row-6-field-1) | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](docs/revision-diffs/folder-4.diff) |
+| [블러 · 2차 실험](docs/revisions/experiment-6.md) | [상세 설명](#layout18-table-4-row-7-field-1) | [폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-6.diff) |
+| [블록 · 2차 실험](docs/revisions/experiment-7.md) | [상세 설명](#layout18-table-4-row-8-field-1) | [폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-7.diff) |
+| [블록+블러 · 기본](docs/revisions/experiment-8.md) | [상세 설명](#layout18-table-4-row-9-field-1) | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) | [전체 비교](docs/revision-diffs/experiment-8.diff) |
+| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | [상세 설명](#layout18-table-4-row-10-field-1) | [폴더](%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-9.diff) |
+| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | [상세 설명](#layout18-table-4-row-11-field-1) | [폴더](%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-10.diff) |
+| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | [상세 설명](#layout18-table-4-row-12-field-1) | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-11.diff) |
+| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | [상세 설명](#layout18-table-4-row-13-field-1) | [폴더](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-12.diff) |
+| [원본 실험 · 기본](docs/revisions/experiment-13.md) | [상세 설명](#layout18-table-4-row-14-field-1) | [폴더](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer) | [전체 비교](docs/revision-diffs/experiment-13.diff) |
+| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | [상세 설명](#layout18-table-4-row-15-field-1) | [폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-14.diff) |
+| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | [상세 설명](#layout18-table-4-row-16-field-1) | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-blur.diff) |
+| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | [상세 설명](#layout18-table-4-row-17-field-1) | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-block.diff) |
 | Conv1 블러 OK-NG 실험 · 1차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round1.md) | [전체 비교](docs/revision-diffs/conv1-okng-round1.diff) |
 | Conv1 블러 OK-NG 실험 · 2차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round2.md) | [전체 비교](docs/revision-diffs/conv1-okng-round2.diff) |
 | Conv1 블러 OK-NG 실험 · 3차 (시각화) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round3.md) | [전체 비교](docs/revision-diffs/conv1-okng-round3.diff) |
 | Conv1 블러 OK-NG 실험 · 4차 (강도별 결과 선택) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round4.md) | [전체 비교](docs/revision-diffs/conv1-okng-round4.diff) |
 | Conv1 블러 OK-NG 실험 · 5차 (실험 4차 고정 100회) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round5.md) | [전체 비교](docs/revision-diffs/conv1-okng-round5.diff) |
+
+<a id="layout18-table-4-row-1-field-1"></a>
+
+**[연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md)**
+
+**주요 내용**
+
+EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다.
+
+<a id="layout18-table-4-row-2-field-1"></a>
+
+**[연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md)**
+
+**주요 내용**
+
+ResNet50에서 Block·Blur 단독 20조건과 Block→Blur 조합 100조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.
+
+<a id="layout18-table-4-row-3-field-1"></a>
+
+**[1차](docs/revisions/folder-1.md)**
+
+**주요 내용**
+
+블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다.
+
+<a id="layout18-table-4-row-4-field-1"></a>
+
+**[폴더 2차](docs/revisions/folder-2.md)**
+
+**주요 내용**
+
+기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다.
+
+<a id="layout18-table-4-row-5-field-1"></a>
+
+**[폴더 3차](docs/revisions/folder-3.md)**
+
+**주요 내용**
+
+SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다.
+
+<a id="layout18-table-4-row-6-field-1"></a>
+
+**[폴더 4차](docs/revisions/folder-4.md)**
+
+**주요 내용**
+
+ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 읽는 자료 차수입니다. 실제 코드 폴더는 자료차수/4차/코드에 있습니다.
+
+<a id="layout18-table-4-row-7-field-1"></a>
+
+**[블러 · 2차 실험](docs/revisions/experiment-6.md)**
+
+**주요 내용**
+
+입력 영상에 PIL GaussianBlur를 적용하는 10조건 실험입니다. σ0은 원본 배열을 복사합니다.
+
+<a id="layout18-table-4-row-8-field-1"></a>
+
+**[블록 · 2차 실험](docs/revisions/experiment-7.md)**
+
+**주요 내용**
+
+시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다. 영상보다 작지 않은 블록은 원본을 복사합니다.
+
+<a id="layout18-table-4-row-9-field-1"></a>
+
+**[블록+블러 · 기본](docs/revisions/experiment-8.md)**
+
+**주요 내용**
+
+블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
+
+<a id="layout18-table-4-row-10-field-1"></a>
+
+**[블러 엣지 · 기본](docs/revisions/experiment-9.md)**
+
+**주요 내용**
+
+입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다.
+
+<a id="layout18-table-4-row-11-field-1"></a>
+
+**[블록 엣지 · 기본](docs/revisions/experiment-10.md)**
+
+**주요 내용**
+
+입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다.
+
+<a id="layout18-table-4-row-12-field-1"></a>
+
+**[블록+블러 엣지 · 기본](docs/revisions/experiment-11.md)**
+
+**주요 내용**
+
+입력 Block→Blur의 100조합 뒤에 분리 모델을 연결합니다. 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다.
+
+<a id="layout18-table-4-row-13-field-1"></a>
+
+**[블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md)**
+
+**주요 내용**
+
+ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다.
+
+<a id="layout18-table-4-row-14-field-1"></a>
+
+**[원본 실험 · 기본](docs/revisions/experiment-13.md)**
+
+**주요 내용**
+
+Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다.
+
+<a id="layout18-table-4-row-15-field-1"></a>
+
+**[추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md)**
+
+**주요 내용**
+
+EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다.
+
+<a id="layout18-table-4-row-16-field-1"></a>
+
+**[블러 · 1차 실험](docs/revisions/experiment-original-blur.md)**
+
+**주요 내용**
+
+입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다.
+
+<a id="layout18-table-4-row-17-field-1"></a>
+
+**[블록 · 1차 실험](docs/revisions/experiment-original-block.md)**
+
+**주요 내용**
+
+입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다.
+
 
 <a id="-프로젝트-소개"></a>
 
@@ -130,13 +277,106 @@
 
 ## 연구 단계와 보고 결과
 
-| 구분 | 연구 1: 하계 연구 | 연구 2: ResNet50 연구 | 후속 추가 실험 |
-| :--- | :--- | :--- | :--- |
-| 질문 | Blur와 Block 중 어떤 변환이 분류 성능을 더 유지하는가? | 정확도와 구조 유사도 기반 프라이버시 점수를 함께 고려하면 어떤 조건이 유리한가? | 입력 영상 대신 중간 특징을 변환하면 분류·복원 가능성이 어떻게 달라지는가? |
-| 모델 | EfficientNetV2-S | ImageNet 사전학습 ResNet50 | ResNet50의 `pool1_pool` 경계 분리 |
-| 변환 | 입력 영상 Blur·Block 각각 비교 | Block 10조건, Blur 10조건, Block→Blur 100조합 | 입력 변환을 사용하는 분리 모델 및 Stage 1 특징맵 Gaussian Blur |
-| 주요 평가 | 정확도·ROC-AUC·혼동행렬 | 정확도·macro OvR ROC-AUC·클래스별 Recall·MS-SSIM Privacy Score·Pareto 분석 | 특징 유사도·클래스 분리도·decoder 복원 PSNR/SSIM을 계산하는 코드 |
-| 해석 범위 | 초기 비식별화 성능 비교 | 동일 평가 절차 내 조건 비교 | 논문 2 이후의 특징 변환·복원 실험 코드 |
+<a id="layout18-table-5-row-1"></a>
+
+**질문**
+
+**구분**
+
+질문
+
+**연구 1: 하계 연구**
+
+Blur와 Block 중 어떤 변환이 분류 성능을 더 유지하는가?
+
+**연구 2: ResNet50 연구**
+
+정확도와 구조 유사도 기반 프라이버시 점수를 함께 고려하면 어떤 조건이 유리한가?
+
+**후속 추가 실험**
+
+입력 영상 대신 중간 특징을 변환하면 분류·복원 가능성이 어떻게 달라지는가?
+
+<a id="layout18-table-5-row-2"></a>
+
+**모델**
+
+**구분**
+
+모델
+
+**연구 1: 하계 연구**
+
+EfficientNetV2-S
+
+**연구 2: ResNet50 연구**
+
+ImageNet 사전학습 ResNet50
+
+**후속 추가 실험**
+
+ResNet50의 `pool1_pool` 경계 분리
+
+<a id="layout18-table-5-row-3"></a>
+
+**변환**
+
+**구분**
+
+변환
+
+**연구 1: 하계 연구**
+
+입력 영상 Blur·Block 각각 비교
+
+**연구 2: ResNet50 연구**
+
+Block 10조건, Blur 10조건, Block→Blur 100조합
+
+**후속 추가 실험**
+
+입력 변환을 사용하는 분리 모델 및 Stage 1 특징맵 Gaussian Blur
+
+<a id="layout18-table-5-row-4"></a>
+
+**주요 평가**
+
+**구분**
+
+주요 평가
+
+**연구 1: 하계 연구**
+
+정확도·ROC-AUC·혼동행렬
+
+**연구 2: ResNet50 연구**
+
+정확도·macro OvR ROC-AUC·클래스별 Recall·MS-SSIM Privacy Score·Pareto 분석
+
+**후속 추가 실험**
+
+특징 유사도·클래스 분리도·decoder 복원 PSNR/SSIM을 계산하는 코드
+
+<a id="layout18-table-5-row-5"></a>
+
+**해석 범위**
+
+**구분**
+
+해석 범위
+
+**연구 1: 하계 연구**
+
+초기 비식별화 성능 비교
+
+**연구 2: ResNet50 연구**
+
+동일 평가 절차 내 조건 비교
+
+**후속 추가 실험**
+
+논문 2 이후의 특징 변환·복원 실험 코드
+
 
 <a name="연구-1--efficientnetv2-s"></a>
 
@@ -249,14 +489,78 @@ flowchart TD
 └── CHANGELOG.md
 ```
 
-| 읽을 자료 | 목적 |
-| :--- | :--- |
-| [블록 단독](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/block_encryption_resnet50_rebuilt_KO.ipynb) · [블러 단독](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/blur_resnet50_rebuilt2_KO.ipynb) · [100조합](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC/block_blur_resnet50_v4_KO.ipynb) | 입력 변환별 학습 흐름 |
-| [입력 변환과 모델 분리](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80/block_blur_resnet50_edge.ipynb) | edge/cloud 부분 구성과 저장 |
-| [Stage 1 특징맵 블러](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb) | 중간 특징 변환과 복원 공격 추가 코드 |
-| [추가 Train 모음](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb) | 조직 영상 5클래스 학습, EfficientNetV2-S 변환 비교, MobileNetV2 풀링 실험을 셀별로 보존 |
-| [히트맵](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/heatmaps.py) · [지표 그래프](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/plot_privacy_metrics_split.py) | 입력된 결과표를 시각화 |
-| [2×2 영상 합성](%ED%8F%90%EC%95%94%202%EC%B0%A8%20%EB%85%BC%EB%AC%B8/%EC%BD%94%EB%93%9C/picture2x2.ipynb) | 이미 만들어진 원본·변환 예시 영상 배치 |
+<a id="layout18-table-9-row-1"></a>
+
+**[블록 단독](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/block_encryption_resnet50_rebuilt_KO.ipynb) · [블러 단독](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/blur_resnet50_rebuilt2_KO.ipynb) · [100조합](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC/block_blur_resnet50_v4_KO.ipynb)**
+
+**읽을 자료**
+
+[블록 단독](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/block_encryption_resnet50_rebuilt_KO.ipynb) · [블러 단독](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/blur_resnet50_rebuilt2_KO.ipynb) · [100조합](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC/block_blur_resnet50_v4_KO.ipynb)
+
+**목적**
+
+입력 변환별 학습 흐름
+
+<a id="layout18-table-9-row-2"></a>
+
+**[입력 변환과 모델 분리](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80/block_blur_resnet50_edge.ipynb)**
+
+**읽을 자료**
+
+[입력 변환과 모델 분리](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80/block_blur_resnet50_edge.ipynb)
+
+**목적**
+
+edge/cloud 부분 구성과 저장
+
+<a id="layout18-table-9-row-3"></a>
+
+**[Stage 1 특징맵 블러](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb)**
+
+**읽을 자료**
+
+[Stage 1 특징맵 블러](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb)
+
+**목적**
+
+중간 특징 변환과 복원 공격 추가 코드
+
+<a id="layout18-table-9-row-4"></a>
+
+**[추가 Train 모음](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb)**
+
+**읽을 자료**
+
+[추가 Train 모음](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb)
+
+**목적**
+
+조직 영상 5클래스 학습, EfficientNetV2-S 변환 비교, MobileNetV2 풀링 실험을 셀별로 보존
+
+<a id="layout18-table-9-row-5"></a>
+
+**[히트맵](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/heatmaps.py) · [지표 그래프](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/plot_privacy_metrics_split.py)**
+
+**읽을 자료**
+
+[히트맵](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/heatmaps.py) · [지표 그래프](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/plot_privacy_metrics_split.py)
+
+**목적**
+
+입력된 결과표를 시각화
+
+<a id="layout18-table-9-row-6"></a>
+
+**[2×2 영상 합성](%ED%8F%90%EC%95%94%202%EC%B0%A8%20%EB%85%BC%EB%AC%B8/%EC%BD%94%EB%93%9C/picture2x2.ipynb)**
+
+**읽을 자료**
+
+[2×2 영상 합성](%ED%8F%90%EC%95%94%202%EC%B0%A8%20%EB%85%BC%EB%AC%B8/%EC%BD%94%EB%93%9C/picture2x2.ipynb)
+
+**목적**
+
+이미 만들어진 원본·변환 예시 영상 배치
+
 
 <a name="초기-앱과-ct-연구의-구분"></a>
 
@@ -316,18 +620,126 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 
 실험 코드는 당시 상태로 보관되어 있습니다. 실행할 노트북을 고를 때 다음 문제와 입력 조건을 먼저 확인하세요.
 
-| 증상·위험 | 해당 위치와 확인할 내용 |
-| :--- | :--- |
-| `unterminated f-string literal` | `블러 엣지/blur_resnet50_edge_v6.ipynb`의 0부터 세는 셀 20, 셀 내부 263행에서 정적 파싱 오류가 확인되었습니다. 문자열 안의 실제 개행 문제입니다. |
-| `Conv2D` 이름을 찾지 못함 | 두 Stage 1 특징맵 블러 사본의 복원 decoder가 `Conv2D`를 사용하지만 해당 import/정의가 없습니다. 깨끗한 커널에서 공격 단계 실행이 막힐 수 있습니다. |
-| 추가 Train 첫 셀 문법 오류 | `추가 학습모델과 실험/Train.ipynb` 첫 코드 셀 끝에 Markdown용 백틱 세 개가 남아 있습니다. |
-| 파일은 있는데 이미지 디코딩 실패 | 일부 로더는 PNG/BMP 확장자도 수집하면서 `decode_jpeg`로 고정 디코딩합니다. 실제 입력 형식을 확인합니다. |
-| 기존 학습 결과가 계속 사용됨 | 조건별 캐시와 파일 개수만으로 재사용하는 증강 폴더를 확인합니다. 다른 데이터·설정의 결과가 섞이지 않도록 구분해야 합니다. |
-| 누락한 edge 가중치로도 그림이 생성됨 | 일부 경로는 ImageNet 초기 가중치로 대체합니다. 학습된 edge를 평가한 것인지 확인합니다. |
-| GPU 그래프에서 키 오류 | 블러 변형의 로그 생성 키와 그래프가 기대하는 키가 다릅니다. 예시 GPU 로그로 그린 그림도 실제 GPU 측정과 구분합니다. |
-| 분류와 시각화가 다른 결과를 보임 | 입력 범위 0~255와 시각화의 `/255`, `training=True` 고정 호출, edge 저장 뒤 전체 모델 덮어쓰기의 영향을 확인합니다. |
-| 한글·글꼴·경로 오류 | 노트북별 Linux/Windows 경로와 글꼴을 확인합니다. 일부 셀은 apt-get 설치, 글꼴 다운로드, Matplotlib 캐시 삭제를 수행합니다. |
-| 예상과 다른 보안·압축 그래프 | 일부 추가 Train의 security는 정확도나 특징 수를 뒤집은 산식입니다. 풀링 크기 설명과 실제 특징 수 감소 방향도 함께 확인합니다. |
+<a id="layout18-table-10-row-1"></a>
+
+**`unterminated f-string literal`**
+
+**증상·위험**
+
+`unterminated f-string literal`
+
+**해당 위치와 확인할 내용**
+
+`블러 엣지/blur_resnet50_edge_v6.ipynb`의 0부터 세는 셀 20, 셀 내부 263행에서 정적 파싱 오류가 확인되었습니다. 문자열 안의 실제 개행 문제입니다.
+
+<a id="layout18-table-10-row-2"></a>
+
+**`Conv2D` 이름을 찾지 못함**
+
+**증상·위험**
+
+`Conv2D` 이름을 찾지 못함
+
+**해당 위치와 확인할 내용**
+
+두 Stage 1 특징맵 블러 사본의 복원 decoder가 `Conv2D`를 사용하지만 해당 import/정의가 없습니다. 깨끗한 커널에서 공격 단계 실행이 막힐 수 있습니다.
+
+<a id="layout18-table-10-row-3"></a>
+
+**추가 Train 첫 셀 문법 오류**
+
+**증상·위험**
+
+추가 Train 첫 셀 문법 오류
+
+**해당 위치와 확인할 내용**
+
+`추가 학습모델과 실험/Train.ipynb` 첫 코드 셀 끝에 Markdown용 백틱 세 개가 남아 있습니다.
+
+<a id="layout18-table-10-row-4"></a>
+
+**파일은 있는데 이미지 디코딩 실패**
+
+**증상·위험**
+
+파일은 있는데 이미지 디코딩 실패
+
+**해당 위치와 확인할 내용**
+
+일부 로더는 PNG/BMP 확장자도 수집하면서 `decode_jpeg`로 고정 디코딩합니다. 실제 입력 형식을 확인합니다.
+
+<a id="layout18-table-10-row-5"></a>
+
+**기존 학습 결과가 계속 사용됨**
+
+**증상·위험**
+
+기존 학습 결과가 계속 사용됨
+
+**해당 위치와 확인할 내용**
+
+조건별 캐시와 파일 개수만으로 재사용하는 증강 폴더를 확인합니다. 다른 데이터·설정의 결과가 섞이지 않도록 구분해야 합니다.
+
+<a id="layout18-table-10-row-6"></a>
+
+**누락한 edge 가중치로도 그림이 생성됨**
+
+**증상·위험**
+
+누락한 edge 가중치로도 그림이 생성됨
+
+**해당 위치와 확인할 내용**
+
+일부 경로는 ImageNet 초기 가중치로 대체합니다. 학습된 edge를 평가한 것인지 확인합니다.
+
+<a id="layout18-table-10-row-7"></a>
+
+**GPU 그래프에서 키 오류**
+
+**증상·위험**
+
+GPU 그래프에서 키 오류
+
+**해당 위치와 확인할 내용**
+
+블러 변형의 로그 생성 키와 그래프가 기대하는 키가 다릅니다. 예시 GPU 로그로 그린 그림도 실제 GPU 측정과 구분합니다.
+
+<a id="layout18-table-10-row-8"></a>
+
+**분류와 시각화가 다른 결과를 보임**
+
+**증상·위험**
+
+분류와 시각화가 다른 결과를 보임
+
+**해당 위치와 확인할 내용**
+
+입력 범위 0~255와 시각화의 `/255`, `training=True` 고정 호출, edge 저장 뒤 전체 모델 덮어쓰기의 영향을 확인합니다.
+
+<a id="layout18-table-10-row-9"></a>
+
+**한글·글꼴·경로 오류**
+
+**증상·위험**
+
+한글·글꼴·경로 오류
+
+**해당 위치와 확인할 내용**
+
+노트북별 Linux/Windows 경로와 글꼴을 확인합니다. 일부 셀은 apt-get 설치, 글꼴 다운로드, Matplotlib 캐시 삭제를 수행합니다.
+
+<a id="layout18-table-10-row-10"></a>
+
+**예상과 다른 보안·압축 그래프**
+
+**증상·위험**
+
+예상과 다른 보안·압축 그래프
+
+**해당 위치와 확인할 내용**
+
+일부 추가 Train의 security는 정확도나 특징 수를 뒤집은 산식입니다. 풀링 크기 설명과 실제 특징 수 감소 방향도 함께 확인합니다.
+
 
 <a id="-자료와-후속-방향"></a>
 
@@ -452,12 +864,54 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 
 블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 여섯 노트북 | 블록·블러 각각 rebuilt·same_settings·metric_matched로 나누어 보관합니다. |
-| 강도 매칭 | metric_matched 블러는 블록 변환의 평균 SSIM/PSNR에 맞는 sigma를 보정하는 함수를 포함합니다. |
-| 학습 설정 | 변형별 batch4/8과 단계별 epoch·SWA 시작값이 다르므로 설정 셀을 확인합니다. |
-| 수정 도구 | 노트북 생성·콜백·반복 학습·과적합 제어를 수정하는 보조 스크립트가 있습니다. |
+<a id="layout18-table-18-row-1"></a>
+
+**여섯 노트북**
+
+**구성**
+
+여섯 노트북
+
+**처리 내용**
+
+블록·블러 각각 rebuilt·same_settings·metric_matched로 나누어 보관합니다.
+
+<a id="layout18-table-18-row-2"></a>
+
+**강도 매칭**
+
+**구성**
+
+강도 매칭
+
+**처리 내용**
+
+metric_matched 블러는 블록 변환의 평균 SSIM/PSNR에 맞는 sigma를 보정하는 함수를 포함합니다.
+
+<a id="layout18-table-18-row-3"></a>
+
+**학습 설정**
+
+**구성**
+
+학습 설정
+
+**처리 내용**
+
+변형별 batch4/8과 단계별 epoch·SWA 시작값이 다르므로 설정 셀을 확인합니다.
+
+<a id="layout18-table-18-row-4"></a>
+
+**수정 도구**
+
+**구성**
+
+수정 도구
+
+**처리 내용**
+
+노트북 생성·콜백·반복 학습·과적합 제어를 수정하는 보조 스크립트가 있습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -489,12 +943,54 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 
 기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 방식 정렬 | align_experiment_methods.mjs가 Blur 설계를 유지하며 GPU 모니터 필드·그래프의 호환 처리를 맞춥니다. |
-| 조합 생성 | build_block_blur_notebook.mjs가 Blur 노트북을 바탕으로 Block→Blur100조합의 설정·함수를 구성합니다. |
-| 입력 확인 | replaceOrThrow가 대상 문자열이 없으면 중단하도록 구성돼 있습니다. |
-| 복원 | rollback_original_notebooks.mjs가 보관본과 지정 셀을 이용해 이전 구성을 복원합니다. |
+<a id="layout18-table-21-row-1"></a>
+
+**방식 정렬**
+
+**구성**
+
+방식 정렬
+
+**처리 내용**
+
+align_experiment_methods.mjs가 Blur 설계를 유지하며 GPU 모니터 필드·그래프의 호환 처리를 맞춥니다.
+
+<a id="layout18-table-21-row-2"></a>
+
+**조합 생성**
+
+**구성**
+
+조합 생성
+
+**처리 내용**
+
+build_block_blur_notebook.mjs가 Blur 노트북을 바탕으로 Block→Blur100조합의 설정·함수를 구성합니다.
+
+<a id="layout18-table-21-row-3"></a>
+
+**입력 확인**
+
+**구성**
+
+입력 확인
+
+**처리 내용**
+
+replaceOrThrow가 대상 문자열이 없으면 중단하도록 구성돼 있습니다.
+
+<a id="layout18-table-21-row-4"></a>
+
+**복원**
+
+**구성**
+
+복원
+
+**처리 내용**
+
+rollback_original_notebooks.mjs가 보관본과 지정 셀을 이용해 이전 구성을 복원합니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -526,12 +1022,54 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 
 SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 점수식 | Privacy Score=((1−SSIM)/2)×100을 사용하며 PSNR은 참고값으로 따로 저장합니다. |
-| 작은 조건 집합 | 블록 512·32, 블러σ0·2와 네 조합을 사용합니다. |
-| 집계 | long·방법별 요약·조합 pivot·best_conditions의 4CSV를 제공합니다. |
-| 점검 결과 | 각 조건 n_images=3이며 동일 변환과 항등 조건의 값 대응을 읽습니다. |
+<a id="layout18-table-24-row-1"></a>
+
+**점수식**
+
+**구성**
+
+점수식
+
+**처리 내용**
+
+Privacy Score=((1−SSIM)/2)×100을 사용하며 PSNR은 참고값으로 따로 저장합니다.
+
+<a id="layout18-table-24-row-2"></a>
+
+**작은 조건 집합**
+
+**구성**
+
+작은 조건 집합
+
+**처리 내용**
+
+블록 512·32, 블러σ0·2와 네 조합을 사용합니다.
+
+<a id="layout18-table-24-row-3"></a>
+
+**집계**
+
+**구성**
+
+집계
+
+**처리 내용**
+
+long·방법별 요약·조합 pivot·best_conditions의 4CSV를 제공합니다.
+
+<a id="layout18-table-24-row-4"></a>
+
+**점검 결과**
+
+**구성**
+
+점검 결과
+
+**처리 내용**
+
+각 조건 n_images=3이며 동일 변환과 항등 조건의 값 대응을 읽습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -563,12 +1101,54 @@ SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8조건의
 
 ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 읽는 자료 차수입니다. 실제 코드 폴더는 자료차수/4차/코드에 있습니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 학습 코드 | Blur·Block·조합 노트북이 조건별 입력과 ResNet50 평가를 구성합니다. |
-| 지표 계산 | privacy_score_ssim_psnr_updated가 MS-SSIM과 점수식을 계산합니다. |
-| 그림 코드 | heatmaps_windows·paper_figures_resnet50·plot_privacy_metrics_split 등이 표와 그림을 구성합니다. |
-| 원고 연결 | 연구 2 최종 PDF/HWP와 코드의 조건·그림을 대조합니다. |
+<a id="layout18-table-27-row-1"></a>
+
+**학습 코드**
+
+**구성**
+
+학습 코드
+
+**처리 내용**
+
+Blur·Block·조합 노트북이 조건별 입력과 ResNet50 평가를 구성합니다.
+
+<a id="layout18-table-27-row-2"></a>
+
+**지표 계산**
+
+**구성**
+
+지표 계산
+
+**처리 내용**
+
+privacy_score_ssim_psnr_updated가 MS-SSIM과 점수식을 계산합니다.
+
+<a id="layout18-table-27-row-3"></a>
+
+**그림 코드**
+
+**구성**
+
+그림 코드
+
+**처리 내용**
+
+heatmaps_windows·paper_figures_resnet50·plot_privacy_metrics_split 등이 표와 그림을 구성합니다.
+
+<a id="layout18-table-27-row-4"></a>
+
+**원고 연결**
+
+**구성**
+
+원고 연결
+
+**처리 내용**
+
+연구 2 최종 PDF/HWP와 코드의 조건·그림을 대조합니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -600,15 +1180,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 입력 영상에 PIL GaussianBlur를 적용하는 10조건 실험입니다. σ0은 원본 배열을 복사합니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 변환 위치 | 입력 영상에 PIL GaussianBlur를 적용하는 10조건 실험입니다. σ0은 원본 배열을 복사합니다. |
-| 모델 연결 | 일반 ResNet50 분류 모델을 사용합니다. |
-| 분할·증강 | 원본 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+<a id="layout18-table-30-row-1"></a>
+
+**변환 위치**
+
+**구성**
+
+변환 위치
+
+**처리 내용**
+
+입력 영상에 PIL GaussianBlur를 적용하는 10조건 실험입니다. σ0은 원본 배열을 복사합니다.
+
+<a id="layout18-table-30-row-2"></a>
+
+**모델 연결**
+
+**구성**
+
+모델 연결
+
+**처리 내용**
+
+일반 ResNet50 분류 모델을 사용합니다.
+
+<a id="layout18-table-30-row-3"></a>
+
+**분할·증강**
+
+**구성**
+
+분할·증강
+
+**처리 내용**
+
+원본 train/test를 먼저 나누고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-30-row-4"></a>
+
+**입력과 증강**
+
+**구성**
+
+입력과 증강
+
+**처리 내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-30-row-5"></a>
+
+**분류 헤드**
+
+**구성**
+
+분류 헤드
+
+**처리 내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-30-row-6"></a>
+
+**평가·저장**
+
+**구성**
+
+평가·저장
+
+**처리 내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-30-row-7"></a>
+
+**테스트 의사 라벨**
+
+**구성**
+
+테스트 의사 라벨
+
+**처리 내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -630,14 +1285,78 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 원고 보고값과 이 코드의 조건별 저장 결과를 구분합니다. 변환 위치·분할·시드와 실제 결과 파일이 같은지 확인합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 변환의 의미 | 블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다. |
-| 결과 재사용 | 조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다. |
-| 분할 | 원본 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| 평가 방식 | 테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다. |
-| 예시 그래프 | 실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다. |
-| 입력 스케일 | load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다. |
+<a id="layout18-table-32-row-1"></a>
+
+**변환의 의미**
+
+**제약**
+
+변환의 의미
+
+**확인할 내용**
+
+블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다.
+
+<a id="layout18-table-32-row-2"></a>
+
+**결과 재사용**
+
+**제약**
+
+결과 재사용
+
+**확인할 내용**
+
+조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다.
+
+<a id="layout18-table-32-row-3"></a>
+
+**분할**
+
+**제약**
+
+분할
+
+**확인할 내용**
+
+원본 train/test를 먼저 나누고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-32-row-4"></a>
+
+**평가 방식**
+
+**제약**
+
+평가 방식
+
+**확인할 내용**
+
+테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다.
+
+<a id="layout18-table-32-row-5"></a>
+
+**예시 그래프**
+
+**제약**
+
+예시 그래프
+
+**확인할 내용**
+
+실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다.
+
+<a id="layout18-table-32-row-6"></a>
+
+**입력 스케일**
+
+**제약**
+
+입력 스케일
+
+**확인할 내용**
+
+load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다.
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-6.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-6.diff)
 
@@ -652,15 +1371,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다. 영상보다 작지 않은 블록은 원본을 복사합니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 변환 위치 | 시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다. 영상보다 작지 않은 블록은 원본을 복사합니다. |
-| 모델 연결 | 일반 ResNet50 분류 모델을 사용합니다. |
-| 분할·증강 | 이 사본은 oversample_dir 뒤 prepare_split을 호출해 증강 후 train/test를 나눕니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+<a id="layout18-table-33-row-1"></a>
+
+**변환 위치**
+
+**구성**
+
+변환 위치
+
+**처리 내용**
+
+시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다. 영상보다 작지 않은 블록은 원본을 복사합니다.
+
+<a id="layout18-table-33-row-2"></a>
+
+**모델 연결**
+
+**구성**
+
+모델 연결
+
+**처리 내용**
+
+일반 ResNet50 분류 모델을 사용합니다.
+
+<a id="layout18-table-33-row-3"></a>
+
+**분할·증강**
+
+**구성**
+
+분할·증강
+
+**처리 내용**
+
+이 사본은 oversample_dir 뒤 prepare_split을 호출해 증강 후 train/test를 나눕니다.
+
+<a id="layout18-table-33-row-4"></a>
+
+**입력과 증강**
+
+**구성**
+
+입력과 증강
+
+**처리 내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-33-row-5"></a>
+
+**분류 헤드**
+
+**구성**
+
+분류 헤드
+
+**처리 내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-33-row-6"></a>
+
+**평가·저장**
+
+**구성**
+
+평가·저장
+
+**처리 내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-33-row-7"></a>
+
+**테스트 의사 라벨**
+
+**구성**
+
+테스트 의사 라벨
+
+**처리 내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -682,15 +1476,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 원고 보고값과 이 코드의 조건별 저장 결과를 구분합니다. 변환 위치·분할·시드와 실제 결과 파일이 같은지 확인합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 변환의 의미 | 블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다. |
-| 결과 재사용 | 조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다. |
-| 분할 | 이 사본은 oversample_dir 뒤 prepare_split을 호출해 증강 후 train/test를 나눕니다. |
-| 평가 방식 | 테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다. |
-| 자료 중복 | 증강 후 분할하는 이 사본에서는 같은 원영상에서 파생한 자료가 학습·시험 양쪽에 들어갈 위험을 확인해야 합니다. |
-| 예시 그래프 | 실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다. |
-| 입력 스케일 | load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다. |
+<a id="layout18-table-35-row-1"></a>
+
+**변환의 의미**
+
+**제약**
+
+변환의 의미
+
+**확인할 내용**
+
+블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다.
+
+<a id="layout18-table-35-row-2"></a>
+
+**결과 재사용**
+
+**제약**
+
+결과 재사용
+
+**확인할 내용**
+
+조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다.
+
+<a id="layout18-table-35-row-3"></a>
+
+**분할**
+
+**제약**
+
+분할
+
+**확인할 내용**
+
+이 사본은 oversample_dir 뒤 prepare_split을 호출해 증강 후 train/test를 나눕니다.
+
+<a id="layout18-table-35-row-4"></a>
+
+**평가 방식**
+
+**제약**
+
+평가 방식
+
+**확인할 내용**
+
+테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다.
+
+<a id="layout18-table-35-row-5"></a>
+
+**자료 중복**
+
+**제약**
+
+자료 중복
+
+**확인할 내용**
+
+증강 후 분할하는 이 사본에서는 같은 원영상에서 파생한 자료가 학습·시험 양쪽에 들어갈 위험을 확인해야 합니다.
+
+<a id="layout18-table-35-row-6"></a>
+
+**예시 그래프**
+
+**제약**
+
+예시 그래프
+
+**확인할 내용**
+
+실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다.
+
+<a id="layout18-table-35-row-7"></a>
+
+**입력 스케일**
+
+**제약**
+
+입력 스케일
+
+**확인할 내용**
+
+load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다.
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-7.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-7.diff)
 
@@ -705,15 +1574,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 변환 위치 | 블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. |
-| 모델 연결 | 일반 ResNet50 분류 모델을 사용합니다. |
-| 분할·증강 | 변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+<a id="layout18-table-36-row-1"></a>
+
+**변환 위치**
+
+**구성**
+
+변환 위치
+
+**처리 내용**
+
+블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
+
+<a id="layout18-table-36-row-2"></a>
+
+**모델 연결**
+
+**구성**
+
+모델 연결
+
+**처리 내용**
+
+일반 ResNet50 분류 모델을 사용합니다.
+
+<a id="layout18-table-36-row-3"></a>
+
+**분할·증강**
+
+**구성**
+
+분할·증강
+
+**처리 내용**
+
+변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-36-row-4"></a>
+
+**입력과 증강**
+
+**구성**
+
+입력과 증강
+
+**처리 내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-36-row-5"></a>
+
+**분류 헤드**
+
+**구성**
+
+분류 헤드
+
+**처리 내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-36-row-6"></a>
+
+**평가·저장**
+
+**구성**
+
+평가·저장
+
+**처리 내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-36-row-7"></a>
+
+**테스트 의사 라벨**
+
+**구성**
+
+테스트 의사 라벨
+
+**처리 내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -735,14 +1679,78 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 원고 보고값과 이 코드의 조건별 저장 결과를 구분합니다. 변환 위치·분할·시드와 실제 결과 파일이 같은지 확인합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 변환의 의미 | 블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다. |
-| 결과 재사용 | 조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다. |
-| 분할 | 변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| 평가 방식 | 테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다. |
-| 예시 그래프 | 실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다. |
-| 입력 스케일 | load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다. |
+<a id="layout18-table-38-row-1"></a>
+
+**변환의 의미**
+
+**제약**
+
+변환의 의미
+
+**확인할 내용**
+
+블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다.
+
+<a id="layout18-table-38-row-2"></a>
+
+**결과 재사용**
+
+**제약**
+
+결과 재사용
+
+**확인할 내용**
+
+조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다.
+
+<a id="layout18-table-38-row-3"></a>
+
+**분할**
+
+**제약**
+
+분할
+
+**확인할 내용**
+
+변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-38-row-4"></a>
+
+**평가 방식**
+
+**제약**
+
+평가 방식
+
+**확인할 내용**
+
+테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다.
+
+<a id="layout18-table-38-row-5"></a>
+
+**예시 그래프**
+
+**제약**
+
+예시 그래프
+
+**확인할 내용**
+
+실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다.
+
+<a id="layout18-table-38-row-6"></a>
+
+**입력 스케일**
+
+**제약**
+
+입력 스케일
+
+**확인할 내용**
+
+load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다.
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-8.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-8.diff)
 
@@ -757,15 +1765,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 변환 위치 | 입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다. |
-| 모델 연결 | edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다. |
-| 분할·증강 | 이 사본은 증강 후 train/test를 나누는 경로입니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+<a id="layout18-table-39-row-1"></a>
+
+**변환 위치**
+
+**구성**
+
+변환 위치
+
+**처리 내용**
+
+입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다.
+
+<a id="layout18-table-39-row-2"></a>
+
+**모델 연결**
+
+**구성**
+
+모델 연결
+
+**처리 내용**
+
+edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다.
+
+<a id="layout18-table-39-row-3"></a>
+
+**분할·증강**
+
+**구성**
+
+분할·증강
+
+**처리 내용**
+
+이 사본은 증강 후 train/test를 나누는 경로입니다.
+
+<a id="layout18-table-39-row-4"></a>
+
+**입력과 증강**
+
+**구성**
+
+입력과 증강
+
+**처리 내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-39-row-5"></a>
+
+**분류 헤드**
+
+**구성**
+
+분류 헤드
+
+**처리 내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-39-row-6"></a>
+
+**평가·저장**
+
+**구성**
+
+평가·저장
+
+**처리 내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-39-row-7"></a>
+
+**테스트 의사 라벨**
+
+**구성**
+
+테스트 의사 라벨
+
+**처리 내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -788,17 +1871,114 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 원고 보고값과 이 코드의 조건별 저장 결과를 구분합니다. 변환 위치·분할·시드와 실제 결과 파일이 같은지 확인합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 변환의 의미 | 블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다. |
-| 결과 재사용 | 조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다. |
-| 분할 | 이 사본은 증강 후 train/test를 나누는 경로입니다. |
-| 평가 방식 | 테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다. |
-| 자료 중복 | 증강 후 분할하는 이 사본에서는 같은 원영상에서 파생한 자료가 학습·시험 양쪽에 들어갈 위험을 확인해야 합니다. |
-| 문법 오류 | 셀 20의 다중행 f-string이 닫히지 않아 해당 구문에서 실행이 중단됩니다. |
-| 배치 구조 | edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다. |
-| 예시 그래프 | 실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다. |
-| 입력 스케일 | load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다. |
+<a id="layout18-table-41-row-1"></a>
+
+**변환의 의미**
+
+**제약**
+
+변환의 의미
+
+**확인할 내용**
+
+블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다.
+
+<a id="layout18-table-41-row-2"></a>
+
+**결과 재사용**
+
+**제약**
+
+결과 재사용
+
+**확인할 내용**
+
+조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다.
+
+<a id="layout18-table-41-row-3"></a>
+
+**분할**
+
+**제약**
+
+분할
+
+**확인할 내용**
+
+이 사본은 증강 후 train/test를 나누는 경로입니다.
+
+<a id="layout18-table-41-row-4"></a>
+
+**평가 방식**
+
+**제약**
+
+평가 방식
+
+**확인할 내용**
+
+테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다.
+
+<a id="layout18-table-41-row-5"></a>
+
+**자료 중복**
+
+**제약**
+
+자료 중복
+
+**확인할 내용**
+
+증강 후 분할하는 이 사본에서는 같은 원영상에서 파생한 자료가 학습·시험 양쪽에 들어갈 위험을 확인해야 합니다.
+
+<a id="layout18-table-41-row-6"></a>
+
+**문법 오류**
+
+**제약**
+
+문법 오류
+
+**확인할 내용**
+
+셀 20의 다중행 f-string이 닫히지 않아 해당 구문에서 실행이 중단됩니다.
+
+<a id="layout18-table-41-row-7"></a>
+
+**배치 구조**
+
+**제약**
+
+배치 구조
+
+**확인할 내용**
+
+edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다.
+
+<a id="layout18-table-41-row-8"></a>
+
+**예시 그래프**
+
+**제약**
+
+예시 그래프
+
+**확인할 내용**
+
+실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다.
+
+<a id="layout18-table-41-row-9"></a>
+
+**입력 스케일**
+
+**제약**
+
+입력 스케일
+
+**확인할 내용**
+
+load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다.
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-9.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-9.diff)
 
@@ -813,15 +1993,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 변환 위치 | 입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다. |
-| 모델 연결 | edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다. |
-| 분할·증강 | 이 사본은 증강 후 train/test를 나누는 경로입니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+<a id="layout18-table-42-row-1"></a>
+
+**변환 위치**
+
+**구성**
+
+변환 위치
+
+**처리 내용**
+
+입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다.
+
+<a id="layout18-table-42-row-2"></a>
+
+**모델 연결**
+
+**구성**
+
+모델 연결
+
+**처리 내용**
+
+edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다.
+
+<a id="layout18-table-42-row-3"></a>
+
+**분할·증강**
+
+**구성**
+
+분할·증강
+
+**처리 내용**
+
+이 사본은 증강 후 train/test를 나누는 경로입니다.
+
+<a id="layout18-table-42-row-4"></a>
+
+**입력과 증강**
+
+**구성**
+
+입력과 증강
+
+**처리 내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-42-row-5"></a>
+
+**분류 헤드**
+
+**구성**
+
+분류 헤드
+
+**처리 내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-42-row-6"></a>
+
+**평가·저장**
+
+**구성**
+
+평가·저장
+
+**처리 내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-42-row-7"></a>
+
+**테스트 의사 라벨**
+
+**구성**
+
+테스트 의사 라벨
+
+**처리 내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -844,16 +2099,102 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 원고 보고값과 이 코드의 조건별 저장 결과를 구분합니다. 변환 위치·분할·시드와 실제 결과 파일이 같은지 확인합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 변환의 의미 | 블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다. |
-| 결과 재사용 | 조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다. |
-| 분할 | 이 사본은 증강 후 train/test를 나누는 경로입니다. |
-| 평가 방식 | 테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다. |
-| 자료 중복 | 증강 후 분할하는 이 사본에서는 같은 원영상에서 파생한 자료가 학습·시험 양쪽에 들어갈 위험을 확인해야 합니다. |
-| 배치 구조 | edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다. |
-| 예시 그래프 | 실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다. |
-| 입력 스케일 | load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다. |
+<a id="layout18-table-44-row-1"></a>
+
+**변환의 의미**
+
+**제약**
+
+변환의 의미
+
+**확인할 내용**
+
+블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다.
+
+<a id="layout18-table-44-row-2"></a>
+
+**결과 재사용**
+
+**제약**
+
+결과 재사용
+
+**확인할 내용**
+
+조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다.
+
+<a id="layout18-table-44-row-3"></a>
+
+**분할**
+
+**제약**
+
+분할
+
+**확인할 내용**
+
+이 사본은 증강 후 train/test를 나누는 경로입니다.
+
+<a id="layout18-table-44-row-4"></a>
+
+**평가 방식**
+
+**제약**
+
+평가 방식
+
+**확인할 내용**
+
+테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다.
+
+<a id="layout18-table-44-row-5"></a>
+
+**자료 중복**
+
+**제약**
+
+자료 중복
+
+**확인할 내용**
+
+증강 후 분할하는 이 사본에서는 같은 원영상에서 파생한 자료가 학습·시험 양쪽에 들어갈 위험을 확인해야 합니다.
+
+<a id="layout18-table-44-row-6"></a>
+
+**배치 구조**
+
+**제약**
+
+배치 구조
+
+**확인할 내용**
+
+edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다.
+
+<a id="layout18-table-44-row-7"></a>
+
+**예시 그래프**
+
+**제약**
+
+예시 그래프
+
+**확인할 내용**
+
+실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다.
+
+<a id="layout18-table-44-row-8"></a>
+
+**입력 스케일**
+
+**제약**
+
+입력 스케일
+
+**확인할 내용**
+
+load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다.
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-10.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-10.diff)
 
@@ -868,15 +2209,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 입력 Block→Blur의 100조합 뒤에 분리 모델을 연결합니다. 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 변환 위치 | 입력 Block→Blur의 100조합 뒤에 분리 모델을 연결합니다. 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다. |
-| 모델 연결 | edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다. |
-| 분할·증강 | 변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+<a id="layout18-table-45-row-1"></a>
+
+**변환 위치**
+
+**구성**
+
+변환 위치
+
+**처리 내용**
+
+입력 Block→Blur의 100조합 뒤에 분리 모델을 연결합니다. 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다.
+
+<a id="layout18-table-45-row-2"></a>
+
+**모델 연결**
+
+**구성**
+
+모델 연결
+
+**처리 내용**
+
+edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다.
+
+<a id="layout18-table-45-row-3"></a>
+
+**분할·증강**
+
+**구성**
+
+분할·증강
+
+**처리 내용**
+
+변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-45-row-4"></a>
+
+**입력과 증강**
+
+**구성**
+
+입력과 증강
+
+**처리 내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-45-row-5"></a>
+
+**분류 헤드**
+
+**구성**
+
+분류 헤드
+
+**처리 내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-45-row-6"></a>
+
+**평가·저장**
+
+**구성**
+
+평가·저장
+
+**처리 내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-45-row-7"></a>
+
+**테스트 의사 라벨**
+
+**구성**
+
+테스트 의사 라벨
+
+**처리 내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -899,15 +2315,90 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 원고 보고값과 이 코드의 조건별 저장 결과를 구분합니다. 변환 위치·분할·시드와 실제 결과 파일이 같은지 확인합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 변환의 의미 | 블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다. |
-| 결과 재사용 | 조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다. |
-| 분할 | 변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| 평가 방식 | 테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다. |
-| 배치 구조 | edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다. |
-| 예시 그래프 | 실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다. |
-| 입력 스케일 | load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다. |
+<a id="layout18-table-47-row-1"></a>
+
+**변환의 의미**
+
+**제약**
+
+변환의 의미
+
+**확인할 내용**
+
+블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다.
+
+<a id="layout18-table-47-row-2"></a>
+
+**결과 재사용**
+
+**제약**
+
+결과 재사용
+
+**확인할 내용**
+
+조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다.
+
+<a id="layout18-table-47-row-3"></a>
+
+**분할**
+
+**제약**
+
+분할
+
+**확인할 내용**
+
+변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-47-row-4"></a>
+
+**평가 방식**
+
+**제약**
+
+평가 방식
+
+**확인할 내용**
+
+테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다.
+
+<a id="layout18-table-47-row-5"></a>
+
+**배치 구조**
+
+**제약**
+
+배치 구조
+
+**확인할 내용**
+
+edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다.
+
+<a id="layout18-table-47-row-6"></a>
+
+**예시 그래프**
+
+**제약**
+
+예시 그래프
+
+**확인할 내용**
+
+실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다.
+
+<a id="layout18-table-47-row-7"></a>
+
+**입력 스케일**
+
+**제약**
+
+입력 스케일
+
+**확인할 내용**
+
+load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다.
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-11.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-11.diff)
 
@@ -922,16 +2413,102 @@ ResNet50 후속 원고와 입력 변환·유사도·도표 코드를 연결해 �
 
 ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 변환 위치 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
-| 모델 연결 | edge→FeatureGaussianBlur→cloud 순서로 연결합니다. |
-| 분할·증강 | 원본 test를 먼저 분리하고 학습 쪽을 증강합니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
-| 추가 분석 | 특징 SSIM·cosine과 선택적 디코더 복원의 PSNR/SSIM 경로를 제공합니다. 설정과 저장된 결과를 구분합니다. |
+<a id="layout18-table-48-row-1"></a>
+
+**변환 위치**
+
+**구성**
+
+변환 위치
+
+**처리 내용**
+
+ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다.
+
+<a id="layout18-table-48-row-2"></a>
+
+**모델 연결**
+
+**구성**
+
+모델 연결
+
+**처리 내용**
+
+edge→FeatureGaussianBlur→cloud 순서로 연결합니다.
+
+<a id="layout18-table-48-row-3"></a>
+
+**분할·증강**
+
+**구성**
+
+분할·증강
+
+**처리 내용**
+
+원본 test를 먼저 분리하고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-48-row-4"></a>
+
+**입력과 증강**
+
+**구성**
+
+입력과 증강
+
+**처리 내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-48-row-5"></a>
+
+**분류 헤드**
+
+**구성**
+
+분류 헤드
+
+**처리 내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-48-row-6"></a>
+
+**평가·저장**
+
+**구성**
+
+평가·저장
+
+**처리 내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-48-row-7"></a>
+
+**테스트 의사 라벨**
+
+**구성**
+
+테스트 의사 라벨
+
+**처리 내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
+<a id="layout18-table-48-row-8"></a>
+
+**추가 분석**
+
+**구성**
+
+추가 분석
+
+**처리 내용**
+
+특징 SSIM·cosine과 선택적 디코더 복원의 PSNR/SSIM 경로를 제공합니다. 설정과 저장된 결과를 구분합니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -955,17 +2532,114 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 
 원고 보고값과 이 코드의 조건별 저장 결과를 구분합니다. 변환 위치·분할·시드와 실제 결과 파일이 같은지 확인합니다.
 
-| 제약 | 확인할 내용 |
-| --- | --- |
-| 변환의 의미 | 블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다. |
-| 결과 재사용 | 조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다. |
-| 분할 | 원본 test를 먼저 분리하고 학습 쪽을 증강합니다. |
-| 평가 방식 | 테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다. |
-| 배치 구조 | edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다. |
-| 전역 평균 분기 | 같은 분기의 재사용 결과를 조건마다 독립 재학습한 값으로 세지 않습니다. |
-| 예시 그래프 | 실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다. |
-| 입력 스케일 | load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다. |
-| 복원 코드 의존성 | 선택적 디코더는 Conv2D를 사용하지만 해당 이름의 import/정의가 필요합니다. 공격 실험을 실행하기 전에 의존성을 확인합니다. |
+<a id="layout18-table-50-row-1"></a>
+
+**변환의 의미**
+
+**제약**
+
+변환의 의미
+
+**확인할 내용**
+
+블록 재배열·블러 강도만으로 환자 재식별 저항성이나 암호학적 안전성을 보증하지 않습니다.
+
+<a id="layout18-table-50-row-2"></a>
+
+**결과 재사용**
+
+**제약**
+
+결과 재사용
+
+**확인할 내용**
+
+조건별 데이터·가중치·결과를 만들거나 재사용하므로 입력·출력 폴더와 기존 결과를 구분합니다.
+
+<a id="layout18-table-50-row-3"></a>
+
+**분할**
+
+**제약**
+
+분할
+
+**확인할 내용**
+
+원본 test를 먼저 분리하고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-50-row-4"></a>
+
+**평가 방식**
+
+**제약**
+
+평가 방식
+
+**확인할 내용**
+
+테스트 의사 라벨 추가 학습 후의 수치는 transductive 평가입니다. 테스트 자료를 전혀 이용하지 않은 독립 평가와 구분합니다.
+
+<a id="layout18-table-50-row-5"></a>
+
+**배치 구조**
+
+**제약**
+
+배치 구조
+
+**확인할 내용**
+
+edge/cloud는 코드의 모듈 분리입니다. 이 노트북은 같은 프로세스에서 연결합니다.
+
+<a id="layout18-table-50-row-6"></a>
+
+**전역 평균 분기**
+
+**제약**
+
+전역 평균 분기
+
+**확인할 내용**
+
+같은 분기의 재사용 결과를 조건마다 독립 재학습한 값으로 세지 않습니다.
+
+<a id="layout18-table-50-row-7"></a>
+
+**예시 그래프**
+
+**제약**
+
+예시 그래프
+
+**확인할 내용**
+
+실제 결과·학습 이력이 없으면 _dummy_results 또는 _dummy_histories 계열로 예시 값을 만드는 그래프 셀이 있습니다. 그래프가 그려졌다는 사실만으로 학습 결과로 인용하지 않습니다.
+
+<a id="layout18-table-50-row-8"></a>
+
+**입력 스케일**
+
+**제약**
+
+입력 스케일
+
+**확인할 내용**
+
+load_image는 float32 변환으로 0~255 입력을 유지합니다. ImageNet 사전학습과 연결할 때 전처리 가정을 확인합니다.
+
+<a id="layout18-table-50-row-9"></a>
+
+**복원 코드 의존성**
+
+**제약**
+
+복원 코드 의존성
+
+**확인할 내용**
+
+선택적 디코더는 Conv2D를 사용하지만 해당 이름의 import/정의가 필요합니다. 공격 실험을 실행하기 전에 의존성을 확인합니다.
+
 
 [파일 구성·핵심 정의·사용 순서](docs/revisions/experiment-12.md) · [이 단계 전체 비교](docs/revision-diffs/experiment-12.diff)
 
@@ -980,12 +2654,54 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 
 Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| 전처리 | preprocess_image가 영상을 224×224로 맞추고 255로 나누어 배치 차원을 추가합니다. |
-| 5라벨 화면 | 대장선암·대장정상·폐선암·폐정상·폐편평상피암의 예측 확률을 표시합니다. |
-| 그래프 | 예측 확률을 텍스트와 원형 그래프로 보여 줍니다. |
-| 학습 사본 | Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라벨을 구분합니다. |
+<a id="layout18-table-51-row-1"></a>
+
+**전처리**
+
+**구성**
+
+전처리
+
+**처리 내용**
+
+preprocess_image가 영상을 224×224로 맞추고 255로 나누어 배치 차원을 추가합니다.
+
+<a id="layout18-table-51-row-2"></a>
+
+**5라벨 화면**
+
+**구성**
+
+5라벨 화면
+
+**처리 내용**
+
+대장선암·대장정상·폐선암·폐정상·폐편평상피암의 예측 확률을 표시합니다.
+
+<a id="layout18-table-51-row-3"></a>
+
+**그래프**
+
+**구성**
+
+그래프
+
+**처리 내용**
+
+예측 확률을 텍스트와 원형 그래프로 보여 줍니다.
+
+<a id="layout18-table-51-row-4"></a>
+
+**학습 사본**
+
+**구성**
+
+학습 사본
+
+**처리 내용**
+
+Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라벨을 구분합니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |
@@ -1017,12 +2733,54 @@ Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조
 
 EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다.
 
-| 구성 | 처리 내용 |
-| --- | --- |
-| Train.ipynb | 셀 0은 조직영상 5클래스, 셀 1·2는 EfficientNetV2-S의 CT 블록·블러, 셀 3~5는 MobileNetV2와 풀링 비교입니다. |
-| ResNet50 사본 | 단독·조합·edge·Stage1 특징 블러 노트북을 각각 구분합니다. |
-| 유사도 코드 | SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다. |
-| 도표 | 저장된 분류 JSON과 유사도 CSV에서 막대·히트맵·논문 그림을 구성합니다. |
+<a id="layout18-table-54-row-1"></a>
+
+**Train.ipynb**
+
+**구성**
+
+Train.ipynb
+
+**처리 내용**
+
+셀 0은 조직영상 5클래스, 셀 1·2는 EfficientNetV2-S의 CT 블록·블러, 셀 3~5는 MobileNetV2와 풀링 비교입니다.
+
+<a id="layout18-table-54-row-2"></a>
+
+**ResNet50 사본**
+
+**구성**
+
+ResNet50 사본
+
+**처리 내용**
+
+단독·조합·edge·Stage1 특징 블러 노트북을 각각 구분합니다.
+
+<a id="layout18-table-54-row-3"></a>
+
+**유사도 코드**
+
+**구성**
+
+유사도 코드
+
+**처리 내용**
+
+SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다.
+
+<a id="layout18-table-54-row-4"></a>
+
+**도표**
+
+**구성**
+
+도표
+
+**처리 내용**
+
+저장된 분류 JSON과 유사도 CSV에서 막대·히트맵·논문 그림을 구성합니다.
+
 
 | 입력·실행 조건 | 내용 |
 | --- | --- |

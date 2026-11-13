@@ -2,7 +2,11 @@
 
 # 원본자료/블록/1차 실험/블록 1/불록 결과
 
-입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다.
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](../../../../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../../../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../../../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../../../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../../../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
+**입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다.** 저장 결과와 그래프 입력을 대조할 수 있습니다.
 
 | 주요 구성 | 내용 |
 | --- | --- |
@@ -22,6 +26,15 @@
 
 | 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
-| [블록 · 1차 실험](../../../../../docs/revisions/experiment-original-block.md) | 입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](.) | [전체 비교](../../../../../docs/revision-diffs/experiment-original-block.diff) |
+| [블록 · 1차 실험](../../../../../docs/revisions/experiment-original-block.md) | [상세 설명](#layout18-table-2-row-1-field-1) | [폴더](.) | [전체 비교](../../../../../docs/revision-diffs/experiment-original-block.diff) |
+
+<a id="layout18-table-2-row-1-field-1"></a>
+
+**[블록 · 1차 실험](../../../../../docs/revisions/experiment-original-block.md)**
+
+**주요 내용**
+
+입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬을 보관한 결과 JSON입니다. 저장 결과와 그래프 입력을 대조할 수 있습니다.
+
 
 [프로젝트](../../../../../README.md) · [전체 차수](../../../../../docs/REVISION_INDEX.md)

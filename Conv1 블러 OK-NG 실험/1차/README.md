@@ -2,7 +2,11 @@
 
 # 폐 CT 특징 블러 실험 1차
 
-폐 CT 영상에서 양성·정상을 OK(0), 악성을 NG(1)로 분류하고 첫 합성곱 특징에 10단계 블러를 적용하는 로컬 예비실험입니다. 원본 1,097장 중 양성 120장·정상 416장·악성 561장입니다.
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
+**폐 CT 영상에서 양성·정상을 OK(0), 악성을 NG(1)로 분류하고 첫 합성곱 특징에 10단계 블러를 적용하는 로컬 예비실험입니다.** 원본 1,097장 중 양성 120장·정상 416장·악성 561장입니다.
 
 매 학습 회차(epoch)에 클래스당 5,000개를 원본 학습 영상의 반복 표본과 온라인 증강으로 구성합니다. 이는 독립 영상이나 환자 5,000명을 의미하지 않습니다.
 

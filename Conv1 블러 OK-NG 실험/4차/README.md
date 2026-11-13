@@ -2,7 +2,11 @@
 
 # 블러 강도별 결과 선택 · 공개 코드 4차
 
-강도 버튼을 고르면  사진· 학습 곡선· 시험 결과가 같은 강도로 바뀝니다. 상단의 마지막 실행 상태와 선택한 결과를 나눠 표시하고 자동 갱신에도 선택을 유지합니다.
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
+**강도 버튼을 고르면  사진· 학습 곡선· 시험 결과가 같은 강도로 바뀝니다.** 상단의 마지막 실행 상태와 선택한 결과를 나눠 표시하고 자동 갱신에도 선택을 유지합니다.
 
 실제 학습 2차의 대시보드 로컬 수리 3차를 공개 코드 4차로 보존한 사본입니다. 새 학습 차수를 시작하지 않습니다. 학습 코드·설정·가중치와 이전 공개 1~3차를 보존합니다.
 

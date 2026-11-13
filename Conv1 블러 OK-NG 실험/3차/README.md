@@ -1,6 +1,10 @@
 # 폐 CT 특징맵 시각화 · 공개 코드 3차
 
-학습 2차에서 완료한 블러 조건의 특징맵을 범주·단계별로 저장하고 대시보드에서 살펴보는 소프트웨어 변경 묶음입니다. 학습 3차를 새로 시작한 결과가 아닙니다.
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
+**학습 2차에서 완료한 블러 조건의 특징맵을 범주·단계별로 저장하고 대시보드에서 살펴보는 소프트웨어 변경 묶음입니다.** 학습 3차를 새로 시작한 결과가 아닙니다.
 
 한 조건은 양성·악성·정상 대표 CT 3장과 입력부터 마지막 잔차 블록 묶음까지 6개 단계로 구성해 PNG 18개를 저장합니다. 원본 기준을 포함한 10조건이 모두 끝나면 180개입니다.
 

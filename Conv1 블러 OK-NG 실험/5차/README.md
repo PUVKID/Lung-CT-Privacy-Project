@@ -1,6 +1,10 @@
 # 폐 CT 특징 블러 실험 · 4차
 
-조기 종료의 영향을 확인하기 위해 동일 자료·분할·초기값으로 강도마다 100회를 학습하고, 기존 정책의 관찰용 모델과 비교합니다.
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
+**조기 종료의 영향을 확인하기 위해 동일 자료·분할·초기값으로 강도마다 100회를 학습하고, 기존 정책의 관찰용 모델과 비교합니다.**
 
 현재 연구는 환자 ID 없는 영상 단위 예비실험이며 높은 정확도를 임상 성능이나 프라이버시 효과로 해석하지 않습니다.
 

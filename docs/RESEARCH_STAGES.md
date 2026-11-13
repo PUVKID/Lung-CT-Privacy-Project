@@ -1,5 +1,9 @@
 # 연구 단계와 논문·코드의 연결
 
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
 ## 연구 1 — EfficientNetV2-S 하계 연구
 
 - **학술대회:** 한국컴퓨터교육학회 제 58회 2026 하계학술대회.
@@ -26,7 +30,7 @@
 
 [입력 변환 분리 모델](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80/block_blur_resnet50_edge.ipynb)과 [Stage 1 특징맵 블러](../%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb)를 구분합니다. 전자는 입력 영상에 변환을 적용한 ResNet50을 부분 모델로 나누며, 후자는 `pool1_pool`에서 나온 특징을 변환합니다. 두 부분은 같은 프로세스에서 연결됩니다. 실제 원격 서버 통신·배포·기기 간 전송량 검증은 확인하지 않았습니다.
 
-Stage 1은 σ0·1·2·4·8·16·32·64·128·256을 지정하지만 큰 σ에서는 채널별 전역 평균으로 대체하고 기본값으로 σ32 결과를 더 큰 세 조건에 재사용합니다. 따라서 열 조건의 독립 학습 비교와 다릅니다. 단일 SSIM 특징 점수와 GAP 특징 cosine 유사도를 사용하며, 논문 2의 입력 영상 MS-SSIM 점수와 평가 대상이 다릅니다.
+**Stage 1은 σ0·1·2·4·8·16·32·64·128·256을 지정하지만 큰 σ에서는 채널별 전역 평균으로 대체하고 기본값으로 σ32 결과를 더 큰 세 조건에 재사용합니다.** 따라서 열 조건의 독립 학습 비교와 다릅니다. 단일 SSIM 특징 점수와 GAP 특징 cosine 유사도를 사용하며, 논문 2의 입력 영상 MS-SSIM 점수와 평가 대상이 다릅니다.
 
 추가 decoder는 동결된 edge 특징으로 원본 영상을 복원하도록 학습하고 PSNR·SSIM을 계산하는 구성입니다. 현재 코드에는 `Conv2D` import/정의가 필요하며, 공격 평가는 논문 2의 후속 과제입니다. 가중치 누락 시 ImageNet 대체, 체크포인트 저장 순서와 예시 데이터 대체 경로도 검토해야 합니다.
 

@@ -1,6 +1,10 @@
 # 폐 CT 특징 블러 실험 · 2차
 
-고정된 첫 합성곱의 특징에 블러를 적용한 뒤 양성·정상을 OK, 악성을 NG로 분류합니다. 원본을 분할한 뒤 학습에만 클래스당 5000개 온라인 표본을 구성합니다. 원본 환자 ID가 없어 영상 단위 예비실험입니다.
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
+**고정된 첫 합성곱의 특징에 블러를 적용한 뒤 양성·정상을 OK, 악성을 NG로 분류합니다.** 원본을 분할한 뒤 학습에만 클래스당 5000개 온라인 표본을 구성합니다. 원본 환자 ID가 없어 영상 단위 예비실험입니다.
 
 1차의 초기 검증 포화와 손실 계산을 감사한 뒤 평가 수치, 유사 영상 분할, 학습 예산·종료 기준을 보완했습니다. 1차의 결과·가중치는 보존하며 2차는 ImageNet 초기값으로 새로 시작합니다. 원본 노트북과 프레임워크·가중치·전처리가 달라 수치상 재현은 아닙니다.
 

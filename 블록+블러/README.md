@@ -2,17 +2,96 @@
 
 # 블록+블러
 
+<!-- reading-levels17:start -->
+**읽기 수준 선택** · [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<!-- reading-levels17:end -->
+
+**블록 10개와 블러 10개의 100조합을 비교합니다.** 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
+
+<a id="layout18-table-1-row-1"></a>
+
+**변환 위치**
+
+**주요 구성**
+
+변환 위치
+
+**내용**
+
 블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
 
-| 주요 구성 | 내용 |
-| --- | --- |
-| 변환 위치 | 블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. |
-| 모델 연결 | 일반 ResNet50 분류 모델을 사용합니다. |
-| 분할·증강 | 변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| 입력과 증강 | JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
-| 분류 헤드 | GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다. |
-| 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
-| 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
+<a id="layout18-table-1-row-2"></a>
+
+**모델 연결**
+
+**주요 구성**
+
+모델 연결
+
+**내용**
+
+일반 ResNet50 분류 모델을 사용합니다.
+
+<a id="layout18-table-1-row-3"></a>
+
+**분할·증강**
+
+**주요 구성**
+
+분할·증강
+
+**내용**
+
+변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다.
+
+<a id="layout18-table-1-row-4"></a>
+
+**입력과 증강**
+
+**주요 구성**
+
+입력과 증강
+
+**내용**
+
+JPEG 3채널을 512×512 float32로 읽습니다. 학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다.
+
+<a id="layout18-table-1-row-5"></a>
+
+**분류 헤드**
+
+**주요 구성**
+
+분류 헤드
+
+**내용**
+
+GAP와 GMP를 연결하고 Dense512→BatchNorm·ReLU·Dropout0.35→Dense256→BatchNorm·ReLU·Dropout0.25→softmax로 분류합니다.
+
+<a id="layout18-table-1-row-6"></a>
+
+**평가·저장**
+
+**주요 구성**
+
+평가·저장
+
+**내용**
+
+조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다.
+
+<a id="layout18-table-1-row-7"></a>
+
+**테스트 의사 라벨**
+
+**주요 구성**
+
+테스트 의사 라벨
+
+**내용**
+
+테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다.
+
 
 <a id="-이용-순서"></a>
 
@@ -26,6 +105,15 @@
 
 | 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
-| [블록+블러 · 기본](../docs/revisions/experiment-8.md) | 블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. | [폴더](.) | [전체 비교](../docs/revision-diffs/experiment-8.diff) |
+| [블록+블러 · 기본](../docs/revisions/experiment-8.md) | [상세 설명](#layout18-table-2-row-1-field-1) | [폴더](.) | [전체 비교](../docs/revision-diffs/experiment-8.diff) |
+
+<a id="layout18-table-2-row-1-field-1"></a>
+
+**[블록+블러 · 기본](../docs/revisions/experiment-8.md)**
+
+**주요 내용**
+
+블록 10개와 블러 10개의 100조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
+
 
 [프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md)
