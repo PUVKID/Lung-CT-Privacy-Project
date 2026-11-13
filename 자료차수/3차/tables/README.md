@@ -66,7 +66,7 @@ long·방법별 요약·조합 pivot·best_conditions의 4CSV를 제공합니다
 3. 방법별 요약과 2×2 pivot이 long표의 같은 조건에서 나온 값인지 읽습니다.
 4. 점수식을 최종 논문의 MS-SSIM식과 구별합니다.
 
-| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| 내용 |
 | --- |
 | **차수·단계**<br>[폴더 3차](../../../docs/revisions/folder-3.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-2-row-1-field-1)<br><br>**자료**<br>[폴더](.)<br><br>**직전 비교**<br>[전체 비교](../../../docs/revision-diffs/folder-3.diff) |
 

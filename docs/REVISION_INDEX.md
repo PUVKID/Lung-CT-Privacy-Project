@@ -10,7 +10,7 @@
 
 [프로젝트 전체 소개](../README.md)
 
-| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| 내용 |
 | --- |
 | **차수·단계**<br>[연구 1 · 하계 EfficientNetV2-S](revisions/study-1.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-1-field-1)<br><br>**자료**<br>[폴더](../%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/study-1.diff) |
 | **차수·단계**<br>[연구 2 · ResNet50 후속 원고](revisions/study-2.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-1-row-2-field-1)<br><br>**자료**<br>[폴더](../%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](revision-diffs/study-2.diff) |
@@ -181,7 +181,7 @@ EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-S
 
 ## Conv1 OK/NG 예비실험
 
-| 차수 · 폴더 · 설명 · 비교 |
+| 내용 |
 | --- |
 | **차수**<br>Conv1 블러 OK-NG 실험 · 1차<br><br>**폴더**<br>[폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8)<br><br>**설명**<br>[설명](revisions/conv1-okng-round1.md)<br><br>**비교**<br>[전체 비교](revision-diffs/conv1-okng-round1.diff) |
 | **차수**<br>Conv1 블러 OK-NG 실험 · 2차<br><br>**폴더**<br>[폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8)<br><br>**설명**<br>[설명](revisions/conv1-okng-round2.md)<br><br>**비교**<br>[전체 비교](revision-diffs/conv1-okng-round2.diff) |

@@ -54,7 +54,7 @@ cm과 class_names의 순서를 함께 보며 클래스별 Recall을 확인합니
 3. cm의 행·열 순서를 class_names에 맞춰 읽습니다.
 4. 그래프·논문과 비교할 때 저장 실행·조건·반올림을 함께 확인합니다.
 
-| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| 내용 |
 | --- |
 | **차수·단계**<br>[블러 · 1차 실험](../../../../../docs/revisions/experiment-original-blur.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-2-row-1-field-1)<br><br>**자료**<br>[폴더](.)<br><br>**직전 비교**<br>[전체 비교](../../../../../docs/revision-diffs/experiment-original-blur.diff) |
 

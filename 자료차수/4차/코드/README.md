@@ -66,7 +66,7 @@ heatmaps_windows·paper_figures_resnet50·plot_privacy_metrics_split 등이 표�
 3. 입력 경로·CSV/JSON 열·조건 순서를 확인합니다.
 4. 빈 pareto_scatter.ipynb는 실행 코드로 사용하지 않고 다른 도표 코드의 실제 내용을 확인합니다.
 
-| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| 내용 |
 | --- |
 | **차수·단계**<br>[폴더 4차](../../../docs/revisions/folder-4.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-2-row-1-field-1)<br><br>**자료**<br>[폴더](.)<br><br>**직전 비교**<br>[전체 비교](../../../docs/revision-diffs/folder-4.diff) |
 

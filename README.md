@@ -8,7 +8,7 @@
 **블러·블록 변환이 폐 CT 분류 성능과 프라이버시에 미치는 영향을 비교합니다.**
 
 <!-- reading-levels17:start -->
-| 읽기 수준 · 안내 내용 |
+| 내용 |
 | --- |
 | **읽기 수준**<br>[LEVEL 1 - Beginner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)<br><br>**안내 내용**<br>낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
 | **읽기 수준**<br>[LEVEL 2 - Explorer](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)<br><br>**안내 내용**<br>핵심 개념과 처리 흐름의 관계 이해 |
@@ -114,7 +114,7 @@ EfficientNetV2-S·ResNet50 분류, 블러·블록 변환, 구조 유사도 비�
 
 ## 논문과 최신 자료
 
-| 자료 · 원문 파일 |
+| 내용 |
 | --- |
 | **자료**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**원문 파일**<br>[PDF 다운로드](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) |
 | **자료**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**원문 파일**<br>[HWP 다운로드](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
@@ -131,7 +131,7 @@ EfficientNetV2-S·ResNet50 분류, 블러·블록 변환, 구조 유사도 비�
 
 ## 전체 차수
 
-| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| 내용 |
 | --- |
 | **차수·단계**<br>[연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-1-field-1)<br><br>**자료**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/study-1.diff) |
 | **차수·단계**<br>[연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-4-row-2-field-1)<br><br>**자료**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**직전 비교**<br>[전체 비교](docs/revision-diffs/study-2.diff) |
@@ -416,12 +416,12 @@ Block 10조건, Blur 10조건, Block→Blur 100조합
 
 [「EfficientNetV2-S 모델에서 개인정보 보호를 위한 영상 비식별화 기법의 성능 분석」](%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf)은 512×512 CT 영상을 Benign·Malignant·Normal의 세 클래스로 분류합니다. Gaussian Blur와 시드 기반 블록 재배열을 각각 적용하여 형태 변화에 따른 분류 성능을 비교합니다.
 
-| 원고의 조건 | 보고 정확도 |
-| :--- | ---: |
-| 원본 | 92.5% |
-| Gaussian Blur σ=32 | 53.3% |
-| Block 32×32 | 79.2% |
-| Block 1×1 | 52.9% |
+| 항목별 수치 |
+| --- |
+| **원고의 조건**<br>원본<br><br>**보고 정확도**<br>92.5% |
+| **원고의 조건**<br>Gaussian Blur σ=32<br><br>**보고 정확도**<br>53.3% |
+| **원고의 조건**<br>Block 32×32<br><br>**보고 정확도**<br>79.2% |
+| **원고의 조건**<br>Block 1×1<br><br>**보고 정확도**<br>52.9% |
 
 이 결과는 해당 실험에서 블록 내부의 국소 정보를 남기는 변환이 강한 블러보다 정확도를 더 유지했음을 보여줍니다. 원고의 결론에서 ResNet50 비교와 엣지 기반 분산 처리로의 확장을 후속 방향으로 제시합니다. [하계 그래프 노트북](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EA%B7%B8%EB%9E%98%ED%94%84/Blur_Block_1%EC%B0%A8_%EA%B7%B8%EB%9E%98%ED%94%84_white.ipynb)은 결과 JSON을 읽어 도표를 만드는 자료입니다. 그래프 생성 자체가 분류 모델의 재학습이나 보고값 재현을 의미하지 않습니다.
 
@@ -922,7 +922,7 @@ GPU 그래프에서 키 오류
 
 현재 제공하는 원문과 직전 공개본의 비교입니다. 이전 원고·발표와 코드는 전체 차수 표에서 확인할 수 있습니다.
 
-| 문서 · 자료 폴더 · 상세 · 직전 공개본 전체 비교 |
+| 내용 |
 | --- |
 | **문서**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**자료 폴더**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**상세**<br>[설명](docs/latest/lung-study1-efficientnet.md)<br><br>**직전 공개본 전체 비교**<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
 | **문서**<br>연구 2 최종 논문 · ResNet50<br><br>**자료 폴더**<br>[폴더](%EB%85%BC%EB%AC%B8)<br><br>**상세**<br>[설명](docs/latest/lung-study2-resnet.md)<br><br>**직전 공개본 전체 비교**<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |

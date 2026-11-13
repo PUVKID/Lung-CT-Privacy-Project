@@ -66,7 +66,7 @@ metric_matched 블러는 블록 변환의 평균 SSIM/PSNR에 맞는 sigma를 �
 3. 실험 입력·저장 경로와 분할·증강 순서를 확인합니다.
 4. 수정 스크립트는 대상 파일을 다시 쓰므로 별도 사본에서 입력·치환 대상을 확인한 뒤 사용합니다.
 
-| 차수·단계 · 주요 내용 · 자료 · 직전 비교 |
+| 내용 |
 | --- |
 | **차수·단계**<br>[1차](../docs/revisions/folder-1.md)<br><br>**주요 내용**<br>[상세 설명](#layout18-table-2-row-1-field-1)<br><br>**자료**<br>[폴더](.)<br><br>**직전 비교**<br>[전체 비교](../docs/revision-diffs/folder-1.diff) |
 

@@ -1182,7 +1182,7 @@ Model.h5
 
 ## 파일별 역할
 
-| 파일 · 이용 방법 |
+| 내용 |
 | --- |
 | **파일**<br>[원본 실험/Lung Cancer/main.py](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py)<br><br>**이용 방법**<br>처리 함수와 실행 조건 |
 | **파일**<br>[원본 실험/Lung Cancer/Train.ipynb](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/Train.ipynb)<br><br>**이용 방법**<br>설정·함수·실행 셀 |

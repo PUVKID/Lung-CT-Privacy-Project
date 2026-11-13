@@ -2565,7 +2565,7 @@ CT 원본과 클래스
 
 ## 파일별 역할
 
-| 파일 · 이용 방법 |
+| 내용 |
 | --- |
 | **파일**<br>[블러 엣지/blur_resnet50_edge_v6.ipynb](../../%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80/blur_resnet50_edge_v6.ipynb)<br><br>**이용 방법**<br>설정·함수·실행 셀 |
 

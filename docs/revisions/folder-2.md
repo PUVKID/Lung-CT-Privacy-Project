@@ -1242,7 +1242,7 @@ JSON 읽기·셀 소스 추출
 
 ## 파일별 역할
 
-| 파일 · 이용 방법 |
+| 내용 |
 | --- |
 | **파일**<br>[자료차수/2차/align_experiment_methods.mjs](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8/align_experiment_methods.mjs)<br><br>**이용 방법**<br>노트북 구성·변경 도구 |
 | **파일**<br>[자료차수/2차/build_block_blur_notebook.mjs](../../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8/build_block_blur_notebook.mjs)<br><br>**이용 방법**<br>노트북 구성·변경 도구 |

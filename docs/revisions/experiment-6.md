@@ -2385,7 +2385,7 @@ CT 원본과 클래스
 
 ## 파일별 역할
 
-| 파일 · 이용 방법 |
+| 내용 |
 | --- |
 | **파일**<br>[블러/2차 실험/blur_resnet50_rebuilt2_KO.ipynb](../../%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/blur_resnet50_rebuilt2_KO.ipynb)<br><br>**이용 방법**<br>설정·함수·실행 셀 |
 

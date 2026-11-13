@@ -8,7 +8,7 @@
 
 **논문은 각 연구의 최종 전체본을 수록했습니다.** 발표·대본·연구노트는 문서 목적을 구분해 연결합니다. 원문의 저자·소속·이메일·사진과 본문을 그대로 보존했습니다.
 
-| 자료 · 원문 파일 |
+| 내용 |
 | --- |
 | **자료**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**원문 파일**<br>[PDF 다운로드](../%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) |
 | **자료**<br>연구 1 최종 논문 · EfficientNetV2-S<br><br>**원문 파일**<br>[HWP 다운로드](../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
