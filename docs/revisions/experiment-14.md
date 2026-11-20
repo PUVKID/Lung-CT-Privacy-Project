@@ -11,7 +11,7 @@
 
 <a id="semantic-lung-legacy-level-1"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. |
 | 변경 | 분류·유사도·도표의 추가 연구 코드를 모은 묶음입니다.<br>단독 실험·조합 실험·특징 변환과 각각 연결합니다. |
@@ -38,7 +38,7 @@
 
 <a id="semantic-lung-legacy-level-2"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. |
 | 변경 | 분류·유사도·도표의 추가 연구 코드를 모은 묶음입니다.<br>단독 실험·조합 실험·특징 변환과 각각 연결합니다. |
@@ -65,7 +65,7 @@
 
 <a id="semantic-lung-legacy-level-3"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. |
 | 변경 | 분류·유사도·도표의 추가 연구 코드를 모은 묶음입니다.<br>단독 실험·조합 실험·특징 변환과 각각 연결합니다. |
@@ -92,7 +92,7 @@
 
 <a id="semantic-lung-legacy-level-4"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. |
 | 변경 | 분류·유사도·도표의 추가 연구 코드를 모은 묶음입니다.<br>단독 실험·조합 실험·특징 변환과 각각 연결합니다. |
@@ -208,7 +208,7 @@
 
 ## 실행 환경과 설정
 
-| 항목 (Category) | 조건·기본값 |
+| 항목 | 조건·기본값 |
 | --- | --- |
 | 입력 크기 | 코드별 224 또는 512 |
 | 점수 식 | SSIM과 MS-SSIM 기반 변형을 구분 |

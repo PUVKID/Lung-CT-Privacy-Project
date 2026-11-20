@@ -11,7 +11,7 @@
 
 <a id="semantic-lung-training-level-1"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
 | 변경 | pool1_pool 특징 블러의 구현과 평가 경로를 다루는 단계입니다.<br>변환 위치·모델 연결·분할 순서는 위 구성과 같으며, 기존 전체 비교에서 설정·함수·주석을 포함한 차이를 읽을 수 있습니다. |
@@ -51,7 +51,7 @@
 
 <a id="semantic-lung-training-level-2"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
 | 변경 | pool1_pool 특징 블러의 구현과 평가 경로를 다루는 단계입니다.<br>변환 위치·모델 연결·분할 순서는 위 구성과 같으며, 기존 전체 비교에서 설정·함수·주석을 포함한 차이를 읽을 수 있습니다. |
@@ -91,7 +91,7 @@
 
 <a id="semantic-lung-training-level-3"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
 | 변경 | pool1_pool 특징 블러의 구현과 평가 경로를 다루는 단계입니다.<br>변환 위치·모델 연결·분할 순서는 위 구성과 같으며, 기존 전체 비교에서 설정·함수·주석을 포함한 차이를 읽을 수 있습니다. |
@@ -131,7 +131,7 @@
 
 <a id="semantic-lung-training-level-4"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
 | 변경 | pool1_pool 특징 블러의 구현과 평가 경로를 다루는 단계입니다.<br>변환 위치·모델 연결·분할 순서는 위 구성과 같으며, 기존 전체 비교에서 설정·함수·주석을 포함한 차이를 읽을 수 있습니다. |
@@ -273,7 +273,7 @@
 
 ## 실행 환경과 설정
 
-| 항목 (Category) | 조건·기본값 |
+| 항목 | 조건·기본값 |
 | --- | --- |
 | 이미지·배치 | 512×512·batch8 |
 | 재현 설정 | seed42·7fold·test 비율 0.10 |

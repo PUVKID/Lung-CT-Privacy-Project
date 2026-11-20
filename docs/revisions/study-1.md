@@ -11,7 +11,7 @@
 
 <a id="semantic-lung-study1-level-1"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. |
 | 변경 | 입력 Blur·Block의 단독 비교를 정리한 연구 1입니다.<br>이후 연구 2는 ResNet50과 조합·영상 유사 도 기반 점수를 별도의 후속 논문으로 다룹니다. |
@@ -37,7 +37,7 @@
 
 <a id="semantic-lung-study1-level-2"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. |
 | 변경 | 입력 Blur·Block의 단독 비교를 정리한 연구 1입니다.<br>이후 연구 2는 ResNet50과 조합·영상 유사 도 기반 점수를 별도의 후속 논문으로 다룹니다. |
@@ -63,7 +63,7 @@ EfficientNetV2-S라는 영상 분류기에 입력 변환을 각각 연결합니�
 
 <a id="semantic-lung-study1-level-3"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. |
 | 변경 | 입력 Blur·Block의 단독 비교를 정리한 연구 1입니다.<br>이후 연구 2는 ResNet50과 조합·영상 유사 도 기반 점수를 별도의 후속 논문으로 다룹니다. |
@@ -89,7 +89,7 @@ EfficientNetV2-S라는 영상 분류기에 입력 변환을 각각 연결합니�
 
 <a id="semantic-lung-study1-level-4"></a>
 
-| 항목 (Category) | 이 차수의 내용 |
+| 항목 | 이 차수의 내용 |
 | --- | --- |
 | 목적 | EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. |
 | 변경 | 입력 Blur·Block의 단독 비교를 정리한 연구 1입니다.<br>이후 연구 2는 ResNet50과 조합·영상 유사 도 기반 점수를 별도의 후속 논문으로 다룹니다. |
@@ -200,7 +200,7 @@ EfficientNetV2-S라는 영상 분류기에 입력 변환을 각각 연결합니�
 
 ## 실행 환경과 설정
 
-| 항목 (Category) | 조건·기본값 |
+| 항목 | 조건·기본값 |
 | --- | --- |
 | 원고 | 하계 최종 3쪽 PDF/HWP |
 | 입력 | 512×512 CT3 분류 |
