@@ -6,7 +6,11 @@
 
 ---
 
-Welcome to the Lung Cancer Classification repository. This project focuses on utilizing deep learning techniques to predict cancer types based on medical images. The system is powered by a trained convolutional neural network (CNN) and deployed using Streamlit, providing users the ability to upload medical images and receive predictions with a probability distribution displayed in a pie chart.
+Welcome to the Lung Cancer Classification repository.
+
+This project focuses on utilizing deep learning techniques to predict cancer types based on medical images.
+
+The system is powered by a trained convolutional neural network (CNN) and deployed using Streamlit, providing users the ability to upload medical images and receive predictions with a probability distribution displayed in a pie chart.
 
 ---
 
@@ -24,13 +28,19 @@ Welcome to the Lung Cancer Classification repository. This project focuses on ut
 
 ---
 
-If the link above has a path part, it means that a specific file needs to be downloaded and executed. Feel free to click on the button to access the necessary resources. If the link only contains the domain, simply visit it to explore more about the Lung Cancer Classification system.
+If the link above has a path part, it means that a specific file needs to be downloaded and executed.
+
+Feel free to click on the button to access the necessary resources.
+
+If the link only contains the domain, simply visit it to explore more about the Lung Cancer Classification system.
 
 ---
 
 ### Project Overview
 
-In the realm of medical imaging and cancer diagnosis, the ability to accurately classify lung cancer types is crucial for effective treatment planning and patient care. Leveraging the power of deep learning, this project presents a solution that automates the process of identifying cancer types through analyzing histopathological images.
+In the realm of medical imaging and cancer diagnosis, the ability to accurately classify lung cancer types is crucial for effective treatment planning and patient care.
+
+Leveraging the power of deep learning, this project presents a solution that automates the process of identifying cancer types through analyzing histopathological images.
 
 #### Key Components
 
@@ -42,7 +52,9 @@ In the realm of medical imaging and cancer diagnosis, the ability to accurately 
 
 #### Why Deep Learning?
 
-Deep learning techniques, particularly CNNs, have revolutionized the field of medical image analysis by enabling automated detection, classification, and segmentation of abnormalities with remarkable accuracy. By harnessing the power of neural networks, this project aims to enhance the efficiency and precision of lung cancer classification.
+Deep learning techniques, particularly CNNs, have revolutionized the field of medical image analysis by enabling automated detection, classification, and segmentation of abnormalities with remarkable accuracy.
+
+By harnessing the power of neural networks, this project aims to enhance the efficiency and precision of lung cancer classification.
 
 ---
 
@@ -60,11 +72,15 @@ Feel free to fork the repository, make your modifications, and submit a pull req
 
 ### Conclusion
 
-The Lung Cancer Classification repository stands as a testament to the innovative applications of deep learning in the realm of healthcare and biomedical research. By providing a streamlined system for predicting lung cancer types from medical images, this project aims to empower healthcare professionals with advanced tools for diagnosis and treatment planning.
+The Lung Cancer Classification repository stands as a testament to the innovative applications of deep learning in the realm of healthcare and biomedical research.
+
+By providing a streamlined system for predicting lung cancer types from medical images, this project aims to empower healthcare professionals with advanced tools for diagnosis and treatment planning.
 
 ---
 
-Stay tuned for updates and enhancements to the Lung Cancer Classification system. Your involvement and support are key to driving the progress and impact of this project in the realm of cancer classification and medical imaging.
+Stay tuned for updates and enhancements to the Lung Cancer Classification system.
+
+Your involvement and support are key to driving the progress and impact of this project in the realm of cancer classification and medical imaging.
 
 ---
 

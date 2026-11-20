@@ -27,8 +27,8 @@
 | --- | --- |
 | 블러 비교 | σ0·1·2·4·8·16·32·64·128·256의 입력 블러를 비교합니다. |
 | 블록 비교 | 512에서 1까지 10개 블록 크기로 재배열한 입력을 비교합니다. |
-| 지표 읽기 | 정확도·ROC-AUC·클래스별 Recall과 혼동행렬을 함께 봅니다. |
-| 발표 연결 | 완성 발표 19장·전체 대본 9쪽·그래프 노트북을 같은 연구의 설명 자료로 연결합니다. |
+| 지표 읽기 | 정확도·ROC-AUC·클래스별 Recall과 혼동 행렬을 함께 봅니다. |
+| 발표 연결 | 완성 발표 19장·전체 대본 9 쪽·그래프 노트북을 같은 연구의 설명 자료로 연결합니다. |
 
 <a id="-해석-범위"></a>
 
@@ -41,37 +41,10 @@
 <details>
 <summary>파일·크기·SHA-256과 자료 연결</summary>
 
-<a id="layout18-table-2-row-1"></a>
-
-**[1차_EfficientNetV2-S_하계_최종.pdf](../../%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf)**
-
-**원문 파일**
-
-[1차_EfficientNetV2-S_하계_최종.pdf](../../%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf)
-
-**바이트**
-
-410164
-
-**SHA-256**
-
-`dd6309e6f6b722d6db242e9c2237584314ad7d7bdf32eb1a91d10ced5ba3fe63`
-
-<a id="layout18-table-2-row-2"></a>
-
-**[원문_최종.hwp](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp)**
-
-**원문 파일**
-
-[원문_최종.hwp](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp)
-
-**바이트**
-
-527360
-
-**SHA-256**
-
-`f19ddfe212b9c38fd1cfdfec29f8d499e0150bd183e2d6a7992867b34720b7fc`
+| 원문 파일 | 바이트 | SHA-256 |
+| --- | --- | --- |
+| <a id="layout18-table-2-row-1"></a> [작성·게재 상태](../%EB%85%BC%EB%AC%B8%EC%83%81%ED%83%9C.md) | 410164 | `dd6309e6f6b722d6db242e9c2237584314ad7d7bdf32eb1a91d10ced5ba3fe63` |
+| <a id="layout18-table-2-row-2"></a> [작성·게재 상태](../%EB%85%BC%EB%AC%B8%EC%83%81%ED%83%9C.md) | 527360 | `f19ddfe212b9c38fd1cfdfec29f8d499e0150bd183e2d6a7992867b34720b7fc` |
 
 
 </details>

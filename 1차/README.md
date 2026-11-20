@@ -8,53 +8,12 @@
 
 **블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다.**
 
-<a id="layout18-table-1-row-1"></a>
-
-**여섯 노트북**
-
-**주요 구성**
-
-여섯 노트북
-
-**내용**
-
-블록·블러 각각 rebuilt·same_settings·metric_matched로 나누어 보관합니다.
-
-<a id="layout18-table-1-row-2"></a>
-
-**강도 매칭**
-
-**주요 구성**
-
-강도 매칭
-
-**내용**
-
-metric_matched 블러는 블록 변환의 평균 SSIM/PSNR에 맞는 sigma를 보정하는 함수를 포함합니다.
-
-<a id="layout18-table-1-row-3"></a>
-
-**학습 설정**
-
-**주요 구성**
-
-학습 설정
-
-**내용**
-
-변형별 batch4/8과 단계별 epoch·SWA 시작값이 다르므로 설정 셀을 확인합니다.
-
-<a id="layout18-table-1-row-4"></a>
-
-**수정 도구**
-
-**주요 구성**
-
-수정 도구
-
-**내용**
-
-노트북 생성·콜백·반복 학습·과적합 제어를 수정하는 보조 스크립트가 있습니다.
+| 주요 구성 | 내용 |
+| --- | --- |
+| <a id="layout18-table-1-row-1"></a> 여섯 노트북 | 블록·블러 각각 rebuilt·same_settings·metric_matched로 나누어 보관합니다. |
+| <a id="layout18-table-1-row-2"></a> 강도 매칭 | metric_matched 블러는 블록 변환의 평균 SSIM/PSNR에 맞는 sigma를 보정하는 함수를 포함합니다. |
+| <a id="layout18-table-1-row-3"></a> 학습 설정 | 변형별 batch4/8과 단계별 epoch·SWA 시작 값이 다르므로 설정 셀을 확인합니다. |
+| <a id="layout18-table-1-row-4"></a> 수정 도구 | 노트북 생성·콜백·반복 학습·과적합 제어를 수정하는 보조 스크립트가 있습니다. |
 
 
 <a id="-이용-순서"></a>
@@ -66,17 +25,9 @@ metric_matched 블러는 블록 변환의 평균 SSIM/PSNR에 맞는 sigma를 �
 3. 실험 입력·저장 경로와 분할·증강 순서를 확인합니다.
 4. 수정 스크립트는 대상 파일을 다시 쓰므로 별도 사본에서 입력·치환 대상을 확인한 뒤 사용합니다.
 
-| 차수·단계 | 자료 |
-| --- | --- |
-| [1차](../docs/revisions/folder-1.md) | **주요 내용** [상세 설명](#layout18-table-2-row-1-field-1)<br>**자료** [폴더](.)<br>**직전 비교** [전체 비교](../docs/revision-diffs/folder-1.diff) |
-
-<a id="layout18-table-2-row-1-field-1"></a>
-
-**[1차](../docs/revisions/folder-1.md)**
-
-**주요 내용**
-
-블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다.
+| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
+| --- | --- | --- | --- |
+| [1차](../docs/revisions/folder-1.md) | <a id="layout18-table-2-row-1-field-1"></a>블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다. | [폴더](.) | [전체 비교](../docs/revision-diffs/folder-1-%EC%97%B4%EB%9E%8C.md) |
 
 
 [프로젝트](../README.md) · [전체 차수](../docs/REVISION_INDEX.md)

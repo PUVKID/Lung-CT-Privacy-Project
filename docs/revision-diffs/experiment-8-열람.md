@@ -1,0 +1,13 @@
+# 차수 전체 비교
+
+| 부분 | 시작 자료 | 읽기 |
+| --- | --- | --- |
+| 1 / 5 | 원본자료/블록+블러/실험 완료/all_block_blur_results_resnet50_block_blur_all_combinations_v1.json | [비교 읽기](../%EB%B9%84%EA%B5%90%EC%9E%90%EB%A3%8C/experiment-8-%EC%97%B4%EB%9E%8C_6204d0b1/%EB%B9%84%EA%B5%90_001.md) |
+| 2 / 5 | 블록+블러/block_blur_resnet50_v4_KO.ipynb | [비교 읽기](../%EB%B9%84%EA%B5%90%EC%9E%90%EB%A3%8C/experiment-8-%EC%97%B4%EB%9E%8C_6204d0b1/%EB%B9%84%EA%B5%90_002.md) |
+| 3 / 5 | 원본자료/블록+블러/block_blur_resnet50_v4_KO.ipynb | [비교 읽기](../%EB%B9%84%EA%B5%90%EC%9E%90%EB%A3%8C/experiment-8-%EC%97%B4%EB%9E%8C_6204d0b1/%EB%B9%84%EA%B5%90_003.md) |
+| 4 / 5 | 블록+블러/block_blur_resnet50_v4_KO.ipynb | [비교 읽기](../%EB%B9%84%EA%B5%90%EC%9E%90%EB%A3%8C/experiment-8-%EC%97%B4%EB%9E%8C_6204d0b1/%EB%B9%84%EA%B5%90_004.md) |
+| 5 / 5 | 이전 부분에 이어지는 비교 | [비교 읽기](../%EB%B9%84%EA%B5%90%EC%9E%90%EB%A3%8C/experiment-8-%EC%97%B4%EB%9E%8C_6204d0b1/%EB%B9%84%EA%B5%90_005.md) |
+
+각 부분을 순서대로 읽으면 전체 비교가 이어집니다. 긴 줄이 부분 경계에서 이어지는 경우도 있습니다.
+
+[전체 비교 원문 다운로드](experiment-8.diff)

@@ -1,8 +1,8 @@
-# 실제5차 학습 복구
+# 실제 5차 학습 복구
 
 [LEVEL 1 - Beginner](../../docs/revisions/conv1-actual-round5-recovery.md#reading-level-1) · [LEVEL 2 - Explorer](../../docs/revisions/conv1-actual-round5-recovery.md#reading-level-2) · [LEVEL 3 - Practitioner](../../docs/revisions/conv1-actual-round5-recovery.md#reading-level-3) · [LEVEL 4 - Advanced](../../docs/revisions/conv1-actual-round5-recovery.md#reading-level-4) · [LEVEL 5 - Expert](../../docs/revisions/conv1-actual-round5-recovery.md#reading-level-5)
 
-기존 공개5차(실제4차)와 구분하는 실제5차 복구 코드입니다. 과학 조건과 기존 결과를 보존하며 위치·실행계보와 재개 경계를 검사합니다. 원본·기준manifest·복구baseline·학습가중치는 포함하지 않습니다.
+기존 공개 5차(실제 4차)와 구분하는 실제 5차 복구 코드입니다. 과학 조건과 기존 결과를 보존하며 위치·실행 계보와 재개 경계를 검사합니다. 원본·기준 manifest·복구 baseline·학습 가중치는 포함하지 않습니다.
 
 | 자료 | 역할 | 사용 조건 |
 | --- | --- | --- |

@@ -10,10 +10,8 @@
 
 | 자료 | 원문 파일 |
 | --- | --- |
-| 연구 1 최종 논문 · EfficientNetV2-S | [PDF 다운로드](../%EB%85%BC%EB%AC%B8/1%EC%B0%A8_EfficientNetV2-S_%ED%95%98%EA%B3%84_%EC%B5%9C%EC%A2%85.pdf) |
-| 연구 1 최종 논문 · EfficientNetV2-S | [HWP 다운로드](../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%85%BC%EB%AC%B8/%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
-| 연구 2 최종 논문 · ResNet50 | [PDF 다운로드](../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.pdf) |
-| 연구 2 최종 논문 · ResNet50 | [HWP 다운로드](../%EB%85%BC%EB%AC%B8/%EC%97%B0%EA%B5%AC2_%EC%9B%90%EB%AC%B8_%EC%B5%9C%EC%A2%85.hwp) |
+| 연구 1 최종 논문 · EfficientNetV2-S | [작성·게재 상태](%EB%85%BC%EB%AC%B8%EC%83%81%ED%83%9C.md) |
+| 연구 2 최종 논문 · ResNet50 | [작성·게재 상태](%EB%85%BC%EB%AC%B8%EC%83%81%ED%83%9C.md) |
 | 최종 발표 · 하계 연구 | [PDF 다운로드](../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pdf) |
 | 최종 발표 · 하계 연구 | [PPTX 다운로드](../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pptx) |
 | 완성 대본 · 하계 연구 | [PDF 다운로드](../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20%EB%B0%9C%ED%91%9C%20%EB%8C%80%EB%B3%B8.pdf) |

@@ -27,8 +27,8 @@
 | --- | --- |
 | 블러 비교 | σ0·1·2·4·8·16·32·64·128·256의 입력 블러를 비교합니다. |
 | 블록 비교 | 512에서 1까지 10개 블록 크기로 재배열한 입력을 비교합니다. |
-| 지표 읽기 | 정확도·ROC-AUC·클래스별 Recall과 혼동행렬을 함께 봅니다. |
-| 발표 연결 | 완성 발표 19장·전체 대본 9쪽·그래프 노트북을 같은 연구의 설명 자료로 연결합니다. |
+| 지표 읽기 | 정확도·ROC-AUC·클래스별 Recall과 혼동 행렬을 함께 봅니다. |
+| 발표 연결 | 완성 발표 19장·전체 대본 9 쪽·그래프 노트북을 같은 연구의 설명 자료로 연결합니다. |
 
 <a id="-해석-범위"></a>
 
@@ -41,37 +41,10 @@
 <details>
 <summary>파일·크기·SHA-256과 자료 연결</summary>
 
-<a id="layout18-table-2-row-1"></a>
-
-**[하계학술대회 PPT.pdf](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pdf)**
-
-**원문 파일**
-
-[하계학술대회 PPT.pdf](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pdf)
-
-**바이트**
-
-2156389
-
-**SHA-256**
-
-`22c41af0ada654bbaf8c8c5882ca1165da5e1216430af199db1fd0f560f349b3`
-
-<a id="layout18-table-2-row-2"></a>
-
-**[하계학술대회 PPT.pptx](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pptx)**
-
-**원문 파일**
-
-[하계학술대회 PPT.pptx](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pptx)
-
-**바이트**
-
-2325109
-
-**SHA-256**
-
-`a95905aea2ed35a70f0e43e5f0eaf30cbb5c227fed7384f952641104b26d5193`
+| 원문 파일 | 바이트 | SHA-256 |
+| --- | --- | --- |
+| <a id="layout18-table-2-row-1"></a> [하계학술대회 PPT.pdf](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pdf) | 2156389 | `22c41af0ada654bbaf8c8c5882ca1165da5e1216430af199db1fd0f560f349b3` |
+| <a id="layout18-table-2-row-2"></a> [하계학술대회 PPT.pptx](../../%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C/%ED%95%98%EA%B3%84%ED%95%99%EC%88%A0%EB%8C%80%ED%9A%8C%20PPT.pptx) | 2325109 | `a95905aea2ed35a70f0e43e5f0eaf30cbb5c227fed7384f952641104b26d5193` |
 
 
 </details>

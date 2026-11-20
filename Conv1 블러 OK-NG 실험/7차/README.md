@@ -1,8 +1,8 @@
-# 실제7차 고정 모델 블러 실험
+# 실제 7차 고정 모델 블러 실험
 
 [LEVEL 1 - Beginner](../../docs/revisions/conv1-okng-round7.md#reading-level-1) · [LEVEL 2 - Explorer](../../docs/revisions/conv1-okng-round7.md#reading-level-2) · [LEVEL 3 - Practitioner](../../docs/revisions/conv1-okng-round7.md#reading-level-3) · [LEVEL 4 - Advanced](../../docs/revisions/conv1-okng-round7.md#reading-level-4) · [LEVEL 5 - Expert](../../docs/revisions/conv1-okng-round7.md#reading-level-5)
 
-새 ImageNet 초기값에서 σ0만100회 학습하고 최저검증손실 모델 하나를 고정해 열 블러 강도를 추가학습 없이 평가합니다. 공개 기록 시점 학습 진행 중이며 최종시험결과는미측정입니다.
+새 ImageNet 초기값에서 σ0 만 100회 학습하고 최저 검증 손실 모델 하나를 고정해 열 블러 강도를 추가 학습 없이 평가합니다. 공개 기록 시점 학습 진행 중이며 최종 시험 결과는 미측정입니다.
 
 | 자료 | 역할 | 사용 조건 |
 | --- | --- | --- |
@@ -14,7 +14,7 @@
 
 ## 공개 코드의 합성 검사
 
-합성 검사는 실제 CT·가중치 없이 수행하지만 설정 형식을 읽으므로 먼저 공개 예제를 config.json으로 준비합니다. 자신의 실제 학습 설정과 혼동하지 않도록 별도의 공개 사본에서 수행합니다.
+합성 검사는 실제 CT·가중치 없이 수행하지만 설정 형식을 읽으므로 먼저 공개 예제를 config.json으로 준비합니다. 자신의 실제 학습 설정과 혼동하지 않도록 별도의 공개 사 본에서 수행합니다.
 
 ```powershell
 Copy-Item -LiteralPath config.example.json -Destination config.json
