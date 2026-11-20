@@ -1,0 +1,71 @@
+{
+  "protocol": "independent-sigma-privacy-v1",
+  "score_version": "gallery-residual-v1",
+  "measurement_status": "training_in_progress",
+  "research_results": false,
+  "conditions": [
+    {
+      "sigma": 0,
+      "classification": null,
+      "privacy_score": null,
+      "status": "training"
+    },
+    {
+      "sigma": 1,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 2,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 4,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 8,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 16,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 32,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 64,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 128,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    },
+    {
+      "sigma": 256,
+      "classification": null,
+      "privacy_score": null,
+      "status": "pending"
+    }
+  ],
+  "note": "2026-11-20확인 시점 σ0 학습 중. 분류/점수 미측정. 합성대조군/예비분모를 실제모델성적으로 대입하지 않음.",
+  "observed_date": "2026-11-20",
+  "current_sigma": 0
+}

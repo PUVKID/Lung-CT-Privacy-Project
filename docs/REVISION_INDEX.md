@@ -210,3 +210,20 @@ EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-S
 | Conv1 블러 OK-NG 실험 · 3차 (시각화) | **폴더** [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8)<br>**설명** [설명](revisions/conv1-okng-round3.md)<br>**비교** [전체 비교](revision-diffs/conv1-okng-round3.diff) |
 | Conv1 블러 OK-NG 실험 · 4차 (강도별 결과 선택) | **폴더** [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8)<br>**설명** [설명](revisions/conv1-okng-round4.md)<br>**비교** [전체 비교](revision-diffs/conv1-okng-round4.diff) |
 | Conv1 블러 OK-NG 실험 · 5차 (실험 4차 고정 100회) | **폴더** [폴더](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8)<br>**설명** [설명](revisions/conv1-okng-round5.md)<br>**비교** [전체 비교](revision-diffs/conv1-okng-round5.diff) |
+
+
+<!-- independent-privacy-publication:start -->
+
+## 실제8차 · 독립 학습과 제안 점수
+
+**8차는 강도마다 새100회 학습 후 분류 정확도와 프라이버시 제안 점수를 실제 계산하는 별도 실험입니다.** 7차의 단일 고정 모델 프로토콜과 구분하며 기존1~7차·원고·관측값은 보존합니다.
+
+| 차수 | 동작·현재 결과 | 자료 · 상세 · 직전 비교 |
+| --- | --- | --- |
+| 실제8차 | 열 강도 각각100회 → 분류·공격 완료 → 다음 강도. σ0 학습 중·분류 성적과 점수 미측정 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round8.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round8.md) |
+
+점수는 **gallery-residual-v1**, 알려진 인코더·원본 후보 모음에서의 연구용 잔여 척도입니다. 높을수록 이 공격에서 되찾기 어렵다는 뜻이며 개인정보 보호 확률이나 표준·문헌상 신규성·임상 보장이 아닙니다. 실측0점은 그대로 표시하고 미완료·오류는 숫자로 채우지 않습니다. 같은 강도의 곡선·정확도·점수·그림을 함께 읽고 원비율·정답수·분모를 확인합니다.
+
+[이번 공개 변경 기록](../docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98.md) · [전체 공개 비교](../docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md)
+
+<!-- independent-privacy-publication:end -->
