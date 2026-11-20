@@ -13,7 +13,7 @@
 
 <a id="semantic-lung-legacy-level-1"></a>
 
-| 항목 | 이 차수의 내용 |
+| 항목 (Category) | 이 차수의 내용 |
 | --- | --- |
 | 목적 | Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다. |
 | 변경 | 초기 화면과 학습 코드를 보관한 기본 자료입니다. 후속 ResNet50 입력·특징 변환 실험과 별도로 읽습니다. |
@@ -139,7 +139,7 @@ CT 사진을 흐리게 하거나 블록으로 재배열했을 때 분류 결과�
 | Model.h5 | 예측 벡터와 5라벨 연결 | 클래스별 확률 |
 | 예측 확률 | 텍스트·원형 그래프 | 연구용 화면 |
 
-| 항목 | 조건·기본값 |
+| 항목 (Category) | 조건·기본값 |
 | --- | --- |
 | 환경 | Streamlit·TensorFlow·NumPy·Matplotlib |
 | 입력 크기 | 224×224 |
@@ -185,7 +185,7 @@ CT 사진을 흐리게 하거나 블록으로 재배열했을 때 분류 결과�
 
 <a id="semantic-lung-legacy-level-2"></a>
 
-| 항목 | 이 차수의 내용 |
+| 항목 (Category) | 이 차수의 내용 |
 | --- | --- |
 | 목적 | Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다. |
 | 변경 | 초기 화면과 학습 코드를 보관한 기본 자료입니다. 후속 ResNet50 입력·특징 변환 실험과 별도로 읽습니다. |
@@ -311,7 +311,7 @@ Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라�
 | Model.h5 | 예측 벡터와 5라벨 연결 | 클래스별 확률 |
 | 예측 확률 | 텍스트·원형 그래프 | 연구용 화면 |
 
-| 항목 | 조건·기본값 |
+| 항목 (Category) | 조건·기본값 |
 | --- | --- |
 | 환경 | Streamlit·TensorFlow·NumPy·Matplotlib |
 | 입력 크기 | 224×224 |
@@ -357,7 +357,7 @@ Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라�
 
 <a id="semantic-lung-legacy-level-3"></a>
 
-| 항목 | 이 차수의 내용 |
+| 항목 (Category) | 이 차수의 내용 |
 | --- | --- |
 | 목적 | Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다. |
 | 변경 | 초기 화면과 학습 코드를 보관한 기본 자료입니다. 후속 ResNet50 입력·특징 변환 실험과 별도로 읽습니다. |
@@ -483,7 +483,7 @@ Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라�
 | Model.h5 | 예측 벡터와 5라벨 연결 | 클래스별 확률 |
 | 예측 확률 | 텍스트·원형 그래프 | 연구용 화면 |
 
-| 항목 | 조건·기본값 |
+| 항목 (Category) | 조건·기본값 |
 | --- | --- |
 | 환경 | Streamlit·TensorFlow·NumPy·Matplotlib |
 | 입력 크기 | 224×224 |
@@ -529,7 +529,7 @@ Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라�
 
 <a id="semantic-lung-legacy-level-4"></a>
 
-| 항목 | 이 차수의 내용 |
+| 항목 (Category) | 이 차수의 내용 |
 | --- | --- |
 | 목적 | Streamlit 화면은 업로드 영상을 224×224로 전처리해 Model.h5의 조직영상 5라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다. |
 | 변경 | 초기 화면과 학습 코드를 보관한 기본 자료입니다. 후속 ResNet50 입력·특징 변환 실험과 별도로 읽습니다. |
@@ -655,7 +655,7 @@ Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라�
 | Model.h5 | 예측 벡터와 5라벨 연결 | 클래스별 확률 |
 | 예측 확률 | 텍스트·원형 그래프 | 연구용 화면 |
 
-| 항목 | 조건·기본값 |
+| 항목 (Category) | 조건·기본값 |
 | --- | --- |
 | 환경 | Streamlit·TensorFlow·NumPy·Matplotlib |
 | 입력 크기 | 224×224 |
@@ -866,7 +866,7 @@ Train.ipynb의 MobileNetV2 3클래스·224·batch16·10epoch와 화면의 5라�
 
 ## 실행 환경과 설정
 
-| 항목 | 조건·기본값 |
+| 항목 (Category) | 조건·기본값 |
 | --- | --- |
 | 환경 | Streamlit·TensorFlow·NumPy·Matplotlib |
 | 입력 크기 | 224×224 |
