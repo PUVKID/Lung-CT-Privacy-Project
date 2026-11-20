@@ -1,0 +1,211 @@
+{
+  "scope": "기존 실제5차의 강도별 적응학습 완료 집계. 새7차 결과가 아님",
+  "model_selection": "각 강도를100회 학습한 뒤 그 강도의 raw validation loss가 가장 낮은 best 선택. 100번째 모델 고정이라는 뜻이 아님",
+  "rows": [
+    {
+      "sigma": 0,
+      "epochs_ran": 100,
+      "best_epoch": 78,
+      "correct": 164,
+      "total": 164,
+      "accuracy": 1.0,
+      "rounded_percent": "100.0%",
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          0,
+          84
+        ]
+      ]
+    },
+    {
+      "sigma": 1,
+      "epochs_ran": 100,
+      "best_epoch": 30,
+      "correct": 164,
+      "total": 164,
+      "accuracy": 1.0,
+      "rounded_percent": "100.0%",
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          0,
+          84
+        ]
+      ]
+    },
+    {
+      "sigma": 2,
+      "epochs_ran": 100,
+      "best_epoch": 40,
+      "correct": 164,
+      "total": 164,
+      "accuracy": 1.0,
+      "rounded_percent": "100.0%",
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          0,
+          84
+        ]
+      ]
+    },
+    {
+      "sigma": 4,
+      "epochs_ran": 100,
+      "best_epoch": 59,
+      "correct": 164,
+      "total": 164,
+      "accuracy": 1.0,
+      "rounded_percent": "100.0%",
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          0,
+          84
+        ]
+      ]
+    },
+    {
+      "sigma": 8,
+      "epochs_ran": 100,
+      "best_epoch": 39,
+      "correct": 162,
+      "total": 164,
+      "accuracy": 0.9878048780487805,
+      "rounded_percent": "98.8%",
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          2,
+          82
+        ]
+      ]
+    },
+    {
+      "sigma": 16,
+      "epochs_ran": 100,
+      "best_epoch": 30,
+      "correct": 160,
+      "total": 164,
+      "accuracy": 0.975609756097561,
+      "rounded_percent": "97.6%",
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          4,
+          80
+        ]
+      ]
+    },
+    {
+      "sigma": 32,
+      "epochs_ran": 100,
+      "best_epoch": 11,
+      "correct": 159,
+      "total": 164,
+      "accuracy": 0.9695121951219512,
+      "rounded_percent": "97.0%",
+      "auc": 0.9900297619047619,
+      "confusion_matrix": [
+        [
+          78,
+          2
+        ],
+        [
+          3,
+          81
+        ]
+      ]
+    },
+    {
+      "sigma": 64,
+      "epochs_ran": 100,
+      "best_epoch": 4,
+      "correct": 131,
+      "total": 164,
+      "accuracy": 0.7987804878048781,
+      "rounded_percent": "79.9%",
+      "auc": 0.8924107142857143,
+      "confusion_matrix": [
+        [
+          61,
+          19
+        ],
+        [
+          14,
+          70
+        ]
+      ]
+    },
+    {
+      "sigma": 128,
+      "epochs_ran": 100,
+      "best_epoch": 7,
+      "correct": 102,
+      "total": 164,
+      "accuracy": 0.6219512195121951,
+      "rounded_percent": "62.2%",
+      "auc": 0.7160714285714287,
+      "confusion_matrix": [
+        [
+          45,
+          35
+        ],
+        [
+          27,
+          57
+        ]
+      ]
+    },
+    {
+      "sigma": 256,
+      "epochs_ran": 100,
+      "best_epoch": 1,
+      "correct": 88,
+      "total": 164,
+      "accuracy": 0.5365853658536586,
+      "rounded_percent": "53.7%",
+      "auc": 0.5732142857142857,
+      "confusion_matrix": [
+        [
+          59,
+          21
+        ],
+        [
+          55,
+          29
+        ]
+      ]
+    }
+  ],
+  "limitations": [
+    "영상 단위 분할, 환자 독립성 미확인",
+    "동일 시험164장, 시험으로 모델·강도·임계값 선택하지 않음",
+    "백분율은 소수 첫째 자리 반올림, accuracy는 저장 원비율"
+  ]
+}

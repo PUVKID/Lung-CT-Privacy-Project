@@ -6,6 +6,28 @@
 **읽기 수준 선택** · [LEVEL 1 - Beginner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
 <!-- reading-levels17:end -->
 
+<!-- fixed-model-publication-20261120:start -->
+
+## Conv1 실제 차수의 대응과 새 자료
+
+**기존 공개1~5차와 실제실험번호는 다른 축입니다.** 공개3차는 학습2차의 특징그림 소프트웨어, 공개4차는 로컬3차의 선택화면 수리, 공개5차는 실제4차의 고정100회 코드입니다. 기존 번호·원문은 보존하고 실제5차 복구를 별도 이름으로 추가했습니다. 실제3차는 새 학습 실험이 아니라 학습2차의 화면수리라는 뜻입니다.
+
+| 실제 차수 | 핵심 변경 | 자료 · 상세 · 직전 비교 |
+| --- | --- | --- |
+| 실제 1차 | 35회 상한·완전중복 분리의 첫 예비실험 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round1.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round1.diff) |
+| 실제 2차 | 100회 상한·유사그룹·정밀 평가 보완 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round2.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round2.diff) |
+| 실제 3차 · 학습2차 화면수리 | 학습2차의 강도 선택 화면 수정·새 학습 없음 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round4.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round4.diff) |
+| 실제 4차 | 강도마다100회 학습·관찰용 종료 모델 비교 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round5.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round5.diff) |
+| 실제 5차 | 과학 조건을 유지한 학습 상태 보존과 복구 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [상세](../docs/revisions/conv1-actual-round5-recovery.md) · [직전 비교](../docs/revision-diffs/conv1-actual-round5-recovery.md) |
+| 실제 6차 | 블러 수식·적응학습·고정모델 차이 진단 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round6.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round6.md) |
+| 실제 7차 | 새σ0모델 한 개 고정·열 강도 추가학습 없이 평가 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round7.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round7.md) |
+
+**실제6차는 기존5차 모델과 같은test164장을 읽은 탐색 진단이고, 실제7차는 새ImageNet 초기값으로 시작한 별도 실험입니다.** 2026-11-20 공개 기록 시점에7차는 학습 진행 중이며 최종시험결과는 미측정입니다. 6차 수치를7차의 빈 결과에 채우지 않습니다.
+
+<!-- fixed-model-publication-20261120:end -->
+
+
+
 **연구 원고·실험 코드·발표 자료의 목적과 사용 순서를 단계별로 살펴봅니다.**
 
 [프로젝트 전체 소개](../README.md)

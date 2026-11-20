@@ -1,0 +1,295 @@
+{
+  "scope": "실제6차: 기존5차 모델을 읽기전용으로 사용한 탐색적 진단. 실제7차 결과가 아님",
+  "percentage_display": "소수 첫째 자리 반올림, 아래 accuracy는 저장 원비율",
+  "reproduction": {
+    "0": {
+      "correct": 164,
+      "n_images": 164,
+      "accuracy": 1.0,
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          0,
+          84
+        ]
+      ],
+      "loss": 3.595606491074935e-14,
+      "threshold": 0.5
+    },
+    "4": {
+      "correct": 164,
+      "n_images": 164,
+      "accuracy": 1.0,
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          0,
+          84
+        ]
+      ],
+      "loss": 1.3742894187697401e-08,
+      "threshold": 0.5
+    },
+    "16": {
+      "correct": 160,
+      "n_images": 164,
+      "accuracy": 0.975609756097561,
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          4,
+          80
+        ]
+      ],
+      "loss": 0.20945933903781644,
+      "threshold": 0.5
+    },
+    "256": {
+      "correct": 88,
+      "n_images": 164,
+      "accuracy": 0.5365853658536586,
+      "auc": 0.5732142857142857,
+      "confusion_matrix": [
+        [
+          59,
+          21
+        ],
+        [
+          55,
+          29
+        ]
+      ],
+      "loss": 0.7029320566408235,
+      "threshold": 0.5
+    }
+  },
+  "fixed_sigma0_cross_sigma": {
+    "0": {
+      "correct": 164,
+      "n_images": 164,
+      "accuracy": 1.0,
+      "auc": 1.0,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          0,
+          84
+        ]
+      ],
+      "loss": 3.595606491074935e-14,
+      "threshold": 0.5
+    },
+    "4": {
+      "correct": 82,
+      "n_images": 164,
+      "accuracy": 0.5,
+      "auc": 0.634375,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          82,
+          2
+        ]
+      ],
+      "loss": 6.965455124273049,
+      "threshold": 0.5
+    },
+    "16": {
+      "correct": 80,
+      "n_images": 164,
+      "accuracy": 0.4878048780487805,
+      "auc": 0.399702380952381,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          84,
+          0
+        ]
+      ],
+      "loss": 6.6509067333727065,
+      "threshold": 0.5
+    },
+    "64": {
+      "correct": 80,
+      "n_images": 164,
+      "accuracy": 0.4878048780487805,
+      "auc": 0.45982142857142855,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          84,
+          0
+        ]
+      ],
+      "loss": 2.430211307841942,
+      "threshold": 0.5
+    },
+    "256": {
+      "correct": 80,
+      "n_images": 164,
+      "accuracy": 0.4878048780487805,
+      "auc": 0.6166666666666667,
+      "confusion_matrix": [
+        [
+          80,
+          0
+        ],
+        [
+          84,
+          0
+        ]
+      ],
+      "loss": 1.7311582428259673,
+      "threshold": 0.5
+    }
+  },
+  "feature_statistics": {
+    "0": {
+      "base_ac_energy": 2.1538545450240054,
+      "ac_energy": 2.1538545450240054,
+      "ac_retention_ratio": 1.0,
+      "dc_energy": 0.15891720062812456,
+      "total_energy": 2.3127717456521295,
+      "relative_squared_change": 0.0,
+      "mse_from_unblurred": 0.0,
+      "max_channel_mean_abs_difference": 0.0,
+      "maximum_channel_mean_error": 0.0
+    },
+    "4": {
+      "base_ac_energy": 2.1538545450240054,
+      "ac_energy": 1.1757097711223732,
+      "ac_retention_ratio": 0.5531360762246199,
+      "dc_energy": 0.1589171993733429,
+      "total_energy": 1.3346269704957159,
+      "relative_squared_change": 0.33247450608130547,
+      "mse_from_unblurred": 0.7878169852285336,
+      "max_channel_mean_abs_difference": 7.722451712178482e-08,
+      "maximum_channel_mean_error": 1.470334178854671e-07
+    },
+    "16": {
+      "base_ac_energy": 2.1538545450240054,
+      "ac_energy": 0.6513977764535126,
+      "ac_retention_ratio": 0.30657703787963747,
+      "dc_energy": 0.15891719952078812,
+      "total_energy": 0.8103149759743008,
+      "relative_squared_change": 0.5145135141399281,
+      "mse_from_unblurred": 1.2043888366937394,
+      "max_channel_mean_abs_difference": 7.668433023807838e-08,
+      "maximum_channel_mean_error": 1.580911965781695e-07
+    },
+    "64": {
+      "base_ac_energy": 2.1538545450240054,
+      "ac_energy": 0.07264887079000269,
+      "ac_retention_ratio": 0.03407004928580737,
+      "dc_energy": 0.15891720008362237,
+      "total_energy": 0.23156607087362507,
+      "relative_squared_change": 0.7900385561387038,
+      "mse_from_unblurred": 1.8342116291299706,
+      "max_channel_mean_abs_difference": 7.552911180023133e-08,
+      "maximum_channel_mean_error": 1.581545676643259e-07
+    },
+    "256": {
+      "base_ac_energy": 2.1538545450240054,
+      "ac_energy": 2.6106752106216285e-06,
+      "ac_retention_ratio": 1.2188991408963675e-06,
+      "dc_energy": 0.158917200506742,
+      "total_energy": 0.1589198111819526,
+      "relative_squared_change": 0.9294905808004911,
+      "mse_from_unblurred": 2.1531310907717076,
+      "max_channel_mean_abs_difference": 7.484966948481326e-08,
+      "maximum_channel_mean_error": 1.6452921602905235e-07
+    }
+  },
+  "dc_only": {
+    "train": {
+      "correct": 521,
+      "n_images": 769,
+      "accuracy": 0.6775032509752926,
+      "auc": 0.7215296951978778,
+      "confusion_matrix": [
+        [
+          281,
+          95
+        ],
+        [
+          153,
+          240
+        ]
+      ],
+      "loss": 0.6159135285168701,
+      "threshold": 0.5
+    },
+    "validation": {
+      "correct": 133,
+      "n_images": 164,
+      "accuracy": 0.8109756097560976,
+      "auc": 0.8422619047619047,
+      "confusion_matrix": [
+        [
+          67,
+          13
+        ],
+        [
+          18,
+          66
+        ]
+      ],
+      "loss": 0.5465065367057005,
+      "threshold": 0.5
+    },
+    "test": {
+      "correct": 116,
+      "n_images": 164,
+      "accuracy": 0.7073170731707317,
+      "auc": 0.774702380952381,
+      "confusion_matrix": [
+        [
+          53,
+          27
+        ],
+        [
+          21,
+          63
+        ]
+      ],
+      "loss": 0.6167611237624671,
+      "threshold": 0.5
+    }
+  },
+  "math": {
+    "cpu_cases": 70,
+    "cuda_cases": 70,
+    "cpu_max_abs_error": 4.0122066069514517e-07,
+    "cuda_max_abs_error": 4.998742597628336e-07
+  },
+  "limitations": [
+    "이미 사용한 시험164장 재사용",
+    "환자ID·기관·스캐너정보 부재",
+    "적응학습과 고정모델의 입력변화는 다른 질문",
+    "높은 정확도의 단일 인과원인·임상성능·프라이버시 달성을 입증하지 않음"
+  ]
+}

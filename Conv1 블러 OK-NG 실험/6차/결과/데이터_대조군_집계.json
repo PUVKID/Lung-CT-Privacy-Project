@@ -1,0 +1,1121 @@
+{
+  "scope": "기존6차 동일분할/시험셋 탐색적 데이터 대조군, 새7차 결과가 아님",
+  "original_count": 1097,
+  "split_counts": {
+    "train": 769,
+    "validation": 164,
+    "test": 164
+  },
+  "conditions": {
+    "feature_names": [
+      "mean",
+      "std_ddof0",
+      "min",
+      "max",
+      "p1",
+      "p5",
+      "p10",
+      "p25",
+      "p50",
+      "p75",
+      "p90",
+      "p95",
+      "p99",
+      "hist_00",
+      "hist_01",
+      "hist_02",
+      "hist_03",
+      "hist_04",
+      "hist_05",
+      "hist_06",
+      "hist_07",
+      "hist_08",
+      "hist_09",
+      "hist_10",
+      "hist_11",
+      "hist_12",
+      "hist_13",
+      "hist_14",
+      "hist_15",
+      "hist_16",
+      "hist_17",
+      "hist_18",
+      "hist_19",
+      "hist_20",
+      "hist_21",
+      "hist_22",
+      "hist_23",
+      "hist_24",
+      "hist_25",
+      "hist_26",
+      "hist_27",
+      "hist_28",
+      "hist_29",
+      "hist_30",
+      "hist_31"
+    ],
+    "feature_count": 45,
+    "intensity": "Pillow.convert('L'), native resolution, no augmentation",
+    "statistics": "mean/std(ddof0)/min/max/percentiles(linear)/normalized32bins[0,256)",
+    "border": "outer5% width+height using ceil/min1; corner pixels once",
+    "scaler": "StandardScaler fit only train769",
+    "logreg": {
+      "C": 1,
+      "solver": "lbfgs",
+      "random_state": 42,
+      "max_iter": 2000,
+      "tol": 0.0001,
+      "class_weight": null,
+      "default_penalty": "l2"
+    },
+    "prediction_threshold": "decision_function>0 (probability>0.5); exact zero→class0, sklearn binary predict rule",
+    "shuffle_seeds": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51
+    ],
+    "grouping": "64x64 Pillow BILINEAR uint8; direct squared Euclidean float64; RMSE<=5; connected components",
+    "tuning": "none; no validation/test fitting or parameter selection",
+    "cpu_threads": 1
+  },
+  "controls": {
+    "global_intensity_logreg": {
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        24
+      ],
+      "warnings": [],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "evaluation": {
+        "train": {
+          "correct": 755,
+          "total": 769,
+          "accuracy": 0.9817945383615084,
+          "accuracy_percent_rounded": "98.2%",
+          "auc": 0.9991676140977749,
+          "confusion_matrix": [
+            [
+              371,
+              5
+            ],
+            [
+              9,
+              384
+            ]
+          ],
+          "sensitivity": 0.9770992366412213,
+          "specificity": 0.9867021276595744
+        },
+        "validation": {
+          "correct": 161,
+          "total": 164,
+          "accuracy": 0.9817073170731707,
+          "accuracy_percent_rounded": "98.2%",
+          "auc": 1.0,
+          "confusion_matrix": [
+            [
+              80,
+              0
+            ],
+            [
+              3,
+              81
+            ]
+          ],
+          "sensitivity": 0.9642857142857143,
+          "specificity": 1.0
+        },
+        "test": {
+          "correct": 160,
+          "total": 164,
+          "accuracy": 0.975609756097561,
+          "accuracy_percent_rounded": "97.6%",
+          "auc": 0.9985119047619048,
+          "confusion_matrix": [
+            [
+              80,
+              0
+            ],
+            [
+              4,
+              80
+            ]
+          ],
+          "sensitivity": 0.9523809523809523,
+          "specificity": 1.0
+        }
+      }
+    },
+    "border_only_logreg": {
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        32
+      ],
+      "warnings": [],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "evaluation": {
+        "train": {
+          "correct": 749,
+          "total": 769,
+          "accuracy": 0.9739921976592978,
+          "accuracy_percent_rounded": "97.4%",
+          "auc": 0.9902076227600022,
+          "confusion_matrix": [
+            [
+              370,
+              6
+            ],
+            [
+              14,
+              379
+            ]
+          ],
+          "sensitivity": 0.9643765903307888,
+          "specificity": 0.9840425531914894
+        },
+        "validation": {
+          "correct": 159,
+          "total": 164,
+          "accuracy": 0.9695121951219512,
+          "accuracy_percent_rounded": "97.0%",
+          "auc": 0.9831845238095238,
+          "confusion_matrix": [
+            [
+              79,
+              1
+            ],
+            [
+              4,
+              80
+            ]
+          ],
+          "sensitivity": 0.9523809523809523,
+          "specificity": 0.9875
+        },
+        "test": {
+          "correct": 155,
+          "total": 164,
+          "accuracy": 0.9451219512195121,
+          "accuracy_percent_rounded": "94.5%",
+          "auc": 0.9831845238095238,
+          "confusion_matrix": [
+            [
+              77,
+              3
+            ],
+            [
+              6,
+              78
+            ]
+          ],
+          "sensitivity": 0.9285714285714286,
+          "specificity": 0.9625
+        }
+      }
+    }
+  },
+  "nearest_train": {
+    "validation": {
+      "rmse_min": 5.060618863464231,
+      "rmse_median": 11.721875089700305,
+      "rmse_max": 69.00890878855787,
+      "count_le_5": 0,
+      "count_le_10": 59,
+      "count_le_15": 103,
+      "ties_for_nearest_count": 8,
+      "tie_break": "lexicographically first train relative_path; fixed before evaluation",
+      "one_nn": {
+        "correct": 163,
+        "total": 164,
+        "accuracy": 0.9939024390243902,
+        "accuracy_percent_rounded": "99.4%",
+        "auc": 0.99375,
+        "confusion_matrix": [
+          [
+            79,
+            1
+          ],
+          [
+            0,
+            84
+          ]
+        ],
+        "sensitivity": 1.0,
+        "specificity": 0.9875
+      },
+      "auc_score": "binary nearest-train label; no calibrated probability"
+    },
+    "test": {
+      "rmse_min": 5.003709561415411,
+      "rmse_median": 10.071009913478097,
+      "rmse_max": 44.859312412878666,
+      "count_le_5": 0,
+      "count_le_10": 81,
+      "count_le_15": 133,
+      "ties_for_nearest_count": 6,
+      "tie_break": "lexicographically first train relative_path; fixed before evaluation",
+      "one_nn": {
+        "correct": 164,
+        "total": 164,
+        "accuracy": 1.0,
+        "accuracy_percent_rounded": "100.0%",
+        "auc": 1.0,
+        "confusion_matrix": [
+          [
+            80,
+            0
+          ],
+          [
+            0,
+            84
+          ]
+        ],
+        "sensitivity": 1.0,
+        "specificity": 1.0
+      },
+      "auc_score": "binary nearest-train label; no calibrated probability"
+    }
+  },
+  "shuffle_runs": [
+    {
+      "seed": 42,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        82
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 383,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 337,
+          "total": 769,
+          "accuracy": 0.43823146944083224,
+          "accuracy_percent_rounded": "43.8%",
+          "auc": 0.4047493367982242,
+          "confusion_matrix": [
+            [
+              152,
+              224
+            ],
+            [
+              208,
+              185
+            ]
+          ],
+          "sensitivity": 0.4707379134860051,
+          "specificity": 0.40425531914893614
+        },
+        "validation": {
+          "correct": 80,
+          "total": 164,
+          "accuracy": 0.4878048780487805,
+          "accuracy_percent_rounded": "48.8%",
+          "auc": 0.5092261904761904,
+          "confusion_matrix": [
+            [
+              42,
+              38
+            ],
+            [
+              46,
+              38
+            ]
+          ],
+          "sensitivity": 0.4523809523809524,
+          "specificity": 0.525
+        },
+        "test": {
+          "correct": 73,
+          "total": 164,
+          "accuracy": 0.4451219512195122,
+          "accuracy_percent_rounded": "44.5%",
+          "auc": 0.39553571428571427,
+          "confusion_matrix": [
+            [
+              29,
+              51
+            ],
+            [
+              40,
+              44
+            ]
+          ],
+          "sensitivity": 0.5238095238095238,
+          "specificity": 0.3625
+        }
+      }
+    },
+    {
+      "seed": 43,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        67
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 387,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 409,
+          "total": 769,
+          "accuracy": 0.5318595578673602,
+          "accuracy_percent_rounded": "53.2%",
+          "auc": 0.5102525580639923,
+          "confusion_matrix": [
+            [
+              179,
+              197
+            ],
+            [
+              163,
+              230
+            ]
+          ],
+          "sensitivity": 0.5852417302798982,
+          "specificity": 0.47606382978723405
+        },
+        "validation": {
+          "correct": 84,
+          "total": 164,
+          "accuracy": 0.5121951219512195,
+          "accuracy_percent_rounded": "51.2%",
+          "auc": 0.5162202380952381,
+          "confusion_matrix": [
+            [
+              36,
+              44
+            ],
+            [
+              36,
+              48
+            ]
+          ],
+          "sensitivity": 0.5714285714285714,
+          "specificity": 0.45
+        },
+        "test": {
+          "correct": 91,
+          "total": 164,
+          "accuracy": 0.5548780487804879,
+          "accuracy_percent_rounded": "55.5%",
+          "auc": 0.5208333333333333,
+          "confusion_matrix": [
+            [
+              46,
+              34
+            ],
+            [
+              39,
+              45
+            ]
+          ],
+          "sensitivity": 0.5357142857142857,
+          "specificity": 0.575
+        }
+      }
+    },
+    {
+      "seed": 44,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        71
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 367,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 224,
+          "total": 769,
+          "accuracy": 0.29128738621586475,
+          "accuracy_percent_rounded": "29.1%",
+          "auc": 0.31779546315846463,
+          "confusion_matrix": [
+            [
+              97,
+              279
+            ],
+            [
+              266,
+              127
+            ]
+          ],
+          "sensitivity": 0.3231552162849873,
+          "specificity": 0.2579787234042553
+        },
+        "validation": {
+          "correct": 43,
+          "total": 164,
+          "accuracy": 0.2621951219512195,
+          "accuracy_percent_rounded": "26.2%",
+          "auc": 0.2940476190476191,
+          "confusion_matrix": [
+            [
+              16,
+              64
+            ],
+            [
+              57,
+              27
+            ]
+          ],
+          "sensitivity": 0.32142857142857145,
+          "specificity": 0.2
+        },
+        "test": {
+          "correct": 56,
+          "total": 164,
+          "accuracy": 0.34146341463414637,
+          "accuracy_percent_rounded": "34.1%",
+          "auc": 0.303422619047619,
+          "confusion_matrix": [
+            [
+              31,
+              49
+            ],
+            [
+              59,
+              25
+            ]
+          ],
+          "sensitivity": 0.2976190476190476,
+          "specificity": 0.3875
+        }
+      }
+    },
+    {
+      "seed": 45,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        79
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 353,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 297,
+          "total": 769,
+          "accuracy": 0.3862158647594278,
+          "accuracy_percent_rounded": "38.6%",
+          "auc": 0.3419211195928753,
+          "confusion_matrix": [
+            [
+              120,
+              256
+            ],
+            [
+              216,
+              177
+            ]
+          ],
+          "sensitivity": 0.45038167938931295,
+          "specificity": 0.3191489361702128
+        },
+        "validation": {
+          "correct": 53,
+          "total": 164,
+          "accuracy": 0.3231707317073171,
+          "accuracy_percent_rounded": "32.3%",
+          "auc": 0.31919642857142855,
+          "confusion_matrix": [
+            [
+              21,
+              59
+            ],
+            [
+              52,
+              32
+            ]
+          ],
+          "sensitivity": 0.38095238095238093,
+          "specificity": 0.2625
+        },
+        "test": {
+          "correct": 64,
+          "total": 164,
+          "accuracy": 0.3902439024390244,
+          "accuracy_percent_rounded": "39.0%",
+          "auc": 0.35788690476190477,
+          "confusion_matrix": [
+            [
+              24,
+              56
+            ],
+            [
+              44,
+              40
+            ]
+          ],
+          "sensitivity": 0.47619047619047616,
+          "specificity": 0.3
+        }
+      }
+    },
+    {
+      "seed": 46,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        68
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 409,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 475,
+          "total": 769,
+          "accuracy": 0.6176853055916776,
+          "accuracy_percent_rounded": "61.8%",
+          "auc": 0.6416883222348546,
+          "confusion_matrix": [
+            [
+              248,
+              128
+            ],
+            [
+              166,
+              227
+            ]
+          ],
+          "sensitivity": 0.5776081424936387,
+          "specificity": 0.6595744680851063
+        },
+        "validation": {
+          "correct": 121,
+          "total": 164,
+          "accuracy": 0.7378048780487805,
+          "accuracy_percent_rounded": "73.8%",
+          "auc": 0.8135416666666665,
+          "confusion_matrix": [
+            [
+              57,
+              23
+            ],
+            [
+              20,
+              64
+            ]
+          ],
+          "sensitivity": 0.7619047619047619,
+          "specificity": 0.7125
+        },
+        "test": {
+          "correct": 118,
+          "total": 164,
+          "accuracy": 0.7195121951219512,
+          "accuracy_percent_rounded": "72.0%",
+          "auc": 0.7495535714285715,
+          "confusion_matrix": [
+            [
+              56,
+              24
+            ],
+            [
+              22,
+              62
+            ]
+          ],
+          "sensitivity": 0.7380952380952381,
+          "specificity": 0.7
+        }
+      }
+    },
+    {
+      "seed": 47,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        77
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 395,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 406,
+          "total": 769,
+          "accuracy": 0.5279583875162549,
+          "accuracy_percent_rounded": "52.8%",
+          "auc": 0.5425261220291268,
+          "confusion_matrix": [
+            [
+              199,
+              177
+            ],
+            [
+              186,
+              207
+            ]
+          ],
+          "sensitivity": 0.5267175572519084,
+          "specificity": 0.5292553191489362
+        },
+        "validation": {
+          "correct": 81,
+          "total": 164,
+          "accuracy": 0.49390243902439024,
+          "accuracy_percent_rounded": "49.4%",
+          "auc": 0.4663690476190476,
+          "confusion_matrix": [
+            [
+              43,
+              37
+            ],
+            [
+              46,
+              38
+            ]
+          ],
+          "sensitivity": 0.4523809523809524,
+          "specificity": 0.5375
+        },
+        "test": {
+          "correct": 95,
+          "total": 164,
+          "accuracy": 0.5792682926829268,
+          "accuracy_percent_rounded": "57.9%",
+          "auc": 0.6075892857142857,
+          "confusion_matrix": [
+            [
+              53,
+              27
+            ],
+            [
+              42,
+              42
+            ]
+          ],
+          "sensitivity": 0.5,
+          "specificity": 0.6625
+        }
+      }
+    },
+    {
+      "seed": 48,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        73
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 391,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 413,
+          "total": 769,
+          "accuracy": 0.5370611183355006,
+          "accuracy_percent_rounded": "53.7%",
+          "auc": 0.5541253857398084,
+          "confusion_matrix": [
+            [
+              172,
+              204
+            ],
+            [
+              152,
+              241
+            ]
+          ],
+          "sensitivity": 0.6132315521628499,
+          "specificity": 0.4574468085106383
+        },
+        "validation": {
+          "correct": 78,
+          "total": 164,
+          "accuracy": 0.47560975609756095,
+          "accuracy_percent_rounded": "47.6%",
+          "auc": 0.4921130952380952,
+          "confusion_matrix": [
+            [
+              29,
+              51
+            ],
+            [
+              35,
+              49
+            ]
+          ],
+          "sensitivity": 0.5833333333333334,
+          "specificity": 0.3625
+        },
+        "test": {
+          "correct": 68,
+          "total": 164,
+          "accuracy": 0.4146341463414634,
+          "accuracy_percent_rounded": "41.5%",
+          "auc": 0.43065476190476193,
+          "confusion_matrix": [
+            [
+              28,
+              52
+            ],
+            [
+              44,
+              40
+            ]
+          ],
+          "sensitivity": 0.47619047619047616,
+          "specificity": 0.35
+        }
+      }
+    },
+    {
+      "seed": 49,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        73
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 391,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 415,
+          "total": 769,
+          "accuracy": 0.5396618985695709,
+          "accuracy_percent_rounded": "54.0%",
+          "auc": 0.574021439012506,
+          "confusion_matrix": [
+            [
+              177,
+              199
+            ],
+            [
+              155,
+              238
+            ]
+          ],
+          "sensitivity": 0.6055979643765903,
+          "specificity": 0.47074468085106386
+        },
+        "validation": {
+          "correct": 101,
+          "total": 164,
+          "accuracy": 0.6158536585365854,
+          "accuracy_percent_rounded": "61.6%",
+          "auc": 0.6311011904761905,
+          "confusion_matrix": [
+            [
+              48,
+              32
+            ],
+            [
+              31,
+              53
+            ]
+          ],
+          "sensitivity": 0.6309523809523809,
+          "specificity": 0.6
+        },
+        "test": {
+          "correct": 76,
+          "total": 164,
+          "accuracy": 0.4634146341463415,
+          "accuracy_percent_rounded": "46.3%",
+          "auc": 0.5016369047619048,
+          "confusion_matrix": [
+            [
+              28,
+              52
+            ],
+            [
+              36,
+              48
+            ]
+          ],
+          "sensitivity": 0.5714285714285714,
+          "specificity": 0.35
+        }
+      }
+    },
+    {
+      "seed": 50,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        84
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 369,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 310,
+          "total": 769,
+          "accuracy": 0.40312093628088425,
+          "accuracy_percent_rounded": "40.3%",
+          "auc": 0.38990850522440584,
+          "confusion_matrix": [
+            [
+              121,
+              255
+            ],
+            [
+              204,
+              189
+            ]
+          ],
+          "sensitivity": 0.48091603053435117,
+          "specificity": 0.32180851063829785
+        },
+        "validation": {
+          "correct": 78,
+          "total": 164,
+          "accuracy": 0.47560975609756095,
+          "accuracy_percent_rounded": "47.6%",
+          "auc": 0.4581845238095238,
+          "confusion_matrix": [
+            [
+              29,
+              51
+            ],
+            [
+              35,
+              49
+            ]
+          ],
+          "sensitivity": 0.5833333333333334,
+          "specificity": 0.3625
+        },
+        "test": {
+          "correct": 82,
+          "total": 164,
+          "accuracy": 0.5,
+          "accuracy_percent_rounded": "50.0%",
+          "auc": 0.4842261904761905,
+          "confusion_matrix": [
+            [
+              29,
+              51
+            ],
+            [
+              31,
+              53
+            ]
+          ],
+          "sensitivity": 0.6309523809523809,
+          "specificity": 0.3625
+        }
+      }
+    },
+    {
+      "seed": 51,
+      "feature_count": 45,
+      "fit_count": 769,
+      "fit_n_iter": [
+        79
+      ],
+      "converged": true,
+      "train_only_scaler_mean_matches": true,
+      "train_label_equal_original_count": 401,
+      "train_evaluation_target": "original true labels, not shuffled labels; val/test original unchanged",
+      "evaluation": {
+        "train": {
+          "correct": 439,
+          "total": 769,
+          "accuracy": 0.5708712613784135,
+          "accuracy_percent_rounded": "57.1%",
+          "auc": 0.6181514265605543,
+          "confusion_matrix": [
+            [
+              192,
+              184
+            ],
+            [
+              146,
+              247
+            ]
+          ],
+          "sensitivity": 0.628498727735369,
+          "specificity": 0.5106382978723404
+        },
+        "validation": {
+          "correct": 94,
+          "total": 164,
+          "accuracy": 0.573170731707317,
+          "accuracy_percent_rounded": "57.3%",
+          "auc": 0.5477678571428571,
+          "confusion_matrix": [
+            [
+              52,
+              28
+            ],
+            [
+              42,
+              42
+            ]
+          ],
+          "sensitivity": 0.5,
+          "specificity": 0.65
+        },
+        "test": {
+          "correct": 100,
+          "total": 164,
+          "accuracy": 0.6097560975609756,
+          "accuracy_percent_rounded": "61.0%",
+          "auc": 0.6279761904761905,
+          "confusion_matrix": [
+            [
+              45,
+              35
+            ],
+            [
+              29,
+              55
+            ]
+          ],
+          "sensitivity": 0.6547619047619048,
+          "specificity": 0.5625
+        }
+      }
+    }
+  ],
+  "shuffle_summary": {
+    "train": {
+      "runs": 10,
+      "accuracy_mean": 0.48439531859557866,
+      "accuracy_std_ddof0": 0.0953359798367093,
+      "accuracy_min": 0.29128738621586475,
+      "accuracy_max": 0.6176853055916776,
+      "auc_mean": 0.48951396784148127,
+      "auc_std_ddof0": 0.1107421961616688,
+      "correct_sum_across10_correlated_runs": 3725,
+      "total_sum_across10_correlated_runs": 7690,
+      "note": "동일 평가영상 반복으로 독립 표본 증가·통계적 유의성 검정 아님"
+    },
+    "validation": {
+      "runs": 10,
+      "accuracy_mean": 0.4957317073170732,
+      "accuracy_std_ddof0": 0.1282533209577995,
+      "accuracy_min": 0.2621951219512195,
+      "accuracy_max": 0.7378048780487805,
+      "auc_mean": 0.5047767857142859,
+      "auc_std_ddof0": 0.13998064219329173,
+      "correct_sum_across10_correlated_runs": 813,
+      "total_sum_across10_correlated_runs": 1640,
+      "note": "동일 평가영상 반복으로 독립 표본 증가·통계적 유의성 검정 아님"
+    },
+    "test": {
+      "runs": 10,
+      "accuracy_mean": 0.5018292682926828,
+      "accuracy_std_ddof0": 0.10877098558519863,
+      "accuracy_min": 0.34146341463414637,
+      "accuracy_max": 0.7195121951219512,
+      "auc_mean": 0.4979315476190476,
+      "auc_std_ddof0": 0.12862092662857869,
+      "correct_sum_across10_correlated_runs": 823,
+      "total_sum_across10_correlated_runs": 1640,
+      "note": "동일 평가영상 반복으로 독립 표본 증가·통계적 유의성 검정 아님"
+    }
+  },
+  "integrity": {
+    "all_images_byte_pixel_descriptor_verified": 1097,
+    "source_counts": {
+      "Bengin cases": 120,
+      "Malignant cases": 561,
+      "Normal cases": 416
+    },
+    "split_summary": {
+      "train": {
+        "total": 769,
+        "OK": 376,
+        "NG": 393,
+        "source_class": {
+          "Bengin cases": 84,
+          "Malignant cases": 393,
+          "Normal cases": 292
+        }
+      },
+      "validation": {
+        "total": 164,
+        "OK": 80,
+        "NG": 84,
+        "source_class": {
+          "Bengin cases": 18,
+          "Malignant cases": 84,
+          "Normal cases": 62
+        }
+      },
+      "test": {
+        "total": 164,
+        "OK": 80,
+        "NG": 84,
+        "source_class": {
+          "Bengin cases": 18,
+          "Malignant cases": 84,
+          "Normal cases": 62
+        }
+      }
+    },
+    "cross_overlap": {
+      "train__validation": {
+        "relative_path": 0,
+        "byte_sha256": 0,
+        "pixel_sha256": 0,
+        "exact_duplicate_group": 0,
+        "similarity_group": 0,
+        "independent_similarity_components": 0
+      },
+      "train__test": {
+        "relative_path": 0,
+        "byte_sha256": 0,
+        "pixel_sha256": 0,
+        "exact_duplicate_group": 0,
+        "similarity_group": 0,
+        "independent_similarity_components": 0
+      },
+      "validation__test": {
+        "relative_path": 0,
+        "byte_sha256": 0,
+        "pixel_sha256": 0,
+        "exact_duplicate_group": 0,
+        "similarity_group": 0,
+        "independent_similarity_components": 0
+      }
+    },
+    "independent_similarity_group_count": 820,
+    "similarity_group_matches_manifest": true,
+    "unique_pixel_hash_count": 1054,
+    "unique_byte_hash_count": 1054
+  },
+  "limitations": [
+    "환자 ID·기관·스캐너 정보가 없습니다. 중복·유사그룹 교차0은 환자 독립성을 보장하지 않습니다.",
+    "전체 밝기 통계와 테두리 단서로 분류돼도 촬영기관 원인 또는 기존 ResNet의 인과적 사용을 확정하지 못합니다.",
+    "테두리에도 인체 조직이 포함될 수 있어 비의학 정보만의 실험이라고 단정하지 않습니다.",
+    "같은 validation/test의 추가 탐색 재사용입니다. 독립 외부검증·임상성능·프라이버시효과 검증이 아닙니다.",
+    "shuffle10회는 낮은 차원의 고정모델 음성대조입니다. 낮은 결과는 모든 종류의 누수 부재를 증명하지 못합니다.",
+    "서로 다른 shuffle 모델은 같은 평가영상을 사용합니다. 10회 합산을1640개의 독립 시험영상으로 해석하지 않습니다.",
+    "영상 원본해상도의 통계이며 기존 ResNet의512픽셀 입력·채널별 DC 특징과는 다른 실험입니다.",
+    "원본을 바꾸거나 새 분할을 만들지 않았습니다. 그룹 threshold·특징·초매개변수·임계값을 평가결과로 튜닝하지 않았습니다."
+  ],
+  "privacy_scope": "집계와방법만포함. 영상·영상별목록·환자정보·모델계수·개별예측·인증값없음"
+}
