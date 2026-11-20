@@ -38,11 +38,11 @@
 | 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
 | [연구 1 · 하계 EfficientNetV2-S](revisions/study-1.md) | <a id="layout18-table-1-row-1-field-1"></a>EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-1-%EC%97%B4%EB%9E%8C.md) |
-| [연구 2 · ResNet50 후속 원고](revisions/study-2.md) | <a id="layout18-table-1-row-2-field-1"></a>ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사 도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-2-%EC%97%B4%EB%9E%8C.md) |
+| [연구 2 · ResNet50 후속 원고](revisions/study-2.md) | <a id="layout18-table-1-row-2-field-1"></a>ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](../%EB%85%BC%EB%AC%B8) | [전체 비교](revision-diffs/study-2-%EC%97%B4%EB%9E%8C.md) |
 | [1차](revisions/folder-1.md) | <a id="layout18-table-1-row-3-field-1"></a>블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다. | [폴더](../1%EC%B0%A8) | [전체 비교](revision-diffs/folder-1-%EC%97%B4%EB%9E%8C.md) |
 | [폴더 2차](revisions/folder-2.md) | <a id="layout18-table-1-row-4-field-1"></a>기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다. | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](revision-diffs/folder-2-%EC%97%B4%EB%9E%8C.md) |
 | [폴더 3차](revisions/folder-3.md) | <a id="layout18-table-1-row-5-field-1"></a>SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건의 저장 결과를 확인하는 자료 차수입니다.<br>전체 논문의 1,097장 실험과 구분합니다. | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](revision-diffs/folder-3-%EC%97%B4%EB%9E%8C.md) |
-| [폴더 4차](revisions/folder-4.md) | <a id="layout18-table-1-row-6-field-1"></a>ResNet50 후속 원고와 입력 변환·유사 도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
+| [폴더 4차](revisions/folder-4.md) | <a id="layout18-table-1-row-6-field-1"></a>ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](../%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
 | [블러 · 2차 실험](revisions/experiment-6.md) | <a id="layout18-table-1-row-7-field-1"></a>입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다. σ0 은 원본 배열을 복사합니다. | [폴더](../%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](revision-diffs/experiment-6-%EC%97%B4%EB%9E%8C.md) |
 | [블록 · 2차 실험](revisions/experiment-7.md) | <a id="layout18-table-1-row-8-field-1"></a>시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다.<br>영상보다 작지 않은 블록은 원본을 복사합니다. | [폴더](../%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](revision-diffs/experiment-7-%EC%97%B4%EB%9E%8C.md) |
 | [블록+블러 · 기본](revisions/experiment-8.md) | <a id="layout18-table-1-row-9-field-1"></a>블록 10개와 블러 10개의 100 조합을 비교합니다.<br>입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. | [폴더](../%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) | [전체 비교](revision-diffs/experiment-8-%EC%97%B4%EB%9E%8C.md) |
@@ -95,7 +95,7 @@
 
 실측 0점은 그대로 표시하고 미완료·오류는 숫자로 채우지 않습니다.
 
-같은 강도의 곡선·정확도·점수·그림을 함께 읽고 원 비율·정답 수·분모를 확인합니다.
+같은 강도의 곡선·정확도·점수·그림을 함께 읽고 원비율·정답 수·분모를 확인합니다.
 
 [이번 공개 변경 기록](../docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98.md) · [전체 공개 비교](../docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md)
 

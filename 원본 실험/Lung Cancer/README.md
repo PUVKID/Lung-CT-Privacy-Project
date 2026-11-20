@@ -11,7 +11,7 @@
 | 주요 구성 | 내용 |
 | --- | --- |
 | <a id="layout18-table-1-row-1"></a> 전처리 | preprocess_image가 영상을 224×224로 맞추고 255로 나누어 배치 차원을 추가합니다. |
-| <a id="layout18-table-1-row-2"></a> 5 라벨 화면 | 대장 선 암·대장 정상·폐 선 암·폐 정상·폐 편평 상피 암의 예측 확률을 표시합니다. |
+| <a id="layout18-table-1-row-2"></a> 5 라벨 화면 | 대장선암·대장 정상·폐선암·폐 정상·폐 편평상피암의 예측 확률을 표시합니다. |
 | <a id="layout18-table-1-row-3"></a> 그래프 | 예측 확률을 텍스트와 원형 그래프로 보여 줍니다. |
 | <a id="layout18-table-1-row-4"></a> 학습 사본 | Train.ipynb의 MobileNetV2 3 클래스·224·batch16·10epoch와 화면의 5 라벨을 구분합니다. |
 

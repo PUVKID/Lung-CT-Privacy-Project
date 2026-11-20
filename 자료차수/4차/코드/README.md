@@ -27,7 +27,7 @@
 
 | 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
-| [폴더 4차](../../../docs/revisions/folder-4.md) | <a id="layout18-table-2-row-1-field-1"></a>ResNet50 후속 원고와 입력 변환·유사 도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](.) | [전체 비교](../../../docs/revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
+| [폴더 4차](../../../docs/revisions/folder-4.md) | <a id="layout18-table-2-row-1-field-1"></a>ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](.) | [전체 비교](../../../docs/revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
 
 
 [프로젝트](../../../README.md) · [전체 차수](../../../docs/REVISION_INDEX.md)

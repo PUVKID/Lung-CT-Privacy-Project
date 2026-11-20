@@ -160,7 +160,7 @@
 | 표본·정밀도 | 클래스당 5,000, batch8, 512×512, BF16 학습·FP32 평가 | 평가 손실은 FP64 안정 계산 |
 | 선택 | 검증 손실 기준 | 시험 수치로 모델·σ·임계값 선택 없음 |
 
-복구 시 state tensor·dtype·shape·optimizer·scheduler·난 수 상태를 저장 후 다시 읽어 대조합니다.
+복구 시 state tensor·dtype·shape·optimizer·scheduler·난수 상태를 저장 후 다시 읽어 대조합니다.
 
 기존 prefix는 최초 변환 SHA를 계속 고정하고, 가져 올 당시 없던 prefix는 후속 실제 학습에서 생성될 때 현재 last와 대조합니다.
 

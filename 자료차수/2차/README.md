@@ -13,7 +13,7 @@
 | <a id="layout18-table-1-row-1"></a> 방식 정렬 | align_experiment_methods.mjs가 Blur 설계를 유지하며 GPU 모니터 필드·그래프의 호환 처리를 맞춥니다. |
 | <a id="layout18-table-1-row-2"></a> 조합 생성 | build_block_blur_notebook.mjs가 Blur 노트북을 바탕으로 Block →Blur100 조합의 설정·함수를 구성합니다. |
 | <a id="layout18-table-1-row-3"></a> 입력 확인 | replaceOrThrow가 대상 문자열이 없으면 중단하도록 구성돼 있습니다. |
-| <a id="layout18-table-1-row-4"></a> 복원 | rollback_original_notebooks.mjs가 보관 본과 지정 셀을 이용해 이전 구성을 복원합니다. |
+| <a id="layout18-table-1-row-4"></a> 복원 | rollback_original_notebooks.mjs가 보관본과 지정 셀을 이용해 이전 구성을 복원합니다. |
 
 
 <a id="-이용-순서"></a>

@@ -10,10 +10,10 @@
 
 | 주요 구성 | 내용 |
 | --- | --- |
-| <a id="layout18-table-1-row-1"></a> Train.ipynb | 셀 0은 조직 영상 5 클래스, 셀 1·2는 EfficientNetV2-S의 CT 블록·블러, 셀 3~5는 MobileNetV2와 풀 링 비교입니다. |
+| <a id="layout18-table-1-row-1"></a> Train.ipynb | 셀 0은 조직 영상 5 클래스, 셀 1·2는 EfficientNetV2-S의 CT 블록·블러, 셀 3~5는 MobileNetV2와 풀링 비교입니다. |
 | <a id="layout18-table-1-row-2"></a> ResNet50 사본 | 단독·조합·edge·Stage1 특징 블러 노트북을 각각 구분합니다. |
-| <a id="layout18-table-1-row-3"></a> 유사 도 코드 | SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다. |
-| <a id="layout18-table-1-row-4"></a> 도표 | 저장된 분류 JSON과 유사 도 CSV에서 막대·히트맵·논문 그림을 구성합니다. |
+| <a id="layout18-table-1-row-3"></a> 유사도 코드 | SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다. |
+| <a id="layout18-table-1-row-4"></a> 도표 | 저장된 분류 JSON과 유사도 CSV에서 막대·히트맵·논문 그림을 구성합니다. |
 
 
 <a id="-이용-순서"></a>

@@ -131,11 +131,11 @@
 | 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
 | --- | --- | --- | --- |
 | [연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | <a id="layout18-table-4-row-1-field-1"></a>EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-1-%EC%97%B4%EB%9E%8C.md) |
-| [연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md) | <a id="layout18-table-4-row-2-field-1"></a>ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사 도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-2-%EC%97%B4%EB%9E%8C.md) |
+| [연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md) | <a id="layout18-table-4-row-2-field-1"></a>ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-2-%EC%97%B4%EB%9E%8C.md) |
 | [1차](docs/revisions/folder-1.md) | <a id="layout18-table-4-row-3-field-1"></a>블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다. | [폴더](1%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-1-%EC%97%B4%EB%9E%8C.md) |
 | [폴더 2차](docs/revisions/folder-2.md) | <a id="layout18-table-4-row-4-field-1"></a>기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-2-%EC%97%B4%EB%9E%8C.md) |
 | [폴더 3차](docs/revisions/folder-3.md) | <a id="layout18-table-4-row-5-field-1"></a>SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건의 저장 결과를 확인하는 자료 차수입니다.<br>전체 논문의 1,097장 실험과 구분합니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](docs/revision-diffs/folder-3-%EC%97%B4%EB%9E%8C.md) |
-| [폴더 4차](docs/revisions/folder-4.md) | <a id="layout18-table-4-row-6-field-1"></a>ResNet50 후속 원고와 입력 변환·유사 도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](docs/revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
+| [폴더 4차](docs/revisions/folder-4.md) | <a id="layout18-table-4-row-6-field-1"></a>ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](docs/revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
 | [블러 · 2차 실험](docs/revisions/experiment-6.md) | <a id="layout18-table-4-row-7-field-1"></a>입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다. σ0 은 원본 배열을 복사합니다. | [폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-6-%EC%97%B4%EB%9E%8C.md) |
 | [블록 · 2차 실험](docs/revisions/experiment-7.md) | <a id="layout18-table-4-row-8-field-1"></a>시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다.<br>영상보다 작지 않은 블록은 원본을 복사합니다. | [폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-7-%EC%97%B4%EB%9E%8C.md) |
 | [블록+블러 · 기본](docs/revisions/experiment-8.md) | <a id="layout18-table-4-row-9-field-1"></a>블록 10개와 블러 10개의 100 조합을 비교합니다.<br>입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) | [전체 비교](docs/revision-diffs/experiment-8-%EC%97%B4%EB%9E%8C.md) |
@@ -162,7 +162,7 @@
 
 이 프로젝트는 Gaussian Blur와 블록 위치 재배열을 적용하면서 폐암 CT 분류 정확도가 얼마나 유지되는지 조사합니다.
 
-첫 연구의 EfficientNetV2-S 비교를 ResNet50, 두 변환의 조합, 구조 유사 도 기반 Privacy Score 분석으로 확장했습니다.
+첫 연구의 EfficientNetV2-S 비교를 ResNet50, 두 변환의 조합, 구조 유사도 기반 Privacy Score 분석으로 확장했습니다.
 
 한국컴퓨터교육학회 **제 58회 2026 하계 학술 대회** 연구를 연구 1로 함께 수록했습니다. 연구 2는 **한국정보기술학회 논문 양식**으로 작성한 원고입니다. 논문 두 편, 연구 코드, 그래프 생성 코드, 초기 분류 앱을 연구 단계별로 정리했습니다.
 
@@ -174,10 +174,10 @@
 
 | 구분 | 연구 1: 하계 연구 | 연구 2: ResNet50 연구 | 후속 추가 실험 |
 | --- | --- | --- | --- |
-| <a id="layout18-table-5-row-1"></a> 질문 | Blur와 Block 중 어떤 변환이 분류 성능을 더 유지하는가? | 정확도와 구조 유사 도 기반 프라이버시 점수를 함께 고려하면 어떤 조건이 유리한가? | 입력 영상 대신 중간 특징을 변환하면 분류·복원 가능성이 어떻게 달라지는가? |
+| <a id="layout18-table-5-row-1"></a> 질문 | Blur와 Block 중 어떤 변환이 분류 성능을 더 유지하는가? | 정확도와 구조 유사도 기반 프라이버시 점수를 함께 고려하면 어떤 조건이 유리한가? | 입력 영상 대신 중간 특징을 변환하면 분류·복원 가능성이 어떻게 달라지는가? |
 | <a id="layout18-table-5-row-2"></a> 모델 | EfficientNetV2-S | ImageNet 사전 학습 ResNet50 | ResNet50의 `pool1_pool` 경계 분리 |
 | <a id="layout18-table-5-row-3"></a> 변환 | 입력 영상 Blur·Block 각각 비교 | Block 10 조건, Blur 10 조건, Block →Blur 100 조합 | 입력 변환을 사용하는 분리 모델 및 Stage 1 특징맵 Gaussian Blur |
-| <a id="layout18-table-5-row-4"></a> 주요 평가 | 정확도·ROC-AUC·혼 동 행렬 | 정확도·macro OvR ROC-AUC·클래스별 Recall·MS-SSIM Privacy Score·Pareto 분석 | 특징 유사 도·클래스 분리도·decoder 복원 PSNR/SSIM을 계산하는 코드 |
+| <a id="layout18-table-5-row-4"></a> 주요 평가 | 정확도·ROC-AUC·혼 동 행렬 | 정확도·macro OvR ROC-AUC·클래스별 Recall·MS-SSIM Privacy Score·Pareto 분석 | 특징 유사도·클래스 분리도·decoder 복원 PSNR/SSIM을 계산하는 코드 |
 | <a id="layout18-table-5-row-5"></a> 해석 범위 | 초기 비식별화 성능 비교 | 동일 평가 절차 내 조건 비교 | 논문 2 이후의 특징 변환·복원 실험 코드 |
 
 
@@ -226,7 +226,7 @@ Gaussian Blur와 시드 기반 블록 재배열을 각각 적용하여 형태 �
 
 조합 실험의 Block512 + σ256은 46.8%로, 별도로 학습한 Blur 단독 σ256의 51.38%와 다릅니다. 원고 본문 4.1 절의 Block256 단독 97.25%와 조합 실험 σ0의 98.17%도 동일 실행의 값으로 합치지 않습니다.
 
-Privacy Score는 `50 × (1 − MS-SSIM)`입니다. 원고에서는 전체 1,097장의 원본·변환 영상에 대한 5개 스케일 구조 유사 도로 산출합니다. **공격 성공률·재식별 확률·암호학적 안전성·차등 프라이버시 보증값이 아닙니다.** 원고는 실제 복원 공격과 사람의 지각 평가를 후속 과제로 남깁니다.
+Privacy Score는 `50 × (1 − MS-SSIM)`입니다. 원고에서는 전체 1,097장의 원본·변환 영상에 대한 5개 스케일 구조 유사도로 산출합니다. **공격 성공률·재식별 확률·암호학적 안전성·차등 프라이버시 보증값이 아닙니다.** 원고는 실제 복원 공격과 사람의 지각 평가를 후속 과제로 남깁니다.
 
 <a id="-기술과-처리-흐름"></a>
 
@@ -309,7 +309,7 @@ Stage 1 실험은 이 특징에 블러를 적용한 뒤 나머지 ResNet50을 �
 | <a id="layout18-table-9-row-1"></a> [블록 단독](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/block_encryption_resnet50_rebuilt_KO.ipynb) · [블러 단독](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98/blur_resnet50_rebuilt2_KO.ipynb) · [100조합](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC/block_blur_resnet50_v4_KO.ipynb) | 입력 변환별 학습 흐름 |
 | <a id="layout18-table-9-row-2"></a> [입력 변환과 모델 분리](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80/block_blur_resnet50_edge.ipynb) | edge/cloud 부분 구성과 저장 |
 | <a id="layout18-table-9-row-3"></a> [Stage 1 특징맵 블러](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80/stage1_edge_feature_blur_resnet50.ipynb) | 중간 특징 변환과 복원 공격 추가 코드 |
-| <a id="layout18-table-9-row-4"></a> [추가 Train 모음](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb) | 조직 영상 5 클래스 학습, EfficientNetV2-S 변환 비교, MobileNetV2 풀 링 실험을 셀별로 보존 |
+| <a id="layout18-table-9-row-4"></a> [추가 Train 모음](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/Train.ipynb) | 조직 영상 5 클래스 학습, EfficientNetV2-S 변환 비교, MobileNetV2 풀링 실험을 셀별로 보존 |
 | <a id="layout18-table-9-row-5"></a> [히트맵](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/heatmaps.py) · [지표 그래프](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98/plot_privacy_metrics_split.py) | 입력된 결과표를 시각화 |
 | <a id="layout18-table-9-row-6"></a> [2×2 영상 합성](%ED%8F%90%EC%95%94%202%EC%B0%A8%20%EB%85%BC%EB%AC%B8/%EC%BD%94%EB%93%9C/picture2x2.ipynb) | 이미 만들어진 원본·변환 예시 영상 배치 |
 
@@ -406,14 +406,14 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 | --- | --- |
 | <a id="layout18-table-10-row-1"></a> `unterminated f-string literal` | `블러 엣지/blur_resnet50_edge_v6.ipynb`의 0부터 세는 셀 20, 셀 내부 263 행에서 정적 파싱 오류가 확인되었습니다.<br>문자열 안의 실제 개 행 문제입니다. |
 | <a id="layout18-table-10-row-2"></a> `Conv2D` 이름을 찾지 못함 | 두 Stage 1 특징맵 블러 사본의 복원 decoder가 `Conv2D`를 사용하지만 해당 import/정의가 없습니다.<br>깨끗한 커널에서 공격 단계 실행이 막힐 수 있습니다. |
-| <a id="layout18-table-10-row-3"></a> 추가 Train 첫 셀 문법 오류 | `추가 학습모델과 실험/Train.ipynb` 첫 코드 셀 끝에 Markdown용 백 틱 세 개가 남아 있습니다. |
+| <a id="layout18-table-10-row-3"></a> 추가 Train 첫 셀 문법 오류 | `추가 학습모델과 실험/Train.ipynb` 첫 코드 셀 끝에 Markdown용 백틱 세 개가 남아 있습니다. |
 | <a id="layout18-table-10-row-4"></a> 파일은 있는데 이미지 디코딩 실패 | 일부 로더는 PNG/BMP 확장자도 수집하면서 `decode_jpeg`로 고정 디코딩합니다.<br>실제 입력 형식을 확인합니다. |
 | <a id="layout18-table-10-row-5"></a> 기존 학습 결과가 계속 사용됨 | 조건별 캐시와 파일 개수만으로 재사용하는 증강 폴더를 확인합니다.<br>다른 데이터·설정의 결과가 섞이지 않도록 구분해야 합니다. |
 | <a id="layout18-table-10-row-6"></a> 누락한 edge 가중치로도 그림이 생성됨 | 일부 경로는 ImageNet 초기 가중치로 대체합니다.<br>학습된 edge를 평가한 것인지 확인합니다. |
 | <a id="layout18-table-10-row-7"></a> GPU 그래프에서 키 오류 | 블러 변형의 로그 생성 키와 그래프가 기대하는 키가 다릅니다.<br>예시 GPU 로그로 그린 그림도 실제 GPU 측정과 구분합니다. |
 | <a id="layout18-table-10-row-8"></a> 분류와 시각화가 다른 결과를 보임 | 입력 범위 0~255와 시각화의 `/255`, `training=True` 고정 호출, edge 저장 뒤 전체 모델 덮어쓰기의 영향을 확인합니다. |
 | <a id="layout18-table-10-row-9"></a> 한글·글꼴·경로 오류 | 노트북별 Linux/Windows 경로와 글꼴을 확인합니다.<br>일부 셀은 apt-get 설치, 글꼴 다운로드, Matplotlib 캐시 삭제를 수행합니다. |
-| <a id="layout18-table-10-row-10"></a> 예상과 다른 보안·압축 그래프 | 일부 추가 Train의 security는 정확도나 특징 수를 뒤집은 산 식입니다.<br>풀 링 크기 설명과 실제 특징 수 감소 방향도 함께 확인합니다. |
+| <a id="layout18-table-10-row-10"></a> 예상과 다른 보안·압축 그래프 | 일부 추가 Train의 security는 정확도나 특징 수를 뒤집은 산 식입니다.<br>풀링 크기 설명과 실제 특징 수 감소 방향도 함께 확인합니다. |
 
 
 <a id="-자료와-후속-방향"></a>
@@ -502,7 +502,7 @@ EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 
 
 ### 연구 2·ResNet50의 프라이버시·정확도 절충
 
-ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사 도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.
+ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.
 
 | 구성 | 처리 내용 |
 | --- | --- |
@@ -586,7 +586,7 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 | <a id="layout18-table-21-row-1"></a> 방식 정렬 | align_experiment_methods.mjs가 Blur 설계를 유지하며 GPU 모니터 필드·그래프의 호환 처리를 맞춥니다. |
 | <a id="layout18-table-21-row-2"></a> 조합 생성 | build_block_blur_notebook.mjs가 Blur 노트북을 바탕으로 Block →Blur100 조합의 설정·함수를 구성합니다. |
 | <a id="layout18-table-21-row-3"></a> 입력 확인 | replaceOrThrow가 대상 문자열이 없으면 중단하도록 구성돼 있습니다. |
-| <a id="layout18-table-21-row-4"></a> 복원 | rollback_original_notebooks.mjs가 보관 본과 지정 셀을 이용해 이전 구성을 복원합니다. |
+| <a id="layout18-table-21-row-4"></a> 복원 | rollback_original_notebooks.mjs가 보관본과 지정 셀을 이용해 이전 구성을 복원합니다. |
 
 
 | 입력·실행 조건 | 내용 |
@@ -624,7 +624,7 @@ SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건�
 | <a id="layout18-table-24-row-1"></a> 점수 식 | Privacy Score =((1 −SSIM)/2)×100을 사용하며 PSNR은 참고 값으로 따로 저장합니다. |
 | <a id="layout18-table-24-row-2"></a> 작은 조건 집합 | 블록 512·32, 블러 σ0·2와 네 조합을 사용합니다. |
 | <a id="layout18-table-24-row-3"></a> 집계 | long·방법별 요약·조합 pivot·best_conditions의 4CSV를 제공합니다. |
-| <a id="layout18-table-24-row-4"></a> 점검 결과 | 각 조건 n_images =3이며 동일 변환과 항 등 조건의 값 대응을 읽습니다. |
+| <a id="layout18-table-24-row-4"></a> 점검 결과 | 각 조건 n_images =3이며 동일 변환과 항등 조건의 값 대응을 읽습니다. |
 
 
 | 입력·실행 조건 | 내용 |
@@ -634,7 +634,7 @@ SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건�
 | 크기·시드 | 512·42 |
 | 지표 | SSIM·PSNR·DSSIM 기반점수 |
 
-저장 표에서 Block32와 B32 +σ0는 같은 점수 35.3667978… 이 고 항 등 조건은 0입니다. 이는 3장 입력에 대한 계산 확인 값입니다.
+저장 표에서 Block32와 B32 +σ0는 같은 점수 35.3667978… 이 고 항등 조건은 0입니다. 이는 3장 입력에 대한 계산 확인 값입니다.
 
 계산 경로를 확인한 소규모 자료이지 임상·공격 저항성 평가나 전체 1,097장 논문 결과를 대신하지 않습니다.
 
@@ -655,7 +655,7 @@ SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건�
 
 ### 자료 4차·후속 원고와 지표·도표 코드
 
-ResNet50 후속 원고와 입력 변환·유사 도·도 표 코드를 연결해 읽는 자료 차수입니다. 실제 코드 폴더는 자료 차수/4차/코드에 있습니다.
+ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 읽는 자료 차수입니다. 실제 코드 폴더는 자료 차수/4차/코드에 있습니다.
 
 | 구성 | 처리 내용 |
 | --- | --- |
@@ -1092,7 +1092,7 @@ Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 �
 | 구성 | 처리 내용 |
 | --- | --- |
 | <a id="layout18-table-51-row-1"></a> 전처리 | preprocess_image가 영상을 224×224로 맞추고 255로 나누어 배치 차원을 추가합니다. |
-| <a id="layout18-table-51-row-2"></a> 5 라벨 화면 | 대장 선 암·대장 정상·폐 선 암·폐 정상·폐 편평 상피 암의 예측 확률을 표시합니다. |
+| <a id="layout18-table-51-row-2"></a> 5 라벨 화면 | 대장선암·대장 정상·폐선암·폐 정상·폐 편평상피암의 예측 확률을 표시합니다. |
 | <a id="layout18-table-51-row-3"></a> 그래프 | 예측 확률을 텍스트와 원형 그래프로 보여 줍니다. |
 | <a id="layout18-table-51-row-4"></a> 학습 사본 | Train.ipynb의 MobileNetV2 3 클래스·224·batch16·10epoch와 화면의 5 라벨을 구분합니다. |
 
@@ -1129,10 +1129,10 @@ EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-S
 
 | 구성 | 처리 내용 |
 | --- | --- |
-| <a id="layout18-table-54-row-1"></a> Train.ipynb | 셀 0은 조직 영상 5 클래스, 셀 1·2는 EfficientNetV2-S의 CT 블록·블러, 셀 3~5는 MobileNetV2와 풀 링 비교입니다. |
+| <a id="layout18-table-54-row-1"></a> Train.ipynb | 셀 0은 조직 영상 5 클래스, 셀 1·2는 EfficientNetV2-S의 CT 블록·블러, 셀 3~5는 MobileNetV2와 풀링 비교입니다. |
 | <a id="layout18-table-54-row-2"></a> ResNet50 사본 | 단독·조합·edge·Stage1 특징 블러 노트북을 각각 구분합니다. |
-| <a id="layout18-table-54-row-3"></a> 유사 도 코드 | SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다. |
-| <a id="layout18-table-54-row-4"></a> 도표 | 저장된 분류 JSON과 유사 도 CSV에서 막대·히트맵·논문 그림을 구성합니다. |
+| <a id="layout18-table-54-row-3"></a> 유사도 코드 | SSIM·PSNR·MS-SSIM과 DSSIM 기반 점수의 여러 버전을 보관합니다. |
+| <a id="layout18-table-54-row-4"></a> 도표 | 저장된 분류 JSON과 유사도 CSV에서 막대·히트맵·논문 그림을 구성합니다. |
 
 
 | 입력·실행 조건 | 내용 |
@@ -1159,7 +1159,7 @@ Train.ipynb에는 정확도나 특징 수의 비율로 만든 security 표현도
 </details>
 
 <details>
-<summary>블러 1차·저장된 10 조 건 분류 결과</summary>
+<summary>블러 1차·저장된 10 조건 분류 결과</summary>
 
 ### 블러 1차·저장된 10 조 건 분류 결과
 
@@ -1196,7 +1196,7 @@ per_class_acc는 혼동 행렬의 해당 행 정답 비율과 대응하므로 �
 </details>
 
 <details>
-<summary>블록 1차·저장된 10 조 건 분류 결과</summary>
+<summary>블록 1차·저장된 10 조건 분류 결과</summary>
 
 ### 블록 1차·저장된 10 조 건 분류 결과
 
@@ -1249,7 +1249,7 @@ per_class_acc는 혼동 행렬의 해당 행 정답 비율과 대응하므로 �
 
 실측 0점은 그대로 표시하고 미완료·오류는 숫자로 채우지 않습니다.
 
-같은 강도의 곡선·정확도·점수·그림을 함께 읽고 원 비율·정답 수·분모를 확인합니다.
+같은 강도의 곡선·정확도·점수·그림을 함께 읽고 원비율·정답 수·분모를 확인합니다.
 
 [이번 공개 변경 기록](docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98.md) · [전체 공개 비교](docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md)
 

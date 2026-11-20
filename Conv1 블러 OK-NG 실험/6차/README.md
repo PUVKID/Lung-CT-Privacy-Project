@@ -2,7 +2,7 @@
 
 [LEVEL 1 - Beginner](../../docs/revisions/conv1-okng-round6.md#reading-level-1) · [LEVEL 2 - Explorer](../../docs/revisions/conv1-okng-round6.md#reading-level-2) · [LEVEL 3 - Practitioner](../../docs/revisions/conv1-okng-round6.md#reading-level-3) · [LEVEL 4 - Advanced](../../docs/revisions/conv1-okng-round6.md#reading-level-4) · [LEVEL 5 - Expert](../../docs/revisions/conv1-okng-round6.md#reading-level-5)
 
-기존 5차 결과와 같은 test 164장을 재사용한 탐색적 진단입니다. 강도별 재학습과 같은 σ0 모델에 블러만 추가한 평가를 구분합니다. 원영상·영상별 예측·가중치 없이 집계 결과와 원 비율만 공개합니다.
+기존 5차 결과와 같은 test 164장을 재사용한 탐색적 진단입니다. 강도별 재학습과 같은 σ0 모델에 블러만 추가한 평가를 구분합니다. 원영상·영상별 예측·가중치 없이 집계 결과와 원비율만 공개합니다.
 
 | 자료 | 역할 | 사용 조건 |
 | --- | --- | --- |

@@ -13,7 +13,7 @@
 | <a id="layout18-table-1-row-1"></a> 점수 식 | Privacy Score =((1 −SSIM)/2)×100을 사용하며 PSNR은 참고 값으로 따로 저장합니다. |
 | <a id="layout18-table-1-row-2"></a> 작은 조건 집합 | 블록 512·32, 블러 σ0·2와 네 조합을 사용합니다. |
 | <a id="layout18-table-1-row-3"></a> 집계 | long·방법별 요약·조합 pivot·best_conditions의 4CSV를 제공합니다. |
-| <a id="layout18-table-1-row-4"></a> 점검 결과 | 각 조건 n_images =3이며 동일 변환과 항 등 조건의 값 대응을 읽습니다. |
+| <a id="layout18-table-1-row-4"></a> 점검 결과 | 각 조건 n_images =3이며 동일 변환과 항등 조건의 값 대응을 읽습니다. |
 
 
 <a id="-이용-순서"></a>
@@ -21,7 +21,7 @@
 ## 이용 순서
 
 1. long CSV의 condition·method·n_images·ssim_mean·privacy_score 열을 확인합니다.
-2. Block512·σ0 항 등 조건과 Block32·조합 B32_S0의 대응을 비교합니다.
+2. Block512·σ0 항등 조건과 Block32·조합 B32_S0의 대응을 비교합니다.
 3. 방법별 요약과 2×2 pivot이 long 표의 같은 조건에서 나온 값인지 읽습니다.
 4. 점수 식을 최종 논문의 MS-SSIM 식과 구별합니다.
 
