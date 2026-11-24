@@ -1,6 +1,6 @@
 # 실제 8차·강도별 독립 100회 학습과 프라이버시 제안 점수
 
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 [프로젝트 첫 화면](../../README.md) · [실제8차 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [직전 전체 비교](../revision-diffs/conv1-okng-round8.md)
 
@@ -44,7 +44,7 @@
 
 2026-11-20 확인 시점에 8차는 σ0 학습 중이며 실제 분류 정확도와 제안 점수는 **미측정**입니다. 합성 검사에서 사용한 0점·100점·정확도는 검사 입력이며 CT 실험 결과가 아닙니다. 5·6차 수치를 새 8차의 결과에 채우지 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전7차](conv1-okng-round7.md#reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전7차](conv1-okng-round7.md#user-content-reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
 
 
 </details>
@@ -95,7 +95,7 @@ OK는 양성 + 정상, NG는 악성입니다.
 
 2026-11-20 확인 시점에 8차는 σ0 학습 중이며 실제 분류 정확도와 제안 점수는 **미측정**입니다. 합성 검사에서 사용한 0점·100점·정확도는 검사 입력이며 CT 실험 결과가 아닙니다. 5·6차 수치를 새 8차의 결과에 채우지 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전7차](conv1-okng-round7.md#reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전7차](conv1-okng-round7.md#user-content-reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
 
 
 </details>
@@ -153,7 +153,7 @@ OK는 양성 + 정상, NG는 악성입니다.
 
 2026-11-20 확인 시점에 8차는 σ0 학습 중이며 실제 분류 정확도와 제안 점수는 **미측정**입니다. 합성 검사에서 사용한 0점·100점·정확도는 검사 입력이며 CT 실험 결과가 아닙니다. 5·6차 수치를 새 8차의 결과에 채우지 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전7차](conv1-okng-round7.md#reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전7차](conv1-okng-round7.md#user-content-reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
 
 
 </details>
@@ -215,7 +215,7 @@ Node VM/API 검사는 실제 hover·focus·좁은 화면 렌더링 검증과 다
 
 2026-11-20 확인 시점에 8차는 σ0 학습 중이며 실제 분류 정확도와 제안 점수는 **미측정**입니다. 합성 검사에서 사용한 0점·100점·정확도는 검사 입력이며 CT 실험 결과가 아닙니다. 5·6차 수치를 새 8차의 결과에 채우지 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전7차](conv1-okng-round7.md#reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전7차](conv1-okng-round7.md#user-content-reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
 
 
 </details>
@@ -285,7 +285,7 @@ CI가 있으면 고정 gallery 그룹의 재표집 진단이며 환자 신뢰구
 
 2026-11-20 확인 시점에 8차는 σ0 학습 중이며 실제 분류 정확도와 제안 점수는 **미측정**입니다. 합성 검사에서 사용한 0점·100점·정확도는 검사 입력이며 CT 실험 결과가 아닙니다. 5·6차 수치를 새 8차의 결과에 채우지 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전7차](conv1-okng-round7.md#reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전7차](conv1-okng-round7.md#user-content-reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/8%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round8.md)
 
 </details>
 

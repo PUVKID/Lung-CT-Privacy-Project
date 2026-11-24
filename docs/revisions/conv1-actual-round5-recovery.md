@@ -1,6 +1,6 @@
 # 실제 5차·기존 학습 상태의 보존과 복구
 
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 실제 실험 차수와 기존 공개 코드 번호를 구분합니다. [프로젝트 첫 화면](../../README.md) · [실제 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [직전 전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
 
@@ -54,7 +54,7 @@
 
 이 표는 기존 5차의 완료 결과이며 복구 시점의 부분 진행과 새 7차 성능을 구분합니다. [원비율·AUC·혼동행렬·선정 회차](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC/%EA%B2%B0%EA%B3%BC/%EA%B0%95%EB%8F%84%EB%B3%84_%EC%A0%84%EC%B2%B410%EC%A1%B0%EA%B1%B4_%EC%A7%91%EA%B3%84.json)를 함께 확인합니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전 차수](conv1-okng-round5.md#reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전 차수](conv1-okng-round5.md#user-content-reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
 
 
 </details>
@@ -106,7 +106,7 @@
 
 이 표는 기존 5차의 완료 결과이며 복구 시점의 부분 진행과 새 7차 성능을 구분합니다. [원비율·AUC·혼동행렬·선정 회차](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC/%EA%B2%B0%EA%B3%BC/%EA%B0%95%EB%8F%84%EB%B3%84_%EC%A0%84%EC%B2%B410%EC%A1%B0%EA%B1%B4_%EC%A7%91%EA%B3%84.json)를 함께 확인합니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전 차수](conv1-okng-round5.md#reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전 차수](conv1-okng-round5.md#user-content-reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
 
 
 </details>
@@ -159,7 +159,7 @@
 
 이 표는 기존 5차의 완료 결과이며 복구 시점의 부분 진행과 새 7차 성능을 구분합니다. [원비율·AUC·혼동행렬·선정 회차](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC/%EA%B2%B0%EA%B3%BC/%EA%B0%95%EB%8F%84%EB%B3%84_%EC%A0%84%EC%B2%B410%EC%A1%B0%EA%B1%B4_%EC%A7%91%EA%B3%84.json)를 함께 확인합니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전 차수](conv1-okng-round5.md#reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전 차수](conv1-okng-round5.md#user-content-reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
 
 
 </details>
@@ -213,7 +213,7 @@ Windows venv launcher는 직접 부모 또는 실행 파일·PID가 확인되는
 
 이 표는 기존 5차의 완료 결과이며 복구 시점의 부분 진행과 새 7차 성능을 구분합니다. [원비율·AUC·혼동행렬·선정 회차](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC/%EA%B2%B0%EA%B3%BC/%EA%B0%95%EB%8F%84%EB%B3%84_%EC%A0%84%EC%B2%B410%EC%A1%B0%EA%B1%B4_%EC%A7%91%EA%B3%84.json)를 함께 확인합니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전 차수](conv1-okng-round5.md#reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전 차수](conv1-okng-round5.md#user-content-reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
 
 
 </details>
@@ -264,7 +264,7 @@ Windows venv launcher는 직접 부모 또는 실행 파일·PID가 확인되는
 
 이 표는 기존 5차의 완료 결과이며 복구 시점의 부분 진행과 새 7차 성능을 구분합니다. [원비율·AUC·혼동행렬·선정 회차](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC/%EA%B2%B0%EA%B3%BC/%EA%B0%95%EB%8F%84%EB%B3%84_%EC%A0%84%EC%B2%B410%EC%A1%B0%EA%B1%B4_%EC%A7%91%EA%B3%84.json)를 함께 확인합니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전 차수](conv1-okng-round5.md#reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전 차수](conv1-okng-round5.md#user-content-reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
 
 </details>
 

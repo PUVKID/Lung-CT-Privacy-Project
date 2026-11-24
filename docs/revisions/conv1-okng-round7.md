@@ -1,6 +1,6 @@
 # 실제 7차·새 σ0 모델 한 개를 고정한 열 강도 평가
 
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 실제 실험 차수와 기존 공개 코드 번호를 구분합니다. [프로젝트 첫 화면](../../README.md) · [실제 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [직전 전체 비교](../revision-diffs/conv1-okng-round7.md)
 
@@ -32,7 +32,7 @@
 
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전 차수](conv1-okng-round6.md#reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전 차수](conv1-okng-round6.md#user-content-reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
 
 
 </details>
@@ -64,7 +64,7 @@
 
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전 차수](conv1-okng-round6.md#reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전 차수](conv1-okng-round6.md#user-content-reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
 
 
 </details>
@@ -95,7 +95,7 @@
 
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전 차수](conv1-okng-round6.md#reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전 차수](conv1-okng-round6.md#user-content-reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
 
 
 </details>
@@ -128,7 +128,7 @@ src.identity가 현재 소스·설정·분할·선정 파일·예측 CSV를 함�
 
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전 차수](conv1-okng-round6.md#reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전 차수](conv1-okng-round6.md#user-content-reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
 
 
 </details>
@@ -166,7 +166,7 @@ src.identity가 현재 소스·설정·분할·선정 파일·예측 CSV를 함�
 
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전 차수](conv1-okng-round6.md#reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전 차수](conv1-okng-round6.md#user-content-reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
 
 </details>
 

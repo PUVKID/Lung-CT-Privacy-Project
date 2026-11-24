@@ -1,6 +1,6 @@
 # 실제 6차·블러 작동과 높은 정확도의 탐색 진단
 
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 실제 실험 차수와 기존 공개 코드 번호를 구분합니다. [프로젝트 첫 화면](../../README.md) · [실제 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [직전 전체 비교](../revision-diffs/conv1-okng-round6.md)
 
@@ -50,7 +50,7 @@
 
 학습 정답을 섞으면 평균 성적은 낮아졌지만, 이 대조가 모든 정보 누수나 같은 환자의 중복을 없다고 증명하지는 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전 차수](conv1-actual-round5-recovery.md#reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전 차수](conv1-actual-round5-recovery.md#user-content-reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
 
 
 </details>
@@ -101,7 +101,7 @@ StandardScaler와 선형 분류기는 학습 769장만으로 맞추고 검증·�
 
 이 구조의 높은 성적은 자료의 쉬운 단서와 분할 특성을 보여 주며 촬영 기관이나 원 신경망의 인과적 사용을 확정하지 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전 차수](conv1-actual-round5-recovery.md#reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전 차수](conv1-actual-round5-recovery.md#user-content-reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
 
 
 </details>
@@ -150,7 +150,7 @@ StandardScaler와 선형 분류기는 학습 769장만으로 맞추고 검증·�
 
 반복 성적823/1640의 합계는 같은 시험 164장을 10번 평가한 것이며 새로운 독립 영상 수가 아닙니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전 차수](conv1-actual-round5-recovery.md#reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전 차수](conv1-actual-round5-recovery.md#user-content-reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
 
 
 </details>
@@ -199,7 +199,7 @@ StandardScaler와 LogisticRegression은 train769만 fit하고 validation/test는
 
 환자·기관·스캐너 정보가 없어 이 경계 검사를 환자 독립성 검사로 바꾸지 않습니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전 차수](conv1-actual-round5-recovery.md#reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전 차수](conv1-actual-round5-recovery.md#user-content-reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
 
 
 </details>
@@ -250,7 +250,7 @@ DC64개 고정 분류의 test 원비율은 0.7073170731707317, AUC0.774702380952
 
 이 사후 탐색의 단서는 임상 일반화·환자 독립성·원 신경 망 인과성·프라이버시 달성의 증거가 아닙니다.
 
-[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전 차수](conv1-actual-round5-recovery.md#reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
+[같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전 차수](conv1-actual-round5-recovery.md#user-content-reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round6.md)
 
 [집계 설명 원문](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8/%EA%B2%B0%EA%B3%BC/%EB%B8%94%EB%9F%AC_%EA%B2%B0%EA%B3%BC%EA%B0%80_%EB%86%92%EC%95%98%EB%8D%98_%EC%9D%B4%EC%9C%A0.md) · [집계 원값](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8/%EA%B2%B0%EA%B3%BC/%EC%A7%91%EA%B3%84_%EC%9B%90%EA%B0%92.json)
 
