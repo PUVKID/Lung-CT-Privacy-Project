@@ -1,3 +1,4 @@
+<a id="연구-2resnet50와-정량적-트레이드-오프"></a>
 <a name="폐암-영상-분류와-프라이버시-변환-실험"></a>
 <a name="폐-ct-영상-변환과-분류-성능을-비교합니다"></a>
 
@@ -208,7 +209,7 @@ Gaussian Blur와 시드 기반 블록 재배열을 각각 적용하여 형태 �
 
 <a id="-연구-2--resnet50와-정량적-트레이드오프"></a>
 
-### 연구 2·ResNet50와 정량적 트레이드 오프
+### 연구 2·ResNet50와 정량적 트레이드오프
 
 [작성·게재 상태](docs/%EB%85%BC%EB%AC%B8%EC%83%81%ED%83%9C.md)은 단독 20 조건과 조합 100 조건을 비교합니다.
 
@@ -413,7 +414,7 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 | <a id="layout18-table-10-row-7"></a> GPU 그래프에서 키 오류 | 블러 변형의 로그 생성 키와 그래프가 기대하는 키가 다릅니다.<br>예시 GPU 로그로 그린 그림도 실제 GPU 측정과 구분합니다. |
 | <a id="layout18-table-10-row-8"></a> 분류와 시각화가 다른 결과를 보임 | 입력 범위 0~255와 시각화의 `/255`, `training=True` 고정 호출, edge 저장 뒤 전체 모델 덮어쓰기의 영향을 확인합니다. |
 | <a id="layout18-table-10-row-9"></a> 한글·글꼴·경로 오류 | 노트북별 Linux/Windows 경로와 글꼴을 확인합니다.<br>일부 셀은 apt-get 설치, 글꼴 다운로드, Matplotlib 캐시 삭제를 수행합니다. |
-| <a id="layout18-table-10-row-10"></a> 예상과 다른 보안·압축 그래프 | 일부 추가 Train의 security는 정확도나 특징 수를 뒤집은 산 식입니다.<br>풀링 크기 설명과 실제 특징 수 감소 방향도 함께 확인합니다. |
+| <a id="layout18-table-10-row-10"></a> 예상과 다른 보안·압축 그래프 | 일부 추가 Train의 security는 정확도나 특징 수를 뒤집은 산식입니다.<br>풀링 크기 설명과 실제 특징 수 감소 방향도 함께 확인합니다. |
 
 
 <a id="-자료와-후속-방향"></a>
@@ -422,7 +423,7 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 
 [연구 단계 상세](docs/RESEARCH_STAGES.md)에는 원고와 코드의 대응, 원고에서 주장하는 범위, 후속 실험을 따로 정리했습니다.
 
-기존 두 PDF는 이전 공개 경로에 보존하고, 연구 2의 연락처·저자 사진을 포함한 전체 원문 PDF/HWP를 현재 논문 항목에 추가했습니다.
+기존 PDF와 연구 2의 연락처·저자 사진을 포함한 전체 원문 PDF/HWP는 로컬에 보존합니다. 현재 논문 항목에서는 작성·게재 상태와 연구 설명을 안내하며 미게재 원고 본문과 편집 원본은 공개하지 않습니다.
 
 기존 하계 저장소는 [Lung CT Study 1 Archive](https://github.com/PUVKID/Lung-CT-Study-1-Archive)에서 통합 위치를 안내합니다.
 
@@ -437,7 +438,7 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 
 ## 최신 문서와 변경 이력
 
-현재 제공하는 원문과 직전 공개본의 비교입니다. 이전 원고·발표와 코드는 전체 차수 표에서 확인할 수 있습니다.
+현재 공개 자료와 직전 공개본의 비교입니다. 이전 원고·발표·코드의 단계별 설명은 전체 차수 표에서 확인할 수 있으며, 미게재 원고 본문과 편집 원본은 로컬에 보존하고 공개하지 않습니다.
 
 | 문서 | 자료 폴더 | 상세 | 직전 공개본 전체 비교 |
 | --- | --- | --- | --- |
@@ -700,7 +701,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 | <a id="layout18-table-30-row-1"></a> 변환 위치 | 입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다. σ0 은 원본 배열을 복사합니다. |
 | <a id="layout18-table-30-row-2"></a> 모델 연결 | 일반 ResNet50 분류 모델을 사용합니다. |
 | <a id="layout18-table-30-row-3"></a> 분할·증강 | 원본 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| <a id="layout18-table-30-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-30-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-30-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-30-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-30-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
@@ -754,7 +755,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 | <a id="layout18-table-33-row-1"></a> 변환 위치 | 시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다.<br>영상보다 작지 않은 블록은 원본을 복사합니다. |
 | <a id="layout18-table-33-row-2"></a> 모델 연결 | 일반 ResNet50 분류 모델을 사용합니다. |
 | <a id="layout18-table-33-row-3"></a> 분할·증강 | 이 사본은 oversample_dir 뒤 prepare_split을 호출해 증강 후 train/test를 나눕니다. |
-| <a id="layout18-table-33-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-33-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-33-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-33-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-33-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
@@ -809,7 +810,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 | <a id="layout18-table-36-row-1"></a> 변환 위치 | 블록 10개와 블러 10개의 100 조합을 비교합니다.<br>입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. |
 | <a id="layout18-table-36-row-2"></a> 모델 연결 | 일반 ResNet50 분류 모델을 사용합니다. |
 | <a id="layout18-table-36-row-3"></a> 분할·증강 | 변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| <a id="layout18-table-36-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-36-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-36-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-36-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-36-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
@@ -863,7 +864,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 | <a id="layout18-table-39-row-1"></a> 변환 위치 | 입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다. |
 | <a id="layout18-table-39-row-2"></a> 모델 연결 | edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다. |
 | <a id="layout18-table-39-row-3"></a> 분할·증강 | 이 사본은 증강 후 train/test를 나누는 경로입니다. |
-| <a id="layout18-table-39-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-39-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-39-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-39-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-39-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
@@ -921,7 +922,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 | <a id="layout18-table-42-row-1"></a> 변환 위치 | 입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다. |
 | <a id="layout18-table-42-row-2"></a> 모델 연결 | edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다. |
 | <a id="layout18-table-42-row-3"></a> 분할·증강 | 이 사본은 증강 후 train/test를 나누는 경로입니다. |
-| <a id="layout18-table-42-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-42-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-42-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-42-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-42-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
@@ -978,7 +979,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 | <a id="layout18-table-45-row-1"></a> 변환 위치 | 입력 Block →Blur의 100 조합 뒤에 분리 모델을 연결합니다.<br>경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다. |
 | <a id="layout18-table-45-row-2"></a> 모델 연결 | edge와 cloud를 같은 TensorFlow 프로세스에서 연결합니다. |
 | <a id="layout18-table-45-row-3"></a> 분할·증강 | 변환 원본에서 train/test를 먼저 나누고 학습 쪽을 증강합니다. |
-| <a id="layout18-table-45-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-45-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-45-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-45-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-45-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
@@ -1034,7 +1035,7 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 | <a id="layout18-table-48-row-1"></a> 변환 위치 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
 | <a id="layout18-table-48-row-2"></a> 모델 연결 | edge→FeatureGaussianBlur→cloud 순서로 연결합니다. |
 | <a id="layout18-table-48-row-3"></a> 분할·증강 | 원본 test를 먼저 분리하고 학습 쪽을 증강합니다. |
-| <a id="layout18-table-48-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-48-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-48-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-48-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-48-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |
@@ -1110,7 +1111,7 @@ Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 �
 
 | 제약 | 확인할 내용 |
 | --- | --- |
-| 모델 불일치 | 5 라 벨 화면과 3 클래스 학습의 모델·라벨 대응을 먼저 확인합니다. |
+| 모델 불일치 | 5 라벨 화면과 3 클래스 학습의 모델·라벨 대응을 먼저 확인합니다. |
 | 입력 범위 | 조직 영상과 CT를 구분합니다. |
 | 사용 목적 | 연구용 예측 화면이며 임상 진단 승인 자료가 아닙니다. |
 

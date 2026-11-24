@@ -29,7 +29,7 @@
 | <a id="layout18-table-1-row-1"></a> 변환 위치 | ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. |
 | <a id="layout18-table-1-row-2"></a> 모델 연결 | edge→FeatureGaussianBlur→cloud 순서로 연결합니다. |
 | <a id="layout18-table-1-row-3"></a> 분할·증강 | 원본 test를 먼저 분리하고 학습 쪽을 증강합니다. |
-| <a id="layout18-table-1-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반 전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
+| <a id="layout18-table-1-row-4"></a> 입력과 증강 | JPEG 3 채널을 512×512 float32로 읽습니다.<br>학습에서는 좌우·상하 반전, 밝기·대비·잡음을 적용하며 평가 입력과 구분합니다. |
 | <a id="layout18-table-1-row-5"></a> 분류 헤드 | GAP와 GMP를 연결하고 Dense512 →BatchNorm·ReLU·Dropout0.35 →Dense256 →BatchNorm·ReLU·Dropout0.25 →softmax로 분류합니다. |
 | <a id="layout18-table-1-row-6"></a> 평가·저장 | 조건별 정확도·ROC-AUC·클래스별 Recall·혼동행렬과 모델·그래프 출력을 구분합니다. |
 | <a id="layout18-table-1-row-7"></a> 테스트 의사 라벨 | 테스트 예측의 최대 확률이 0.88 이상인 영상을 예측 라벨로 학습 자료에 추가하는 후속 경로가 있습니다. |

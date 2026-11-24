@@ -12,7 +12,7 @@
 | tests/ | 합성 단위검사·API·Node VM 회귀 | 실제 CT 공격 성적이나 화면 렌더링 검사가 아님 |
 | 결과/측정상태.json | 실제 미측정 상태 | 합성 대조군 점수를 실제 결과로 채우지 않음 |
 
-공개 사 본의 config.example.json을 config.json으로 복사하고 자신의 입력을 준비해야 합니다.
+공개 사본의 config.example.json을 config.json으로 복사하고 자신의 입력을 준비해야 합니다.
 
 **전체 검사 중 실제 ResNet50 경로 검사는 로컬 ImageNet V1 초기 가중치 파일이 필요합니다.** 실제 CT 없이 수행하는 합성 검사에도 이 모델 검사를 포함합니다. config.json의 initial_weights_path를 자신의 로컬 파일로 지정하고 initial_weights_sha256와 대조해야 합니다.
 
@@ -49,4 +49,4 @@ python -B -X utf8 -m unittest discover -s tests -p "test_*.py" -v
 
 실측 0점은 0.0으로 표시하고 미완료·오류는 미측정으로 남깁니다.
 
-상세의 같은 읽기 수준에서 산 식·분모·정밀도·한계를 확인하세요.
+상세의 같은 읽기 수준에서 산식·분모·정밀도·한계를 확인하세요.

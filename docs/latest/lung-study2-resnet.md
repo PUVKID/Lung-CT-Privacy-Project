@@ -1,6 +1,7 @@
+<a id="resnet50-기-반-폐암-ct-분류에서-block-encryptiongaussian-blur의-프라이버시-정확도-트레이드-오프-분석"></a>
 <a id="-resnet50-기반-폐암-ct-분류에서-block-encryptiongaussian-blur의-프라이버시-정확도-트레이드오프-분석"></a>
 
-# ResNet50 기 반 폐암 CT 분류에서 Block Encryption·Gaussian Blur의 프라이버시-정확도 트레이드 오프 분석
+# ResNet50 기반 폐암 CT 분류에서 Block Encryption·Gaussian Blur의 프라이버시-정확도 트레이드오프 분석
 
 <!-- reading-levels17:start -->
 **읽기 수준 선택** · [LEVEL 1 - Beginner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
@@ -40,6 +41,8 @@
 
 <details>
 <summary>파일·크기·SHA-256과 자료 연결</summary>
+
+이 표의 바이트 수와 SHA-256은 원고의 당시 기록값입니다. 링크는 현재 작성·게재 상태 안내로 연결되며, 연결된 안내 파일의 크기·해시를 뜻하지 않습니다. 미게재 원고 본문과 편집 원본은 로컬에 보존하며 공개하지 않습니다.
 
 | 원문 파일 | 바이트 | SHA-256 |
 | --- | --- | --- |

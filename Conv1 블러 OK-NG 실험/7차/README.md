@@ -14,7 +14,7 @@
 
 ## 공개 코드의 합성 검사
 
-합성 검사는 실제 CT·가중치 없이 수행하지만 설정 형식을 읽으므로 먼저 공개 예제를 config.json으로 준비합니다. 자신의 실제 학습 설정과 혼동하지 않도록 별도의 공개 사 본에서 수행합니다.
+합성 검사는 실제 CT·가중치 없이 수행하지만 설정 형식을 읽으므로 먼저 공개 예제를 config.json으로 준비합니다. 자신의 실제 학습 설정과 혼동하지 않도록 별도의 공개 사본에서 수행합니다.
 
 ```powershell
 Copy-Item -LiteralPath config.example.json -Destination config.json
