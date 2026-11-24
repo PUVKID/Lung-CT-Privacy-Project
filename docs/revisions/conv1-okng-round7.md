@@ -5,13 +5,13 @@
 실제 실험 차수와 기존 공개 코드 번호를 구분합니다. [프로젝트 첫 화면](../../README.md) · [실제 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [직전 전체 비교](../revision-diffs/conv1-okng-round7.md)
 
 <details open>
-<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
 
 <a id="reading-level-1"></a>
 
 ## LEVEL 1 - Beginner
 
-**블러 없이 한 번 배운 모델을 고정한 뒤, 블러만 바꾸면 얼마나 달라지는지 살펴봅니다.** 모델을 고정한다는 것은 배운 숫자를 더 바꾸지 않는다는 뜻입니다.
+블러 없이 한 번 배운 모델을 고정한 뒤, 블러만 바꾸면 얼마나 달라지는지 살펴봅니다. 모델을 고정한다는 것은 배운 숫자를 더 바꾸지 않는다는 뜻입니다.
 
 | 단계 | 고정 규칙 | 확인할 기록 |
 | --- | --- | --- |
@@ -28,7 +28,7 @@
 
 학습 중에는 모든 평가가 대기이며 옛 5·6차 수치를 빈칸에 채우지 않습니다.
 
-**2026-11-20 공개 기록 시점에 새 7차는 학습 중이고 최종 시험 결과는 미측정입니다.**
+2026-11-20 공개 기록 시점에 새 7차는 학습 중이고 최종 시험 결과는 **미측정**입니다.
 
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
@@ -38,13 +38,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
 ## LEVEL 2 - Explorer
 
-**학습 한 번·모델 선정 한 번·열 강도 평가를 구분합니다.** 6차 진단에서 관측한 적응 학습과 고정 모델의 차이를 새 실험에서 처음부터 명확히 통제합니다.
+학습 한 번·모델 선정 한 번·열 강도 평가를 구분합니다. 6차 진단에서 관측한 적응 학습과 고정 모델의 차이를 새 실험에서 처음부터 명확히 통제합니다.
 
 | 조건 | 실제 설정 | 해석 |
 | --- | --- | --- |
@@ -70,13 +70,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
 ## LEVEL 3 - Practitioner
 
-**공개 설정은 실행 예제이며 원본·분할·초기 가중치를 포함하지 않습니다.** 자신의 고정 기준을 준비하고 검사한 뒤 감독 실행으로 시작합니다.
+공개 설정은 실행 예제이며 원본·분할·초기 가중치를 **포함하지 않습니다**. 자신의 고정 기준을 준비하고 검사한 뒤 감독 실행으로 시작합니다.
 
 | 단계 | 고정 규칙 | 확인할 기록 |
 | --- | --- | --- |
@@ -101,13 +101,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
 ## LEVEL 4 - Advanced
 
-**src.identity가 현재 소스·설정·분할·선정 파일·예측 CSV를 함께 묶습니다.** src.training은 학습 모델 한 개와 동결 평가 모델을 분리합니다.
+src.identity가 현재 소스·설정·분할·선정 파일·예측 CSV를 함께 묶습니다. src.training은 학습 모델 한 개와 동결 평가 모델을 분리합니다.
 
 | 단계 | 고정 규칙 | 확인할 기록 |
 | --- | --- | --- |
@@ -134,13 +134,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
 ## LEVEL 5 - Expert
 
-**7차는 기존 5차 best를 재사용하지 않는 새 실험입니다.** 초기 ImageNet 파일과 고정 원본·분할, σ0 100회 이력, 단일 선정 identity, 열 평가의 모델 불변을 함께 대조해야 합니다.
+7차는 기존 5차 best를 재사용하지 않는 새 실험입니다. 초기 ImageNet 파일과 고정 원본·분할, σ0 100회 이력, 단일 선정 identity, 열 평가의 모델 불변을 함께 대조해야 합니다.
 
 | 조건 | 실제 설정 | 해석 |
 | --- | --- | --- |

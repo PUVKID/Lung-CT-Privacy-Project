@@ -3,10 +3,10 @@
 # 특징맵 전체 구성과 대시보드·공개 코드 3차
 
 <!-- reading-levels17:start -->
-**읽기 수준** · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
+읽기 수준 · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
 
 <details open>
-<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
 
 <a id="reading-level-1"></a>
 
@@ -42,7 +42,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
@@ -78,7 +78,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
@@ -114,7 +114,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
@@ -150,7 +150,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
@@ -178,11 +178,11 @@
 
 **학습 2차의 결과를 읽는 시각화 소프트웨어**를 보완했습니다. 새로운 학습 차수를 시작한 변경이 아닙니다. 학습 코드·설정·분할·실행 식별자와 체크포인트는 그대로 사용합니다.
 
-화면에서는  **몸속 사진 →  선·무늬 찾기 →  찾은 무늬를 부드럽게 →  두 상자로 분류** 순서로 먼저 설명합니다. 이해를 돕는 비유이며 의학적 진단을 뜻하지 않습니다. 64 채널·잔차 블록 같은 실제 기술 조건은 상세 설정에서 그대로 확인합니다.
+화면에서는  몸속 사진 →  선·무늬 찾기 →  찾은 무늬를 부드럽게 →  두 상자로 분류 순서로 먼저 설명합니다. 이해를 돕는 비유이며 의학적 진단을 뜻하지 않습니다. 64 채널·잔차 블록 같은 실제 기술 조건은 상세 설정에서 그대로 확인합니다.
 
 ## 달라진 표시와 저장 방식
 
-**이전 미리보기는 블러 직후 특징 중 한 채널을 대표 이미지로 보여 주었습니다.** 이번에는 원본 범주와 처리 단계별 PNG를 저장하고, 특징맵 한 그림 안에 여러 채널의 반응을 함께 배치합니다.
+이전 미리보기는 블러 직후 특징 중 한 채널을 대표 이미지로 보여 주었습니다. 이번에는 원본 범주와 처리 단계별 PNG를 저장하고, 특징맵 한 그림 안에 여러 채널의 반응을 함께 배치합니다.
 
 | 구분 | 구성 |
 | --- | --- |

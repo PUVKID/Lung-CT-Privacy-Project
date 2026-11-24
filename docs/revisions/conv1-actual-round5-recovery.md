@@ -5,13 +5,13 @@
 실제 실험 차수와 기존 공개 코드 번호를 구분합니다. [프로젝트 첫 화면](../../README.md) · [실제 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/%EC%8B%A4%EC%A0%9C5%EC%B0%A8_%ED%95%99%EC%8A%B5%EB%B3%B5%EA%B5%AC) · [직전 전체 비교](../revision-diffs/conv1-actual-round5-recovery.md)
 
 <details open>
-<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
 
 <a id="reading-level-1"></a>
 
 ## LEVEL 1 - Beginner
 
-**실제 5차는 끊긴 학습을 이어 가는 복구 차수입니다.** 기존 공개 폴더 `5차`는 실제 4차의 코드였으므로, 이 복구 자료는 `실제5차_학습복구`에 따로 둡니다.
+실제 5차는 끊긴 학습을 이어 가는 복구 차수입니다. 기존 공개 폴더 `5차`는 실제 4차의 코드였으므로, 이 복구 자료는 `실제5차_학습복구`에 따로 둡니다.
 
 | 단계 | 무엇을 확인하나요? | 결과 |
 | --- | --- | --- |
@@ -60,13 +60,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
 ## LEVEL 2 - Explorer
 
-**복구는 새 실험 설계가 아니라 저장 위치·실행 계보를 함께 옮기는 과정입니다.** 강도별로 따로 학습하는 기존 프로토콜을 유지합니다.
+복구는 새 실험 설계가 아니라 저장 위치·실행 계보를 함께 옮기는 과정입니다. 강도별로 따로 학습하는 기존 프로토콜을 유지합니다.
 
 | 조건 | 실제 설정 | 해석 |
 | --- | --- | --- |
@@ -112,13 +112,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
 ## LEVEL 3 - Practitioner
 
-**자신의 원본과 고정 기준을 준비한 뒤 configure→import→verify→감독 실행 순서로 사용합니다.** 공개 예제를 기존 비공개 학습에 그대로 실행하지 않습니다.
+자신의 원본과 고정 기준을 준비한 뒤 configure→import→verify→감독 실행 순서로 사용합니다. 공개 예제를 기존 비공개 학습에 그대로 실행하지 않습니다.
 
 | 단계 | 무엇을 확인하나요? | 결과 |
 | --- | --- | --- |
@@ -165,13 +165,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
 ## LEVEL 4 - Advanced
 
-**과학 소스와 복구 경계를 분리합니다.** `tools/recovery.py`가 원본·이동 내용과 상태를 대조하고 `tools/safe_training.py`가 공간·중복 프로세스·독립 오류 로그를 확인합니다.
+과학 소스와 복구 경계를 분리합니다. `tools/recovery.py`가 원본·이동 내용과 상태를 대조하고 `tools/safe_training.py`가 공간·중복 프로세스·독립 오류 로그를 확인합니다.
 
 | 조건 | 실제 설정 | 해석 |
 | --- | --- | --- |
@@ -219,13 +219,13 @@ Windows venv launcher는 직접 부모 또는 실행 파일·PID가 확인되는
 </details>
 
 <details>
-<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
 ## LEVEL 5 - Expert
 
-**실제 4 →5 비교와 공개 5 →실제 5 복구의 저장 경로 차이를 함께 검토해야 합니다.** 이 페이지가 원영상·복구 baseline·운영 영수증을 공개하거나 복구 성공을 새로 보증하는 것은 아닙니다.
+실제 4 →5 비교와 공개 5 →실제 5 복구의 저장 경로 차이를 함께 검토해야 합니다. 이 페이지가 원영상·복구 baseline·운영 영수증을 공개하거나 복구 성공을 새로 보증하는 것은 아닙니다.
 
 | 단계 | 무엇을 확인하나요? | 결과 |
 | --- | --- | --- |

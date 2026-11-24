@@ -5,13 +5,13 @@
 실제 실험 차수와 기존 공개 코드 번호를 구분합니다. [프로젝트 첫 화면](../../README.md) · [실제 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [직전 전체 비교](../revision-diffs/conv1-okng-round6.md)
 
 <details open>
-<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
 
 <a id="reading-level-1"></a>
 
 ## LEVEL 1 - Beginner
 
-**블러는 작동했지만, 강도마다 다시 배우는 실험과 같은 모델에 블러만 추가하는 실험은 질문이 달랐습니다.** 6차는 기존 5차 결과를 읽기만하여 그 차이를 진단했습니다.
+블러는 작동했지만, 강도마다 다시 배우는 실험과 같은 모델에 블러만 추가하는 실험은 질문이 달랐습니다. 6차는 기존 5차 결과를 읽기만하여 그 차이를 진단했습니다.
 
 | σ | 강도에 맞춰 따로 학습한 기존 모델 | 같은 σ0 모델에 블러만 추가한 6차 진단 |
 | --- | --- | --- |
@@ -56,13 +56,13 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
 ## LEVEL 2 - Explorer
 
-**첫 합성곱의 특징에 블러가 실제로 적용되는지, 남은 정보와 데이터 분할의 단서가 무엇인지 나눠 확인했습니다.**
+첫 합성곱의 특징에 블러가 실제로 적용되는지, 남은 정보와 데이터 분할의 단서가 무엇인지 나눠 확인했습니다.
 
 | σ | 강도에 맞춰 따로 학습한 기존 모델 | 같은 σ0 모델에 블러만 추가한 6차 진단 |
 | --- | --- | --- |
@@ -107,13 +107,13 @@ StandardScaler와 선형 분류기는 학습 769장만으로 맞추고 검증·�
 </details>
 
 <details>
-<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
 ## LEVEL 3 - Practitioner
 
-**진단 코드는 보존한 모델과 분할을 입력으로 사용하며 새 100회 학습을 하지 않습니다.** 수학 자체 검사와 실제 CT 재추론을 구분합니다.
+진단 코드는 보존한 모델과 분할을 입력으로 사용하며 새 100회 학습을 하지 않습니다. 수학 자체 검사와 실제 CT 재추론을 구분합니다.
 
 | 조건 | 실제 설정 | 해석 |
 | --- | --- | --- |
@@ -156,13 +156,13 @@ StandardScaler와 선형 분류기는 학습 769장만으로 맞추고 검증·�
 </details>
 
 <details>
-<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
 ## LEVEL 4 - Advanced
 
-**수식·재추론·고정 모델 교체·저차원 대조군을 별도 검사 경계로 구성했습니다.** 각 σ마다 새 블러 모듈을 만들어 전달함수 캐시가 이전 강도를 재사용하지 않도록 했습니다.
+수식·재추론·**고정 모델** 교체·저차원 대조군을 별도 검사 경계로 구성했습니다. 각 σ마다 새 블러 모듈을 만들어 전달함수 캐시가 이전 강도를 재사용하지 않도록 했습니다.
 
 | σ | 강도에 맞춰 따로 학습한 기존 모델 | 같은 σ0 모델에 블러만 추가한 6차 진단 |
 | --- | --- | --- |
@@ -205,13 +205,13 @@ StandardScaler와 LogisticRegression은 train769만 fit하고 validation/test는
 </details>
 
 <details>
-<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
 ## LEVEL 5 - Expert
 
-**같은 test 164장을 반복 사용한 탐색 진단이며 독립 환자 성능이 아닙니다.** 6차의 고정 σ0 모델은 이미 5차에서 학습한 모델이고 7차는 새 ImageNet 초기값에서 다시 학습하므로 결과를 합치지 않습니다.
+같은 test 164장을 반복 사용한 탐색 진단이며 독립 환자 성능이 아닙니다. 6차의 고정 σ0 모델은 이미 5차에서 학습한 모델이고 7차는 새 ImageNet 초기값에서 다시 학습하므로 결과를 합치지 않습니다.
 
 | 조건 | 실제 설정 | 해석 |
 | --- | --- | --- |

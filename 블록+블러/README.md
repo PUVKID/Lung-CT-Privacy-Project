@@ -4,7 +4,7 @@
 
 <!-- reading-levels17:start -->
 <details>
-<summary><strong>읽기 수준 선택</strong></summary>
+<summary>읽기 수준 선택</summary>
 
 | 레벨 | 읽는 목적 |
 | --- | --- |
@@ -17,7 +17,7 @@
 </details>
 <!-- reading-levels17:end -->
 
-**블록 10개와 블러 10개의 100 조합을 비교합니다.** 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
+블록 10개와 블러 10개의 100 조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
 
 | 주요 구성 | 내용 |
 | --- | --- |

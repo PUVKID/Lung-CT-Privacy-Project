@@ -4,7 +4,7 @@
 
 <!-- reading-levels17:start -->
 <details>
-<summary><strong>읽기 수준 선택</strong></summary>
+<summary>읽기 수준 선택</summary>
 
 | 레벨 | 읽는 목적 |
 | --- | --- |
@@ -17,7 +17,7 @@
 </details>
 <!-- reading-levels17:end -->
 
-**SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건의 저장 결과를 확인하는 자료 차수입니다.** 전체 논문의 1,097장 실험과 구분합니다.
+SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다.
 
 | 주요 구성 | 내용 |
 | --- | --- |

@@ -3,10 +3,10 @@
 # 자료 1차·ResNet50 비교 노트북의 설정 정리
 
 <!-- reading-levels17:start -->
-**읽기 수준** · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
+읽기 수준 · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
 
 <details open>
-<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
 
 <a id="reading-level-1"></a>
 
@@ -24,7 +24,7 @@
 
 ### LEVEL 1 · 노트북 학습·평가의 연결과 실패 조건
 
-**자료 1차·ResNet50 비교 노트북의 설정 정리**의 범위에서 설명합니다. 먼저 이 자료가 무엇을 바꾸고 무엇을 보여 주는지 살펴봅니다. 아래 조건은 이 문서에 연결된 파일의 내용이며 다른 차수의 결과를 함께 센 값이 아닙니다.
+자료 1차·ResNet50 비교 노트북의 설정 정리의 범위에서 설명합니다. 먼저 이 자료가 무엇을 바꾸고 무엇을 보여 주는지 살펴봅니다. 아래 조건은 이 문서에 연결된 파일의 내용이며 다른 차수의 결과를 함께 센 값이 아닙니다.
 
 | 항목 | 이 차수의 내용 |
 | --- | --- |
@@ -52,7 +52,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
@@ -70,7 +70,7 @@
 
 ### LEVEL 2 · 노트북 학습·평가의 연결과 실패 조건
 
-**자료 1차·ResNet50 비교 노트북의 설정 정리**의 범위에서 설명합니다. 입력 → 처리 → 출력의 순서로 읽습니다. 설정을 준비한 것과 실제 실행에서 얻은 결과를 구분하고, 관측값은 같은 입력·설정의 기록과 연결합니다.
+자료 1차·ResNet50 비교 노트북의 설정 정리의 범위에서 설명합니다. 입력 → 처리 → 출력의 순서로 읽습니다. 설정을 준비한 것과 실제 실행에서 얻은 결과를 구분하고, 관측값은 같은 입력·설정의 기록과 연결합니다.
 
 | 항목 | 이 차수의 내용 |
 | --- | --- |
@@ -98,7 +98,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
@@ -116,7 +116,7 @@
 
 ### LEVEL 3 · 노트북 학습·평가의 연결과 실패 조건
 
-**자료 1차·ResNet50 비교 노트북의 설정 정리**의 범위에서 설명합니다. 실행할 파일을 먼저 고르고 아래 전체 상세의 경로·설정·호출 순서를 확인합니다. 표의 구성과 조건을 해당 파일에 맞춰 읽으며 문서 정리 자체가 새 실행을 뜻하지는 않습니다.
+자료 1차·ResNet50 비교 노트북의 설정 정리의 범위에서 설명합니다. 실행할 파일을 먼저 고르고 아래 전체 상세의 경로·설정·호출 순서를 확인합니다. 표의 구성과 조건을 해당 파일에 맞춰 읽으며 문서 정리 자체가 새 실행을 뜻하지는 않습니다.
 
 | 항목 | 이 차수의 내용 |
 | --- | --- |
@@ -144,7 +144,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
@@ -162,7 +162,7 @@
 
 ### LEVEL 4 · 노트북 학습·평가의 연결과 실패 조건
 
-**자료 1차·ResNet50 비교 노트북의 설정 정리**의 범위에서 설명합니다. 입력 준비·변환 또는 셀 수정·계산·저장의 경계를 나누어 읽습니다. 각 설정과 출력의 대응은 이 차수 자료를 기준으로 확인하고 다른 차수의 구현은 관련 링크에서 별도로 살펴봅니다.
+자료 1차·ResNet50 비교 노트북의 설정 정리의 범위에서 설명합니다. 입력 준비·변환 또는 셀 수정·계산·저장의 경계를 나누어 읽습니다. 각 설정과 출력의 대응은 이 차수 자료를 기준으로 확인하고 다른 차수의 구현은 관련 링크에서 별도로 살펴봅니다.
 
 | 항목 | 이 차수의 내용 |
 | --- | --- |
@@ -190,7 +190,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
@@ -200,7 +200,7 @@
 
 ### LEVEL 5 · 노트북 학습·평가의 연결과 실패 조건
 
-**자료 1차·ResNet50 비교 노트북의 설정 정리**의 범위에서 설명합니다. 코드에 정의된 동작·설정, 저장된 관측값, 재현에 필요한 입력을 구분합니다. 분모·변환 위치·모델 대응과 알려진 한계를 유지하며 다른 차수나 원고의 결과를 이 자료의 실측으로 합치지 않습니다.
+자료 1차·ResNet50 비교 노트북의 설정 정리의 범위에서 설명합니다. 코드에 정의된 동작·설정, 저장된 관측값, 재현에 필요한 입력을 구분합니다. 분모·변환 위치·모델 대응과 알려진 한계를 유지하며 다른 차수나 원고의 결과를 이 자료의 실측으로 합치지 않습니다.
 
 | 항목 | 이 차수의 내용 |
 | --- | --- |
@@ -226,7 +226,7 @@
 
 <!-- reading-levels17:end -->
 
-**블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다.**
+블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다.
 
 분야: 실험 코드 › ResNet50 단독 변환 › 설정 정렬·유사도 매칭
 

@@ -4,7 +4,7 @@
 
 <!-- reading-levels17:start -->
 <details>
-<summary><strong>읽기 수준 선택</strong></summary>
+<summary>읽기 수준 선택</summary>
 
 | 레벨 | 읽는 목적 |
 | --- | --- |
@@ -17,7 +17,7 @@
 </details>
 <!-- reading-levels17:end -->
 
-**EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다.**
+EfficientNetV2-S·MobileNetV2·ResNet50의 **서로 다른** 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다.
 
 | 주요 구성 | 내용 |
 | --- | --- |

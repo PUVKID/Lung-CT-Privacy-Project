@@ -6,23 +6,23 @@
 
 # Lung CT Privacy Project
 
-**블러·블록 변환이 폐 CT 분류 성능과 프라이버시에 미치는 영향을 비교합니다.**
+블러·블록 변환이 폐 CT 분류 성능과 프라이버시에 미치는 영향을 비교합니다.
 
 <!-- reading-levels17:start -->
 | 읽기 수준 | 안내 내용 |
 | --- | --- |
-| [**LEVEL 1 - Beginner**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
-| [**LEVEL 2 - Explorer**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 핵심 개념과 처리 흐름의 관계 이해 |
-| [**LEVEL 3 - Practitioner**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 실험·사용 절차와 결과 해석 따라가기 |
-| [**LEVEL 4 - Advanced**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 코드 구조·설정·설계 선택과 제약 검토 |
-| [**LEVEL 5 - Expert**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 논문·프로토콜·분모·누수·미검증 범위 대조 |
+| [LEVEL 1 - Beginner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
+| [LEVEL 2 - Explorer](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 핵심 개념과 처리 흐름의 관계 이해 |
+| [LEVEL 3 - Practitioner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 실험·사용 절차와 결과 해석 따라가기 |
+| [LEVEL 4 - Advanced](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 코드 구조·설정·설계 선택과 제약 검토 |
+| [LEVEL 5 - Expert](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 논문·프로토콜·분모·누수·미검증 범위 대조 |
 <!-- reading-levels17:end -->
 
 <!-- fixed-model-publication-20261120:start -->
 
 ## Conv1 실제 실험 1~7차와 공개 코드의 대응
 
-**기존 공개 1~5차와 실제 실험 번호는 다른 축입니다.** 공개 3차는 학습 2차의 특징 그림 소프트웨어, 공개 4차는 로컬 3차의 선택 화면 수리, 공개 5차는 실제 4차의 고정 100회 코드입니다.
+기존 공개 1~5차와 실제 실험 번호는 다른 축입니다. 공개 3차는 학습 2차의 특징 그림 소프트웨어, 공개 4차는 로컬 3차의 선택 화면 수리, 공개 5차는 실제 4차의 고정 100회 코드입니다.
 
 기존 번호·원문은 보존하고 실제 5차 복구를 별도 이름으로 추가했습니다.
 
@@ -213,7 +213,7 @@ Gaussian Blur와 시드 기반 블록 재배열을 각각 적용하여 형태 �
 
 [작성·게재 상태](docs/%EB%85%BC%EB%AC%B8%EC%83%81%ED%83%9C.md)은 단독 20 조건과 조합 100 조건을 비교합니다.
 
-**100 조합 노트북 하나가 120 조건 전체를 수행하는 구조는 아닙니다.** 블록 변환은 고정 시드 순열로 블록의 위치를 바꾸며, 조합에서는 그 뒤 PIL GaussianBlur를 적용합니다.
+100 조합 노트북 하나가 120 조건 전체를 수행하는 구조는 아닙니다. 블록 변환은 고정 시드 순열로 블록의 위치를 바꾸며, 조합에서는 그 뒤 PIL GaussianBlur를 적용합니다.
 
 | 원고의 실험·조건 | 정확도 | Privacy Score | 해석 |
 | --- | --- | --- | --- |
@@ -227,7 +227,7 @@ Gaussian Blur와 시드 기반 블록 재배열을 각각 적용하여 형태 �
 
 조합 실험의 Block512 + σ256은 46.8%로, 별도로 학습한 Blur 단독 σ256의 51.38%와 다릅니다. 원고 본문 4.1 절의 Block256 단독 97.25%와 조합 실험 σ0의 98.17%도 동일 실행의 값으로 합치지 않습니다.
 
-Privacy Score는 `50 × (1 − MS-SSIM)`입니다. 원고에서는 전체 1,097장의 원본·변환 영상에 대한 5개 스케일 구조 유사도로 산출합니다. **공격 성공률·재식별 확률·암호학적 안전성·차등 프라이버시 보증값이 아닙니다.** 원고는 실제 복원 공격과 사람의 지각 평가를 후속 과제로 남깁니다.
+Privacy Score는 `50 × (1 − MS-SSIM)`입니다. 원고에서는 전체 1,097장의 원본·변환 영상에 대한 5개 스케일 구조 유사도로 산출합니다. 공격 성공률·재식별 확률·암호학적 안전성·차등 프라이버시 보증값이 아닙니다. 원고는 실제 복원 공격과 사람의 지각 평가를 후속 과제로 남깁니다.
 
 <a id="-기술과-처리-흐름"></a>
 
@@ -343,14 +343,14 @@ CT의 Benign·Malignant·Normal 3 클래스와 데이터 의미·출력 차원�
 
 1.
 
-**원본 분리와 fold 분리는 따로 확인합니다.** 일부 최신 실험은 원본 테스트를 먼저 분리하지만, 증강한 학습 영상에 다시 fold를 나누므로 같은 원본의 파생 영상이 학습·검증 fold에 걸칠 가능성이 있습니다.
+원본 분리와 fold 분리는 따로 확인합니다. 일부 최신 실험은 원본 테스트를 먼저 분리하지만, 증강한 학습 영상에 다시 fold를 나누므로 같은 원본의 파생 영상이 학습·검증 fold에 걸칠 가능성이 있습니다.
 
 이전 블록 실험과 추가 Train의 일부 셀은 증강 후 테스트도 나눕니다.
 
 환자 단위 분리와 파생 영상의 중복 여부를 점검하는 것은 후속 검증 과제입니다.
 2.
 
-**테스트 의사 라벨을 사용하는 평가입니다.** 여러 노트북에서 테스트 예측 확신도 0.88 이상인 영상이 10장 이상이면 추가 학습 15 epochs를 수행하고 같은 테스트를 다시 평가합니다.
+테스트 의사 라벨을 사용하는 평가입니다. 여러 노트북에서 테스트 예측 확신도 0.88 이상인 영상이 10장 이상이면 추가 학습 15 epochs를 수행하고 같은 테스트를 다시 평가합니다.
 
 추가 모델은 7개 fold 모델과 함께 앙상블에 들어갑니다.
 
@@ -359,11 +359,11 @@ CT의 Benign·Malignant·Normal 3 클래스와 데이터 의미·출력 차원�
 순수 hold-out 정확도와 구분해야 합니다.
 3.
 
-**논문 설명과 코드가 완전히 같지는 않습니다.** 예를 들어 논문은 Mixup 계수의 Beta 분포를 설명하지만 검토한 코드에는 uniform 샘플링이 있습니다.
+논문 설명과 코드가 완전히 같지는 않습니다. 예를 들어 논문은 Mixup 계수의 Beta 분포를 설명하지만 검토한 코드에는 uniform 샘플링이 있습니다.
 
 ImageNet ResNet50 입력에 `preprocess_input`이 없는 변형, 중첩 모델 내부 미세조정 범위를 확인해야 하는 변형, 최적 체크포인트를 종료/SWA 가중치로 다시 저장하는 흐름도 있습니다.
-4. **그림이 만들어졌다고 실측 자료인 것은 아닙니다.** 일부 실험 노트북은 결과·학습 이력·GPU 로그가 없을 때 예시 데이터를 생성합니다. 히트맵 스크립트는 코드에 들어 있는 표를 그립니다. 원본 결과 JSON, 학습 로그, 실행 조건과 대응되는 가중치를 확인해야 합니다.
-5. **조건별 반복 실험과 외부 검증이 필요합니다.** 7-fold 앙상블은 조건별 다중 시드 반복이나 별도 기관·환자 검증을 대신하지 않습니다. 논문 2는 Precision·F1을 산출하지 않았다고 명시합니다. 사람의 식별 가능성과 공격 저항성은 구조 비유사도와 별도로 평가할 과제입니다.
+4. 그림이 만들어졌다고 실측 자료인 것은 아닙니다. 일부 실험 노트북은 결과·학습 이력·GPU 로그가 없을 때 예시 데이터를 생성합니다. 히트맵 스크립트는 코드에 들어 있는 표를 그립니다. 원본 결과 JSON, 학습 로그, 실행 조건과 대응되는 가중치를 확인해야 합니다.
+5. 조건별 반복 실험과 외부 검증이 필요합니다. 7-fold 앙상블은 조건별 다중 시드 반복이나 별도 기관·환자 검증을 대신하지 않습니다. 논문 2는 Precision·F1을 산출하지 않았다고 명시합니다. 사람의 식별 가능성과 공격 저항성은 구조 비유사도와 별도로 평가할 과제입니다.
 
 Stage 1의 Privacy Score는 채널 평균 특징맵을 각각 정규화한 뒤 계산한 **단일 SSIM 기반 점수**이므로 논문 2의 입력 영상 MS-SSIM 점수와 수치만으로 비교하지 않습니다.
 
@@ -460,7 +460,7 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 <a id="-연구-1--efficientnetv2-s와-입력-비식별화"></a>
 
 <details>
-<summary><strong>연구 1·EfficientNetV2-S와 입력 비식별화</strong></summary>
+<summary>연구 1·EfficientNetV2-S와 입력 비식별화</summary>
 
 <a id="연구-1efficientnetv2-s와-입력-비식별화"></a>
 
@@ -499,7 +499,7 @@ EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 
 </details>
 
 <details>
-<summary><strong>연구 2·ResNet50의 프라이버시·정확도 절충</strong></summary>
+<summary>연구 2·ResNet50의 프라이버시·정확도 절충</summary>
 
 <a id="연구-2resnet50의-프라이버시정확도-절충"></a>
 
@@ -538,7 +538,7 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 </details>
 
 <details>
-<summary><strong>자료 1차·ResNet50 비교 노트북의 설정 정리</strong></summary>
+<summary>자료 1차·ResNet50 비교 노트북의 설정 정리</summary>
 
 <a id="자료-1차resnet50-비교-노트북의-설정-정리"></a>
 
@@ -576,7 +576,7 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 </details>
 
 <details>
-<summary><strong>자료 2차·실험 방식 정렬과 조합 노트북 생성</strong></summary>
+<summary>자료 2차·실험 방식 정렬과 조합 노트북 생성</summary>
 
 <a id="자료-2차실험-방식-정렬과-조합-노트북-생성"></a>
 
@@ -614,7 +614,7 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 </details>
 
 <details>
-<summary><strong>자료 3차·Privacy Score의 소규모 계산 확인</strong></summary>
+<summary>자료 3차·Privacy Score의 소규모 계산 확인</summary>
 
 <a id="자료-3차privacy-score의-소규모-계산-확인"></a>
 
@@ -652,7 +652,7 @@ SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건�
 </details>
 
 <details>
-<summary><strong>자료 4차·후속 원고와 지표·도표 코드</strong></summary>
+<summary>자료 4차·후속 원고와 지표·도표 코드</summary>
 
 <a id="자료-4차후속-원고와-지표도표-코드"></a>
 
@@ -690,7 +690,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary><strong>블러 2차·입력 영상과 ResNet50</strong></summary>
+<summary>블러 2차·입력 영상과 ResNet50</summary>
 
 <a id="블러-2차입력-영상과-resnet50"></a>
 
@@ -744,7 +744,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary><strong>블록 2차·위치 재배열과 ResNet50</strong></summary>
+<summary>블록 2차·위치 재배열과 ResNet50</summary>
 
 <a id="블록-2차위치-재배열과-resnet50"></a>
 
@@ -799,7 +799,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary><strong>조합 기본·입력 Block →Blur100 조건</strong></summary>
+<summary>조합 기본·입력 Block →Blur100 조건</summary>
 
 <a id="조합-기본입력-block-blur100-조건"></a>
 
@@ -853,7 +853,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary><strong>블러엣지 · 입력 블러와 분리 모델</strong></summary>
+<summary>블러엣지 · 입력 블러와 분리 모델</summary>
 
 <a id="블러엣지--입력-블러와-분리-모델"></a>
 
@@ -911,7 +911,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary><strong>블록엣지 · 입력 재배열과 분리 모델</strong></summary>
+<summary>블록엣지 · 입력 재배열과 분리 모델</summary>
 
 <a id="블록엣지--입력-재배열과-분리-모델"></a>
 
@@ -968,7 +968,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary><strong>조합엣지·입력 100 조합과 분리 모델</strong></summary>
+<summary>조합엣지·입력 100 조합과 분리 모델</summary>
 
 <a id="조합엣지입력-100-조합과-분리-모델"></a>
 
@@ -1024,7 +1024,7 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary><strong>Stage1 엣지·특징맵 자체에 블러</strong></summary>
+<summary>Stage1 엣지·특징맵 자체에 블러</summary>
 
 <a id="stage1-엣지특징맵-자체에-블러"></a>
 
@@ -1084,7 +1084,7 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 </details>
 
 <details>
-<summary><strong>원본 실험 · 조직영상 화면과 학습 노트북</strong></summary>
+<summary>원본 실험 · 조직영상 화면과 학습 노트북</summary>
 
 <a id="원본-실험--조직영상-화면과-학습-노트북"></a>
 
@@ -1122,7 +1122,7 @@ Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 �
 </details>
 
 <details>
-<summary><strong>추가 실험 · 학습·유사도·도표 코드 모음</strong></summary>
+<summary>추가 실험 · 학습·유사도·도표 코드 모음</summary>
 
 <a id="추가-실험--학습유사도도표-코드-모음"></a>
 
@@ -1238,7 +1238,7 @@ per_class_acc는 혼동 행렬의 해당 행 정답 비율과 대응하므로 �
 
 ## 실제 8차·독립 학습과 제안 점수
 
-**8차는 강도마다 새 100회 학습 후 분류 정확도와 프라이버시 제안 점수를 실제 계산하는 별도 실험입니다.** 7차의 단일 고정 모델 프로토콜과 구분하며 기존 1~7차·원고·관측값은 보존합니다.
+8차는 강도마다 새 100회 학습 후 분류 정확도와 프라이버시 제안 점수를 실제 계산하는 별도 실험입니다. 7차의 단일 고정 모델 프로토콜과 구분하며 기존 1~7차·원고·관측값은 보존합니다.
 
 | 차수 | 동작·현재 결과 | 자료 · 상세 · 직전 비교 |
 | --- | --- | --- |

@@ -3,10 +3,10 @@
 # 고정 100회 학습과 종료 정책 비교·공개 코드 5차
 
 <!-- reading-levels17:start -->
-**읽기 수준** · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
+읽기 수준 · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
 
 <details open>
-<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
 
 <a id="reading-level-1"></a>
 
@@ -39,7 +39,7 @@
 
 ### LEVEL 1·고정 100회와 관찰용 조기 종료 비교
 
-학습을 100회까지 계속하면서 예전 규칙이라면 언제 멈췄을지 따로 적습니다. **관찰용 종료는 실제 학습을 멈추지 않습니다.** 앞부분에서 골랐을 모델과 100회 전체에서 고른 모델을 같은 시험으로 비교해 종료 정책을 살핍니다. 아직 없는 최종 성능을 만들어 쓰지 않습니다.
+학습을 100회까지 계속하면서 예전 규칙이라면 언제 멈췄을지 따로 적습니다. 관찰용 종료는 실제 학습을 멈추지 않습니다. 앞부분에서 골랐을 모델과 100회 전체에서 고른 모델을 같은 시험으로 비교해 종료 정책을 살핍니다. 아직 없는 최종 성능을 만들어 쓰지 않습니다.
 
 | 조건·자료 | 의미와 확인 방법 |
 | --- | --- |
@@ -54,7 +54,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
@@ -102,7 +102,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
@@ -150,7 +150,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
@@ -198,7 +198,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
@@ -238,7 +238,7 @@
 
 조기 종료의 영향을 비교할 수 있도록 **실험 4차**를 준비했습니다. 공개 저장소에서는 이전 공개 1~4차를 보존하고 이 코드를 **공개 5차**에 담습니다. 공개 번호와 실제 학습 실험 번호는 다릅니다.
 
-**코드·검증 준비, 학습 시작과 전체 학습 완료를 구분하며 아직 새 실험의 최종 성능을 보고하지 않습니다.**
+코드·검증 준비, 학습 시작과 전체 학습 완료를 구분하며 아직 새 실험의 최종 성능을 보고하지 않습니다.
 
 <a id="무엇을-비교하나요"></a>
 

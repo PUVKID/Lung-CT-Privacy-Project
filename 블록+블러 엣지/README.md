@@ -4,7 +4,7 @@
 
 <!-- reading-levels17:start -->
 <details>
-<summary><strong>읽기 수준 선택</strong></summary>
+<summary>읽기 수준 선택</summary>
 
 | 레벨 | 읽는 목적 |
 | --- | --- |
@@ -17,7 +17,7 @@
 </details>
 <!-- reading-levels17:end -->
 
-**입력 Block →Blur의 100 조합 뒤에 분리 모델을 연결합니다.** 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다.
+입력 Block →Blur의 100 조합 뒤에 분리 모델을 연결합니다. 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다.
 
 | 주요 구성 | 내용 |
 | --- | --- |

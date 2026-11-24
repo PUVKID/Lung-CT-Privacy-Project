@@ -4,7 +4,7 @@
 
 <!-- reading-levels17:start -->
 <details>
-<summary><strong>읽기 수준 선택</strong></summary>
+<summary>읽기 수준 선택</summary>
 
 | 레벨 | 읽는 목적 |
 | --- | --- |
@@ -17,7 +17,7 @@
 </details>
 <!-- reading-levels17:end -->
 
-**입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다.** σ0 은 원본 배열을 복사합니다.
+입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다. σ0 은 원본 배열을 복사합니다.
 
 | 주요 구성 | 내용 |
 | --- | --- |

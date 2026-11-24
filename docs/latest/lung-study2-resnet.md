@@ -5,7 +5,7 @@
 
 <!-- reading-levels17:start -->
 <details>
-<summary><strong>읽기 수준 선택</strong></summary>
+<summary>읽기 수준 선택</summary>
 
 | 레벨 | 읽는 목적 |
 | --- | --- |
@@ -18,7 +18,7 @@
 </details>
 <!-- reading-levels17:end -->
 
-**ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.**
+ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.
 
 [목적·구성·사용법·결과의 상세 안내](../revisions/study-2.md) · [프로젝트](../../README.md) · [전체 차수](../REVISION_INDEX.md)
 

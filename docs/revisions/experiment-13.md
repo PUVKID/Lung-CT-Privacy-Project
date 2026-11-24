@@ -3,10 +3,10 @@
 # 원본 실험 · 조직영상 화면과 학습 노트북
 
 <!-- reading-levels17:start -->
-**읽기 수준** · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
+읽기 수준 · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
 
 <details open>
-<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
 
 <a id="reading-level-1"></a>
 
@@ -39,7 +39,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
@@ -72,7 +72,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
@@ -105,7 +105,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
@@ -138,7 +138,7 @@
 </details>
 
 <details>
-<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
@@ -161,7 +161,7 @@
 
 <!-- reading-levels17:end -->
 
-**Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 조직 영상 5 라벨 예측을 표시합니다.** 함께 있는 학습 노트북은 MobileNetV2의 3 클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다.
+Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 조직 영상 5 라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3 클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다.
 
 분야: 의료 영상 코드 › Streamlit·TensorFlow › 조직영상 예측 화면
 
@@ -286,7 +286,7 @@
 
 <a id="layout18-table-28-row-1"></a>
 
-**[원본 실험/Lung Cancer/main.ipynb](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.ipynb)**
+[원본 실험/Lung Cancer/main.ipynb](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.ipynb)
 
 **파일**
 
@@ -306,7 +306,7 @@
 
 <a id="layout18-table-28-row-2"></a>
 
-**[원본 실험/Lung Cancer/main.py](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py)**
+[원본 실험/Lung Cancer/main.py](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py)
 
 **파일**
 
@@ -326,7 +326,7 @@
 
 <a id="layout18-table-28-row-3"></a>
 
-**[원본 실험/Lung Cancer/Train.ipynb](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/Train.ipynb)**
+[원본 실험/Lung Cancer/Train.ipynb](../../%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/Train.ipynb)
 
 **파일**
 
@@ -346,7 +346,7 @@
 
 <a id="layout18-table-28-row-4"></a>
 
-**[원본자료/원본 실험/Lung Cancer/main.ipynb](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.ipynb)**
+[원본자료/원본 실험/Lung Cancer/main.ipynb](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.ipynb)
 
 **파일**
 
@@ -366,7 +366,7 @@
 
 <a id="layout18-table-28-row-5"></a>
 
-**[원본자료/원본 실험/Lung Cancer/main.py](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py)**
+[원본자료/원본 실험/Lung Cancer/main.py](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/main.py)
 
 **파일**
 
@@ -386,7 +386,7 @@
 
 <a id="layout18-table-28-row-6"></a>
 
-**[원본자료/원본 실험/Lung Cancer/Train.ipynb](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/Train.ipynb)**
+[원본자료/원본 실험/Lung Cancer/Train.ipynb](../../%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer/Train.ipynb)
 
 **파일**
 
