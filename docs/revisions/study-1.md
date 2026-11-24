@@ -5,6 +5,9 @@
 <!-- reading-levels17:start -->
 **읽기 수준** · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
 
+<details open>
+<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 
 ## LEVEL 1 - Beginner
@@ -30,6 +33,12 @@
 | <a id="layout18-table-1-row-3"></a> 실행의 구분 | Block512 저장 원비율 0.9291666666666667과 Blur σ0의 0.925는 다른 실행입니다.<br>그래프 재작성은 새 학습이 아니며 연구 2의 표본 세부를 연구 1에 소급하지 않습니다. |
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 
@@ -57,6 +66,12 @@ EfficientNetV2-S라는 영상 분류기에 입력 변환을 각각 연결합니�
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+
 <a id="reading-level-3"></a>
 
 ## LEVEL 3 - Practitioner
@@ -83,6 +98,12 @@ EfficientNetV2-S라는 영상 분류기에 입력 변환을 각각 연결합니�
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+
 <a id="reading-level-4"></a>
 
 ## LEVEL 4 - Advanced
@@ -108,6 +129,12 @@ EfficientNetV2-S라는 영상 분류기에 입력 변환을 각각 연결합니�
 | <a id="layout18-table-16-row-3"></a> 실행의 구분 | Block512 저장 원비율 0.9291666666666667과 Blur σ0의 0.925는 다른 실행입니다.<br>그래프 재작성은 새 학습이 아니며 연구 2의 표본 세부를 연구 1에 소급하지 않습니다. |
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
@@ -279,3 +306,6 @@ EfficientNetV2-S라는 영상 분류기에 입력 변환을 각각 연결합니�
 ---
 
 [프로젝트](../../README.md) · [전체 차수](../REVISION_INDEX.md) · [자료 폴더](../../%EB%85%BC%EB%AC%B8) · [연구 2 · ResNet50 후속 원고](study-2.md)
+
+</details>
+

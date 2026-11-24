@@ -4,6 +4,9 @@
 
 실제 실험 차수와 기존 공개 코드 번호를 구분합니다. [프로젝트 첫 화면](../../README.md) · [실제 자료](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [직전 전체 비교](../revision-diffs/conv1-okng-round7.md)
 
+<details open>
+<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 
 ## LEVEL 1 - Beginner
@@ -31,6 +34,12 @@
 
 [같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [직전 차수](conv1-okng-round6.md#reading-level-1) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+
 <a id="reading-level-2"></a>
 
 ## LEVEL 2 - Explorer
@@ -57,6 +66,12 @@
 
 [같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [직전 차수](conv1-okng-round6.md#reading-level-2) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
+
 <a id="reading-level-3"></a>
 
 ## LEVEL 3 - Practitioner
@@ -81,6 +96,12 @@
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
 [같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [직전 차수](conv1-okng-round6.md#reading-level-3) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 
@@ -108,6 +129,12 @@
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
 [같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [직전 차수](conv1-okng-round6.md#reading-level-4) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
@@ -140,3 +167,6 @@
 환자 ID가 없어 **영상 단위 예비실험**입니다. 같은 환자의 다른 영상이 분할 양쪽에 남았는지 확인할 수 없고 임상 일반화·환자 독립성·프라이버시 달성을 주장하지 않습니다. 클래스당 5,000개는 매 회차 반복·온라인 증강 표본이며 독립 원본 5,000장이 아닙니다.
 
 [같은 수준 프로젝트](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) · [직전 차수](conv1-okng-round6.md#reading-level-5) · [자료 폴더](../../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [전체 비교](../revision-diffs/conv1-okng-round7.md)
+
+</details>
+

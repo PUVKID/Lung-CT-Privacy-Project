@@ -11,11 +11,11 @@
 <!-- reading-levels17:start -->
 | 읽기 수준 | 안내 내용 |
 | --- | --- |
-| [LEVEL 1 - Beginner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
-| [LEVEL 2 - Explorer](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 핵심 개념과 처리 흐름의 관계 이해 |
-| [LEVEL 3 - Practitioner](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 실험·사용 절차와 결과 해석 따라가기 |
-| [LEVEL 4 - Advanced](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 코드 구조·설정·설계 선택과 제약 검토 |
-| [LEVEL 5 - Expert](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 논문·프로토콜·분모·누수·미검증 범위 대조 |
+| [**LEVEL 1 - Beginner**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 낯선 용어를 풀고 입력부터 결과까지 구체적인 예로 읽기 |
+| [**LEVEL 2 - Explorer**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 핵심 개념과 처리 흐름의 관계 이해 |
+| [**LEVEL 3 - Practitioner**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 실험·사용 절차와 결과 해석 따라가기 |
+| [**LEVEL 4 - Advanced**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 코드 구조·설정·설계 선택과 제약 검토 |
+| [**LEVEL 5 - Expert**](docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 논문·프로토콜·분모·누수·미검증 범위 대조 |
 <!-- reading-levels17:end -->
 
 <!-- fixed-model-publication-20261120:start -->
@@ -129,30 +129,30 @@
 
 ## 전체 차수
 
-| 차수·단계 | 주요 내용 | 자료 | 직전 비교 |
-| --- | --- | --- | --- |
-| [연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | <a id="layout18-table-4-row-1-field-1"></a>EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-1-%EC%97%B4%EB%9E%8C.md) |
-| [연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md) | <a id="layout18-table-4-row-2-field-1"></a>ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](%EB%85%BC%EB%AC%B8) | [전체 비교](docs/revision-diffs/study-2-%EC%97%B4%EB%9E%8C.md) |
-| [1차](docs/revisions/folder-1.md) | <a id="layout18-table-4-row-3-field-1"></a>블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다. | [폴더](1%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-1-%EC%97%B4%EB%9E%8C.md) |
-| [폴더 2차](docs/revisions/folder-2.md) | <a id="layout18-table-4-row-4-field-1"></a>기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8) | [전체 비교](docs/revision-diffs/folder-2-%EC%97%B4%EB%9E%8C.md) |
-| [폴더 3차](docs/revisions/folder-3.md) | <a id="layout18-table-4-row-5-field-1"></a>SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건의 저장 결과를 확인하는 자료 차수입니다.<br>전체 논문의 1,097장 실험과 구분합니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables) | [전체 비교](docs/revision-diffs/folder-3-%EC%97%B4%EB%9E%8C.md) |
-| [폴더 4차](docs/revisions/folder-4.md) | <a id="layout18-table-4-row-6-field-1"></a>ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C) | [전체 비교](docs/revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
-| [블러 · 2차 실험](docs/revisions/experiment-6.md) | <a id="layout18-table-4-row-7-field-1"></a>입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다. σ0 은 원본 배열을 복사합니다. | [폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-6-%EC%97%B4%EB%9E%8C.md) |
-| [블록 · 2차 실험](docs/revisions/experiment-7.md) | <a id="layout18-table-4-row-8-field-1"></a>시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다.<br>영상보다 작지 않은 블록은 원본을 복사합니다. | [폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-7-%EC%97%B4%EB%9E%8C.md) |
-| [블록+블러 · 기본](docs/revisions/experiment-8.md) | <a id="layout18-table-4-row-9-field-1"></a>블록 10개와 블러 10개의 100 조합을 비교합니다.<br>입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC) | [전체 비교](docs/revision-diffs/experiment-8-%EC%97%B4%EB%9E%8C.md) |
-| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | <a id="layout18-table-4-row-10-field-1"></a>입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다. | [폴더](%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-9-%EC%97%B4%EB%9E%8C.md) |
-| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | <a id="layout18-table-4-row-11-field-1"></a>입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다. | [폴더](%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-10-%EC%97%B4%EB%9E%8C.md) |
-| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | <a id="layout18-table-4-row-12-field-1"></a>입력 Block →Blur의 100 조합 뒤에 분리 모델을 연결합니다.<br>경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다. | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-11-%EC%97%B4%EB%9E%8C.md) |
-| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | <a id="layout18-table-4-row-13-field-1"></a>ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. | [폴더](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80) | [전체 비교](docs/revision-diffs/experiment-12-%EC%97%B4%EB%9E%8C.md) |
-| [원본 실험 · 기본](docs/revisions/experiment-13.md) | <a id="layout18-table-4-row-14-field-1"></a>Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 조직 영상 5 라벨 예측을 표시합니다.<br>함께 있는 학습 노트북은 MobileNetV2의 3 클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다. | [폴더](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer) | [전체 비교](docs/revision-diffs/experiment-13.diff) |
-| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | <a id="layout18-table-4-row-15-field-1"></a>EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. | [폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98) | [전체 비교](docs/revision-diffs/experiment-14-%EC%97%B4%EB%9E%8C.md) |
-| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | <a id="layout18-table-4-row-16-field-1"></a>입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동 행렬을 보관한 결과 JSON입니다.<br>저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-blur.diff) |
-| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | <a id="layout18-table-4-row-17-field-1"></a>입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동 행렬을 보관한 결과 JSON입니다.<br>저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC) | [전체 비교](docs/revision-diffs/experiment-original-block.diff) |
-| Conv1 블러 OK-NG 실험·1차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round1.md) | [전체 비교](docs/revision-diffs/conv1-okng-round1-%EC%97%B4%EB%9E%8C.md) |
-| Conv1 블러 OK-NG 실험·2차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round2.md) | [전체 비교](docs/revision-diffs/conv1-okng-round2-%EC%97%B4%EB%9E%8C.md) |
-| Conv1 블러 OK-NG 실험·3차 (시각화) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round3.md) | [전체 비교](docs/revision-diffs/conv1-okng-round3-%EC%97%B4%EB%9E%8C.md) |
-| Conv1 블러 OK-NG 실험·4차 (강도별 결과 선택) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round4.md) | [전체 비교](docs/revision-diffs/conv1-okng-round4-%EC%97%B4%EB%9E%8C.md) |
-| Conv1 블러 OK-NG 실험·5차 (실험 4차 고정 100회) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round5.md) | [전체 비교](docs/revision-diffs/conv1-okng-round5-%EC%97%B4%EB%9E%8C.md) |
+| 차수·단계 | 주요 내용 | 자료 · 직전 비교 |
+| --- | --- | --- |
+| [연구 1 · 하계 EfficientNetV2-S](docs/revisions/study-1.md) | <a id="layout18-table-4-row-1-field-1"></a>EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다. | [폴더](%EB%85%BC%EB%AC%B8)<br>[전체 비교](docs/revision-diffs/study-1-%EC%97%B4%EB%9E%8C.md) |
+| [연구 2 · ResNet50 후속 원고](docs/revisions/study-2.md) | <a id="layout18-table-4-row-2-field-1"></a>ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다. | [폴더](%EB%85%BC%EB%AC%B8)<br>[전체 비교](docs/revision-diffs/study-2-%EC%97%B4%EB%9E%8C.md) |
+| [1차](docs/revisions/folder-1.md) | <a id="layout18-table-4-row-3-field-1"></a>블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다. | [폴더](1%EC%B0%A8)<br>[전체 비교](docs/revision-diffs/folder-1-%EC%97%B4%EB%9E%8C.md) |
+| [폴더 2차](docs/revisions/folder-2.md) | <a id="layout18-table-4-row-4-field-1"></a>기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/2%EC%B0%A8)<br>[전체 비교](docs/revision-diffs/folder-2-%EC%97%B4%EB%9E%8C.md) |
+| [폴더 3차](docs/revisions/folder-3.md) | <a id="layout18-table-4-row-5-field-1"></a>SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건의 저장 결과를 확인하는 자료 차수입니다.<br>전체 논문의 1,097장 실험과 구분합니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/3%EC%B0%A8/tables)<br>[전체 비교](docs/revision-diffs/folder-3-%EC%97%B4%EB%9E%8C.md) |
+| [폴더 4차](docs/revisions/folder-4.md) | <a id="layout18-table-4-row-6-field-1"></a>ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 읽는 자료 차수입니다.<br>실제 코드 폴더는 자료 차수/4차/코드에 있습니다. | [폴더](%EC%9E%90%EB%A3%8C%EC%B0%A8%EC%88%98/4%EC%B0%A8/%EC%BD%94%EB%93%9C)<br>[전체 비교](docs/revision-diffs/folder-4-%EC%97%B4%EB%9E%8C.md) |
+| [블러 · 2차 실험](docs/revisions/experiment-6.md) | <a id="layout18-table-4-row-7-field-1"></a>입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다. σ0 은 원본 배열을 복사합니다. | [폴더](%EB%B8%94%EB%9F%AC/2%EC%B0%A8%20%EC%8B%A4%ED%97%98)<br>[전체 비교](docs/revision-diffs/experiment-6-%EC%97%B4%EB%9E%8C.md) |
+| [블록 · 2차 실험](docs/revisions/experiment-7.md) | <a id="layout18-table-4-row-8-field-1"></a>시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다.<br>영상보다 작지 않은 블록은 원본을 복사합니다. | [폴더](%EB%B8%94%EB%A1%9D/2%EC%B0%A8%20%EC%8B%A4%ED%97%98)<br>[전체 비교](docs/revision-diffs/experiment-7-%EC%97%B4%EB%9E%8C.md) |
+| [블록+블러 · 기본](docs/revisions/experiment-8.md) | <a id="layout18-table-4-row-9-field-1"></a>블록 10개와 블러 10개의 100 조합을 비교합니다.<br>입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다. | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC)<br>[전체 비교](docs/revision-diffs/experiment-8-%EC%97%B4%EB%9E%8C.md) |
+| [블러 엣지 · 기본](docs/revisions/experiment-9.md) | <a id="layout18-table-4-row-10-field-1"></a>입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다. | [폴더](%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80)<br>[전체 비교](docs/revision-diffs/experiment-9-%EC%97%B4%EB%9E%8C.md) |
+| [블록 엣지 · 기본](docs/revisions/experiment-10.md) | <a id="layout18-table-4-row-11-field-1"></a>입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다. | [폴더](%EB%B8%94%EB%A1%9D%20%EC%97%A3%EC%A7%80)<br>[전체 비교](docs/revision-diffs/experiment-10-%EC%97%B4%EB%9E%8C.md) |
+| [블록+블러 엣지 · 기본](docs/revisions/experiment-11.md) | <a id="layout18-table-4-row-12-field-1"></a>입력 Block →Blur의 100 조합 뒤에 분리 모델을 연결합니다.<br>경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다. | [폴더](%EB%B8%94%EB%A1%9D%2B%EB%B8%94%EB%9F%AC%20%EC%97%A3%EC%A7%80)<br>[전체 비교](docs/revision-diffs/experiment-11-%EC%97%B4%EB%9E%8C.md) |
+| [블러 스테이지 1 엣지 · 기본](docs/revisions/experiment-12.md) | <a id="layout18-table-4-row-13-field-1"></a>ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다. | [폴더](%EB%B8%94%EB%9F%AC%20%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%80%201%20%EC%97%A3%EC%A7%80)<br>[전체 비교](docs/revision-diffs/experiment-12-%EC%97%B4%EB%9E%8C.md) |
+| [원본 실험 · 기본](docs/revisions/experiment-13.md) | <a id="layout18-table-4-row-14-field-1"></a>Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 조직 영상 5 라벨 예측을 표시합니다.<br>함께 있는 학습 노트북은 MobileNetV2의 3 클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다. | [폴더](%EC%9B%90%EB%B3%B8%20%EC%8B%A4%ED%97%98/Lung%20Cancer)<br>[전체 비교](docs/revision-diffs/experiment-13.diff) |
+| [추가 학습모델과 실험 · 기본](docs/revisions/experiment-14.md) | <a id="layout18-table-4-row-15-field-1"></a>EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다. | [폴더](%EC%B6%94%EA%B0%80%20%ED%95%99%EC%8A%B5%EB%AA%A8%EB%8D%B8%EA%B3%BC%20%EC%8B%A4%ED%97%98)<br>[전체 비교](docs/revision-diffs/experiment-14-%EC%97%B4%EB%9E%8C.md) |
+| [블러 · 1차 실험](docs/revisions/experiment-original-blur.md) | <a id="layout18-table-4-row-16-field-1"></a>입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동 행렬을 보관한 결과 JSON입니다.<br>저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%9F%AC/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%9F%AC%201/%EB%B8%94%EB%9F%AC%EB%A7%81%20%EA%B2%B0%EA%B3%BC)<br>[전체 비교](docs/revision-diffs/experiment-original-blur.diff) |
+| [블록 · 1차 실험](docs/revisions/experiment-original-block.md) | <a id="layout18-table-4-row-17-field-1"></a>입력 변환 조건별 정확도·ROC-AUC·클래스별 Recall·혼동 행렬을 보관한 결과 JSON입니다.<br>저장 결과와 그래프 입력을 대조할 수 있습니다. | [폴더](%EC%9B%90%EB%B3%B8%EC%9E%90%EB%A3%8C/%EB%B8%94%EB%A1%9D/1%EC%B0%A8%20%EC%8B%A4%ED%97%98/%EB%B8%94%EB%A1%9D%201/%EB%B6%88%EB%A1%9D%20%EA%B2%B0%EA%B3%BC)<br>[전체 비교](docs/revision-diffs/experiment-original-block.diff) |
+| Conv1 블러 OK-NG 실험·1차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/1%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round1.md)<br>[전체 비교](docs/revision-diffs/conv1-okng-round1-%EC%97%B4%EB%9E%8C.md) |
+| Conv1 블러 OK-NG 실험·2차 | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/2%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round2.md)<br>[전체 비교](docs/revision-diffs/conv1-okng-round2-%EC%97%B4%EB%9E%8C.md) |
+| Conv1 블러 OK-NG 실험·3차 (시각화) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/3%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round3.md)<br>[전체 비교](docs/revision-diffs/conv1-okng-round3-%EC%97%B4%EB%9E%8C.md) |
+| Conv1 블러 OK-NG 실험·4차 (강도별 결과 선택) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/4%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round4.md)<br>[전체 비교](docs/revision-diffs/conv1-okng-round4-%EC%97%B4%EB%9E%8C.md) |
+| Conv1 블러 OK-NG 실험·5차 (실험 4차 고정 100회) | [폴더](Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/5%EC%B0%A8) | [설명](docs/revisions/conv1-okng-round5.md)<br>[전체 비교](docs/revision-diffs/conv1-okng-round5-%EC%97%B4%EB%9E%8C.md) |
 
 
 <a id="-프로젝트-소개"></a>
@@ -440,12 +440,12 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 
 현재 공개 자료와 직전 공개본의 비교입니다. 이전 원고·발표·코드의 단계별 설명은 전체 차수 표에서 확인할 수 있으며, 미게재 원고 본문과 편집 원본은 로컬에 보존하고 공개하지 않습니다.
 
-| 문서 | 자료 폴더 | 상세 | 직전 공개본 전체 비교 |
-| --- | --- | --- | --- |
-| 연구 1 최종 논문 · EfficientNetV2-S | [폴더](%EB%85%BC%EB%AC%B8) | [설명](docs/latest/lung-study1-efficientnet.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 연구 2 최종 논문 · ResNet50 | [폴더](%EB%85%BC%EB%AC%B8) | [설명](docs/latest/lung-study2-resnet.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 최종 발표 · 하계 연구 | [폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](docs/latest/lung-study1-presentation.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
-| 완성 대본 · 하계 연구 | [폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](docs/latest/lung-complete-talk-script.md) | [전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 문서 | 자료 폴더 | 상세 · 직전 공개본 전체 비교 |
+| --- | --- | --- |
+| 연구 1 최종 논문 · EfficientNetV2-S | [폴더](%EB%85%BC%EB%AC%B8) | [설명](docs/latest/lung-study1-efficientnet.md)<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 연구 2 최종 논문 · ResNet50 | [폴더](%EB%85%BC%EB%AC%B8) | [설명](docs/latest/lung-study2-resnet.md)<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 최종 발표 · 하계 연구 | [폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](docs/latest/lung-study1-presentation.md)<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
+| 완성 대본 · 하계 연구 | [폴더](%EC%97%B0%EA%B5%AC1_%ED%95%98%EA%B3%84_EfficientNetV2-S/%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C) | [설명](docs/latest/lung-complete-talk-script.md)<br>[전체 비교](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md) |
 
 [최신 문서 구성 변경](docs/changes/2026-11-02-%EC%B5%9C%EC%8B%A0%EB%AC%B8%EC%84%9C.md)
 
@@ -460,9 +460,9 @@ python -m jupyter lab "블록+블러/block_blur_resnet50_v4_KO.ipynb"
 <a id="-연구-1--efficientnetv2-s와-입력-비식별화"></a>
 
 <details>
-<summary>연구 1·EfficientNetV2-S와 입력 비식별화</summary>
+<summary><strong>연구 1·EfficientNetV2-S와 입력 비식별화</strong></summary>
 
-### 연구 1·EfficientNetV2-S와 입력 비식별화
+<a id="연구-1efficientnetv2-s와-입력-비식별화"></a>
 
 EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 각각 적용했을 때 분류 결과가 어떻게 달라지는지 비교한 하계 3쪽 연구입니다.
 
@@ -499,9 +499,9 @@ EfficientNetV2-S에서 입력 CT 영상에 Gaussian Blur와 블록 재배열을 
 </details>
 
 <details>
-<summary>연구 2·ResNet50의 프라이버시·정확도 절충</summary>
+<summary><strong>연구 2·ResNet50의 프라이버시·정확도 절충</strong></summary>
 
-### 연구 2·ResNet50의 프라이버시·정확도 절충
+<a id="연구-2resnet50의-프라이버시정확도-절충"></a>
 
 ResNet50에서 Block·Blur 단독 20 조건과 Block →Blur 조합 100 조건을 비교하고, 분류 정확도와 영상 유사도 기반 점수를 함께 읽는 19쪽 후속 원고입니다.
 
@@ -538,9 +538,9 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 </details>
 
 <details>
-<summary>자료 1차·ResNet50 비교 노트북의 설정 정리</summary>
+<summary><strong>자료 1차·ResNet50 비교 노트북의 설정 정리</strong></summary>
 
-### 자료 1차·ResNet50 비교 노트북의 설정 정리
+<a id="자료-1차resnet50-비교-노트북의-설정-정리"></a>
 
 블록·블러의 rebuilt·same_settings·metric_matched 변형과 노트북 수정 보조 스크립트를 함께 읽는 코드 자료 차수입니다.
 
@@ -576,9 +576,9 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 </details>
 
 <details>
-<summary>자료 2차·실험 방식 정렬과 조합 노트북 생성</summary>
+<summary><strong>자료 2차·실험 방식 정렬과 조합 노트북 생성</strong></summary>
 
-### 자료 2차·실험 방식 정렬과 조합 노트북 생성
+<a id="자료-2차실험-방식-정렬과-조합-노트북-생성"></a>
 
 기존 Blur·Block 노트북의 학습·모니터 출력을 맞추고 Block→Blur 조합 노트북을 만드는 JavaScript 보조 도구 단계입니다.
 
@@ -614,9 +614,9 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 </details>
 
 <details>
-<summary>자료 3차·Privacy Score의 소규모 계산 확인</summary>
+<summary><strong>자료 3차·Privacy Score의 소규모 계산 확인</strong></summary>
 
-### 자료 3차·Privacy Score의 소규모 계산 확인
+<a id="자료-3차privacy-score의-소규모-계산-확인"></a>
 
 SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건의 저장 결과를 확인하는 자료 차수입니다. 전체 논문의 1,097장 실험과 구분합니다.
 
@@ -652,9 +652,9 @@ SSIM에서 DSSIM 기반 Privacy Score를 계산하는 경로와 3장·8 조건�
 </details>
 
 <details>
-<summary>자료 4차·후속 원고와 지표·도표 코드</summary>
+<summary><strong>자료 4차·후속 원고와 지표·도표 코드</strong></summary>
 
-### 자료 4차·후속 원고와 지표·도표 코드
+<a id="자료-4차후속-원고와-지표도표-코드"></a>
 
 ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 읽는 자료 차수입니다. 실제 코드 폴더는 자료 차수/4차/코드에 있습니다.
 
@@ -690,9 +690,9 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary>블러 2차·입력 영상과 ResNet50</summary>
+<summary><strong>블러 2차·입력 영상과 ResNet50</strong></summary>
 
-### 블러 2차·입력 영상과 ResNet50
+<a id="블러-2차입력-영상과-resnet50"></a>
 
 입력 영상에 PIL GaussianBlur를 적용하는 10 조건 실험입니다. σ0 은 원본 배열을 복사합니다.
 
@@ -744,9 +744,9 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary>블록 2차·위치 재배열과 ResNet50</summary>
+<summary><strong>블록 2차·위치 재배열과 ResNet50</strong></summary>
 
-### 블록 2차·위치 재배열과 ResNet50
+<a id="블록-2차위치-재배열과-resnet50"></a>
 
 시드로 정한 순열에 따라 입력 블록의 위치를 바꾸며 블록 내부 픽셀 배열은 유지합니다. 영상보다 작지 않은 블록은 원본을 복사합니다.
 
@@ -799,9 +799,9 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary>조합 기본·입력 Block →Blur100 조건</summary>
+<summary><strong>조합 기본·입력 Block →Blur100 조건</strong></summary>
 
-### 조합 기본·입력 Block →Blur100 조건
+<a id="조합-기본입력-block-blur100-조건"></a>
 
 블록 10개와 블러 10개의 100 조합을 비교합니다. 입력 영상을 블록 재배열한 뒤 Gaussian Blur를 적용합니다.
 
@@ -853,9 +853,9 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary>블러엣지 · 입력 블러와 분리 모델</summary>
+<summary><strong>블러엣지 · 입력 블러와 분리 모델</strong></summary>
 
-### 블러엣지 · 입력 블러와 분리 모델
+<a id="블러엣지--입력-블러와-분리-모델"></a>
 
 입력 영상을 블러 처리한 뒤 ResNet50의 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 연결합니다.
 
@@ -911,9 +911,9 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary>블록엣지 · 입력 재배열과 분리 모델</summary>
+<summary><strong>블록엣지 · 입력 재배열과 분리 모델</strong></summary>
 
-### 블록엣지 · 입력 재배열과 분리 모델
+<a id="블록엣지--입력-재배열과-분리-모델"></a>
 
 입력 블록을 재배열한 뒤 pool1_pool 경계에서 edge와 cloud로 나눈 모델을 학습합니다.
 
@@ -968,9 +968,9 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary>조합엣지·입력 100 조합과 분리 모델</summary>
+<summary><strong>조합엣지·입력 100 조합과 분리 모델</strong></summary>
 
-### 조합엣지·입력 100 조합과 분리 모델
+<a id="조합엣지입력-100-조합과-분리-모델"></a>
 
 입력 Block →Blur의 100 조합 뒤에 분리 모델을 연결합니다. 경계 특징에 FeatureGaussianBlur를 넣는 Stage1 실험과 변환 위치가 다릅니다.
 
@@ -1024,9 +1024,9 @@ ResNet50 후속 원고와 입력 변환·유사도·도 표 코드를 연결해 
 </details>
 
 <details>
-<summary>Stage1 엣지·특징맵 자체에 블러</summary>
+<summary><strong>Stage1 엣지·특징맵 자체에 블러</strong></summary>
 
-### Stage1 엣지·특징맵 자체에 블러
+<a id="stage1-엣지특징맵-자체에-블러"></a>
 
 ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_conv2d로 적용합니다.
 
@@ -1084,9 +1084,9 @@ ResNet50의 pool1_pool 특징에 채널별 고정 Gaussian 커널을 depthwise_c
 </details>
 
 <details>
-<summary>원본 실험 · 조직영상 화면과 학습 노트북</summary>
+<summary><strong>원본 실험 · 조직영상 화면과 학습 노트북</strong></summary>
 
-### 원본 실험 · 조직영상 화면과 학습 노트북
+<a id="원본-실험--조직영상-화면과-학습-노트북"></a>
 
 Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 조직 영상 5 라벨 예측을 표시합니다. 함께 있는 학습 노트북은 MobileNetV2의 3 클래스 구성이어서 그대로 같은 모델로 간주하면 안 됩니다.
 
@@ -1122,9 +1122,9 @@ Streamlit 화면은 업로드 영상을 224×224로 전 처리해 Model.h5의 �
 </details>
 
 <details>
-<summary>추가 실험 · 학습·유사도·도표 코드 모음</summary>
+<summary><strong>추가 실험 · 학습·유사도·도표 코드 모음</strong></summary>
 
-### 추가 실험 · 학습·유사도·도표 코드 모음
+<a id="추가-실험--학습유사도도표-코드-모음"></a>
 
 EfficientNetV2-S·MobileNetV2·ResNet50의 서로 다른 학습 셀과 SSIM/MS-SSIM·도표 코드를 모은 자료입니다.
 

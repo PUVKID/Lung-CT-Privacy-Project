@@ -5,6 +5,9 @@
 <!-- reading-levels17:start -->
 **읽기 수준** · [LEVEL 1](#reading-level-1) · [LEVEL 2](#reading-level-2) · [LEVEL 3](#reading-level-3) · [LEVEL 4](#reading-level-4) · [LEVEL 5](#reading-level-5)
 
+<details open>
+<summary><strong>LEVEL 1 · Beginner</strong> — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 
 ## LEVEL 1 - Beginner
@@ -44,6 +47,12 @@ MS-SSIM은 사진의 구조가 얼마나 비슷한지 여러 크기에서 비교
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 2 · Explorer</strong> — 구성과 연결 원리</summary>
+
 <a id="reading-level-2"></a>
 
 ## LEVEL 2 - Explorer
@@ -76,6 +85,12 @@ Block256 +σ0에서 흐림을 더했을 때 점수는 조금 늘고 정확도는
 | <a id="layout18-table-6-row-6"></a> 원고와 재현 | 19쪽 원고이며 RTX4090·TensorFlow·혼합 정밀 도를 보고합니다.<br>Precision·F1은 산출하지 않았고 독립 기관·환자 검증과 실제 복원 공격·사람의 지각 평가는 후속 과제입니다. |
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 3 · Practitioner</strong> — 준비·실행·결과 확인</summary>
 
 <a id="reading-level-3"></a>
 
@@ -110,6 +125,12 @@ Block256 +σ0에서 흐림을 더했을 때 점수는 조금 늘고 정확도는
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md)
 
+
+</details>
+
+<details>
+<summary><strong>LEVEL 4 · Advanced</strong> — 구현·설계·실패 처리</summary>
+
 <a id="reading-level-4"></a>
 
 ## LEVEL 4 - Advanced
@@ -138,6 +159,12 @@ Block256 +σ0에서 흐림을 더했을 때 점수는 조금 늘고 정확도는
 | <a id="layout18-table-16-row-6"></a> 원고와 재현 | 19쪽 원고이며 RTX4090·TensorFlow·혼합 정밀 도를 보고합니다.<br>Precision·F1은 산출하지 않았고 독립 기관·환자 검증과 실제 복원 공격·사람의 지각 평가는 후속 과제입니다. |
 
 [동일 수준 프로젝트 안내](../%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md)
+
+
+</details>
+
+<details>
+<summary><strong>LEVEL 5 · Expert</strong> — 근거·프로토콜·한계 검토</summary>
 
 <a id="reading-level-5"></a>
 
@@ -325,3 +352,6 @@ Privacy Score는 원본과 변환 영상의 구조적 차이에서 만든 상대
 ---
 
 [프로젝트](../../README.md) · [전체 차수](../REVISION_INDEX.md) · [자료 폴더](../../%EB%85%BC%EB%AC%B8) · [연구 1 · 하계 EfficientNetV2-S](study-1.md)
+
+</details>
+

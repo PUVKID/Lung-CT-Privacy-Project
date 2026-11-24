@@ -3,7 +3,18 @@
 # 전체 차수
 
 <!-- reading-levels17:start -->
-**읽기 수준 선택** · [LEVEL 1 - Beginner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<details>
+<summary><strong>읽기 수준 선택</strong></summary>
+
+| 레벨 | 읽는 목적 |
+| --- | --- |
+| [LEVEL 1 - Beginner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 목적과 입력·출력을 쉬운 말로 이해하기 |
+| [LEVEL 2 - Explorer](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 주요 기능과 전체 처리 흐름 살펴보기 |
+| [LEVEL 3 - Practitioner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 설정·실행 순서와 결과 확인하기 |
+| [LEVEL 4 - Advanced](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 구현 선택과 조건·한계 비교하기 |
+| [LEVEL 5 - Expert](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 세부 근거와 재현 조건 검토하기 |
+
+</details>
 <!-- reading-levels17:end -->
 
 <!-- fixed-model-publication-20261120:start -->
@@ -26,7 +37,8 @@
 | 실제 6차 | 블러 수식·적응 학습·고정 모델 차이 진단 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/6%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round6.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round6.md) |
 | 실제 7차 | 새 σ0 모델 한 개 고정·열 강도 추가 학습 없이 평가 | [자료](../Conv1%20%EB%B8%94%EB%9F%AC%20OK-NG%20%EC%8B%A4%ED%97%98/7%EC%B0%A8) · [상세](../docs/revisions/conv1-okng-round7.md) · [직전 비교](../docs/revision-diffs/conv1-okng-round7.md) |
 
-**실제 6차는 기존 5차 모델과 같은 test 164장을 읽은 탐색 진단이고, 실제 7차는 새 ImageNet 초기값으로 시작한 별도 실험입니다.** 2026-11-20 공개 기록 시점에 7차는 학습 진행 중이며 최종 시험 결과는 미측정입니다. 6차 수치를 7차의 빈 결과에 채우지 않습니다.
+**실제 6차는 기존 5차 모델과 같은 test 164장을 읽은 탐색 진단이고, 실제 7차는 새 ImageNet 초기값으로 시작한 별도 실험입니다.** 2026-11-20 공개 기록 시점에 7차는 학습 진행 중이며 최종 시험 결과는 미측정입니다.  
+6차 수치를 7차의 빈 결과에 채우지 않습니다.
 
 <!-- fixed-model-publication-20261120:end -->
 

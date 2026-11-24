@@ -1,12 +1,24 @@
 # 폐 CT 특징맵 시각화·공개 코드 3차
 
 <!-- reading-levels17:start -->
-**읽기 수준 선택** · [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<details>
+<summary><strong>읽기 수준 선택</strong></summary>
+
+| 레벨 | 읽는 목적 |
+| --- | --- |
+| [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 목적과 입력·출력을 쉬운 말로 이해하기 |
+| [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 주요 기능과 전체 처리 흐름 살펴보기 |
+| [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 설정·실행 순서와 결과 확인하기 |
+| [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 구현 선택과 조건·한계 비교하기 |
+| [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 세부 근거와 재현 조건 검토하기 |
+
+</details>
 <!-- reading-levels17:end -->
 
 **학습 2차에서 완료한 블러 조건의 특징맵을 범주·단계별로 저장하고 대시보드에서 살펴보는 소프트웨어 변경 묶음입니다.** 학습 3차를 새로 시작한 결과가 아닙니다.
 
-한 조건은 양성·악성·정상 대표 CT 3장과 입력부터 마지막 잔차 블록 묶음까지 6개 단계로 구성해 PNG 18개를 저장합니다. 원본 기준을 포함한 10 조건이 모두 끝나면 180개입니다.
+한 조건은 양성·악성·정상 대표 CT 3장과 입력부터 마지막 잔차 블록 묶음까지 6개 단계로 구성해 PNG 18개를 저장합니다.  
+원본 기준을 포함한 10 조건이 모두 끝나면 180개입니다.
 
 입력 영상은 1 패널, 특징맵은 평균·최댓값·개별 채널 8개의 10 패널이며 사진 아래에 추출 위치와 해석을 설명합니다.
 

@@ -3,7 +3,18 @@
 # 블러 강도 별 결과 선택·공개 코드 4차
 
 <!-- reading-levels17:start -->
-**읽기 수준 선택** · [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+<details>
+<summary><strong>읽기 수준 선택</strong></summary>
+
+| 레벨 | 읽는 목적 |
+| --- | --- |
+| [LEVEL 1 - Beginner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 목적과 입력·출력을 쉬운 말로 이해하기 |
+| [LEVEL 2 - Explorer](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 주요 기능과 전체 처리 흐름 살펴보기 |
+| [LEVEL 3 - Practitioner](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 설정·실행 순서와 결과 확인하기 |
+| [LEVEL 4 - Advanced](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 구현 선택과 조건·한계 비교하기 |
+| [LEVEL 5 - Expert](../../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 세부 근거와 재현 조건 검토하기 |
+
+</details>
 <!-- reading-levels17:end -->
 
 **강도 버튼을 고르면  사진· 학습 곡선· 시험 결과가 같은 강도로 바뀝니다.** 상단의 마지막 실행 상태와 선택한 결과를 나눠 표시하고 자동 갱신에도 선택을 유지합니다.
@@ -14,4 +25,5 @@
 
 [이번 변경과 검사](변경기록.md) · [특징맵 저장 도구](생성%20도구/사용방법.md) · [기존 학습 실행 방법](docs/실행방법.md)
 
-의료 영상·특징맵 PNG·가중치·영상별 목록·접속 정보·개인 학위 계획서는 공개하지 않습니다. 환자 ID가 없어 영상 단위 예비 실험이며, 시험 수치로 학습 조건을 고르는 기능은 아닙니다.
+의료 영상·특징맵 PNG·가중치·영상별 목록·접속 정보·개인 학위 계획서는 공개하지 않습니다.  
+환자 ID가 없어 영상 단위 예비 실험이며, 시험 수치로 학습 조건을 고르는 기능은 아닙니다.
