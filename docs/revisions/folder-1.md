@@ -33,7 +33,7 @@
 | <a id="layout18-table-1-row-3"></a> **조건** | **입력 크기**: 512<br>**변환**: 블록 512~1·블러 조건별 sigma<br>**비교 목적**: same_settings와 metric_matched 구분<br>**수정 도구**: Python 및 Node.js·실제 notebook 경로 |
 | <a id="layout18-table-1-row-4"></a> **관측과 해석** | 노트북 변형은 실험 조건을 정리한 코드입니다. 설정이 달라졌다고 새 성능 결과가 이미 확보된 것으로 보지 않습니다.<br>영상 유사도를 맞추는 보정은 분류 성능이나 프라이버시가 동등하다는 보장이 아닙니다. 보정에 사용하는 자료와 시험 자료의 관계도 확인해야 합니다. |
 | <a id="layout18-table-1-row-5"></a> **한계** | **이름과 역할**: rebuilt·same_settings·metric_matched가 같은 실행이라는 뜻은 아닙니다.<br>**파일 쓰기**: 보조 도구는 지정 노트북을 덮어쓸 수 있으므로 사본과 경로를 준비합니다.<br>**평가 기준**: 유사도 매칭과 독립 분류 시험을 구분합니다. |
-| <a id="layout18-table-1-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md) · [자료 3차](folder-3.md) · [자료 4차](folder-4.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-1-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md#user-content-reading-level-1) · [자료 3차](folder-3.md#user-content-reading-level-1) · [자료 4차](folder-4.md#user-content-reading-level-1)에서 별도로 확인합니다. |
 | <a id="layout18-table-1-row-7"></a> **읽기 범위** | 이 차수의 [전체 상세](#purpose)와 [파일 구성](#files)을 확인합니다. 다른 차수의 사실은 공통 안내 링크에서 별도로 읽습니다. |
 
 
@@ -79,7 +79,7 @@
 | <a id="layout18-table-7-row-3"></a> **조건** | **입력 크기**: 512<br>**변환**: 블록 512~1·블러 조건별 sigma<br>**비교 목적**: same_settings와 metric_matched 구분<br>**수정 도구**: Python 및 Node.js·실제 notebook 경로 |
 | <a id="layout18-table-7-row-4"></a> **관측과 해석** | 노트북 변형은 실험 조건을 정리한 코드입니다. 설정이 달라졌다고 새 성능 결과가 이미 확보된 것으로 보지 않습니다.<br>영상 유사도를 맞추는 보정은 분류 성능이나 프라이버시가 동등하다는 보장이 아닙니다. 보정에 사용하는 자료와 시험 자료의 관계도 확인해야 합니다. |
 | <a id="layout18-table-7-row-5"></a> **한계** | **이름과 역할**: rebuilt·same_settings·metric_matched가 같은 실행이라는 뜻은 아닙니다.<br>**파일 쓰기**: 보조 도구는 지정 노트북을 덮어쓸 수 있으므로 사본과 경로를 준비합니다.<br>**평가 기준**: 유사도 매칭과 독립 분류 시험을 구분합니다. |
-| <a id="layout18-table-7-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md) · [자료 3차](folder-3.md) · [자료 4차](folder-4.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-7-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md#user-content-reading-level-2) · [자료 3차](folder-3.md#user-content-reading-level-2) · [자료 4차](folder-4.md#user-content-reading-level-2)에서 별도로 확인합니다. |
 | <a id="layout18-table-7-row-7"></a> **읽기 범위** | 이 차수의 [전체 상세](#purpose)와 [파일 구성](#files)을 확인합니다. 다른 차수의 사실은 공통 안내 링크에서 별도로 읽습니다. |
 
 
@@ -125,7 +125,7 @@
 | <a id="layout18-table-13-row-3"></a> **조건** | **입력 크기**: 512<br>**변환**: 블록 512~1·블러 조건별 sigma<br>**비교 목적**: same_settings와 metric_matched 구분<br>**수정 도구**: Python 및 Node.js·실제 notebook 경로 |
 | <a id="layout18-table-13-row-4"></a> **관측과 해석** | 노트북 변형은 실험 조건을 정리한 코드입니다. 설정이 달라졌다고 새 성능 결과가 이미 확보된 것으로 보지 않습니다.<br>영상 유사도를 맞추는 보정은 분류 성능이나 프라이버시가 동등하다는 보장이 아닙니다. 보정에 사용하는 자료와 시험 자료의 관계도 확인해야 합니다. |
 | <a id="layout18-table-13-row-5"></a> **한계** | **이름과 역할**: rebuilt·same_settings·metric_matched가 같은 실행이라는 뜻은 아닙니다.<br>**파일 쓰기**: 보조 도구는 지정 노트북을 덮어쓸 수 있으므로 사본과 경로를 준비합니다.<br>**평가 기준**: 유사도 매칭과 독립 분류 시험을 구분합니다. |
-| <a id="layout18-table-13-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md) · [자료 3차](folder-3.md) · [자료 4차](folder-4.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-13-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md#user-content-reading-level-3) · [자료 3차](folder-3.md#user-content-reading-level-3) · [자료 4차](folder-4.md#user-content-reading-level-3)에서 별도로 확인합니다. |
 | <a id="layout18-table-13-row-7"></a> **읽기 범위** | 이 차수의 [전체 상세](#purpose)와 [파일 구성](#files)을 확인합니다. 다른 차수의 사실은 공통 안내 링크에서 별도로 읽습니다. |
 
 
@@ -171,7 +171,7 @@
 | <a id="layout18-table-19-row-3"></a> **조건** | **입력 크기**: 512<br>**변환**: 블록 512~1·블러 조건별 sigma<br>**비교 목적**: same_settings와 metric_matched 구분<br>**수정 도구**: Python 및 Node.js·실제 notebook 경로 |
 | <a id="layout18-table-19-row-4"></a> **관측과 해석** | 노트북 변형은 실험 조건을 정리한 코드입니다. 설정이 달라졌다고 새 성능 결과가 이미 확보된 것으로 보지 않습니다.<br>영상 유사도를 맞추는 보정은 분류 성능이나 프라이버시가 동등하다는 보장이 아닙니다. 보정에 사용하는 자료와 시험 자료의 관계도 확인해야 합니다. |
 | <a id="layout18-table-19-row-5"></a> **한계** | **이름과 역할**: rebuilt·same_settings·metric_matched가 같은 실행이라는 뜻은 아닙니다.<br>**파일 쓰기**: 보조 도구는 지정 노트북을 덮어쓸 수 있으므로 사본과 경로를 준비합니다.<br>**평가 기준**: 유사도 매칭과 독립 분류 시험을 구분합니다. |
-| <a id="layout18-table-19-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md) · [자료 3차](folder-3.md) · [자료 4차](folder-4.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-19-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 2차](folder-2.md#user-content-reading-level-4) · [자료 3차](folder-3.md#user-content-reading-level-4) · [자료 4차](folder-4.md#user-content-reading-level-4)에서 별도로 확인합니다. |
 | <a id="layout18-table-19-row-7"></a> **읽기 범위** | 이 차수의 [전체 상세](#purpose)와 [파일 구성](#files)을 확인합니다. 다른 차수의 사실은 공통 안내 링크에서 별도로 읽습니다. |
 
 

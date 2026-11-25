@@ -33,7 +33,7 @@
 | <a id="layout18-table-1-row-3"></a> **조건** | **코드 위치**: 자료 차수/4차/코드<br>**원고**: 연구 2 최종 19쪽<br>**입력**: 의료 원영상·가중치는 별도 준비<br>**빈 파일**: pareto_scatter.ipynb는 0바이트 |
 | <a id="layout18-table-1-row-4"></a> **관측과 해석** | 원고의 보고값과 코드의 설정·저장 결과를 대조하는 자료입니다. 도표 파일명만으로 새로운 실험 결과를 추정하지 않습니다.<br>0바이트 pareto_scatter.ipynb는 내용 없는 원본 파일입니다. 실제 산점도·지표 계산 기능은 내용이 있는 대응 노트북을 확인해야 합니다. |
 | <a id="layout18-table-1-row-5"></a> **한계** | **빈 노트북**: 0바이트 파일에는 실행 가능한 분석 내용이 없습니다.<br>**자료 범위**: 개인 실행기록과 의료 원영상은 포함하지 않습니다.<br>**번호 구분**: 자료 4차는 코드·자료 보관 구분이며 네 번째 연구 논문을 뜻하지 않습니다. |
-| <a id="layout18-table-1-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md) · [자료 2차](folder-2.md) · [자료 3차](folder-3.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-1-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md#user-content-reading-level-1) · [자료 2차](folder-2.md#user-content-reading-level-1) · [자료 3차](folder-3.md#user-content-reading-level-1)에서 별도로 확인합니다. |
 
 
 <a id="semantic-lung-tools-level-1"></a>
@@ -78,7 +78,7 @@
 | <a id="layout18-table-7-row-3"></a> **조건** | **코드 위치**: 자료 차수/4차/코드<br>**원고**: 연구 2 최종 19쪽<br>**입력**: 의료 원영상·가중치는 별도 준비<br>**빈 파일**: pareto_scatter.ipynb는 0바이트 |
 | <a id="layout18-table-7-row-4"></a> **관측과 해석** | 원고의 보고값과 코드의 설정·저장 결과를 대조하는 자료입니다. 도표 파일명만으로 새로운 실험 결과를 추정하지 않습니다.<br>0바이트 pareto_scatter.ipynb는 내용 없는 원본 파일입니다. 실제 산점도·지표 계산 기능은 내용이 있는 대응 노트북을 확인해야 합니다. |
 | <a id="layout18-table-7-row-5"></a> **한계** | **빈 노트북**: 0바이트 파일에는 실행 가능한 분석 내용이 없습니다.<br>**자료 범위**: 개인 실행기록과 의료 원영상은 포함하지 않습니다.<br>**번호 구분**: 자료 4차는 코드·자료 보관 구분이며 네 번째 연구 논문을 뜻하지 않습니다. |
-| <a id="layout18-table-7-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md) · [자료 2차](folder-2.md) · [자료 3차](folder-3.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-7-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md#user-content-reading-level-2) · [자료 2차](folder-2.md#user-content-reading-level-2) · [자료 3차](folder-3.md#user-content-reading-level-2)에서 별도로 확인합니다. |
 
 
 <a id="semantic-lung-tools-level-2"></a>
@@ -123,7 +123,7 @@
 | <a id="layout18-table-13-row-3"></a> **조건** | **코드 위치**: 자료 차수/4차/코드<br>**원고**: 연구 2 최종 19쪽<br>**입력**: 의료 원영상·가중치는 별도 준비<br>**빈 파일**: pareto_scatter.ipynb는 0바이트 |
 | <a id="layout18-table-13-row-4"></a> **관측과 해석** | 원고의 보고값과 코드의 설정·저장 결과를 대조하는 자료입니다. 도표 파일명만으로 새로운 실험 결과를 추정하지 않습니다.<br>0바이트 pareto_scatter.ipynb는 내용 없는 원본 파일입니다. 실제 산점도·지표 계산 기능은 내용이 있는 대응 노트북을 확인해야 합니다. |
 | <a id="layout18-table-13-row-5"></a> **한계** | **빈 노트북**: 0바이트 파일에는 실행 가능한 분석 내용이 없습니다.<br>**자료 범위**: 개인 실행기록과 의료 원영상은 포함하지 않습니다.<br>**번호 구분**: 자료 4차는 코드·자료 보관 구분이며 네 번째 연구 논문을 뜻하지 않습니다. |
-| <a id="layout18-table-13-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md) · [자료 2차](folder-2.md) · [자료 3차](folder-3.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-13-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md#user-content-reading-level-3) · [자료 2차](folder-2.md#user-content-reading-level-3) · [자료 3차](folder-3.md#user-content-reading-level-3)에서 별도로 확인합니다. |
 
 
 <a id="semantic-lung-tools-level-3"></a>
@@ -168,7 +168,7 @@
 | <a id="layout18-table-19-row-3"></a> **조건** | **코드 위치**: 자료 차수/4차/코드<br>**원고**: 연구 2 최종 19쪽<br>**입력**: 의료 원영상·가중치는 별도 준비<br>**빈 파일**: pareto_scatter.ipynb는 0바이트 |
 | <a id="layout18-table-19-row-4"></a> **관측과 해석** | 원고의 보고값과 코드의 설정·저장 결과를 대조하는 자료입니다. 도표 파일명만으로 새로운 실험 결과를 추정하지 않습니다.<br>0바이트 pareto_scatter.ipynb는 내용 없는 원본 파일입니다. 실제 산점도·지표 계산 기능은 내용이 있는 대응 노트북을 확인해야 합니다. |
 | <a id="layout18-table-19-row-5"></a> **한계** | **빈 노트북**: 0바이트 파일에는 실행 가능한 분석 내용이 없습니다.<br>**자료 범위**: 개인 실행기록과 의료 원영상은 포함하지 않습니다.<br>**번호 구분**: 자료 4차는 코드·자료 보관 구분이며 네 번째 연구 논문을 뜻하지 않습니다. |
-| <a id="layout18-table-19-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md) · [자료 2차](folder-2.md) · [자료 3차](folder-3.md)에서 별도로 확인합니다. |
+| <a id="layout18-table-19-row-6"></a> **자료 연결** | [이 차수 전체 상세](#purpose) · [실행 순서](#usage) · [결과와 해석](#results) · [프로젝트 공통 안내](../../README.md)<br>다른 자료 차수의 구현·관측은 [자료 1차](folder-1.md#user-content-reading-level-4) · [자료 2차](folder-2.md#user-content-reading-level-4) · [자료 3차](folder-3.md#user-content-reading-level-4)에서 별도로 확인합니다. |
 
 
 <a id="semantic-lung-tools-level-4"></a>
