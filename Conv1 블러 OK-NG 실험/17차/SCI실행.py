@@ -185,6 +185,37 @@ def evaluate(model,rows,device,precision,path=None,context=None):
         result['predictions']={'path':path.relative_to(path.parents[3]).as_posix(),'sha256':digest(path),'rows':len(records)}
     return result
 
+def reconcile_best_reference(folder,last_reference,state,loss_key):
+    """SHA 검증한 완료 epoch가 권위이며 중단된 best 포인터만 복구합니다."""
+    import math
+    import torch
+    epoch=state['epoch'];history=state['history']
+    if type(epoch) is not int or epoch<1 or last_reference.get('epoch')!=epoch or len(history)!=epoch:
+        raise ValueError('최적 모델 복구의 완료 epoch·이력 불일치')
+    def loss(item):
+        return item['validation']['loss'] if loss_key=='validation' else item[loss_key]
+    for number,item in enumerate(history,1):
+        if item.get('epoch')!=number or item.get('run_id')!=state['run_id'] or not math.isfinite(loss(item)):
+            raise ValueError('최적 모델 복구의 검증 손실 이력 오류')
+    selected=min(history,key=loss);best_epoch=selected['epoch']
+    if loss(selected)!=state['best'] or state.get('best_epoch',best_epoch)!=best_epoch:
+        raise ValueError('최적 모델 복구의 저장 최저 손실 불일치')
+    # last 저장 직후 중단된 최신 개선만 이 SHA로 확정할 수 있습니다.
+    reference=last_reference if best_epoch==epoch else read_json(folder/'best.json')
+    path=(folder/reference['path']).resolve()
+    if (not path.is_relative_to(folder.resolve()) or reference.get('epoch')!=best_epoch
+            or digest(path)!=reference['sha256']):
+        raise ValueError('최적 모델 복구의 포인터 epoch·경로·SHA 불일치')
+    chosen=state if best_epoch==epoch else torch.load(path,map_location='cpu',weights_only=False)
+    if (chosen.get('epoch')!=best_epoch or chosen.get('run_id')!=state['run_id']
+            or chosen.get('best')!=state['best']
+            or any(chosen.get(key)!=state.get(key) for key in ('protocol','condition'))):
+        raise ValueError('최적 모델 복구의 체크포인트 계보·손실 불일치')
+    best=folder/'best.json'
+    if not best.exists() or read_json(best)!=reference: save_json(best,reference)
+    return reference
+
+
 def train_condition(config,manifest,condition,run_id,device,resume=False):
     import torch
     from SCI모델 import SCIResNet,freeze_running_stats
@@ -216,6 +247,10 @@ def train_condition(config,manifest,condition,run_id,device,resume=False):
         model.load_state_dict(checkpoint['model']);optimizer.load_state_dict(checkpoint['optimizer']);scheduler.load_state_dict(checkpoint['scheduler'])
         start,best,patience_best,bad,best_epoch,history=[checkpoint[k] for k in ('epoch','best','patience_best','bad','best_epoch','history')]
         restore_rng(checkpoint['rng'])
+        reconcile_best_reference(folder,reference,checkpoint,'validation')
+        # last 포인터 뒤의 상태 파일 저장도 중단될 수 있으므로 완료 이력에서 재구성합니다.
+        save_json(folder/'history.json',history)
+        save_json(folder/'current.json',history[-1])
     cached=prepare_sigma(prepare_fixed(manifest,config),config,condition['sigma'],manifest)
     rows={'train':cached['train'],'validation':cached['validation'],'test':original_rows(cached['test'])}
     generated=cached['test']

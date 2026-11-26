@@ -85,6 +85,8 @@ def _fit(model,rows,layer,codec,config,folder,run_id,resume,progress=None):
         if state['run_id']!=run_id: raise ValueError('공격 run_id 불일치')
         decoder.load_state_dict(state['model']);optimizer.load_state_dict(state['optimizer']);scheduler.load_state_dict(state['scheduler'])
         start,best,bad,history=[state[k] for k in ('epoch','best','bad','history')];restore_rng(state['rng'])
+        from SCI실행 import reconcile_best_reference
+        reconcile_best_reference(folder,ref,state,'validation_mse')
     if not (folder/'training_complete.json').exists():
         for epoch in range(start,rc['epochs']):
             if epoch>=rc['min_epochs'] and bad>=rc['patience']: break

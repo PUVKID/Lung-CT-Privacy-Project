@@ -210,3 +210,13 @@ Histo306/88serial은픽셀대조·XMLbbox중심·CSV index/3Dfolder연결검토�
 | LEVEL 5 - Expert | 검사fixture의 구schema/함수/selector/경로 가정을 현재SCI계약으로 옮겼으며 기존 checkpoint/threat 표시assert2를 복구했습니다. run_protection→server whitelist→photoSettings에 실제 선정SHA/가정을 연결했습니다. 검증은 CPU/Rust/HTTP/VM 및 6469영상 읽기이며 실제GPU전체·14k물리생성·실브라우저는 미수행입니다. |
 
 선행절의 개별 검사 수는 이전 수정의 근거이며, 최신 전체 검사는 위29파일과 실제자료 읽기 범위로 해석합니다.
+
+## 중단 후 최적 모델 재개 보완 (2026-11-27)
+
+| 설명 수준 | 문제와 수정 | 확인 근거 | 남은 범위 |
+|---|---|---|---|
+| LEVEL 1 - Beginner | 저장 도중 멈춰도 가장 잘 배운 모델을 다시 찾도록 수정 | 작은 CPU 중단/재개6검사 통과 | 실제 긴 GPU 실험은 별도 |
+| LEVEL 2 - Intermediate | 마지막 저장과 최적 모델 표식 사이 중단에서 옛 모델을 고르던 문제를 복구 | 신규6·관련 기존16방법 통과 | 분류 점수를 조작하지 않음 |
+| LEVEL 3 - Advanced | 분류기와 복원 디코더 재개 직후 검증 이력 최저와 포인터 SHA·계보 확인 | 독립6+동률 최초최저1 확인 | 선행29·6469영상 검사는 기존 근거 재사용 |
+| LEVEL 4 - Professional | last 체크포인트 검증 뒤 남은 epoch 전에 best 복구; current/history도 마지막 완료 이력에서 복원 | stale/missing·후속 비개선·이전 최저 보존·불일치 거부 | 실제 전원 차단 내구성 전체를 보장하지 않음 |
+| LEVEL 5 - Expert | 연속 epoch/run/finite loss/argmin/state.best 일치 확인; 최신 개선만 권위 있는 last SHA로 복구하고 이전 최저는 기존 reference epoch/path/hash·checkpoint run/protocol/condition/loss 검증 | 실제 SCI 통합 CPU 경로와 별도 동률 반례; 실패 원문은 비공개 보존 | 학습/공격/분할/블러 수식은 동일, GPU 전체·14k 생성·브라우저는 미수행 |
