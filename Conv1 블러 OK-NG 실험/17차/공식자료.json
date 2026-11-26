@@ -1,0 +1,434 @@
+{
+  "retrieved_date_kst": "2026-11-25",
+  "protocol": "stage17-luna25-2d-patient-v2",
+  "records": {
+    "14673658": {
+      "url": "https://zenodo.org/records/14673658",
+      "title": "The LUNA25 Challenge: Public Training and Development set - Annotation Data",
+      "license": "cc-by-nc-4.0",
+      "files": [
+        {
+          "name": "LUNA25_Public_Training_Development_Data.csv",
+          "bytes": 860931,
+          "checksum": "md5:1349fcd9fdd120a990f43a2301f1609b",
+          "url": "https://zenodo.org/api/records/14673658/files/LUNA25_Public_Training_Development_Data.csv/content"
+        }
+      ]
+    },
+    "12582356": {
+      "url": "https://zenodo.org/records/12582356",
+      "title": "Cross Spatio-Temporal Pathology-based Lung Nodule Dataset",
+      "license": "cc-by-4.0",
+      "files": [
+        {
+          "name": "5mm_3D_detection_mhd1.zip",
+          "bytes": 688350556,
+          "checksum": "md5:fb7dbc004ade43554db6cbae848b0775",
+          "url": "https://zenodo.org/api/records/12582356/files/5mm_3D_detection_mhd1.zip/content"
+        },
+        {
+          "name": "5mm_3D_detection_mhd0.zip",
+          "bytes": 944079516,
+          "checksum": "md5:04a3322f4d6d48ccb21b52ea6e0539c4",
+          "url": "https://zenodo.org/api/records/12582356/files/5mm_3D_detection_mhd0.zip/content"
+        },
+        {
+          "name": "5mm_3D_detection_mhd2.zip",
+          "bytes": 1103326180,
+          "checksum": "md5:8663fb09c91f77b61e6f4b5b1d32706b",
+          "url": "https://zenodo.org/api/records/12582356/files/5mm_3D_detection_mhd2.zip/content"
+        },
+        {
+          "name": "5mm_3D_detection_mhd3.zip",
+          "bytes": 8650,
+          "checksum": "md5:4e8a6b559a1f01ed7b90395098c5f0a2",
+          "url": "https://zenodo.org/api/records/12582356/files/5mm_3D_detection_mhd3.zip/content"
+        },
+        {
+          "name": "1.25mm_3D_detection_mhd_0.zip",
+          "bytes": 5954492618,
+          "checksum": "md5:ff228b773f47aa3b93a54c2471e462b7",
+          "url": "https://zenodo.org/api/records/12582356/files/1.25mm_3D_detection_mhd_0.zip/content"
+        },
+        {
+          "name": "1.25mm_3D_detection_mhd_1.zip",
+          "bytes": 6384880714,
+          "checksum": "md5:cc5d9237d71163f8f25a9b5bf899ab70",
+          "url": "https://zenodo.org/api/records/12582356/files/1.25mm_3D_detection_mhd_1.zip/content"
+        },
+        {
+          "name": "1.25mm_3D_detection_mhd_3.zip",
+          "bytes": 25617,
+          "checksum": "md5:c2ad8cec0cb6784053d6e48d256755f7",
+          "url": "https://zenodo.org/api/records/12582356/files/1.25mm_3D_detection_mhd_3.zip/content"
+        },
+        {
+          "name": "1.25mm_3D_detection_mhd_2.zip",
+          "bytes": 45702268,
+          "checksum": "md5:06bae64e88f28e3ebf26bdb96986a923",
+          "url": "https://zenodo.org/api/records/12582356/files/1.25mm_3D_detection_mhd_2.zip/content"
+        },
+        {
+          "name": "class_dataset.zip",
+          "bytes": 241703173,
+          "checksum": "md5:45852403a0c1eb01fdee6c8f1304850d",
+          "url": "https://zenodo.org/api/records/12582356/files/class_dataset.zip/content"
+        },
+        {
+          "name": "1.25mm_2D_detection.zip",
+          "bytes": 1222991477,
+          "checksum": "md5:0dddfe7010d0b008031d175bad2c28f9",
+          "url": "https://zenodo.org/api/records/12582356/files/1.25mm_2D_detection.zip/content"
+        }
+      ]
+    },
+    "14223624": {
+      "url": "https://zenodo.org/records/14223624",
+      "title": "The LUNA25 Challenge: Public Training and Development set - Imaging Data",
+      "license": "cc-by-4.0",
+      "files": [
+        {
+          "name": "luna25_images.zip.039",
+          "bytes": 4697620480,
+          "checksum": "md5:75f02fd356139d0956ab4113289babef",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.039/content"
+        },
+        {
+          "name": "luna25_images.zip.002",
+          "bytes": 4697620480,
+          "checksum": "md5:0732f9780d916959b114fedc35cbe2f9",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.002/content"
+        },
+        {
+          "name": "luna25_images.zip.004",
+          "bytes": 4697620480,
+          "checksum": "md5:604fca0f76279580e6477021a25b1e1c",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.004/content"
+        },
+        {
+          "name": "luna25_images.zip.032",
+          "bytes": 4697620480,
+          "checksum": "md5:9f8e202a0b9c2b3a470a2c8510bc8d9a",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.032/content"
+        },
+        {
+          "name": "luna25_images.zip.033",
+          "bytes": 4697620480,
+          "checksum": "md5:33531ffdc76ed2effa99fcf78f2c08fb",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.033/content"
+        },
+        {
+          "name": "luna25_images.zip.005",
+          "bytes": 4697620480,
+          "checksum": "md5:a2f677b48d45fa5197b4b2f260219974",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.005/content"
+        },
+        {
+          "name": "luna25_images.zip.006",
+          "bytes": 4697620480,
+          "checksum": "md5:fe11473aabf2f580f47f791110867808",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.006/content"
+        },
+        {
+          "name": "luna25_images.zip.008",
+          "bytes": 4697620480,
+          "checksum": "md5:8a4e6306a43ce30a99d508e7a5b7f116",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.008/content"
+        },
+        {
+          "name": "luna25_images.zip.007",
+          "bytes": 4697620480,
+          "checksum": "md5:cff21468ee35106560930fc608839d86",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.007/content"
+        },
+        {
+          "name": "luna25_images.zip.011",
+          "bytes": 4697620480,
+          "checksum": "md5:fadaab9bf0dbf26300ddb4a404dce267",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.011/content"
+        },
+        {
+          "name": "luna25_images.zip.009",
+          "bytes": 4697620480,
+          "checksum": "md5:df3745379806c78a52db73306d38482a",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.009/content"
+        },
+        {
+          "name": "luna25_images.zip.012",
+          "bytes": 4697620480,
+          "checksum": "md5:d7ced5385f9b8b5d1f414212328a244a",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.012/content"
+        },
+        {
+          "name": "luna25_images.zip.035",
+          "bytes": 4697620480,
+          "checksum": "md5:b5996d77a07a70e3d4df95527ad73f39",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.035/content"
+        },
+        {
+          "name": "luna25_images.zip.040",
+          "bytes": 4697620480,
+          "checksum": "md5:8f259744d59e1b8c3e4fb5731ef2e440",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.040/content"
+        },
+        {
+          "name": "luna25_images.zip.041",
+          "bytes": 4697620480,
+          "checksum": "md5:121f49393d3f14690c83d1c949bafd3e",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.041/content"
+        },
+        {
+          "name": "luna25_images.zip.034",
+          "bytes": 4697620480,
+          "checksum": "md5:54abcc91496461d9d79ce6843a5de301",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.034/content"
+        },
+        {
+          "name": "luna25_images.zip.013",
+          "bytes": 4697620480,
+          "checksum": "md5:6cc2c771938f65d20f4a74d706d6681a",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.013/content"
+        },
+        {
+          "name": "luna25_images.zip.038",
+          "bytes": 4697620480,
+          "checksum": "md5:08fa36f2418eb1460bdf65571492a330",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.038/content"
+        },
+        {
+          "name": "luna25_images.zip.022",
+          "bytes": 4697620480,
+          "checksum": "md5:dae3f4265b3bc906d3a79aeb1ce20518",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.022/content"
+        },
+        {
+          "name": "luna25_images.zip.036",
+          "bytes": 4697620480,
+          "checksum": "md5:39e3bfd7ae3f72674b2fe129dcda2922",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.036/content"
+        },
+        {
+          "name": "luna25_images.zip.021",
+          "bytes": 4697620480,
+          "checksum": "md5:353d70f3a0e4939a83f34ae77aa7b0e0",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.021/content"
+        },
+        {
+          "name": "luna25_images.zip.015",
+          "bytes": 4697620480,
+          "checksum": "md5:0510d0df4873d4676e59919d2f118700",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.015/content"
+        },
+        {
+          "name": "luna25_images.zip.014",
+          "bytes": 4697620480,
+          "checksum": "md5:1cfefafc8dcce69fdeabada1f607c283",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.014/content"
+        },
+        {
+          "name": "luna25_images.zip.001",
+          "bytes": 4697620480,
+          "checksum": "md5:c3e59e3d3e8f021bdc554707ae21f8c5",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.001/content"
+        },
+        {
+          "name": "luna25_images.zip.042",
+          "bytes": 4697620480,
+          "checksum": "md5:6012036d13e1a7c3467686e1cc5c6827",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.042/content"
+        },
+        {
+          "name": "luna25_images.zip.016",
+          "bytes": 4697620480,
+          "checksum": "md5:838fc9c53ddd86c77104c9f32e3bf9b6",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.016/content"
+        },
+        {
+          "name": "luna25_images.zip.023",
+          "bytes": 4697620480,
+          "checksum": "md5:0fff2c17631db9e5b19566bff3787df2",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.023/content"
+        },
+        {
+          "name": "luna25_images.zip.024",
+          "bytes": 4697620480,
+          "checksum": "md5:4e04ed1856e4fb837bcd1188ea9aea66",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.024/content"
+        },
+        {
+          "name": "luna25_images.zip.017",
+          "bytes": 4697620480,
+          "checksum": "md5:9ff5a4eb7c4dd30de15638bad67a9ba4",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.017/content"
+        },
+        {
+          "name": "luna25_nodule_blocks.zip.001",
+          "bytes": 4697620480,
+          "checksum": "md5:0e825281aae77d18dcc02d4909570a7b",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_nodule_blocks.zip.001/content"
+        },
+        {
+          "name": "luna25_images.zip.019",
+          "bytes": 4697620480,
+          "checksum": "md5:ac433429442a994323a3a224ddc85324",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.019/content"
+        },
+        {
+          "name": "luna25_images.zip.025",
+          "bytes": 4697620480,
+          "checksum": "md5:ee0104b20bcf15ec06f01bdd82a50e79",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.025/content"
+        },
+        {
+          "name": "luna25_images.zip.018",
+          "bytes": 4697620480,
+          "checksum": "md5:0038e90fca86d5a63aef414fef5345c0",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.018/content"
+        },
+        {
+          "name": "luna25_images.zip.003",
+          "bytes": 4697620480,
+          "checksum": "md5:a4e0f1405a94a21521cdbc8b937eaac2",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.003/content"
+        },
+        {
+          "name": "luna25_images.zip.045",
+          "bytes": 4697620480,
+          "checksum": "md5:69e365e9e0561ff03063cfdf64d21205",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.045/content"
+        },
+        {
+          "name": "luna25_images.zip.037",
+          "bytes": 4697620480,
+          "checksum": "md5:742d522793931fc9d41ce9fddd254fa2",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.037/content"
+        },
+        {
+          "name": "luna25_images.zip.046",
+          "bytes": 2909754957,
+          "checksum": "md5:c3f2aa3f12a9db7f9f29c07724955e99",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.046/content"
+        },
+        {
+          "name": "luna25_images.zip.020",
+          "bytes": 4697620480,
+          "checksum": "md5:4f4b4749cd4a7bb20da4dfb52079366f",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.020/content"
+        },
+        {
+          "name": "luna25_images.zip.028",
+          "bytes": 4697620480,
+          "checksum": "md5:36b341953adba3d55b07ee13c8840390",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.028/content"
+        },
+        {
+          "name": "luna25_images.zip.026",
+          "bytes": 4697620480,
+          "checksum": "md5:993baca14d373fe50131eff4f3f8c81c",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.026/content"
+        },
+        {
+          "name": "luna25_images.zip.043",
+          "bytes": 4697620480,
+          "checksum": "md5:f5cd5eaff8e2515e8db042edeb846360",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.043/content"
+        },
+        {
+          "name": "luna25_images.zip.044",
+          "bytes": 4697620480,
+          "checksum": "md5:48441e6812d086a285f1e71b9950255c",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.044/content"
+        },
+        {
+          "name": "luna25_images.zip.027",
+          "bytes": 4697620480,
+          "checksum": "md5:3d619a48ea59beedb66d09234acb10a2",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.027/content"
+        },
+        {
+          "name": "luna25_images.zip.010",
+          "bytes": 4697620480,
+          "checksum": "md5:793a90f6727f24067ae7121739741e33",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.010/content"
+        },
+        {
+          "name": "luna25_images.zip.029",
+          "bytes": 4697620480,
+          "checksum": "md5:abe4a5e64fa167f230d870fa4a0241a2",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.029/content"
+        },
+        {
+          "name": "luna25_nodule_blocks.zip.002",
+          "bytes": 2099185052,
+          "checksum": "md5:8df04bfbc9824ccf112a8c90059ba650",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_nodule_blocks.zip.002/content"
+        },
+        {
+          "name": "luna25_images.zip.030",
+          "bytes": 4697620480,
+          "checksum": "md5:be5da8f733d9cf0a9af7b1ea739c481b",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.030/content"
+        },
+        {
+          "name": "luna25_images.zip.031",
+          "bytes": 4697620480,
+          "checksum": "md5:c5dd06df21955c06a979413d5d611994",
+          "url": "https://zenodo.org/api/records/14223624/files/luna25_images.zip.031/content"
+        }
+      ]
+    },
+    "8422229": {
+      "url": "https://zenodo.org/records/8422229",
+      "title": "A Lung Nodule Dataset with Histopathology-based Cancer Type Annotation",
+      "license": "cc-by-4.0",
+      "files": [
+        {
+          "name": "all_anno_3D.csv",
+          "bytes": 20306,
+          "checksum": "md5:ee9e7b7c40d3408de0a4c8116ca2a80d",
+          "url": "https://zenodo.org/api/records/8422229/files/all_anno_3D.csv/content"
+        },
+        {
+          "name": "BMP_3D.zip",
+          "bytes": 3954524914,
+          "checksum": "md5:e9d10e045657bc0e946d04a5e97b9c12",
+          "url": "https://zenodo.org/api/records/8422229/files/BMP_3D.zip/content"
+        },
+        {
+          "name": "MHD_3D.zip",
+          "bytes": 6894296729,
+          "checksum": "md5:109dccf23ac13ac36466702a2db3f795",
+          "url": "https://zenodo.org/api/records/8422229/files/MHD_3D.zip/content"
+        },
+        {
+          "name": "BMP_classification.zip",
+          "bytes": 59266174,
+          "checksum": "md5:acaea5b604ee426ab718b384900ba967",
+          "url": "https://zenodo.org/api/records/8422229/files/BMP_classification.zip/content"
+        },
+        {
+          "name": "BMP_2D.zip",
+          "bytes": 63542260,
+          "checksum": "md5:1a9b4e7354eb7cfc537d18bf9bfe3c55",
+          "url": "https://zenodo.org/api/records/8422229/files/BMP_2D.zip/content"
+        },
+        {
+          "name": "anno_WorldCoord.csv",
+          "bytes": 20921,
+          "checksum": "md5:e8e919699d0d0d2214b9b5b21e288c99",
+          "url": "https://zenodo.org/api/records/8422229/files/anno_WorldCoord.csv/content"
+        }
+      ]
+    }
+  },
+  "sources": {
+    "luna_baseline": "https://github.com/DIAGNijmegen/luna25-baseline-public",
+    "cstl_paper": "https://www.nature.com/articles/s41597-024-03851-7",
+    "histo_paper": "https://www.nature.com/articles/s41597-024-03658-6"
+  },
+  "luna_label_mapping": {
+    "0": "OK: benign",
+    "1": "NG: malignant"
+  },
+  "external_mapping_policy": "명시적 검토된 환자/병리 대응 파일 필요; nodule 좌표 주석을 악성 라벨로 추정 금지"
+}

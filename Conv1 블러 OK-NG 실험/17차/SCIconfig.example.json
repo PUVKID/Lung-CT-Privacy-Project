@@ -1,0 +1,97 @@
+{
+  "protocol": "stage17-luna25-2d-patient-v2",
+  "runtime": "./work/SCI-v2",
+  "manifest": "./work/data/SCI_manifest.json",
+  "data_status": "./work/data/SCI_준비상태.json",
+  "weights": {
+    "resnet50": {
+      "path": "./work/weights/resnet50_initial.pth",
+      "sha256": "0676ba61b6795bbe1773cffd859882e5e297624d384b6993f7c9e683e722fb8a"
+    },
+    "resnet18": {
+      "path": "./work/weights/resnet18-f37072fd.pth",
+      "sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
+    }
+  },
+  "sigmas": [
+    0,
+    1,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    16,
+    20,
+    24,
+    32,
+    40,
+    48,
+    64,
+    80,
+    96,
+    128,
+    192,
+    256
+  ],
+  "seed": 42,
+  "image_size": 512,
+  "roi_fov_mm": 50.0,
+  "roi_pixel_spacing_mm": 0.09765625,
+  "samples_per_class": 3000,
+  "test_samples_per_class": 1000,
+  "test_augmentation_seed": 20261125,
+  "batch_size": 2,
+  "accumulation": 4,
+  "epochs": 200,
+  "min_epochs": 30,
+  "patience": 25,
+  "min_delta": 0.0001,
+  "learning_rate": 0.0001,
+  "weight_decay": 0.0001,
+  "cpu_threads": 4,
+  "reserve_gib": 5,
+  "reconstruction": {
+    "epochs": 80,
+    "min_epochs": 20,
+    "patience": 12,
+    "learning_rate": 0.001,
+    "seed": 20261125,
+    "inverse_steps": 96,
+    "tv_alphas": [
+      0.0001,
+      0.001
+    ],
+    "deblur_alphas": [
+      1e-12,
+      1e-09,
+      1e-06,
+      0.001,
+      0.1,
+      1.0
+    ]
+  },
+  "feature_layers": [
+    "conv1",
+    "stem",
+    "layer1",
+    "layer2",
+    "layer3",
+    "layer4"
+  ],
+  "feature_dtypes": [
+    "f32",
+    "f16",
+    "i8"
+  ],
+  "connection_topk": [
+    1,
+    5,
+    10
+  ],
+  "diagnostics": {
+    "shuffle_epochs": 10,
+    "shuffle_seed": 20261125
+  }
+}

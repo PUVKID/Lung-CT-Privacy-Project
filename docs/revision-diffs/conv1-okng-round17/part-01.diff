@@ -1,0 +1,2624 @@
+--- a/Conv1 블러 OK-NG 실험/17차/README.md
++++ b/Conv1 블러 OK-NG 실험/17차/README.md
+@@ -0,0 +1,78 @@
++# 17차 · 폐결절 블러의 분류 성능과 복원 저항성
++
++LUNA25의 환자별 분할과 결절 중심 단면을 사용해 블러 강도마다 새 모델을 학습하는 구현입니다. **현재는 공식 주 자료 준비와 코드 검토 단계이며 17차 GPU 성능 결과는 아직 없습니다.** 과거 실험의 높은 정확도를 새 결과로 가져오지 않습니다.
++
++| 자료 | 역할 | 상태 |
++|---|---|---|
++| LUNA25 | 새 주 학습·검증·시험 자료 | 2,120명·6,163결절 준비, 고정 기하 적격성 제외0 |
++| Histo | 외부 단면 시험 후보 | 306장·88개 공식 serial의 결절 ROI 준비. 중복 serial 픽셀 대응 2장은 사전 제외. GPU 외부 결과 미측정 |
++| CSTL | 외부 시험 후보 | 라벨은 확인됐으나 환자·대상 결절 대응 보류 |
++
++| 항목 | 고정 조건 |
++|---|---|
++| 입력 | 공식 결절 좌표, 50×50mm 중심 단면, 512×512, HU−1000~400 |
++| 환자 분할 | seed42, 70/15/15. 학습1,484명·4,353결절, 검증318명·937결절, 시험318명·873결절 |
++| 원라벨 | OK=양성 결절, NG=악성 결절. 정상군을 합친 과거 실험과 다름 |
++| 독립 학습 | ResNet50 Conv1 분할20조건+전체 연결20조건, 보조5개를 포함한 고유45개 학습 |
++| 강도 | 0,1,2,4,6,8,10,12,16,20,24,32,40,48,64,80,96,128,192,256 |
++| 학습 표집 | 매 에폭 OK3,000회·NG3,000회 온라인 반복·증강 |
++| 시험 | 주시험은 무증강873결절. 보조는 보류 시험 안에서 각1,000행을 고정 생성하며 독립 표본 증가로 세지 않음 |
++| 선정 | 최대200·최소30에폭, patience25, 검증 손실 최저 모델. 시험 점수로 선정 금지 |
++| 블러 | 입력에 Gaussian 한 번. output pixel 기준 sigma이며 1pixel=50/512mm |
++| 특징 | Conv1/stem/layer1~4 × FP32/FP16/INT8, 실제 Rust encode/decode 후 분류·공격 |
++
++## 준비와 실행
++
++이 저장소에는 영상·환자 목록·예측·모델 가중치·비공개 운영 기록을 넣지 않습니다. 공식 출처와 라이선스는 `공식자료.json`에서 확인합니다. 공식 파일을 내려받아 체크섬을 확인하고 입력 manifest를 준비해야 합니다.
++
++```powershell
++Copy-Item SCIconfig.example.json SCIconfig.json
++Copy-Item config.example.json config.json
++python -B -X utf8 SCI데이터.py list --group nodule-blocks
++python -B -X utf8 SCI데이터.py download --group annotations
++python -B -X utf8 SCI데이터.py download --group nodule-blocks
++python -B -X utf8 SCI데이터.py extract --group nodule-blocks --destination ./work/data/blocks
++python -B -X utf8 SCI데이터.py prepare --blocks ./work/data/blocks
++python -B -X utf8 SCI데이터.py status
++# 공식 초기 가중치를 work/weights에 별도로 준비한 뒤 아래 SHA와 대조합니다.
++Get-FileHash -Algorithm SHA256 ./work/weights/resnet50_initial.pth
++Get-FileHash -Algorithm SHA256 ./work/weights/resnet18-f37072fd.pth
++# 빌드.py의 설치된 Rust/MSVC/SDK 경로를 지원 환경에 맞게 준비합니다.
++New-Item -ItemType Directory -Force docs | Out-Null
++python -B -X utf8 빌드.py
++Get-Content -LiteralPath ./docs/Rust_빌드결과.json
++python -B -X utf8 SCI실행.py --prepare
++# 기존 12차 전체 완료 확인 이후에만 실행합니다. 중복 실행하지 않습니다.
++python -B -X utf8 SCI실행.py --run --device cuda
++```
++
++두 초기 가중치는 torchvision의 ImageNet ResNet50 V1(`resnet50-0676ba61.pth`)과 ResNet18 V1(`resnet18-f37072fd.pth`)입니다. 전체 SHA256은 각각 `0676ba61b6795bbe1773cffd859882e5e297624d384b6993f7c9e683e722fb8a`, `f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec`이며 예제의 경로와 실제 파일이 같아야 합니다. 검사 실패를 우회하지 않습니다. 빌드 결과 exit_code=0, 실제 전송엔진 파일·SHA와 원본 소스 SHA를 확인한 뒤 실행합니다.
++
++화면은 별도 터미널에서 `node './대시보드 화면/server.mjs'`로 열며 주소는 http://127.0.0.1:8788/ 입니다. 현재 서버의 기본 work/data 경로는 연구 운영 위치에 고정돼 있으므로 새 환경에서는 `createServer({work:실제런타임,dataRoot:실제자료폴더})`를 import하는 로컬 실행기를 만들고 같은 포트에 listen해야 합니다. 예제 설정만 바꿔도 화면 경로가 자동 변경되는 구조는 아닙니다.
++
++외부 자료는 다운로드만으로 완료하지 않습니다. 공식 분류 라벨과 환자·결절 대응을 검토한 mapping, 교차 코호트 검토문이 있을 때만 prepare의 `--histo-mapping`, `--cstl-mapping`, `--cross-review`를 지정합니다. 검토 자료의 영상별 목록은 공개하지 않습니다. LUNA-only 준비 뒤 외부 자료를 추가하려면 GPU/run binding 전에 새 manifest를 확정합니다. Histo의 128px 중심 crop은 BMP 밝기 영역이며 LUNA의 50mm/HU 입력과 같은 물리 영역이 아닙니다.
++
++
++Python에 PyTorch·torchvision·NumPy·SciPy·Pillow·psutil·scikit-learn, 화면에 Node.js가 필요합니다. 물리 volume 외부 경로에는 SimpleITK가 별도로 필요합니다. Rust 전송 엔진은 소스로 제공하며 `빌드.py`의 기존 Windows MSVC/Rust/SDK 위치를 자신의 지원 환경에 맞게 준비해야 합니다. 실행 파일은 포함하지 않았습니다. 환경 자동 설치나 권한 변경을 수행하는 패키지가 아닙니다.
++
++현재 연구 운영용 `require_previous_experiment_complete`는 이전12차의 전체40조건 완료를 확인하고 GPU 시작을 막습니다. 다른 환경에서 곧바로 범용 학습을 실행할 수 있는 설치 패키지로 검증하지 않았습니다. 실제 연구에서는12차가 모두 끝난 다음 새17차를 시작합니다. 현재 진행 중인 다른 실험을 검증을 위해 중단하지 않습니다.
++
++## 지표와 해석
++
++| 지표 | 저장·해석 |
++|---|---|
++| 분류 | 정답수/분모·원비율, 백분율만 한 자리 반올림. 완전 정답과 반올림100.0% 구분 |
++| 상대 복원오차 | 100×clip(공격MSE/학습 평균영상 기준MSE,0,1), 분모0이면 미정의 |
++| 구조 훼손 | 100×clip(1−SSIM,0,1), 원SSIM도 보존 |
++| 연결/멤버십 | 닫힌 후보 집합Top-k와 선정 점수 공격AUC. 복원과 서로 다른 위협 |
++| 불확실성 | 원본 환자 단위 군집95%구간, 반복 생성행을 독립 환자로 간주하지 않음 |
++
++0~100점은 선언한 공격·기준에 대한 탐색 척도이며 보호 확률·차등프라이버시 보장·세계 최초 수식이 아닙니다. 공격은 train에서 학습하고 validation에서 선택하며 test는 보고에 씁니다. 정확도100%를 피하기 위해 오답이나 분할을 조작하지 않습니다.
++
++결절 위치가 제공된 분류 연구이며 자동 검출·임상 진단 성능이 아닙니다. 공식 라벨을 모든 사례의 동일 병리 확진으로 바꾸어 설명하지 않습니다. 고정 결절 패치에도 주변 조직 단서가 남을 수 있어 중앙/주변/거친 단서 진단과 train-only 라벨셔플 대조를 분리합니다.
++
++## 확인 범위
++
++데이터10·엔진9·화면2 및 Rust 특징18경로의 기존 근거를 재사용했습니다. 실제 LUNA25 입력 준비와 분할 간 환자·원본/영상/픽셀 해시 필드 비중복은 별도 확인했습니다. 합성 CPU 검사는 장시간 GPU 완료나 외부 성능을 입증하지 않습니다. 현재 차수는 미측정이며 수치를 만들어 채우지 않습니다.
++
++[다섯 읽기 수준과 구현 설명](../../docs/revisions/conv1-okng-round17.md#user-content-reading-level-5) · [공개 파일 비교](../../docs/revision-diffs/conv1-okng-round17.md) · [저장소 첫 화면](../../README.md)
+--- a/Conv1 블러 OK-NG 실험/17차/SCIconfig.example.json
++++ b/Conv1 블러 OK-NG 실험/17차/SCIconfig.example.json
+@@ -0,0 +1,97 @@
++{
++  "protocol": "stage17-luna25-2d-patient-v2",
++  "runtime": "./work/SCI-v2",
++  "manifest": "./work/data/SCI_manifest.json",
++  "data_status": "./work/data/SCI_준비상태.json",
++  "weights": {
++    "resnet50": {
++      "path": "./work/weights/resnet50_initial.pth",
++      "sha256": "0676ba61b6795bbe1773cffd859882e5e297624d384b6993f7c9e683e722fb8a"
++    },
++    "resnet18": {
++      "path": "./work/weights/resnet18-f37072fd.pth",
++      "sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
++    }
++  },
++  "sigmas": [
++    0,
++    1,
++    2,
++    4,
++    6,
++    8,
++    10,
++    12,
++    16,
++    20,
++    24,
++    32,
++    40,
++    48,
++    64,
++    80,
++    96,
++    128,
++    192,
++    256
++  ],
++  "seed": 42,
++  "image_size": 512,
++  "roi_fov_mm": 50.0,
++  "roi_pixel_spacing_mm": 0.09765625,
++  "samples_per_class": 3000,
++  "test_samples_per_class": 1000,
++  "test_augmentation_seed": 20261125,
++  "batch_size": 2,
++  "accumulation": 4,
++  "epochs": 200,
++  "min_epochs": 30,
++  "patience": 25,
++  "min_delta": 0.0001,
++  "learning_rate": 0.0001,
++  "weight_decay": 0.0001,
++  "cpu_threads": 4,
++  "reserve_gib": 5,
++  "reconstruction": {
++    "epochs": 80,
++    "min_epochs": 20,
++    "patience": 12,
++    "learning_rate": 0.001,
++    "seed": 20261125,
++    "inverse_steps": 96,
++    "tv_alphas": [
++      0.0001,
++      0.001
++    ],
++    "deblur_alphas": [
++      1e-12,
++      1e-09,
++      1e-06,
++      0.001,
++      0.1,
++      1.0
++    ]
++  },
++  "feature_layers": [
++    "conv1",
++    "stem",
++    "layer1",
++    "layer2",
++    "layer3",
++    "layer4"
++  ],
++  "feature_dtypes": [
++    "f32",
++    "f16",
++    "i8"
++  ],
++  "connection_topk": [
++    1,
++    5,
++    10
++  ],
++  "diagnostics": {
++    "shuffle_epochs": 10,
++    "shuffle_seed": 20261125
++  }
++}
+--- a/Conv1 블러 OK-NG 실험/17차/SCI공격.py
++++ b/Conv1 블러 OK-NG 실험/17차/SCI공격.py
+@@ -0,0 +1,418 @@
++"""SCI 사진·다층 특징·실제 직렬화·연결·멤버십의 분리 평가입니다."""
++from __future__ import annotations
++import hashlib,json,math,subprocess
++from pathlib import Path
++import numpy as np
++import torch
++from torch import nn
++import torch.nn.functional as F
++from PIL import Image
++from 공격 import metrics,deblur,decoder_model
++from 실행 import read_json,save_json,save_torch,digest,seed_all,rng_state,restore_rng,disk_guard,atomic
++from SCI모델 import LAYERS
++
++ENGINE=Path(__file__).parent/'rust'/'전송엔진.exe'
++
++class FeatureCodec:
++    def __init__(self,dtype):
++        if dtype not in ('f32','f16','i8'): raise ValueError('특징 dtype 오류')
++        self.dtype=dtype;self.count=0;self.packet_bytes=0;self.sidecar_bytes=0;self.error=0.;self.metadata_hash=hashlib.sha256()
++    def transfer(self,value,actual=True):
++        array=value.detach().float().cpu().numpy()
++        if not np.isfinite(array).all() or array.size>32_000_000: raise ValueError('특징 원소 수·유한값 오류')
++        scale=float(np.max(np.abs(array))/127) if self.dtype=='i8' and np.max(np.abs(array))>0 else 1.
++        packed=(np.rint(array/scale).clip(-127,127).astype('i1') if self.dtype=='i8' else array.astype('<f4' if self.dtype=='f32' else '<f2'))
++        if not np.isfinite(packed).all(): raise ValueError('특징 정밀도 변환에서 비유한 값 발생')
++        raw=packed.tobytes()
++        metadata=json.dumps({'shape':list(array.shape),'dtype':self.dtype,'scale':scale,'quantization':'symmetric127' if self.dtype=='i8' else 'IEEE754'},sort_keys=True,separators=(',',':')).encode('utf-8')
++        if actual:
++            packet=subprocess.run([str(ENGINE),'feature-encode',self.dtype,str(array.size)],input=raw,capture_output=True,check=True,timeout=60).stdout
++            if packet[:4]!=b'FTR1' or len(packet)!=len(raw)+9: raise ValueError('Rust 특징 패킷 머리글·길이 오류')
++            decoded=subprocess.run([str(ENGINE),'feature-decode'],input=packet,capture_output=True,check=True,timeout=60).stdout
++            if decoded!=raw: raise ValueError('Rust 특징 전송 rawpayload 불일치')
++            raw=decoded
++            self.count+=1;self.packet_bytes+=len(packet);self.sidecar_bytes+=len(metadata);self.metadata_hash.update(metadata)
++        reconstructed=np.frombuffer(raw,dtype='i1' if self.dtype=='i8' else '<f4' if self.dtype=='f32' else '<f2').reshape(array.shape).astype(np.float32)
++        if self.dtype=='i8': reconstructed*=np.float32(scale)
++        if actual: self.error+=float(np.mean((reconstructed-array)**2))
++        return torch.from_numpy(reconstructed.copy()).to(value.device)
++    def report(self):
++        return {'dtype':self.dtype,'packet_bytes':self.packet_bytes,'sidecar_bytes':self.sidecar_bytes,'total_bytes':self.packet_bytes+self.sidecar_bytes,
++                'count':self.count,'mean_total_bytes':None if not self.count else (self.packet_bytes+self.sidecar_bytes)/self.count,
++                'quantization_mse':None if not self.count else self.error/self.count,'metadata_sha256':self.metadata_hash.hexdigest(),
++                'scope':'평가 입력의 실제 Rust 헤더+payload와 실제 UTF-8 shape/scale sidecar 바이트. 네트워크 지연 실측 아님',
++                'training_note':'공격 학습은 같은 dtype cast·scale 연산, 평가 입력은 실제 Rust 직렬화·복호화를 경유'}
++
++class FeatureDecoder(nn.Module):
++    def __init__(self,channels,size,output_size=512):
++        super().__init__();self.output_size=output_size
++        self.first=nn.Sequential(nn.Conv2d(channels,64,1),nn.GroupNorm(4,64),nn.GELU(),nn.Conv2d(64,64,3,padding=1),nn.GELU())
++        blocks=[];current=64
++        while size<output_size:
++            following=max(8,current//2)
++            blocks.append(nn.Sequential(nn.Conv2d(current,following,3,padding=1),nn.GroupNorm(4,following),nn.GELU()))
++            current=following;size*=2
++        self.blocks=nn.ModuleList(blocks);self.last=nn.Conv2d(current,1,1)
++    def forward(self,x):
++        x=self.first(x)
++        for block in self.blocks: x=block(x.repeat_interleave(2,-2).repeat_interleave(2,-1))
++        if x.shape[-2:]!=(self.output_size,self.output_size): raise ValueError('특징 디코더 출력 크기 오류')
++        return torch.sigmoid(self.last(x))
++
++def _source(row,model,layer,codec,actual):
++    from SCI실행 import image
++    target=torch.from_numpy(image(row))[None,None].to(next(model.parameters()).device)
++    with torch.no_grad():
++        observed=model.observed(target)
++        source=observed if layer=='photo' else codec.transfer(model.features_from_observed(observed,layer),actual=actual)
++    return source,target,observed
++
++def _fit(model,rows,layer,codec,config,folder,run_id,resume):
++    rc=config['reconstruction'];seed_all(rc['seed'],next(model.parameters()).device.type=='cuda')
++    source,_,_=_source(rows['train'][0],model,layer,codec,False)
++    decoder=(decoder_model() if layer=='photo' else FeatureDecoder(source.shape[1],source.shape[-1],config['image_size'])).to(source.device)
++    optimizer=torch.optim.AdamW(decoder.parameters(),lr=rc['learning_rate'],weight_decay=1e-5)
++    scheduler=torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,patience=5,factor=.5)
++    start,best,bad,history=0,float('inf'),0,[]
++    last=folder/'last.json'
++    if last.exists():
++        if not resume: raise ValueError('공격 epoch 보존본 재개는 --resume 필요')
++        ref=read_json(last);path=folder/ref['path']
++        if digest(path)!=ref['sha256']: raise ValueError('공격 epoch SHA 불일치')
++        state=torch.load(path,map_location='cpu',weights_only=False)
++        if state['run_id']!=run_id: raise ValueError('공격 run_id 불일치')
++        decoder.load_state_dict(state['model']);optimizer.load_state_dict(state['optimizer']);scheduler.load_state_dict(state['scheduler'])
++        start,best,bad,history=[state[k] for k in ('epoch','best','bad','history')];restore_rng(state['rng'])
++    if not (folder/'training_complete.json').exists():
++        for epoch in range(start,rc['epochs']):
++            if epoch>=rc['min_epochs'] and bad>=rc['patience']: break
++            disk_guard(folder,int(config['reserve_gib']*1024**3)+sum(p.numel()*p.element_size() for p in decoder.parameters())*4)
++            decoder.train();train_loss=0.
++            order=list(rows['train']);random_order=np.random.default_rng(rc['seed']+epoch).permutation(len(order))
++            for index in random_order:
++                source,target,_=_source(order[index],model,layer,codec,False)
++                optimizer.zero_grad(set_to_none=True);loss=(decoder(source)-target).square().mean();loss.backward();optimizer.step();train_loss+=float(loss)
++            decoder.eval();validation=0.
++            with torch.no_grad():
++                for row in rows['validation']:
++                    source,target,_=_source(row,model,layer,codec,False);validation+=float((decoder(source)-target).square().mean())
++            validation/=len(rows['validation']);scheduler.step(validation)
++            improved=validation<best
++            if improved: best,bad=validation,0
++            else: bad+=1
++            history.append({'run_id':run_id,'epoch':epoch+1,'training_mse':train_loss/len(order),'validation_mse':validation})
++            path=folder/'epochs'/f'epoch_{epoch+1:04d}.pth'
++            save_torch(path,{'run_id':run_id,'epoch':epoch+1,'model':decoder.state_dict(),'optimizer':optimizer.state_dict(),'scheduler':scheduler.state_dict(),
++                'rng':rng_state(source.device.type=='cuda'),'best':best,'bad':bad,'history':history})
++            ref={'path':path.relative_to(folder).as_posix(),'sha256':digest(path),'epoch':epoch+1}
++            save_json(last,ref)
++            if improved: save_json(folder/'best.json',ref)
++        save_json(folder/'training_complete.json',{'run_id':run_id,'history':history,'best_validation_mse':best})
++    reference=read_json(folder/'best.json');path=folder/reference['path']
++    if digest(path)!=reference['sha256']: raise ValueError('공격 best SHA 불일치')
++    decoder.load_state_dict(torch.load(path,map_location='cpu',weights_only=False)['model']);decoder.eval()
++    return decoder
++
++def _score(records,prior):
++    if not records: return {'state':'blocked','reason':'평가 원본 없음','mse':None,'mae':None,'psnr':None,'ssim':None,'count':0}
++    report={key:float(np.mean([r[key] for r in records])) if all(r[key] is not None for r in records) else None for key in ('mse','mae','psnr','ssim')}
++    denominator=float(np.mean(prior));raw=None if denominator==0 else report['mse']/denominator
++    structural=1-report['ssim'];clip=None if raw is None else float(np.clip(raw,0,1))
++    return {**report,'count':len(records),'mean_baseline_mse':denominator,'privacy_error_ratio_raw':raw,'privacy_error_ratio_clipped':clip,
++        'privacy_error_score':None if clip is None else 100*clip,'privacy_error_clipping_applied':raw is not None and raw!=clip,
++        'privacy_structure_ratio_raw':structural,'privacy_structure_ratio_clipped':float(np.clip(structural,0,1)),
++        'privacy_structure_score':100*float(np.clip(structural,0,1)),'privacy_structure_clipping_applied':structural!=float(np.clip(structural,0,1)),
++        'undefined_reason':'같은 평가 집합의 학습 평균영상 오차가0' if raw is None else None,'psnr_infinite_count':sum(r['psnr_infinite'] for r in records)}
++
++def _measure(target,prediction):
++    report=metrics(target,prediction);report['mae']=float(np.mean(np.abs(target-np.clip(prediction,0,1))));return report
++
++def _gradient_inverse(model,target_feature,layer,mean,steps,tv):
++    guess=torch.tensor(mean,device=target_feature.device)[None,None].requires_grad_(True)
++    optimizer=torch.optim.Adam([guess],lr=.03)
++    for _ in range(steps):
++        optimizer.zero_grad(set_to_none=True)
++        feature=model.features_from_observed(guess,layer)
++        variation=(guess[...,1:,:]-guess[...,:-1,:]).abs().mean()+(guess[...,:,1:]-guess[...,:,:-1]).abs().mean()
++        loss=(feature-target_feature).square().mean()+tv*variation
++        loss.backward();optimizer.step()
++        with torch.no_grad(): guess.clamp_(0,1)
++    return guess.detach()[0,0].cpu().numpy()
++
++def _linear_inverse(model,value,shape,ratio):
++    weights=model.backbone.conv1.weight.detach().double();std=model.rgb_std.double()
++    kernel=(weights/std.reshape(1,3,1,1)).sum(1).reshape(64,49)
++    u,s,vh=torch.linalg.svd(kernel,full_matrices=False);cutoff=1e-7*float(s[0])
++    if ratio==0:
++        multiplier=torch.zeros_like(s);active=s>cutoff;multiplier[active]=1/s[active]
++    else: multiplier=s/(s.square()+ratio*s[0].square())
++    inverse=(vh.T*multiplier)@u.T
++    with torch.no_grad():
++        offset=model.features_from_observed(torch.zeros(1,1,*shape,device=value.device),'conv1')
++        patches=inverse@(value-offset).double().flatten(2)
++        count=F.fold(torch.ones_like(patches),output_size=shape,kernel_size=7,stride=2,padding=3)
++        if float(count.min())<=0: raise ValueError('선형 역복원 겹침 횟수 오류')
++        raw=F.fold(patches,output_size=shape,kernel_size=7,stride=2,padding=3)/count
++        reconstruction=raw.clamp(0,1).float()
++        residual=float((model.features_from_observed(reconstruction,'conv1')-value).square().mean())
++    if not torch.isfinite(raw).all(): raise ValueError('선형 역복원 비유한 값')
++    return reconstruction[0,0].cpu().numpy(),{'rank':int((s>cutoff).sum()),'condition':float(s[0]/s[-1]) if s[-1]>cutoff else None,
++        'rcond':1e-7,'lambda_ratio':ratio,'raw_min':float(raw.min()),'raw_max':float(raw.max()),'clipped_fraction':float(((raw<0)|(raw>1)).double().mean()),'feature_forward_mse':residual}
++
++def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',resume=False):
++    from SCI실행 import image
++    folder.mkdir(parents=True,exist_ok=True)
++    if (folder/'result.json').exists(): return read_json(folder/'result.json')
++    codec=FeatureCodec(dtype);decoder=_fit(model,rows,layer,codec,config,folder/'decoder',run_id,resume)
++    mean=np.zeros((config['image_size'],config['image_size']),dtype=np.float64)
++    for row in rows['train']: mean+=image(row)
++    mean=(mean/len(rows['train'])).astype(np.float32)
++    photo_names=['copy_observed','mean_train','learned_decoder']+['dct_'+str(a) for a in config['reconstruction']['deblur_alphas']]
++    names=photo_names if layer=='photo' else ['mean_train','learned_decoder']+[f'gradient_tv_{tv}' for tv in config['reconstruction']['tv_alphas']]
++    if layer=='conv1': names += [f'linear_{ratio}:{name}' for ratio in (0.,1e-8,1e-6) for name in photo_names]
++    diagnostics=[]
++    def candidates(row):
++        source,target,observed=_source(row,model,layer,codec,True)
++        target_array=target[0,0].cpu().numpy();observed_array=observed[0,0].cpu().numpy()
++        with torch.no_grad(): learned=decoder(source)[0,0].cpu().numpy()
++        result={'mean_train':mean,'learned_decoder':learned}
++        if layer=='photo':
++            result['copy_observed']=observed_array
++            for alpha in config['reconstruction']['deblur_alphas']: result['dct_'+str(alpha)]=deblur(observed_array,model.blur.sigma,alpha)
++        else:
++            for tv in config['reconstruction']['tv_alphas']:
++                result[f'gradient_tv_{tv}']=_gradient_inverse(model,source,layer,mean,config['reconstruction']['inverse_steps'],tv)
++        if layer=='conv1':
++            for ratio in (0.,1e-8,1e-6):
++                inverse,audit=_linear_inverse(model,source,observed_array.shape,ratio);audit['observed_input_mse']=float(np.mean((inverse-observed_array)**2));diagnostics.append(audit)
++                with torch.no_grad(): refined=photo_decoder(torch.tensor(inverse,device=source.device)[None,None])[0,0].cpu().numpy()
++                for name in photo_names:
++                    result[f'linear_{ratio}:{name}']=inverse if name=='copy_observed' else mean if name=='mean_train' else refined if name=='learned_decoder' else deblur(inverse,model.blur.sigma,float(name[4:]))
++        with torch.no_grad(): transmitted_logit=None if layer=='photo' else float(model.logits_from_layer(source,layer)[0])
++        return target_array,result,transmitted_logit
++    photo_decoder=decoder
++    if layer=='conv1':
++        photo_decoder=_fit(model,rows,'photo',FeatureCodec('f32'),config,folder.parents[1]/'photo'/'decoder',run_id,True)
++    measurements={};prior_errors={};selections={};classification={}
++    datasets={key:rows[key] for key in ('validation','test','test_generated') if key in rows}
++    for cohort,external in rows.get('external',{}).items():
++        external=external.get('rows',[]) if isinstance(external,dict) else external
++        if external: datasets['external_'+cohort]=external
++    for split,records in datasets.items():
++        measurements[split]={name:[] for name in names};prior_errors[split]=[]
++        classified=[]
++        for row in records:
++            target,outputs,logit=candidates(row);prior_errors[split].append(float(np.mean((mean-target)**2)))
++            if logit is not None: classified.append(logit)
++            for name in names: measurements[split][name].append(_measure(target,outputs[name]))
++        if classified:
++            from 지표 import binary_report
++            classification[split]=binary_report([row['label'] for row in records],classified)
++        if split=='validation':
++            for group in ('overall','OK','NG'):
++                indices=[i for i,r in enumerate(records) if group=='overall' or r['label']==(0 if group=='OK' else 1)]
++                selections[group]={metric:(None if not indices else min(names,key=lambda n:np.mean([measurements[split][n][i][metric] for i in indices])) if metric in ('mse','mae') else max(names,key=lambda n:np.mean([measurements[split][n][i][metric] if measurements[split][n][i][metric] is not None else float('inf') for i in indices]))) for metric in ('mse','mae','ssim','psnr')}
++            save_json(folder/'selection.json',{'run_id':run_id,'split':'validation','selections':selections,'unit':'각 전체·클래스·지표별 검증 평균; 시험은 선정에 사용하지 않음'})
++    reports={}
++    for name in names:
++        item={'interpretation':'학습 평균영상 비교기준; 상대오차100은 방어 성공 아님' if name.endswith('mean_train') else '사전 정의한 실제 복원 공격'}
++        for split,records in datasets.items():
++            item[split]=_score(measurements[split][name],prior_errors[split]);item[split+'_per_source']=measurements[split][name]
++            item[split+'_by_class']={group:_score([measurements[split][name][i] for i,r in enumerate(records) if r['label']==label],
++                [prior_errors[split][i] for i,r in enumerate(records) if r['label']==label]) for label,group in ((0,'OK'),(1,'NG'))}
++        reports[name]=item
++    selected=selections['overall']['mse'];selected_report=reports[selected]
++    examples=[]
++    for label,group in ((0,'OK'),(1,'NG')):
++        row=next((r for r in rows['validation'] if r['label']==label),None)
++        if row is None: continue
++        target,outputs,_=candidates(row)
++        output=folder/'examples'/f'{group}_reconstructed.png'
++        atomic(output,lambda p:Image.fromarray(np.rint(np.clip(outputs[selected],0,1)*255).astype(np.uint8)).save(p,format='PNG'))
++        examples.append({'label':group,'row_id':row['id'],'patient_id':row['patient_id'],'source':'validation',
++            'reconstructed':output.relative_to(folder.parents[3] if layer=='photo' else folder.parents[4]).as_posix(),
++            'settings':{'layer':layer,'dtype':dtype,'selected_attack':selected,'selection_split':'validation'}})
++    result={'run_id':run_id,'selected_family':selected,'selection_unit':'전체 검증 평균 MSE',
++        'validation_selection_by_class_metric':selections,'candidate_metrics':reports,'selected_scores':{key:selected_report[key] for key in selected_report if not key.endswith('_per_source')},
++        'test':selected_report['test'],'privacy_score':selected_report['test']['privacy_error_score'],'examples':examples,'transmission':codec.report(),
++        'linear_inverse_diagnostics_per_source':diagnostics,'linear_inverse_summary':{'count':len(diagnostics),'detail_location':'동일 result.json의 linear_inverse_diagnostics_per_source'},'classification_from_transmitted_features':classification,
++        'score_interpretation':'복원 상대오차·구조 차이 탐색 점수이며 재식별 성공확률·안전 보장 아님','external':{}}
++    for cohort in ('CSTL','Histo'):
++        key='external_'+cohort
++        if key not in selected_report: result['external'][cohort]={'state':'blocked','reason':rows.get('external_status',{}).get(cohort,{}).get('reason','확인한 외부 결절·환자·양성악성 주석 없음'),'mse':None};continue
++        result['external'][cohort]={'selected_family':selected,'selection_source':'LUNA25 validation','test':selected_report[key],
++            'privacy_score':selected_report[key]['privacy_error_score'],
++            'candidate_metrics':{name:{'test':reports[name][key],'test_by_class':reports[name][key+'_by_class']} for name in names},
++            'selected_scores':{'test':selected_report[key],'test_by_class':selected_report[key+'_by_class']}}
++    if 'test_generated' in selected_report: result['test_generated']=selected_report['test_generated']
++    save_json(folder/'result.json',result);return result
++
++def membership(model,rows,folder):
++    from sklearn.metrics import roc_auc_score
++    from SCI실행 import image
++    device=next(model.parameters()).device
++    patients=sorted({r['patient_id'] for r in rows['train']});np.random.default_rng(42).shuffle(patients)
++    first=set(patients[:len(patients)//2]);second=set(patients[len(patients)//2:])
++    if not first or not second: return {'state':'blocked','test_auc':None,'reason':'선정용·최종용 멤버 환자를 분리할 수 없음'}
++    def scores(records):
++        result=[]
++        with torch.no_grad():
++            for row in records:
++                logit=float(model(torch.tensor(image(row),device=device)[None,None])[0]);p=1/(1+math.exp(-max(-700,min(700,logit))))
++                loss=float(np.logaddexp(0,logit)-row['label']*logit)
++                result.append({'patient_id':row['patient_id'],'label':row['label'],'confidence':max(p,1-p),'negative_loss':-loss})
++        return result
++    member_val=scores([r for r in rows['train'] if r['patient_id'] in first]);member_test=scores([r for r in rows['train'] if r['patient_id'] in second])
++    nonmember_val=scores(rows['validation']);nonmember_test=scores(rows['test'])
++    if ({r['patient_id'] for r in member_val+nonmember_val}&{r['patient_id'] for r in member_test+nonmember_test}): raise ValueError('멤버십 선정·최종 환자 중복')
++    def auc(members,nonmembers,name,one_class=False):
++        values=members+nonmembers
++        if not members or not nonmembers: return None
++        labels=sorted({r['label'] for r in values})
++        if not one_class and labels!=[0,1]: return None
++        weights=[]
++        for member,records in ((1,members),(0,nonmembers)):
++            for label in labels:
++                if not any(r['label']==label for r in records): return None
++            for row in records:
++                patients={r['patient_id'] for r in records if r['label']==row['label']}
++                patient_nodules=sum(r['patient_id']==row['patient_id'] and r['label']==row['label'] for r in records)
++                weights.append(1/(len(patients)*patient_nodules))
++        return float(roc_auc_score([1]*len(members)+[0]*len(nonmembers),[r[name] for r in values],sample_weight=weights))
++    validation={name:auc(member_val,nonmember_val,name) for name in ('confidence','negative_loss')}
++    valid={name:value for name,value in validation.items() if value is not None}
++    selected=max(valid,key=valid.get) if valid else None
++    test_auc=None if selected is None else auc(member_test,nonmember_test,selected)
++    save_json(folder/'membership_raw.json',{'member_selection':member_val,'nonmember_selection':nonmember_val,'member_test':member_test,'nonmember_test':nonmember_test})
++    external={}
++    for cohort in ('CSTL','Histo'):
++        records=rows.get('external',{}).get(cohort,[]);records=records.get('rows',[]) if isinstance(records,dict) else records
++        if not records or selected is None: external[cohort]={'auc':None,'reason':'외부 주석·환자계보 미확보 또는 선정 점수 미정의'};continue
++        external[cohort]={'auc':auc(member_test,scores(records),selected),'reason':None,
++            'interpretation':'외부 cohort 비멤버 비교는 분포 차이와 중복 환자 가능성의 영향을 받음; namespace만으로 환자 독립성 보장하지 않음'}
++    return {'selected_score':selected,'validation_auc':validation,'test_auc':test_auc,'external':external,
++        'by_class':{group:None if selected is None else auc([r for r in member_test if r['label']==label],[r for r in nonmember_test if r['label']==label],selected,True) for label,group in ((0,'OK'),(1,'NG'))},
++        'member_count':len(member_test),'nonmember_count':len(nonmember_test),'selection_final_patient_overlap':0,
++        'reason':None if selected is not None else '환자 분리 후 모든 멤버·비멤버 클래스가 있어야 함',
++        'weighting':'멤버 여부×건강라벨 셀 동일 가중치, 각 셀의 환자 동일 가중치, 환자내 결절 분산',
++        'interpretation':'라벨·환자 가중치의 알려진 점수 공격; 높은 AUC를 cohort 차이와 분리 해석해야 하며 개인정보 유출 확률 아님'}
++
++def linking(model,records,layer,topk):
++    from SCI실행 import image
++    if not records: return {'state':'blocked','reason':'연결 평가 원본 없음'}
++    device=next(model.parameters()).device;gallery=[];query=[]
++    with torch.no_grad():
++        for row in records:
++            raw=torch.tensor(image(row),device=device)[None,None]
++            for collection,observed in ((gallery,raw),(query,model.observed(raw))):
++                vector=F.adaptive_avg_pool2d(model.features_from_observed(observed,layer),(2,2)).flatten().float().cpu().numpy()
++                collection.append(vector/max(float(np.linalg.norm(vector)),1e-20))
++    gallery=np.stack(gallery);query=np.stack(query);source_counts={};patient_counts={}
++    for k in topk:
++        source_correct,patient_correct=0,0
++        for index,vector in enumerate(query):
++            positions=np.argsort(-(gallery@vector),kind='stable')[:min(k,len(records))]
++            source_correct+=int(index in positions);patient_correct+=int(any(records[p]['patient_id']==records[index]['patient_id'] for p in positions))
++        source_counts[str(k)]={'correct':source_correct,'total':len(records),'accuracy':source_correct/len(records)}
++        patient_counts[str(k)]={'correct':patient_correct,'total':len(records),'accuracy':patient_correct/len(records)}
++    return {'topk_source':source_counts,'topk_patient':patient_counts,'count':len(records),'gallery_size':len(records),
++            'assumption':'정답 결절·환자 목록을 가진 닫힌 집합 원본 ROI gallery와 같은 출처 블러 query. 독립 현실 재식별 성능 아님'}
++
++def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume):
++    for parameter in model.parameters(): parameter.requires_grad_(False)
++    model.eval();attacks=folder/'attacks'
++    photo=attack_exposure(model,rows,config,attacks/'photo',run_id,resume=resume)
++    features={};connections={}
++    for layer in config['feature_layers']:
++        features[layer]={'precisions':{}}
++        for dtype in config['feature_dtypes']:
++            features[layer]['precisions'][dtype]=attack_exposure(model,rows,config,attacks/layer/dtype,run_id,layer,dtype,resume)
++        connections[layer]={'test':linking(model,rows['test'],layer,config['connection_topk']),'external':{}}
++        for cohort in ('CSTL','Histo'):
++            external=rows.get('external',{}).get(cohort,[]);external=external.get('rows',[]) if isinstance(external,dict) else external
++            connections[layer]['external'][cohort]=linking(model,external,layer,config['connection_topk'])
++    examples=[]
++    from SCI실행 import image
++    for label,group in ((0,'OK'),(1,'NG')):
++        row=next(r for r in rows['validation'] if r['label']==label);source=torch.tensor(image(row),device=device)[None,None]
++        with torch.no_grad(): observed=model.observed(source);feature=model.features_from_observed(observed,'conv1').abs().mean(1)[0].cpu().numpy()
++        low,high=float(feature.min()),float(feature.max());feature=(feature-low)/(high-low) if high>low else np.zeros_like(feature)
++        entry={'label':group,'source':'validation','row_id':row['id'],'patient_id':row['patient_id'],'settings':{'sigma':model.blur.sigma,'model':model.name,'cohort':row['cohort'],
++            'source_metadata':row['metadata'],'feature_map':{'layer':'conv1','aggregation':'mean_absolute_channels','normalization':'per_image_min_max','raw_min':low,'raw_max':high},
++            'feature_reconstruction':{'layer':'conv1','dtype':'f32','selected_attack':features['conv1']['precisions']['f32']['selected_family']}}}
++        arrays={'original':source[0,0].cpu().numpy(),'transmitted':observed[0,0].cpu().numpy(),'feature_map':feature}
++        for kind,array in arrays.items():
++            path=folder/'examples'/f'{group}_{kind}.png';atomic(path,lambda p,array=array:Image.fromarray(np.rint(np.clip(array,0,1)*255).astype(np.uint8)).save(p,format='PNG'))
++            entry[kind]=path.relative_to(folder.parent.parent).as_posix()
++        entry['reconstructed']=next(e for e in photo['examples'] if e['label']==group)['reconstructed']
++        entry['feature_reconstructed']=next(e for e in features['conv1']['precisions']['f32']['examples'] if e['label']==group)['reconstructed']
++        examples.append(entry)
++    return {'attack':photo,'feature_attacks':features,'feature_attack':features['conv1']['precisions']['f32'],'linking':connections,
++            'membership':membership(model,rows,folder),'examples':examples,'packet':{'count':0,'mean_bytes':None,'reason':'사진 float 블러는 별도 네트워크 전송 실측 없음; 특징 실제 전송은 층·정밀도별 transmission 참조'},
++            'metric_inheritance':{'P0_M1_to_M15':None,'reason':'원래 정의를 확인하지 못해 승계 완료로 주장하지 않음; 실제 raw/상대오차/구조 점수만 보고'}}
++
++def run_diagnostics(manifest,config,run_id,device,resume):
++    """주실험 선정과 분리한 고정 train-only 진단을 한 실행에서 한 번 수행합니다."""
++    from SCI실행 import image,Dataset,evaluate
++    from SCI모델 import SCIResNet,freeze_running_stats
++    from 실행 import train_rows
++    from 지표 import binary_report
++    from sklearn.pipeline import make_pipeline
++    from sklearn.preprocessing import StandardScaler
++    from sklearn.linear_model import LogisticRegression
++    folder=Path(config['runtime'])/'diagnostics'
++    if (folder/'result.json').exists():
++        result=read_json(folder/'result.json')
++        if result['run_id']!=run_id: raise ValueError('진단 run_id 불일치')
++        return result
++    rows=manifest['splits'];data={}
++    for split in ('train','validation','test'):
++        data[split]=(np.stack([np.asarray(Image.fromarray(np.rint(image(row)*255).astype(np.uint8)).resize((16,16),Image.Resampling.BOX),dtype=float).ravel()/255 for row in rows[split]]),np.asarray([r['label'] for r in rows[split]]))
++    center=np.zeros((16,16),dtype=bool);center[4:12,4:12]=True
++    coarse={}
++    for name,mask in [('coarse_full',np.ones(256,dtype=bool)),('coarse_center',center.ravel()),('coarse_outer',~center.ravel())]:
++        estimator=make_pipeline(StandardScaler(),LogisticRegression(C=1,class_weight='balanced',max_iter=2000,random_state=42))
++        estimator.fit(data['train'][0][:,mask],data['train'][1])
++        coarse[name]={split:binary_report(data[split][1],estimator.decision_function(data[split][0][:,mask])) for split in ('validation','test')}
++    seed_all(config['diagnostics']['shuffle_seed'],device=='cuda')
++    shuffled=[dict(row) for row in rows['train']]
++    labels=[row['label'] for row in shuffled];np.random.default_rng(config['diagnostics']['shuffle_seed']).shuffle(labels)
++    for row,label in zip(shuffled,labels): row['label']=int(label)
++    weights=config['weights']['resnet50'];model=SCIResNet('resnet50',0,'conv1',weights['path'],weights['sha256']).to(device)
++    optimizer=torch.optim.AdamW(model.parameters(),lr=config['learning_rate'],weight_decay=config['weight_decay'])
++    scheduler=torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,patience=3,factor=.5)
++    start=0;history=[]
++    if (folder/'shuffle_last.json').exists():
++        if not resume: raise ValueError('라벨 셔플 진단 재개는 --resume 필요')
++        reference=read_json(folder/'shuffle_last.json');path=folder/reference['path']
++        if digest(path)!=reference['sha256']: raise ValueError('셔플 진단 보존본 SHA 불일치')
++        state=torch.load(path,map_location='cpu',weights_only=False)
++        if state['run_id']!=run_id: raise ValueError('셔플 진단 run_id 불일치')
++        model.load_state_dict(state['model']);optimizer.load_state_dict(state['optimizer']);scheduler.load_state_dict(state['scheduler']);restore_rng(state['rng'])
++        start,history=state['epoch'],state['history']
++    for epoch in range(start,config['diagnostics']['shuffle_epochs']):
++        disk_guard(folder,int(config['reserve_gib']*1024**3)+sum(t.numel()*t.element_size() for t in model.state_dict().values())*4)
++        model.train();freeze_running_stats(model);loss_sum=0.;count=0
++        selected=train_rows(shuffled,config['samples_per_class'],config['seed']+epoch)
++        loader=torch.utils.data.DataLoader(Dataset(selected,True),batch_size=config['batch_size'],num_workers=0)
++        optimizer.zero_grad(set_to_none=True)
++        for batch,(x,y) in enumerate(loader):
++            x,y=x.to(device),y.to(device)
++            with torch.autocast(device_type=device,dtype=torch.bfloat16,enabled=device=='cuda'):
++                logits=model(x);loss=F.binary_cross_entropy_with_logits(logits.float(),y)
++            divisor=min(config['accumulation'],len(loader)-(batch//config['accumulation'])*config['accumulation'])
++            (loss/divisor).backward()
++            if (batch+1)%config['accumulation']==0 or batch+1==len(loader): optimizer.step();optimizer.zero_grad(set_to_none=True)
++            loss_sum+=float(loss)*len(y);count+=len(y)
++        scheduler.step(loss_sum/count);history.append({'epoch':epoch+1,'training_shuffled_loss':loss_sum/count,'run_id':run_id})
++        path=folder/'shuffle_epochs'/f'epoch_{epoch+1:04d}.pth'
++        save_torch(path,{'run_id':run_id,'epoch':epoch+1,'model':model.state_dict(),'optimizer':optimizer.state_dict(),'scheduler':scheduler.state_dict(),
++                         'rng':rng_state(device=='cuda'),'history':history,'label_permutation_sha256':hashlib.sha256(json.dumps(labels).encode()).hexdigest()})
++        save_json(folder/'shuffle_last.json',{'path':path.relative_to(folder).as_posix(),'sha256':digest(path)})
++    precision='cuda_bf16' if device=='cuda' else 'cpu_fp32'
++    shuffled_report={split:evaluate(model,rows[split],device,precision) for split in ('validation','test')}
++    result={'run_id':run_id,'coarse':coarse,'label_shuffle':{'epochs':config['diagnostics']['shuffle_epochs'],'reports':shuffled_report,
++        'permutation_scope':'train 라벨만 고정 순열, validation/test의 원래 라벨 보존','label_permutation_sha256':hashlib.sha256(json.dumps(labels).encode()).hexdigest(),
++        'note':'고정 짧은 진단이며 주200epoch 학습과 동등한 성능 비교 아님; 결과로 강도·분할·정답을 수정하지 않음'},
++        'used_for_model_or_attack_selection':False,'coarse_note':'중앙 사각형은 결절·폐 마스크가 아니며 바깥에도 결절·신체 정보가 있을 수 있음'}
++    save_json(folder/'result.json',result);return result
+--- a/Conv1 블러 OK-NG 실험/17차/SCI데이터.py
++++ b/Conv1 블러 OK-NG 실험/17차/SCI데이터.py
+@@ -0,0 +1,875 @@
++"""17차 공식 CT 자료 확보와 환자 단위 2D 준비. GPU와 과거 실험을 호출하지 않는다."""
++from __future__ import annotations
++
++import argparse
++import bisect
++import collections
++import contextlib
++import csv
++import hashlib
++import io
++import json
++import math
++import os
++import pickle
++import random
++import re
++import shutil
++import stat
++import sys
++import time
++import urllib.parse
++import urllib.request
++import zipfile
++from pathlib import Path, PurePosixPath
++
++import numpy as np
++from PIL import Image
++from scipy.ndimage import map_coordinates
++
++ROOT = Path(__file__).resolve().parent
++PROTOCOL = "stage17-luna25-2d-patient-v2"
++DATA = ROOT / "work" / "data"
++MANIFEST = DATA / "SCI_manifest.json"
++STATUS = DATA / "SCI_준비상태.json"
++CATALOG = ROOT / "공식자료.json"
++LABELS = {"0": 0, "1": 1}
++COHORTS = {"LUNA25", "CSTL", "Histo"}
++LUNA_COLUMNS = {"PatientID", "SeriesInstanceUID", "StudyDate", "CoordX", "CoordY", "CoordZ", "LesionID", "AnnotationID", "NoduleID", "label"}
++
++
++class DataBlocked(ValueError):
++    """필수 근거가 없거나 계보가 충돌하면 자료 준비를 중단한다."""
++
++
++class GeometryRejected(DataBlocked):
++    """성능 관측 전 고정한 물리 입력 적격성에서 제외할 행이다."""
++
++
++ELIGIBILITY_POLICY = "fixed-50mm-geometry-qc-before-patient-split-v1"
++ELIGIBILITY_SPEC = {"id": ELIGIBILITY_POLICY, "fov_mm": 50, "output_size": 512,
++    "excluded_geometry": ["invalid-coordinate-matrix-or-center", "center-outside-source", "fixed-fov-outside-source"],
++    "checksum_or_missing_file": "block-entire-preparation", "selection_uses_labels_or_predictions": False,
++    "order": "geometry-qc-then-patient-split"}
++ELIGIBILITY_SHA256 = hashlib.sha256(json.dumps(ELIGIBILITY_SPEC, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
++
++
++def digest(path: Path, algorithm="sha256") -> str:
++    h = hashlib.new(algorithm)
++    with Path(path).open("rb") as f:
++        for block in iter(lambda: f.read(8 * 1024 * 1024), b""):
++            h.update(block)
++    return h.hexdigest()
++
++
++def atomic_json(path: Path, value) -> None:
++    path = Path(path)
++    path.parent.mkdir(parents=True, exist_ok=True)
++    temp = path.with_name(path.name + f".{os.getpid()}.tmp")
++    try:
++        with temp.open("w", encoding="utf-8", newline="\n") as f:
++            json.dump(value, f, ensure_ascii=False, indent=2, allow_nan=False)
++            f.write("\n")
++            f.flush()
++            os.fsync(f.fileno())
++        os.replace(temp, path)
++    finally:
++        temp.unlink(missing_ok=True)
++
++
++def load_json(path: Path):
++    return json.loads(Path(path).read_text(encoding="utf-8-sig"))
++
++
++def _inside(path: Path, root: Path) -> Path:
++    path = path.resolve()
++    try:
++        path.relative_to(root.resolve())
++    except ValueError as exc:
++        raise DataBlocked("허용한 자료 폴더 밖 경로") from exc
++    return path
++
++
++def _no_links(path: Path) -> None:
++    for p in (path, *path.parents):
++        if p.exists():
++            s = p.lstat()
++            if p.is_symlink() or getattr(s, "st_file_attributes", 0) & 0x400:
++                raise DataBlocked("자료 경로의 심볼릭 링크/정션을 허용하지 않습니다")
++
++
++def catalog_entries(group: str):
++    cat = load_json(CATALOG)["records"]
++    selected = {
++        "annotations": [("14673658", None), ("8422229", {"all_anno_3D.csv", "anno_WorldCoord.csv"}),
++                        ("12582356", {"5mm_3D_detection_mhd3.zip", "1.25mm_3D_detection_mhd_3.zip"})],
++        "nodule-blocks": [("14223624", {"luna25_nodule_blocks.zip.001", "luna25_nodule_blocks.zip.002"})],
++        "external-classification": [("12582356", {"class_dataset.zip"}), ("8422229", {"BMP_classification.zip"})],
++        "full-ct": [("14223624", "full")],
++    }
++    if group not in selected:
++        raise DataBlocked("알 수 없는 다운로드 그룹")
++    rows = []
++    for record, names in selected[group]:
++        for f in cat[record]["files"]:
++            if names is None or (names == "full" and f["name"].startswith("luna25_images.zip.")) or (isinstance(names, set) and f["name"] in names):
++                rows.append({"record_id": record, **f})
++    return sorted(rows, key=lambda r: (r["record_id"], r["name"]))
++
++
++def verify_download(path: Path, entry: dict) -> dict:
++    path = Path(path)
++    _no_links(path)
++    algo, expected = entry["checksum"].split(":", 1)
++    if algo not in {"md5", "sha256"} or path.stat().st_size != entry["bytes"] or digest(path, algo) != expected:
++        raise DataBlocked(f"공식 파일의 크기/체크섬 불일치: {path.name}")
++    return {"name": path.name, "bytes": path.stat().st_size, "sha256": digest(path), "official_checksum": entry["checksum"], "record_id": entry["record_id"]}
++
++
++@contextlib.contextmanager
++def _download_guard(path: Path):
++    """같은 부분 파일을 두 작업이 동시에 이어 쓰지 않도록 OS 잠금을 유지한다."""
++    path.parent.mkdir(parents=True, exist_ok=True)
++    _no_links(path)
++    f = path.open("a+b")
++    try:
++        if path.stat().st_size == 0:
++            f.write(b"0")
++            f.flush()
++        f.seek(0)
++        try:
++            if os.name == "nt":
++                import msvcrt
++                msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
++            else:
++                import fcntl
++                fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
++        except OSError as exc:
++            raise DataBlocked("같은 공식 파일의 다운로드가 이미 실행 중입니다") from exc
++        try:
++            yield
++        finally:
++            f.seek(0)
++            if os.name == "nt":
++                msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
++            else:
++                fcntl.flock(f.fileno(), fcntl.LOCK_UN)
++    finally:
++        f.close()
++
++
++def download_entry(entry: dict, destination: Path, status_path=STATUS) -> dict:
++    name = entry["name"]
++    if Path(name).name != name or ":" in name or "\\" in name:
++        raise DataBlocked("공식 목록 파일 이름이 안전하지 않습니다")
++    with _download_guard(Path(destination) / (name + ".download.lock")):
++        return _download_entry_unlocked(entry, destination, status_path)
++
++
++def _download_entry_unlocked(entry: dict, destination: Path, status_path=STATUS) -> dict:
++    name = entry["name"]
++    if Path(name).name != name or ":" in name or "\\" in name:
++        raise DataBlocked("공식 목록 파일 이름이 안전하지 않습니다")
++    u = urllib.parse.urlparse(entry["url"])
++    if u.scheme != "https" or u.hostname != "zenodo.org":
++        raise DataBlocked("공식 Zenodo HTTPS만 다운로드합니다")
++    destination = Path(destination)
++    destination.mkdir(parents=True, exist_ok=True)
++    _no_links(destination)
++    out = destination / name
++    if out.exists():
++        return verify_download(out, entry)
++    part = out.with_name(out.name + ".part")
++    _no_links(part)
++    offset = part.stat().st_size if part.exists() else 0
++    if offset > entry["bytes"]:
++        raise DataBlocked("기존 부분 파일이 예상 크기보다 큽니다")
++    need = entry["bytes"] - offset
++    if shutil.disk_usage(destination).free < need + 2 * 1024 ** 3:
++        raise DataBlocked("다운로드 용량과 2GiB 여유 공간 부족")
++    headers = {"User-Agent": "Stage17-Research-Data/1.0"}
++    if offset:
++        headers["Range"] = f"bytes={offset}-"
++    req = urllib.request.Request(entry["url"], headers=headers)
++    written = offset
++    last = 0.0
++    if offset < entry["bytes"]:
++        with urllib.request.urlopen(req, timeout=90) as r:
++            if urllib.parse.urlparse(r.geturl()).scheme != "https":
++                raise DataBlocked("HTTPS가 아닌 리디렉션")
++            if offset and (r.status != 206 or not r.headers.get("Content-Range", "").startswith(f"bytes {offset}-")):
++                raise DataBlocked("이어받기 범위를 서버가 확인하지 않았습니다. 부분 파일은 보존합니다")
++            with part.open("ab" if offset else "xb") as f:
++                for block in iter(lambda: r.read(1024 * 1024), b""):
++                    written += len(block)
++                    if written > entry["bytes"]:
++                        raise DataBlocked("다운로드가 공식 예상 크기를 초과했습니다")
++                    f.write(block)
++                    if time.monotonic() - last > 5:
++                        atomic_json(status_path, {"protocol": PROTOCOL, "status": "downloading", "file": name,
++                            "bytes": written, "expected_bytes": entry["bytes"], "pid": os.getpid(), "updated_at": time.time()})
++                        last = time.monotonic()
++                f.flush()
++                os.fsync(f.fileno())
++    verify_download(part, entry)
++    os.replace(part, out)
++    return verify_download(out, entry)
++
++
++class JoinedFiles(io.RawIOBase):
++    """공식 분할 ZIP을 디스크에 다시 합치지 않고 읽는다."""
++    def __init__(self, paths):
++        self.files = [Path(p).open("rb") for p in paths]
++        self.ends = []
++        total = 0
++        for f in self.files:
++            total += os.fstat(f.fileno()).st_size
++            self.ends.append(total)
++        self.pos = 0
++        self.total = total
++
++    def seekable(self):
++        return True
++
++    def readable(self):
++        return True
++
++    def tell(self):
++        return self.pos
++
++    def seek(self, offset, whence=0):
++        target = offset if whence == 0 else self.pos + offset if whence == 1 else self.total + offset
++        if target < 0:
++            raise ValueError("음수 읽기 위치")
++        self.pos = target
++        return target
++
++    def read(self, size=-1):
++        size = max(0, self.total - self.pos) if size < 0 else min(size, max(0, self.total - self.pos))
++        blocks = []
++        while size:
++            idx = bisect.bisect_right(self.ends, self.pos)
++            start = 0 if idx == 0 else self.ends[idx - 1]
++            f = self.files[idx]
++            f.seek(self.pos - start)
++            b = f.read(min(size, self.ends[idx] - self.pos))
++            if not b:
++                raise DataBlocked("분할 ZIP 조기 종료")
++            blocks.append(b)
++            self.pos += len(b)
++            size -= len(b)
++        return b"".join(blocks)
++
++    def close(self):
++        for f in self.files:
++            f.close()
++        super().close()
++
++
++def safe_extract(paths, destination: Path, *, max_bytes=100 * 1024 ** 3, max_files=100000) -> dict:
++    destination = Path(destination)
++    destination.mkdir(parents=True, exist_ok=True)
++    _no_links(destination)
++    files = []
++    with JoinedFiles(paths) as joined, zipfile.ZipFile(joined) as z:
++        infos = z.infolist()
++        if len(infos) > max_files or sum(i.file_size for i in infos) > max_bytes:
++            raise DataBlocked("압축 해제의 파일 수/크기 한도 초과")
++        if shutil.disk_usage(destination).free < sum(i.file_size for i in infos) + 2 * 1024 ** 3:
++            raise DataBlocked("압축 해제 여유 공간 부족")
++        seen = set()
++        for i in infos:
++            name = i.filename
++            pp = PurePosixPath(name)
++            if not name or pp.is_absolute() or any(p in {"..", "."} for p in pp.parts) or "\\" in name or ":" in name:
++                raise DataBlocked("안전하지 않은 ZIP 경로")
++            if stat.S_ISLNK(i.external_attr >> 16) or i.flag_bits & 1:
++                raise DataBlocked("ZIP 연결/암호화 항목 거부")
++            key = name.rstrip("/").casefold()
++            if key in seen:
++                raise DataBlocked("ZIP 중복/대소문자 경로 충돌")
++            seen.add(key)
++            target = _inside(destination / name, destination)
++            _no_links(target)
++            if i.is_dir():
++                target.mkdir(parents=True, exist_ok=True)
++                continue
++            target.parent.mkdir(parents=True, exist_ok=True)
++            temp = target.with_name(target.name + ".extracting")
++            h = hashlib.sha256()
++            try:
++                with z.open(i) as src, temp.open("xb") as dst:
++                    copied = 0
++                    for block in iter(lambda: src.read(1024 * 1024), b""):
++                        copied += len(block)
++                        if copied > i.file_size:
++                            raise DataBlocked("ZIP 선언 크기 초과")
++                        h.update(block)
++                        dst.write(block)
++                    dst.flush()
++                    os.fsync(dst.fileno())
++                if copied != i.file_size:
++                    raise DataBlocked("ZIP 크기 불일치")
++                sha = h.hexdigest()
++                if target.exists():
++                    if digest(target) != sha:
++                        raise DataBlocked("압축 해제 대상의 기존 다른 파일 보존")
++                    temp.unlink()
++                else:
++                    os.replace(temp, target)
++                files.append({"path": name, "bytes": copied, "sha256": sha})
++            finally:
++                temp.unlink(missing_ok=True)
++    return {"files": files, "total_bytes": sum(f["bytes"] for f in files), "archives": [{"name": Path(p).name, "sha256": digest(Path(p))} for p in paths]}
++
++
++class _MetadataUnpickler(pickle.Unpickler):
++    """공식 NumPy 숫자 헤더만 허용한다. 임의 Python 함수 복원은 거부한다."""
++    def find_class(self, module, name):
++        allowed = {("numpy", "ndarray"): np.ndarray, ("numpy", "dtype"): np.dtype,
++            ("numpy.core.multiarray", "_reconstruct"): np.core.multiarray._reconstruct,
++            ("numpy._core.multiarray", "_reconstruct"): np.core.multiarray._reconstruct,
++            ("numpy.core.multiarray", "scalar"): np.core.multiarray.scalar,
++            ("numpy._core.multiarray", "scalar"): np.core.multiarray.scalar}
++        if (module, name) not in allowed:
++            raise DataBlocked(f"메타데이터의 허용하지 않은 pickle 전역: {module}.{name}")
++        return allowed[module, name]
++
++
++def load_block_metadata(path: Path) -> dict:
++    if Path(path).stat().st_size > 65536:
++        raise DataBlocked("메타데이터 파일 크기 초과")
++    with Path(path).open("rb") as f:
++        version = np.lib.format.read_magic(f)
++        if version == (1, 0):
++            shape, _, dtype = np.lib.format.read_array_header_1_0(f)
++        elif version == (2, 0):
++            shape, _, dtype = np.lib.format.read_array_header_2_0(f)
++        else:
++            raise DataBlocked("지원하지 않는 공식 NPY 메타데이터 버전")
++        if not dtype.hasobject or shape != ():
++            raise DataBlocked("공식 메타데이터의 0차원 dict 형식 불일치")
++        value = _MetadataUnpickler(f).load()
++        if not isinstance(value, np.ndarray) or value.shape != ():
++            raise DataBlocked("메타데이터 형식 불일치")
++        value = value.item()
++    if not isinstance(value, dict) or set(value) != {"origin", "spacing", "transform"}:
++        raise DataBlocked("공식 메타데이터 필수 키 불일치")
++    m = {k: np.asarray(value[k], dtype=float) for k in value}
++    if m["origin"].shape != (3,) or m["spacing"].shape != (3,) or m["transform"].shape != (3, 3):
++        raise DataBlocked("메타데이터 좌표 차원 불일치")
++    if not all(np.isfinite(a).all() for a in m.values()) or (m["spacing"] <= 0).any():
++        raise DataBlocked("메타데이터 비유한 좌표/간격")
++    return m
++
++
++def extract_physical_patch(volume, *, origin_xyz, index_to_world_xyz, center_xyz, fov_mm=50.0, output_size=512):
++    """원본 z,y,x 배열에서 환자 물리 x,y 평면의 단일 단면을 선형 보간한다."""
++    if volume.ndim != 3 or not np.issubdtype(volume.dtype, np.number):
++        raise DataBlocked("수치형 3D 원본 필요")
++    a = np.asarray(index_to_world_xyz, dtype=float)
++    center = np.asarray(center_xyz, dtype=float)
++    origin = np.asarray(origin_xyz, dtype=float)
++    if a.shape != (3, 3) or not np.isfinite(a).all() or abs(np.linalg.det(a)) < 1e-10 or center.shape != (3,) or not np.isfinite(center).all() or origin.shape != (3,) or not np.isfinite(origin).all():
++        raise GeometryRejected("물리좌표 행렬/결절 중심 불량")
++    if not (0 < fov_mm <= 256 and 1 <= output_size <= 1024):
++        raise DataBlocked("잘못된 패치 시야/크기")
++    inv = np.linalg.inv(a)
++    center_idx = inv @ (center - origin)
++    if np.any(center_idx < 0) or np.any(center_idx > np.asarray(volume.shape[::-1]) - 1):
++        raise GeometryRejected("공식 결절 중심이 원본 범위 밖")
++    axis = (np.arange(output_size) - (output_size - 1) / 2) * fov_mm / output_size
++    xx, yy = np.meshgrid(axis, axis)
++    world = np.stack((xx + center[0], yy + center[1], np.full_like(xx, center[2])), axis=0)
++    indices = inv @ (world.reshape(3, -1) - origin[:, None])
++    shape_xyz = np.asarray(volume.shape[::-1])[:, None]
++    inside = np.logical_and(indices >= 0, indices <= shape_xyz - 1).all(axis=0)
++    # 원본 block이 물리 시야보다 작으면 빈 패딩을 임의 학습 단서로 허용하지 않는다.
++    if not inside.all():
++        raise GeometryRejected(f"고정 {fov_mm:g}mm 시야가 제공 block 밖입니다. 패딩으로 포함하지 않습니다")
++    patch = map_coordinates(volume, indices[::-1], order=1, output=np.float32, mode="constant", cval=-1000.0, prefilter=False).reshape(output_size, output_size)
++    if not np.isfinite(patch).all():
++        raise DataBlocked("원본 HU의 비유한 수치")
++    return patch.astype(np.float32), {"fov_mm": float(fov_mm), "pixel_spacing_mm": fov_mm / output_size,
++        "output_size": output_size, "center_world_xyz_mm": center.tolist(), "plane": "patient-axial-xy", "interpolation": "linear", "outside_fraction": 0.0,
++        "sigma_units": "output-pixel", "sigma_mm_per_pixel": fov_mm / output_size,
++        "task": "fixed-FOV nodule classification; full lesion containment not guaranteed"}
++
++
++def block_geometry(metadata: dict):
++    # 공식 preprocessing/utils.py는 z,y,x 축의 방향 성분을 행으로 쌓고 열별 간격으로 나눈다.
++    # 해당 정의를 역으로 적용해 인덱스→물리좌표 행렬을 복원한다. 일반 direction 행렬로 오해하지 않는다.
++    a_zyx = np.diag(metadata["spacing"]) @ metadata["transform"].T
++    return metadata["origin"][::-1], a_zyx[::-1, ::-1]
++
++
++def patient_split(rows: list[dict], seed=42) -> dict[str, list[dict]]:
++    groups = collections.defaultdict(list)
++    for row in rows:
++        groups[row["patient_id"]].append(row)
++    if len(groups) < 7:
++        raise DataBlocked("환자 분할을 위해 최소 7명의 실제 환자가 필요합니다")
++    strata = collections.defaultdict(list)
++    for p, rs in groups.items():
++        strata[max(r["label"] for r in rs)].append(p)
++    rng = random.Random(seed)
++    out = {s: [] for s in ("train", "validation", "test")}
++    for label in sorted(strata):
++        patients = sorted(strata[label])
++        rng.shuffle(patients)
++        n = len(patients)
++        n_val, n_test = max(1, round(n * .15)), max(1, round(n * .15))
++        if n - n_val - n_test < 1:
++            raise DataBlocked("라벨별 환자 수가 70/15/15 분할에 부족합니다")
++        assignments = (("validation", patients[:n_val]), ("test", patients[n_val:n_val+n_test]), ("train", patients[n_val+n_test:]))
++        for split, ids in assignments:
++            for p in ids:
++                out[split].extend({**r, "split": split} for r in groups[p])
++    for split, rs in out.items():
++        out[split] = sorted(rs, key=lambda r: r["id"])
++        if {r["label"] for r in rs} != {0, 1}:
++            raise DataBlocked(f"{split}에 두 결절 라벨이 모두 없습니다")
++    return out
++
++
++def _valid_hash(value):
++    return isinstance(value, str) and bool(re.fullmatch(r"[0-9a-f]{64}", value))
++
++
++def validate_manifest(manifest: dict, *, verify_files=True) -> dict:
++    if not isinstance(manifest, dict) or manifest.get("protocol") != PROTOCOL:
++        raise DataBlocked("17차 LUNA25 SCI 프로토콜이 아닙니다. 12차 자료 재사용 금지")
++    if manifest.get("status") != "ready" or set(manifest.get("splits", {})) != {"train", "validation", "test"}:
++        raise DataBlocked("환자 분할/자료 준비 미완료")
++    if set(manifest.get("external", {})) != {"CSTL", "Histo"}:
++        raise DataBlocked("외부 코호트 계약 누락")
++    if any(manifest["external"].values()) and manifest.get("cross_cohort_review", {}).get("reviewed") is not True:
++        raise DataBlocked("기관/환자 중복 검토 근거 부재")
++    patient_owner, image_owner, source_owner, ids, summary = {}, {}, {}, set(), {}
++    required = {"id", "patient_id", "cohort", "label", "image_path", "image_sha256", "source_sha256", "split", "metadata"}
++    collections_rows = [(k, v) for k, v in manifest["splits"].items()] + [(k, v) for k, v in manifest["external"].items()]
++    for split, rows in collections_rows:
++        if not isinstance(rows, list):
++            raise DataBlocked(f"{split} 실제 자료가 없습니다")
++        if not rows and split in {"CSTL", "Histo"}:
++            state = manifest.get("external_status", {}).get(split, {})
++            if state.get("status") != "blocked" or not state.get("reason"):
++                raise DataBlocked("미준비 외부 코호트의 상태/사유 누락")
++            summary[split] = {"nodules": 0, "patients": 0, "status": "blocked", "reason": state["reason"]}
++            continue
++        if not rows:
++            raise DataBlocked(f"{split} 실제 자료가 없습니다")
++        labels = collections.Counter()
++        patients = set()
++        for r in rows:
++            if not required <= r.keys() or type(r["label"]) is not int or r["label"] not in {0, 1}:
++                raise DataBlocked("manifest 필수 행/양성악성 라벨 불일치")
++            cohort = "LUNA25" if split in manifest["splits"] else split
++            if r["cohort"] != cohort or r["split"] != (split if cohort == "LUNA25" else "external"):
++                raise DataBlocked("코호트/분할 태그 불일치")
++            if not isinstance(r["patient_id"], str) or not r["patient_id"] or not isinstance(r["id"], str) or not r["id"] or r["id"] in ids:
++                raise DataBlocked("환자 ID/결절 ID 누락 또는 중복")
++            ids.add(r["id"])
++            # 동일한 번호가 다른 기관에서 독립 부여될 수 있으므로 검토된 전역 ID를 필수로 한다.
++            p = r["metadata"].get("global_patient_id")
++            if not p or not r["metadata"].get("label_evidence"):
++                raise DataBlocked("전역 환자 대응/공식 라벨 근거 부재")
++            if p in patient_owner and patient_owner[p] != split:
++                raise DataBlocked("분할/외부 코호트 사이 환자 중복")
++            patient_owner[p] = split
++            for key, registry in (("image_sha256", image_owner), ("source_sha256", source_owner)):
++                sha = r[key]
++                if not _valid_hash(sha):
++                    raise DataBlocked("영상 SHA 형식 불일치")
++                if sha in registry and registry[sha] != split:
++                    raise DataBlocked("분할/외부 코호트 사이 동일 영상/원본 중복")
++                registry[sha] = split
++            pix = r["metadata"].get("pixel_sha256")
++            if not _valid_hash(pix):
++                raise DataBlocked("픽셀 SHA 부재")
++            if pix in image_owner and image_owner[pix] != split:
++                raise DataBlocked("다른 파일명의 동일 픽셀이 분할 사이 중복")
++            image_owner[pix] = split
++            image = Path(r["image_path"])
++            if not image.is_absolute():
++                raise DataBlocked("준비 영상은 절대 경로여야 합니다")
++            if verify_files:
++                _no_links(image)
++                if not image.is_file() or digest(image) != r["image_sha256"]:
++                    raise DataBlocked("준비 영상 무결성 불일치")
++                with Image.open(image) as im:
++                    if im.mode != "L" or im.size != (512, 512):
++                        raise DataBlocked("512x512 8bit 단일 단면 계약 불일치")
++                    if hashlib.sha256(np.asarray(im).tobytes()).hexdigest() != pix:
++                        raise DataBlocked("준비 영상 픽셀 SHA 불일치")
++            labels[r["label"]] += 1
++            patients.add(p)
++        if set(labels) != {0, 1}:
++            raise DataBlocked(f"{split} 두 라벨이 없어서 이진 분류 전체 지표를 계산할 수 없습니다")
++        summary[split] = {"nodules": len(rows), "patients": len(patients), "labels": dict(labels)}
++    return summary
++
++
++def read_luna_annotations(path: Path, *, require_official=True):
++    path = Path(path)
++    if require_official:
++        entry = next(e for e in catalog_entries("annotations") if e["record_id"] == "14673658")
++        verify_download(path, entry)
++    with path.open(encoding="utf-8-sig", newline="") as f:
++        reader = csv.DictReader(f)
++        if not LUNA_COLUMNS <= set(reader.fieldnames or []):
++            raise DataBlocked("공식 LUNA25 CSV 열 불일치")
++        rows = list(reader)
++    seen = set()
++    for r in rows:
++        if r["label"] not in LABELS or not r["PatientID"].isdigit() or not re.fullmatch(r"[0-9_]+", r["AnnotationID"]):
++            raise DataBlocked("LUNA25 라벨/환자/결절 형식 불일치")
++        if r["AnnotationID"] != f'{r["PatientID"]}_{r["LesionID"]}_{r["StudyDate"]}' or r["AnnotationID"] in seen:
++            raise DataBlocked("공식 환자/시점/결절 키 중복 또는 불일치")
++        if not all(math.isfinite(float(r[k])) for k in ("CoordX", "CoordY", "CoordZ")):
++            raise DataBlocked("공식 결절 좌표 비유한 수치")
++        seen.add(r["AnnotationID"])
++    return rows
++
++
++def _save_png(array: np.ndarray, path: Path):
++    pixels = np.rint(np.clip((array + 1000) / 1400, 0, 1) * 255).astype(np.uint8)
++    path.parent.mkdir(parents=True, exist_ok=True)
++    temp = path.with_name(path.name + f".{os.getpid()}.tmp")
++    try:
++        Image.fromarray(pixels).save(temp, format="PNG")
++        if path.exists():
++            if digest(temp) != digest(path):
++                raise DataBlocked("기존 준비 이미지가 달라 덮어쓰지 않습니다")
++        else:
++            os.replace(temp, path)
++    finally:
++        temp.unlink(missing_ok=True)
++    return hashlib.sha256(pixels.tobytes()).hexdigest()
++
++
++def prepare_luna(blocks_root: Path, annotation: Path, output_root: Path, *, fov_mm=50):
++    if fov_mm != 50:
++        raise DataBlocked("이 프로토콜의 물리 시야는 성능 관측 전에 고정한 50mm입니다")
++    ann = read_luna_annotations(annotation)
++    blocks_root = Path(blocks_root).resolve()
++    extraction_receipt = blocks_root / "압축해제_무결성.json"
++    if not extraction_receipt.is_file():
++        raise DataBlocked("공식 체크섬 확인 후 생성한 압축 해제 영수증 필요")
++    receipt = load_json(extraction_receipt)
++    allowed = {r["path"]: r["sha256"] for r in receipt["files"]}
++    matching = {}
++    for p in blocks_root.rglob("*.npy"):
++        if p.parent.name == "image":
++            if p.stem in matching:
++                raise DataBlocked("결절 block 파일명이 여러 폴더에서 중복")
++            matching[p.stem] = p
++    out = []
++    rejected = []
++    csv_sha = digest(annotation)
++    for r in ann:
++        key = r["AnnotationID"]
++        if key not in matching:
++            raise DataBlocked(f"공식 주석에 대응하는 block 없음: {key}")
++        image = matching[key]
++        meta_file = image.parent.parent / "metadata" / image.name
++        source_sha = digest(image)
++        if source_sha != allowed.get(image.relative_to(blocks_root).as_posix()) or digest(meta_file) != allowed.get(meta_file.relative_to(blocks_root).as_posix()):
++            raise DataBlocked("압축 해제 후 block/메타데이터 변경")
++        meta = load_block_metadata(meta_file)
++        volume = np.load(image, mmap_mode="r", allow_pickle=False)
++        origin, a = block_geometry(meta)
++        coords = [float(r[k]) for k in ("CoordX", "CoordY", "CoordZ")]
++        try:
++            patch, geometry = extract_physical_patch(volume, origin_xyz=origin, index_to_world_xyz=a, center_xyz=coords, fov_mm=fov_mm)
++        except GeometryRejected as exc:
++            rejected.append({"annotation_id": key, "patient_id": r["PatientID"], "label": r["label"], "reason": str(exc)})
++            continue
++        target = Path(output_root).resolve() / "LUNA25" / f"{key}.png"
++        pixel_sha = _save_png(patch, target)
++        out.append({"id": "LUNA25:" + key, "patient_id": r["PatientID"], "cohort": "LUNA25", "label": LABELS[r["label"]],
++            "image_path": str(target), "image_sha256": digest(target), "source_sha256": source_sha, "split": "unassigned",
++            "metadata": {"global_patient_id": "LUNA25:" + r["PatientID"], "pixel_sha256": pixel_sha,
++                "source_image": str(image), "source_metadata_sha256": digest(meta_file), "annotation_csv_sha256": csv_sha,
++                "series_uid": r["SeriesInstanceUID"], "nodule_id": r["NoduleID"], "annotation_id": key,
++                "label_original": r["label"], "label_evidence": "Zenodo14673658 CSV label; official baseline train.py: malignant=label.sum()",
++                "hu_window": [-1000, 400], "eligibility_policy": ELIGIBILITY_POLICY,
++                "source_geometry": {k: v.tolist() for k, v in meta.items()}, **geometry}})
++    report = {"policy": ELIGIBILITY_POLICY, "policy_spec": ELIGIBILITY_SPEC, "policy_sha256": ELIGIBILITY_SHA256,
++        "fov_mm": fov_mm, "annotation_csv_sha256": csv_sha,
++        "source_annotations": len(ann), "source_patients": len({r["PatientID"] for r in ann}),
++        "source_labels": dict(collections.Counter(r["label"] for r in ann)),
++        "accepted_annotations": len(out), "accepted_patients": len({r["patient_id"] for r in out}),
++        "accepted_labels": dict(collections.Counter(str(r["label"]) for r in out)),
++        "rejected_annotations": len(rejected), "rejected_patients": len({r["patient_id"] for r in rejected}),
++        "rejected_labels": dict(collections.Counter(r["label"] for r in rejected)), "rejected": rejected,
++        "selection_basis": "성능 관측 전 고정한 물리 입력 QC만 사용. 라벨·예측·시험점수는 제외 판단에 사용하지 않음",
++        "limitation": "적격성에 따른 제외가 발생한 경우 공식 전체 코호트 성능과 같다고 주장하지 않음"}
++    report_path = Path(output_root) / "LUNA25_입력적격성_비공개.json"
++    atomic_json(report_path, report)
++    report_sha = digest(report_path)
++    for row in out:
++        row["metadata"]["eligibility_report_sha256"] = report_sha
++        row["metadata"]["eligibility_policy_sha256"] = ELIGIBILITY_SHA256
++    if not out or {r["label"] for r in out} != {0, 1}:
++        raise DataBlocked("고정 물리 입력 QC 후 두 클래스가 모두 남지 않았습니다")
++    return out
++
++
++def prepare_external(mapping_path: Path, output_root: Path):
++    """공식 주석/환자 대응을 직접 검토한 JSON만 외부 시험으로 받는다."""
++    m = load_json(mapping_path)
++    if m.get("reviewed") is not True or m.get("cohort") not in {"CSTL", "Histo"} or not m.get("patient_identity_evidence") or not m.get("institution_overlap_review"):
++        raise DataBlocked("외부 환자/기관/라벨 대응 검토 미완료")
++    for key in ("annotation_file", "annotation_sha256", "label_definition_url"):
++        if not m.get(key):
++            raise DataBlocked("외부 공식 주석/라벨 정의 근거 부재")
++    if digest(Path(m["annotation_file"])) != m["annotation_sha256"]:
++        raise DataBlocked("외부 검토 대상 주석 변경")
++    cohort = m["cohort"]
++    out = []
++    for r in m.get("rows", []):
++        if type(r.get("label")) is not int or r["label"] not in {0, 1} or not all(r.get(k) for k in ("id", "patient_id", "global_patient_id", "label_evidence", "source_path", "source_sha256")):
++            raise DataBlocked("외부 행의 공식 이진라벨/환자 대응 부재")
++        source = Path(r["source_path"])
++        _no_links(source)
++        if digest(source) != r["source_sha256"]:
++            raise DataBlocked("외부 원본 영상 변경")
++        policy = r.get("policy")
++        geom = {}
++        source_identity = r["source_sha256"]
++        if policy == "physical-volume":
++            if source.suffix.lower() == ".mhd":
++                fields = {}
++                for line in source.read_text(encoding="ascii").splitlines():
++                    if "=" in line:
++                        k, v = line.split("=", 1)
++                        fields[k.strip()] = v.strip()
++                companion = fields.get("ElementDataFile", "")
++                if not companion or Path(companion).name != companion or any(c in companion for c in (":", "\\", "/", " ")):
++                    raise DataBlocked("MHD의 외부/복수 RAW 참조는 허용하지 않습니다")
++                raw = source.parent / companion
++                _no_links(raw)
++                expected = r.get("source_companions_sha256", {}).get(companion)
++                if not expected or digest(raw) != expected:
++                    raise DataBlocked("MHD와 연결된 RAW 원본 SHA 근거 불일치")
++                source_identity = hashlib.sha256(json.dumps({"header": source_identity, "raw": expected}, sort_keys=True).encode()).hexdigest()
++            try:
++                import SimpleITK as sitk
++            except ImportError as exc:
++                raise DataBlocked("외부 MHD/NIfTI 물리 처리에는 별도 SimpleITK 설치가 필요합니다") from exc
++            im = sitk.ReadImage(str(source))
++            volume = sitk.GetArrayFromImage(im)
++            a = np.asarray(im.GetDirection()).reshape(3, 3) @ np.diag(im.GetSpacing())
++            patch, geom = extract_physical_patch(volume, origin_xyz=im.GetOrigin(), index_to_world_xyz=a, center_xyz=r["center_xyz_mm"])
++            pix = np.rint(np.clip((patch + 1000) / 1400, 0, 1) * 255).astype(np.uint8)
++        elif policy == "legacy-2d-intensity":
++            if not r.get("physical_geometry_unavailable") or not r.get("nodule_center_evidence"):
++                raise DataBlocked("외부 2D의 좌표/시야 한계와 결절 중심 근거를 기록해야 합니다")
++            with Image.open(source) as im:
++                if im.mode not in {"L", "RGB"}:
++                    raise DataBlocked("외부 2D 영상 모드 불일치")
++                im = im.convert("L")
++                if r.get("source_is_nodule_roi") is True:
++                    roi = im
++                elif "center_xy_px" in r:
++                    center = np.asarray(r["center_xy_px"], dtype=float)
++                    size = r.get("fixed_crop_size_px", 128)
++                    if center.shape != (2,) or not np.isfinite(center).all() or type(size) is not int or not 16 <= size <= 512:
++                        raise DataBlocked("외부 2D 고정 ROI 좌표/크기 오류")
++                    left, top = np.rint(center - size / 2).astype(int)
++                    if left < 0 or top < 0 or left + size > im.width or top + size > im.height:
++                        raise DataBlocked("외부 2D 고정 ROI가 원본 범위 밖")
++                    roi = im.crop((left, top, left + size, top + size))
++                    geom["center_xy_px"] = center.tolist()
++                    geom["fixed_crop_size_px"] = size
++                else:
++                    raise DataBlocked("외부 전체 흉부 BMP를 결절 ROI로 자동 간주하지 않습니다")
++                pix = np.asarray(roi.resize((512, 512), Image.Resampling.BILINEAR))
++            geom.update({"fov_mm": None, "hu_window": None, "geometry_unavailable": True, "domain_shift": "공식 BMP의 물리 간격/HU가 없어 50mm LUNA25와 동일 입력이라고 볼 수 없음"})
++        else:
++            raise DataBlocked("외부 처리 정책 미지정")
++        sid = hashlib.sha256(str(r["id"]).encode()).hexdigest()[:24]
++        target = Path(output_root).resolve() / cohort / (sid + ".png")
++        target.parent.mkdir(parents=True, exist_ok=True)
++        stream = io.BytesIO()
++        Image.fromarray(pix).save(stream, format="PNG")
++        data = stream.getvalue()
++        if target.exists() and target.read_bytes() != data:
++            raise DataBlocked("외부 준비 영상 충돌")
++        if not target.exists():
++            temp = target.with_suffix(".tmp")
++            temp.write_bytes(data)
++            os.replace(temp, target)
++        out.append({"id": f'{cohort}:{r["id"]}', "patient_id": str(r["patient_id"]), "cohort": cohort, "label": r["label"],
++            "image_path": str(target), "image_sha256": digest(target), "source_sha256": source_identity, "split": "external",
++            "metadata": {"global_patient_id": r["global_patient_id"], "pixel_sha256": hashlib.sha256(pix.tobytes()).hexdigest(),
++                "label_evidence": r["label_evidence"], "mapping_sha256": digest(mapping_path), "primary_source_sha256": r["source_sha256"], "policy": policy, **geom}})
++    if not out:
++        raise DataBlocked("외부 검토된 행 없음")
++    return out
++
++
++def build_manifest(luna_rows, cstl_rows=None, histo_rows=None, review=None, *, seed=42):
++    cstl_rows, histo_rows = cstl_rows or [], histo_rows or []
++    review = review or {"reviewed": False, "evidence": "외부 환자·기관·물리 입력 대응 준비 중. LUNA25 주학습과 구분"}
++    if (cstl_rows or histo_rows) and (review.get("reviewed") is not True or not review.get("evidence")):
++        raise DataBlocked("CSTL/Histo 기관·환자 중복 검토 미완료")
++    result = {"protocol": PROTOCOL, "status": "ready", "label_names": {"0": "OK 양성 결절", "1": "NG 악성 결절"},
++        "split_policy": {"unit": "patient", "seed": seed, "ratios": [.7, .15, .15], "stratification": "patient-any-malignant"},
++        "preprocessing": {"fov_mm": 50, "output_size": 512, "hu_window": [-1000, 400], "eligibility_policy": ELIGIBILITY_POLICY},
++        "splits": patient_split(luna_rows, seed), "external": {"CSTL": cstl_rows, "Histo": histo_rows},
++        "external_status": {c: {"status": "ready" if rs else "blocked", "reason": None if rs else "공식 분류 라벨은 확인했으나 환자·결절 중심·물리 입력 대응 검토 미완료"}
++            for c, rs in (("CSTL", cstl_rows), ("Histo", histo_rows))},
++        "cross_cohort_review": review, "created_at": time.time()}
++    result["summary"] = validate_manifest(result)
++    return result
++
++
++def inspect_external_archives(downloads: Path, destination: Path):
++    """공식 분류 폴더를 실제 읽어 라벨을 연결하되 미확인 환자·ROI는 완료로 꾸미지 않는다."""
++    summaries = {}
++    for entry in catalog_entries("external-classification"):
++        verify_download(Path(downloads) / entry["name"], entry)
++        cohort = "CSTL" if entry["record_id"] == "12582356" else "Histo"
++        dest = Path(destination) / cohort
++        receipt_path = dest / "압축해제_무결성.json"
++        if receipt_path.exists():
++            receipt = load_json(receipt_path)
++            if receipt["archives"] != [{"name": entry["name"], "sha256": digest(Path(downloads) / entry["name"])}]:
++                raise DataBlocked("외부 추출 영수증의 공식 원본 변경")
++            for r in receipt["files"]:
++                if digest(dest / r["path"]) != r["sha256"]:
++                    raise DataBlocked("외부 원본 추출 후 변경")
++        else:
++            receipt = safe_extract([Path(downloads) / entry["name"]], dest)
++            atomic_json(receipt_path, receipt)
++        mapping = {"1": 1, "2": 1, "3": 1, "4": 1, "5": 0, "6": 0} if cohort == "CSTL" else {"0": 0, "1": 1, "2": 1}
++        reference = "https://www.nature.com/articles/s41597-024-03851-7" if cohort == "CSTL" else "https://www.nature.com/articles/s41597-024-03658-6"
++        if cohort == "CSTL":
++            readme = dest / "class_dataset" / "READ_ME.txt"
++            text = readme.read_text(encoding="utf-8-sig")
++            for term in ("invasive adenocarcinoma", "minimally invasive adenocarcinoma", "adenocarcinoma in situ", "malignant other subtypes", "inflammation", "benign other subtypes"):
++                if term not in text:
++                    raise DataBlocked("CSTL 공식 README의 병리 하위형 변경")
++        pixel_annotations = collections.defaultdict(list)
++        histo_ann = Path(downloads) / "all_anno_3D.csv"
++        if cohort == "Histo" and histo_ann.exists():
++            annotation_entry = next(e for e in catalog_entries("annotations") if e["name"] == "all_anno_3D.csv")
++            verify_download(histo_ann, annotation_entry)
++            with histo_ann.open(encoding="utf-8-sig", newline="") as f:
++                for r in csv.DictReader(f):
++                    pixel_annotations[r["image"]].append(r)
++        rows = []
++        for image in sorted(dest.rglob("*.bmp")):
++            raw_label = image.parent.name
++            if raw_label not in mapping:
++                raise DataBlocked("공식 외부 분류 폴더에 미정의 라벨")
++            tokens = image.stem.split("_")
++            if not tokens or not all(t.isdigit() for t in tokens):
++                raise DataBlocked("외부 파일의 사례/시점 이름 형식 변경")
++            rows.append({"source_path": str(image.resolve()), "source_sha256": digest(image), "original_label": raw_label,
++                "label": mapping[raw_label], "label_evidence": reference, "source_case_id_candidate": tokens[0],
++                "patient_id_verified": False, "roi_verified": False,
++                "annotation_candidates": pixel_annotations.get(image.name, []),
++                "blocked_reason": "공식 라벨 연결 완료. 파일명 사례→환자 대응·결절 ROI·HU/물리 간격 검토 미완료"})
++        payload = {"cohort": cohort, "reviewed": False, "status": "blocked", "label_mapping_reviewed": True,
++            "source_archive": entry, "label_definition_url": reference, "rows": rows,
++            "institution_evidence": "Second Hospital of Shandong University" if cohort == "CSTL" else "Linyi Central Hospital",
++            "institution_evidence_level": "공식 논문 기술. 개별 환자의 병원간 이동/중복은 미확인",
++            "patient_identity_evidence": None, "physical_geometry_verified": False}
++        atomic_json(dest / "공식라벨_자동대응_환자ROI검토대기_비공개.json", payload)
++        summaries[cohort] = {"images": len(rows), "raw_labels": dict(collections.Counter(r["original_label"] for r in rows)),
++            "binary_labels": dict(collections.Counter(r["label"] for r in rows)),
++            "candidate_case_ids": len({r["source_case_id_candidate"] for r in rows}),
++            "exact_pixel_annotation_image_matches": sum(bool(r["annotation_candidates"]) for r in rows),
++            "status": "blocked", "label_mapping_reviewed": True, "patient_roi_verified": False}
++    atomic_json(Path(destination) / "외부자료_실제대응_요약.json", summaries)
++    return summaries
++
++
++def prepare_status(path=STATUS):
++    state = {"protocol": PROTOCOL, "status": "blocked", "reasons": [], "updated_at": time.time(), "manifest": str(MANIFEST)}
++    if MANIFEST.exists():
++        try:
++            state["summary"] = validate_manifest(load_json(MANIFEST))
++            state["status"] = "ready"
++        except (ValueError, OSError) as exc:
++            state["reasons"].append(str(exc))
++    else:
++        state["reasons"].append("LUNA25 공식 결절 block의 전체 체크섬·물리 시야·환자 분할 준비 필요. 외부 코호트는 별도 준비대기이며 내부 주학습의 필수 완료 조건과 구분합니다")
++    state["external_status"] = {c: {"status": "blocked", "reason": "공식 분류 라벨 연결은 확인했으나 환자·결절 중심·물리 입력 검토 미완료"} for c in ("CSTL", "Histo")}
++    if MANIFEST.exists() and state["status"] == "ready":
++        state["external_status"] = load_json(MANIFEST).get("external_status", state["external_status"])
++    state["available_downloads"] = {g: {"files": len(catalog_entries(g)), "bytes": sum(e["bytes"] for e in catalog_entries(g))} for g in ("annotations", "nodule-blocks", "external-classification", "full-ct")}
++    atomic_json(path, state)
++    return state
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(description=__doc__)
++    sub = parser.add_subparsers(dest="command", required=True)
++    sub.add_parser("status")
++    inspect = sub.add_parser("inspect-external")
++    inspect.add_argument("--downloads", type=Path, default=DATA / "official")
++    inspect.add_argument("--destination", type=Path, default=DATA / "external_original")
++    ls = sub.add_parser("list")
++    ls.add_argument("--group", choices=("annotations", "nodule-blocks", "external-classification", "full-ct"), default="annotations")
++    dl = sub.add_parser("download")
++    dl.add_argument("--group", choices=("annotations", "nodule-blocks", "external-classification", "full-ct"), required=True)
++    dl.add_argument("--destination", type=Path, default=DATA / "official")
++    ex = sub.add_parser("extract")
++    ex.add_argument("--group", choices=("nodule-blocks", "external-classification"), required=True)
++    ex.add_argument("--downloads", type=Path, default=DATA / "official")
++    ex.add_argument("--destination", type=Path, required=True)
++    prep = sub.add_parser("prepare")
++    prep.add_argument("--blocks", type=Path, required=True)
++    prep.add_argument("--annotation", type=Path, default=DATA / "official" / "LUNA25_Public_Training_Development_Data.csv")
++    prep.add_argument("--cstl-mapping", type=Path)
++    prep.add_argument("--histo-mapping", type=Path)
++    prep.add_argument("--cross-review", type=Path)
++    prep.add_argument("--output-root", type=Path, default=DATA / "prepared")
++    prep.add_argument("--manifest", type=Path, default=MANIFEST)
++    args = parser.parse_args(argv)
++    try:
++        if args.command == "status":
++            print(json.dumps(prepare_status(), ensure_ascii=False))
++        elif args.command == "list":
++            es = catalog_entries(args.group)
++            print(json.dumps({"group": args.group, "bytes": sum(e["bytes"] for e in es), "files": es}, ensure_ascii=False, indent=2))
++        elif args.command == "download":
++            receipts = [download_entry(e, args.destination) for e in catalog_entries(args.group)]
++            atomic_json(args.destination / (args.group + "_다운로드_무결성.json"), {"group": args.group, "files": receipts})
++            atomic_json(STATUS, {"protocol": PROTOCOL, "status": "blocked", "download_completed": args.group, "reasons": ["다운로드 체크섬 확인은 전처리/환자·라벨 대응 완료가 아닙니다"], "updated_at": time.time()})
++            print(json.dumps({"downloaded": len(receipts), "group": args.group}, ensure_ascii=False))
++        elif args.command == "extract":
++            entries = catalog_entries(args.group)
++            for e in entries:
++                verify_download(args.downloads / e["name"], e)
++            if args.group == "nodule-blocks":
++                receipt = safe_extract([args.downloads / e["name"] for e in entries], args.destination)
++                atomic_json(args.destination / "압축해제_무결성.json", receipt)
++            else:
++                for e in entries:
++                    dst = args.destination / e["record_id"]
++                    atomic_json(dst / "압축해제_무결성.json", safe_extract([args.downloads / e["name"]], dst))
++            print("공식 체크섬·ZIP CRC와 파일 SHA 확인 후 압축 해제했습니다")
++        elif args.command == "inspect-external":
++            print(json.dumps(inspect_external_archives(args.downloads, args.destination), ensure_ascii=False))
++        elif args.command == "prepare":
++            cstl = prepare_external(args.cstl_mapping, args.output_root) if args.cstl_mapping else []
++            histo = prepare_external(args.histo_mapping, args.output_root) if args.histo_mapping else []
++            luna = prepare_luna(args.blocks, args.annotation, args.output_root)
++            manifest = build_manifest(luna, cstl, histo, load_json(args.cross_review) if args.cross_review else None)
++            atomic_json(args.manifest, manifest)
++            atomic_json(STATUS, {"protocol": PROTOCOL, "status": "ready", "manifest": str(args.manifest.resolve()), "manifest_sha256": digest(args.manifest), "summary": manifest["summary"]})
++            print(json.dumps(manifest["summary"], ensure_ascii=False))
++        return 0
++    except Exception as exc:
++        atomic_json(STATUS, {"protocol": PROTOCOL, "status": "blocked", "reasons": [str(exc)], "error_type": type(exc).__name__, "command": args.command, "updated_at": time.time()})
++        print(f"자료 준비 중단: {type(exc).__name__}: {exc}", file=sys.stderr)
++        return 2
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+--- a/Conv1 블러 OK-NG 실험/17차/SCI모델.py
++++ b/Conv1 블러 OK-NG 실험/17차/SCI모델.py
+@@ -0,0 +1,81 @@
++"""표준 ResNet 평균풀링·FC와 실제 detach 기울기 반환 분할 모델입니다."""
++import hashlib
++from pathlib import Path
++import torch
++from torch import nn
++from torchvision.models import resnet50,resnet18
++from legacy.model import GaussianDCTBlur
++
++LAYERS=('conv1','stem','layer1','layer2','layer3','layer4')
++
++def sha256(path):
++    h=hashlib.sha256()
++    with Path(path).open('rb') as stream:
++        for block in iter(lambda:stream.read(1024*1024),b''): h.update(block)
++    return h.hexdigest()
++
++class SCIResNet(nn.Module):
++    def __init__(self,name='resnet50',sigma=0,boundary='conv1',weights_path=None,weights_sha256=None,pretrained=True):
++        super().__init__()
++        if name not in ('resnet50','resnet18') or boundary not in ('conv1','stem','layer1'):
++            raise ValueError('지원하는 ResNet·분할 경계가 아닙니다.')
++        self.name,self.boundary=name,boundary
++        self.backbone=(resnet50 if name=='resnet50' else resnet18)(weights=None)
++        if pretrained:
++            if weights_path is None or weights_sha256 is None or sha256(weights_path)!=weights_sha256:
++                raise ValueError('고정 초기 가중치 경로·SHA가 필요합니다.')
++            self.backbone.load_state_dict(torch.load(weights_path,map_location='cpu',weights_only=True),strict=True)
++        self.backbone.fc=nn.Linear(self.backbone.fc.in_features,1)
++        self.blur=GaussianDCTBlur(sigma)
++        self.register_buffer('rgb_mean',torch.tensor([.485,.456,.406]).reshape(1,3,1,1))
++        self.register_buffer('rgb_std',torch.tensor([.229,.224,.225]).reshape(1,3,1,1))
++
++    def observed(self,raw):
++        if raw.ndim!=4 or raw.shape[1]!=1 or not torch.isfinite(raw).all():
++            raise ValueError('입력은 유한한 N×1×H×W 원본 ROI이어야 합니다.')
++        with torch.autocast(device_type=raw.device.type,enabled=False):
++            return self.blur(raw.float())
++
++    def features_from_observed(self,observed,layer):
++        if layer not in LAYERS: raise ValueError('알 수 없는 특징 층')
++        b=self.backbone
++        with torch.autocast(device_type=observed.device.type,enabled=False):
++            x=b.conv1((observed.float().repeat(1,3,1,1)-self.rgb_mean)/self.rgb_std)
++            if layer=='conv1': return x
++            x=b.maxpool(b.relu(b.bn1(x)))
++            if layer=='stem': return x
++            for name in ('layer1','layer2','layer3','layer4'):
++                x=getattr(b,name)(x)
++                if name==layer: return x
++
++    def front(self,raw):
++        return self.features_from_observed(self.observed(raw),self.boundary)
++
++    def back(self,x):
++        return self.logits_from_layer(x,self.boundary)
++
++    def logits_from_layer(self,x,layer):
++        b=self.backbone
++        if layer not in LAYERS: raise ValueError('알 수 없는 후단 시작 층')
++        if layer=='conv1': x=b.maxpool(b.relu(b.bn1(x)))
++        start=0 if layer in ('conv1','stem') else int(layer[-1])
++        for number in range(start+1,5): x=getattr(b,'layer'+str(number))(x)
++        return b.fc(torch.flatten(b.avgpool(x),1)).squeeze(1)
++
++    def forward(self,raw):
++        return self.back(self.front(raw))
++
++    def split_loss_backward(self,raw,labels,divisor=1):
++        front=self.front(raw)
++        wire=front.detach().requires_grad_(True)
++        logits=self.back(wire)
++        loss=nn.functional.binary_cross_entropy_with_logits(logits.float(),labels)
++        (loss/divisor).backward()
++        if wire.grad is None or not torch.isfinite(wire.grad).all():
++            raise RuntimeError('분할 경계의 반환 기울기가 없거나 비유한 값입니다.')
++        front.backward(wire.grad)
++        return logits.detach(),loss.detach(),{'detached':wire.is_leaf,'returned_gradient_norm':float(wire.grad.float().norm())}
++
++def freeze_running_stats(model):
++    for module in model.modules():
++        if isinstance(module,nn.modules.batchnorm._BatchNorm): module.eval()
+--- a/Conv1 블러 OK-NG 실험/17차/SCI실행.py
++++ b/Conv1 블러 OK-NG 실험/17차/SCI실행.py
+@@ -0,0 +1,298 @@
++"""환자 계보가 확인된 SCI v2 자료만 소비하는 독립 실행기입니다."""
++from __future__ import annotations
++import argparse
++import hashlib
++import json
++import os
++from pathlib import Path
++import random
++import sys
++import uuid
++import numpy as np
++from PIL import Image
++from 실행 import atomic,save_json,read_json,digest,save_torch,lock,cuda_guard,runtime_context,seed_all,rng_state,restore_rng,disk_guard,validation_progress,save_dashboard,now
++
++ROOT=Path(__file__).resolve().parent
++PROTOCOL='stage17-luna25-2d-patient-v2'
++
++def experiment_plan(config):
++    main=[{'model':'resnet50','regime':regime,'split_boundary':'conv1','sigma':sigma,'kind':'main'}
++          for regime in ('split_trainable','full_finetune') for sigma in config['sigmas']]
++    auxiliary=[{'model':'resnet18','regime':'full_finetune','split_boundary':'conv1','sigma':0,'kind':'auxiliary'}]
++    auxiliary += [{'model':'resnet50','regime':'split_trainable','split_boundary':layer,'sigma':sigma,'kind':'auxiliary'}
++                  for layer in ('stem','layer1') for sigma in (0,32)]
++    for item in main+auxiliary:
++        item['id']=f"{item['model']}_{item['regime']}_{item['split_boundary']}_sigma_{item['sigma']:03d}"
++        item['cohort']='LUNA25'
++        item['sigma_mm']=item['sigma']*config['roi_pixel_spacing_mm']
++    return main+auxiliary
++
++def load_manifest(config):
++    path=Path(config['manifest'])
++    if not path.exists(): raise FileNotFoundError('공식 결절 영상·주석 준비 manifest가 없습니다: '+str(path))
++    manifest=read_json(path)
++    if manifest.get('protocol')!=PROTOCOL:
++        raise ValueError('기존12차 또는 다른 프로토콜 manifest는 SCI v2에서 사용하지 않습니다.')
++    from SCI데이터 import validate_manifest
++    validate_manifest(manifest,verify_files=True)
++    validate_patient_separation(manifest)
++    return manifest
++
++def validate_patient_separation(manifest):
++    seen=set()
++    for split in ('train','validation','test'):
++        rows=manifest['splits'][split]
++        if not rows: raise ValueError('SCI 환자 분할이 비어 있습니다: '+split)
++        patients={row['patient_id'] for row in rows}
++        if not patients or patients&seen: raise ValueError('SCI 환자 분할 간 중복')
++        if any(row['label'] not in (0,1) or row['cohort']!='LUNA25' for row in rows): raise ValueError('LUNA25 주실험 라벨·cohort 오류')
++        seen|=patients
++    return {'patient_overlap':0,'method':'같은 환자의 혼합 라벨 결절도 같은 분할'}
++
++def image(row):
++    path=Path(row['image_path'])
++    if digest(path)!=row['image_sha256']: raise ValueError('결절 ROI SHA 불일치: '+row['id'])
++    with Image.open(path) as source:
++        pixels=np.asarray(source.convert('L'),dtype=np.uint8).copy()
++    if pixels.shape!=(512,512): raise ValueError('정식 결절 ROI는512×512이어야 합니다.')
++    transform=row.get('augmentation')
++    if transform:
++        if transform['hflip']: pixels=pixels[:,::-1].copy()
++        values=pixels.astype(np.float64)
++        values=(values-values.mean())*transform['contrast']+values.mean()+transform['brightness']
++        pixels=np.rint(np.clip(values,0,255)).astype(np.uint8)
++    return pixels.astype(np.float32)/255
++
++class Dataset:
++    def __init__(self,rows,training=False): self.rows,self.training=rows,training
++    def __len__(self): return len(self.rows)
++    def __getitem__(self,index):
++        import torch
++        row=self.rows[index]
++        pixels=image(row)
++        if self.training and random.random()<.25: pixels=pixels[:,::-1].copy()
++        return torch.from_numpy(pixels)[None],torch.tensor(row['label'],dtype=torch.float32)
++
++def fixed_test_plan(manifest,config):
++    rows=[]
++    for label in (0,1):
++        pool=[r for r in manifest['splits']['test'] if r['label']==label]
++        if not pool: raise ValueError('주시험에 두 클래스 모두 필요합니다.')
++        if len(pool)>config['test_samples_per_class']: raise ValueError('고정 보조시험 크기보다 원본이 많아 모든 첫 사본을 보존할 수 없습니다.')
++        rng=random.Random(config['test_augmentation_seed']+label)
++        for index in range(config['test_samples_per_class']):
++            source=dict(pool[index%len(pool)])
++            original=index<len(pool)
++            source.update(id=f"aug_{label}_{index:04d}",source_id=source['id'],canonical=original,
++                augmentation={'hflip':False if original else rng.random()<.5,'contrast':1. if original else rng.uniform(.94,1.06),
++                              'brightness':0. if original else rng.uniform(-6,6)})
++            rows.append(source)
++    return {'protocol':PROTOCOL,'seed':config['test_augmentation_seed'],'rows':rows,
++            'note':'동일 시험 환자·결절 계보의 보조 증강이며 독립 표본 증가가 아님'}
++
++def bind(config,manifest,runtime,device):
++    files=['SCI실행.py','SCI모델.py','SCI공격.py','SCI데이터.py','SCIconfig.json','실행.py','공격.py','특징노출.py','지표.py','전송.py','rust/전송엔진.exe','legacy/model.py','legacy/identity.py','legacy/__init__.py']
++    binding={'protocol':PROTOCOL,'config':config,'manifest_sha256':digest(config['manifest']),
++             'sources':{name:digest(ROOT/name) for name in files},'execution_context':runtime_context(device)}
++    plan=fixed_test_plan(manifest,config)
++    plan_path=runtime/'test_plan.json'
++    if plan_path.exists() and read_json(plan_path)!=plan: raise ValueError('기존 고정 시험 증강 계획 변경')
++    if not plan_path.exists(): save_json(plan_path,plan)
++    binding['test_plan_sha256']=digest(plan_path)
++    path=runtime/'run.json'
++    if path.exists():
++        record=read_json(path)
++        if record['binding']!=binding: raise ValueError('소스·자료·문맥 변경: 기존 SCI run 재개 거부')
++        return record['run_id']
++    run_id=uuid.uuid4().hex
++    save_json(path,{'run_id':run_id,'created_at':now(),'binding':binding})
++    return run_id
++
++def update_status(config,run_id,state,reason=None,current=None):
++    runtime=Path(config['runtime'])
++    items=[]
++    for condition in experiment_plan(config):
++        folder=runtime/'conditions'/condition['id']
++        item={**condition,'state':'not_started','epoch':0}
++        if (folder/'current.json').exists():
++            value=read_json(folder/'current.json')
++            if value.get('run_id')==run_id:
++                item.update({k:value[k] for k in ('state','epoch','best_validation_loss') if k in value})
++                for split in ('training','validation'):
++                    if split in value: item[split+'_accuracy']=value[split]['accuracy']
++        if (folder/'dashboard.json').exists():
++            value=read_json(folder/'dashboard.json')
++            if value.get('run_id')==run_id:
++                item.update(state='completed',test_accuracy=value['classifier']['test']['accuracy'],privacy_score=value['attack']['privacy_score'],
++                            result_path=str(folder/'dashboard.json'))
++        items.append(item)
++    save_json(runtime/'status.json',{'schema':'stage17-sci-v2','protocol':PROTOCOL,'state':state,'reason':reason,'reasons':[] if reason is None else [reason],
++        'run_id':run_id,'updated_at':now(),'current_condition':current,'main_conditions':40,'auxiliary_conditions':5,'total_conditions':len(items),
++        'completed_conditions':sum(item['state']=='completed' for item in items),'conditions':items,
++        'auxiliary_references':[{'model':'resnet50','split_boundary':'conv1','sigma':s,'reference':f'resnet50_split_trainable_conv1_sigma_{s:03d}'} for s in (0,32)],
++        'data_status_path':config['data_status'],'limitations':['결절 중심이 제공된 분류 과제이며 결절 탐지 성능이 아님','원본 주시험과 고정 증강 보조시험은 독립적으로 표시']})
++
++def evaluate(model,rows,device,precision,path=None,context=None):
++    import torch
++    from 지표 import binary_report,grouped_accuracy_interval
++    model.eval()
++    labels,logits=[],[]
++    with torch.no_grad():
++        for x,y in torch.utils.data.DataLoader(Dataset(rows),batch_size=2,num_workers=0):
++            with torch.autocast(device_type=device,dtype=torch.bfloat16,enabled=precision=='cuda_bf16'):
++                predicted=model(x.to(device)).float().cpu()
++            labels.extend(y.tolist());logits.extend(predicted.tolist())
++    result=binary_report(labels,logits)
++    if path is not None:
++        from scipy.special import expit
++        result.update(grouped_accuracy_interval(labels,logits,[row['patient_id'] for row in rows]))
++        result['n_patients']=len({row['patient_id'] for row in rows})
++        result.pop('n_similarity_groups',None)
++        result['patient_ci95']=result.pop('accuracy_ci95_group')
++        result['interval_note']='환자 단위 군집 재표집95% 구간; 환자 내 복수 결절·증강을 함께 재표집'
++        if result['n_patients']<2: result['interval_reason']='환자2명 미만으로 군집 구간 미정의'
++        records=[{'row_id':row['id'],'source_id':row.get('source_id',row['id']),'patient_id':row['patient_id'],'cohort':row['cohort'],
++                  'label':int(label),'rawlogit':float(logit),'probability':float(expit(logit)),'predicted':int(logit>=0)} for row,label,logit in zip(rows,labels,logits)]
++        save_json(path,{'protocol':PROTOCOL,**(context or {}),'rows':records})
++        result['predictions']={'path':path.relative_to(path.parents[3]).as_posix(),'sha256':digest(path),'rows':len(records)}
++    return result
++
++def train_condition(config,manifest,condition,run_id,device,resume=False):
++    import torch
++    from SCI모델 import SCIResNet,freeze_running_stats
++    from 지표 import binary_report
++    from 실행 import train_rows
++    from SCI공격 import run_protection,run_diagnostics
++    folder=Path(config['runtime'])/'conditions'/condition['id']
++    if (folder/'result.json').exists():
++        if not (folder/'dashboard.json').exists(): save_dashboard(folder,read_json(folder/'result.json'))
++        return
++    folder.mkdir(parents=True,exist_ok=True)
++    seed_all(config['seed'],device=='cuda')
++    weights=config['weights'][condition['model']]
++    model=SCIResNet(condition['model'],condition['sigma'],condition['split_boundary'],weights['path'],weights['sha256']).to(device)
++    precision='cuda_bf16' if device=='cuda' else 'cpu_fp32'
++    if device=='cuda' and not torch.cuda.is_bf16_supported(): raise RuntimeError('CUDA BF16 지원 필요')
++    optimizer=torch.optim.AdamW(model.parameters(),lr=config['learning_rate'],weight_decay=config['weight_decay'])
++    scheduler=torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,patience=8,factor=.5,min_lr=1e-6)
++    start,best,patience_best,bad,best_epoch,history=0,float('inf'),float('inf'),0,0,[]
++    pointer=folder/'last.json'
++    if pointer.exists():
++        if not resume: raise ValueError('기존 epoch 보존본이 있습니다. --resume 필요')
++        reference=read_json(pointer);path=folder/reference['path']
++        if digest(path)!=reference['sha256']: raise ValueError('epoch 체크포인트 SHA 오류')
++        checkpoint=torch.load(path,map_location='cpu',weights_only=False)
++        if checkpoint['run_id']!=run_id or checkpoint['condition']!=condition: raise ValueError('체크포인트 실행·조건 불일치')
++        model.load_state_dict(checkpoint['model']);optimizer.load_state_dict(checkpoint['optimizer']);scheduler.load_state_dict(checkpoint['scheduler'])
++        start,best,patience_best,bad,best_epoch,history=[checkpoint[k] for k in ('epoch','best','patience_best','bad','best_epoch','history')]
++        restore_rng(checkpoint['rng'])
++    rows=manifest['splits']
++    for epoch in range(start,config['epochs']):
++        if epoch>=config['min_epochs'] and bad>=config['patience']: break
++        estimate=sum(t.numel()*t.element_size() for t in model.state_dict().values())*4
++        disk_guard(folder,int(config['reserve_gib']*1024**3)+estimate)
++        loader=torch.utils.data.DataLoader(Dataset(train_rows(rows['train'],config['samples_per_class'],config['seed']+epoch),True),batch_size=config['batch_size'],num_workers=0)
++        model.train();freeze_running_stats(model);optimizer.zero_grad(set_to_none=True)
++        labels,logits=[],[];gradient_evidence=None
++        for batch,(x,y) in enumerate(loader):
++            x,y=x.to(device),y.to(device)
++            group_start=batch//config['accumulation']*config['accumulation']
++            divisor=min(config['accumulation'],len(loader)-group_start)
++            with torch.autocast(device_type=device,dtype=torch.bfloat16,enabled=precision=='cuda_bf16'):
++                if condition['regime']=='split_trainable':
++                    prediction,loss,gradient_evidence=model.split_loss_backward(x,y,divisor)
++                else:
++                    prediction=model(x)
++                    loss=torch.nn.functional.binary_cross_entropy_with_logits(prediction.float(),y)
++                    (loss/divisor).backward()
++            if (batch+1)%config['accumulation']==0 or batch+1==len(loader):
++                torch.nn.utils.clip_grad_norm_(model.parameters(),1.);optimizer.step();optimizer.zero_grad(set_to_none=True)
++            labels.extend(y.cpu().tolist());logits.extend(prediction.detach().float().cpu().tolist())
++        validation=evaluate(model,rows['validation'],device,precision)
++        scheduler.step(validation['loss'])
++        progress=validation_progress(validation['loss'],best,patience_best,bad,config['min_delta'])
++        if progress['is_best']: best,best_epoch=validation['loss'],epoch+1
++        patience_best,bad=progress['patience_best'],progress['bad']
++        item={**condition,'protocol':PROTOCOL,'run_id':run_id,'state':'classifying','epoch':epoch+1,'training':binary_report(labels,logits),
++              'validation':validation,'best_validation_loss':best,'precision':precision,'gradient_return':gradient_evidence}
++        history.append(item)
++        path=folder/'epochs'/f'epoch_{epoch+1:04d}.pth'
++        save_torch(path,{'protocol':PROTOCOL,'run_id':run_id,'condition':condition,'epoch':epoch+1,'model':model.state_dict(),
++                        'optimizer':optimizer.state_dict(),'scheduler':scheduler.state_dict(),'rng':rng_state(device=='cuda'),
++                        'best':best,'patience_best':patience_best,'bad':bad,'best_epoch':best_epoch,'history':history})
++        reference={'path':path.relative_to(folder).as_posix(),'sha256':digest(path),'epoch':epoch+1,'run_id':run_id}
++        save_json(pointer,reference)
++        if best_epoch==epoch+1: save_json(folder/'best.json',reference)
++        save_json(folder/'history.json',history);save_json(folder/'current.json',item)
++        update_status(config,run_id,'running',current=condition['id'])
++    reference=read_json(folder/'best.json');best_path=folder/reference['path']
++    if digest(best_path)!=reference['sha256']: raise ValueError('best 보존본 SHA 불일치')
++    model.load_state_dict(torch.load(best_path,map_location='cpu',weights_only=False)['model']);model.eval()
++    context={'run_id':run_id,'condition':condition,'checkpoint_sha256':reference['sha256']}
++    classifier={'best_epoch':best_epoch,'checkpoint':reference,'test':evaluate(model,rows['test'],device,precision,folder/'predictions'/'test.json',context)}
++    generated=read_json(Path(config['runtime'])/'test_plan.json')['rows']
++    classifier['test_generated']=evaluate(model,generated,device,precision,folder/'predictions'/'test_generated.json',context)
++    external={}
++    for cohort in ('CSTL','Histo'):
++        external_rows=manifest.get('external',{}).get(cohort,[])
++        if isinstance(external_rows,dict): external_rows=external_rows.get('rows',[])
++        external[cohort]=evaluate(model,external_rows,device,precision,folder/'predictions'/f'external_{cohort}.json',context) if external_rows else {'state':'blocked','reason':manifest.get('external_status',{}).get(cohort,{}).get('reason','외부 영상·환자계보·양성악성 주석 미확보')}
++    protection=run_protection(model,{**rows,'test_generated':generated,'external':manifest.get('external',{}),'external_status':manifest.get('external_status',{})},config,folder,run_id,reference,device,resume)
++    diagnostic=run_diagnostics(manifest,config,run_id,device,resume)
++    result={**condition,'condition':condition['id'],'protocol':PROTOCOL,'run_id':run_id,'classifier':classifier,'external':external,
++            **protection,'diagnostics':diagnostic,'dataset':{split:{'images':len(records),'patients':len({r['patient_id'] for r in records})} for split,records in rows.items()},
++            'limitations':['결절 중심이 제공된 분류이며 탐지 성능 아님','증강은 독립 환자 증가 아님','외부 고정시험은 학습·선정에 사용하지 않음']}
++    save_json(folder/'result.json',result);save_dashboard(folder,result)
++    save_json(folder/'current.json',{**history[-1],'state':'completed'})
++
++def require_previous_experiment_complete(root=Path('D:/2026/폐암 논문/Conv1 블러 OK-NG 실험/12차')):
++    """이전 실험의 현재 실행 전체 완료를 읽기 전용으로 확인합니다."""
++    try:
++        root=Path(root).resolve();config_path=root/'config.json'
++        config=read_json(config_path);status=read_json(root/'work'/'runtime'/'status.json')
++        if not status.get('run_id') or not status.get('experiment_instance_id'): raise ValueError('현재 실행 식별자 누락')
++        if status.get('config_sha256')!=digest(config_path): raise ValueError('현재 상태와 계획 설정 SHA 불일치')
++        planned={(regime,sigma) for regime in config['regimes'] for sigma in config['sigmas']}
++        conditions=status['conditions'];actual={(r['regime'],r['sigma']) for r in conditions}
++        if actual!=planned or len(conditions)!=len(planned): raise ValueError('전체 계획 조건 목록 누락·중복')
++        if any(row.get('status')!='completed' for row in conditions): raise ValueError('이전 실험의 미완료 조건이 있음')
++        for row in conditions:
++            path=(root/row['result_path']).resolve()
++            if not path.is_relative_to(root): raise ValueError('이전 결과 경로가 프로젝트 밖임')
++            result=read_json(path)
++            if any(result.get(key)!=status[key] for key in ('run_id','experiment_instance_id')): raise ValueError('이전 최종 결과 실행 식별자 불일치')
++            if result.get('sigma')!=row['sigma'] or result.get('regime')!=row['regime'] or not result.get('completed_at'): raise ValueError('이전 최종 결과 조건·완료 기록 누락')
++        return {'run_id':status['run_id'],'conditions':len(conditions),'state':'completed','read_only':True}
++    except (OSError,ValueError,KeyError,TypeError) as error:
++        raise RuntimeError('12차 현재 실행의 모든 조건 완료를 확인하지 못해 새 CUDA 실행을 거부합니다: '+str(error)) from error
++
++
++def main(argv=None):
++    parser=argparse.ArgumentParser(description=__doc__)
++    action=parser.add_mutually_exclusive_group();action.add_argument('--prepare',action='store_true');action.add_argument('--run',action='store_true');action.add_argument('--resume',action='store_true')
++    parser.add_argument('--device',choices=['cpu','cuda'],default='cuda');parser.add_argument('--condition')
++    args=parser.parse_args(argv);config=read_json(ROOT/'SCIconfig.json');runtime=Path(config['runtime'])
++    try: manifest=load_manifest(config)
++    except (FileNotFoundError,ValueError,ImportError) as error:
++        update_status(config,None,'blocked',str(error));print(json.dumps({'state':'blocked','reason':str(error),'protocol':PROTOCOL},ensure_ascii=False));return
++    selected=experiment_plan(config)
++    if args.condition:
++        selected=[item for item in selected if item['id']==args.condition]
++        if not selected: parser.error('정의되지 않은 SCI 조건 ID')
++    if not (args.prepare or args.run or args.resume):
++        print(json.dumps(read_json(runtime/'status.json') if (runtime/'status.json').exists() else {'state':'ready','protocol':PROTOCOL},ensure_ascii=False,indent=2));return
++    os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG',':4096:8')
++    with lock(runtime):
++        if (args.run or args.resume) and args.device=='cuda':
++            previous=require_previous_experiment_complete()
++            save_json(runtime/'previous_experiment_gate.json',previous)
++            cuda_guard(runtime/'cuda_guard.json')
++        run_id=bind(config,manifest,runtime,args.device)
++        update_status(config,run_id,'prepared')
++        if args.run or args.resume:
++            import torch
++            torch.set_num_threads(config['cpu_threads'])
++            for condition in selected: train_condition(config,manifest,condition,run_id,args.device,args.resume)
++            update_status(config,run_id,'idle')
++
++if __name__=='__main__': main()
+--- a/Conv1 블러 OK-NG 실험/17차/config.example.json
++++ b/Conv1 블러 OK-NG 실험/17차/config.example.json
+@@ -0,0 +1,97 @@
++{
++  "protocol": "stage17-luna25-2d-patient-v2",
++  "runtime": "./work/SCI-v2",
++  "manifest": "./work/data/SCI_manifest.json",
++  "data_status": "./work/data/SCI_준비상태.json",
++  "weights": {
++    "resnet50": {
++      "path": "./work/weights/resnet50_initial.pth",
++      "sha256": "0676ba61b6795bbe1773cffd859882e5e297624d384b6993f7c9e683e722fb8a"
++    },
++    "resnet18": {
++      "path": "./work/weights/resnet18-f37072fd.pth",
++      "sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
++    }
++  },
++  "sigmas": [
++    0,
++    1,
++    2,
++    4,
++    6,
++    8,
++    10,
++    12,
++    16,
++    20,
++    24,
++    32,
++    40,
++    48,
++    64,
++    80,
++    96,
++    128,
++    192,
++    256
++  ],
++  "seed": 42,
++  "image_size": 512,
++  "roi_fov_mm": 50.0,
++  "roi_pixel_spacing_mm": 0.09765625,
++  "samples_per_class": 3000,
++  "test_samples_per_class": 1000,
++  "test_augmentation_seed": 20261125,
++  "batch_size": 2,
++  "accumulation": 4,
++  "epochs": 200,
++  "min_epochs": 30,
++  "patience": 25,
++  "min_delta": 0.0001,
++  "learning_rate": 0.0001,
++  "weight_decay": 0.0001,
++  "cpu_threads": 4,
++  "reserve_gib": 5,
++  "reconstruction": {
++    "epochs": 80,
++    "min_epochs": 20,
++    "patience": 12,
++    "learning_rate": 0.001,
++    "seed": 20261125,
++    "inverse_steps": 96,
++    "tv_alphas": [
++      0.0001,
++      0.001
++    ],
++    "deblur_alphas": [
++      1e-12,
++      1e-09,
++      1e-06,
++      0.001,
++      0.1,
++      1.0
++    ]
++  },
++  "feature_layers": [
++    "conv1",
++    "stem",
++    "layer1",
++    "layer2",
++    "layer3",
++    "layer4"
++  ],
++  "feature_dtypes": [
++    "f32",
++    "f16",
++    "i8"
++  ],
++  "connection_topk": [
++    1,
++    5,
++    10
++  ],
++  "diagnostics": {
++    "shuffle_epochs": 10,
++    "shuffle_seed": 20261125
++  }
++}
+--- a/Conv1 블러 OK-NG 실험/17차/legacy/__init__.py
++++ b/Conv1 블러 OK-NG 실험/17차/legacy/__init__.py
+@@ -0,0 +1 @@
++"""첫 합성곱 특징 블러의 영상 단위 예비실험입니다."""
+--- a/Conv1 블러 OK-NG 실험/17차/legacy/identity.py
++++ b/Conv1 블러 OK-NG 실험/17차/legacy/identity.py
+@@ -0,0 +1,177 @@
++"""고정 1만장 연구의 설정·설치·실행 식별자. Torch 없이 사용할 수 있습니다."""
++from __future__ import annotations
++import hashlib
++import json
++from pathlib import Path
++
++PROTOCOL = 'input-blur-fixed10000-resnet50-multimetric-v12'
++SIGMAS = [0,1,2,4,6,8,10,12,16,20,24,32,40,48,64,80,96,128,192,256]
++REGIMES = ['split_trainable', 'full_finetune']
++PIPELINE_IDENTITY = {
++    'blur_domain': 'input_image', 'sigma_unit': 'resized_image_pixels', 'image_size': 512,
++    'transform_order': 'copied_source_fixed_oversample_sigma0_png8_copy_blur_png8_load_normalize_conv1',
++    'exposed_feature_dtype': 'float32', 'classifier_input': 'materialized_png8',
++    'classifier_applies_blur_again': False, 'split_unit': 'source_image_lineage_group',
++    'stage12_training': 'microbatch2_accum4_bn_running_stats_frozen_trainonly_hflip25_validation_best200',
++    'batch_norm_running_stats_policy': 'freeze_running_stats_train_gamma_beta',
++}
++DEFAULTS = {
++    'protocol': PROTOCOL, 'image_size': 512, 'batch_size': 2, 'gradient_accumulation_steps': 4, 'batch_norm_running_stats_frozen': True, 'samples_per_class': 5000,
++    'seed': 42, 'sigmas': SIGMAS, 'regimes': REGIMES, 'epochs': 200, 'precision': 'bf16',
++    'early_stopping_enabled': True, 'early_stopping_min_epochs': 30,
++    'early_stopping_patience': 25, 'min_delta': 1e-4, 'dropout': .3,
++    'learning_rate': 1e-4, 'weight_decay': 1e-4, 'scheduler_patience': 8,
++    'scheduler_factor': .5, 'min_learning_rate': 1e-6, 'label_smoothing': .02, 'train_flip_probability': .25,
++    'split_boundary': 'conv1', 'num_workers': 2, 'eval_num_workers': 0,
++    'prefetch_factor': 2, 'persistent_workers': True, 'pin_memory': True,
++    'worker_timeout_seconds': 120, 'cpu_threads': 4, 'validation_ratio': .15,
++    'test_ratio': .15, 'gradient_clip_norm': 1.0,
++    'retain_completed_last_checkpoints': False,
++}
++
++
++def file_sha256(path):
++    value = hashlib.sha256()
++    with Path(path).open('rb') as stream:
++        for block in iter(lambda: stream.read(4 * 1024 * 1024), b''):
++            value.update(block)
++    return value.hexdigest()
++
++
++def json_digest(value):
++    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
++                                    separators=(',', ':'), allow_nan=False).encode('utf-8')).hexdigest()
++
++
++def safe_path(root, value):
++    root = Path(root).absolute()
++    path = Path(value)
++    path = path if path.is_absolute() else root / path
++    for part in (path, *path.parents):
++        if part.is_symlink() or (hasattr(part, 'is_junction') and part.is_junction()):
++            raise ValueError('연결 경로를 연구 파일로 사용하지 않습니다: ' + str(part))
++        if part == root:
++            break
++    if not path.resolve().is_relative_to(root.resolve()):
++        raise ValueError('실험 폴더 밖의 결과 파일입니다: ' + str(path))
++    return path
++
++
++def read_json(path):
++    return json.loads(Path(path).read_text(encoding='utf-8-sig'))
++
++
++def validate_config(config):
++    for key in ('protocol', 'image_size', 'batch_size', 'samples_per_class', 'seed',
++                'sigmas', 'regimes', 'epochs', 'early_stopping_enabled', 'early_stopping_min_epochs',
++                'early_stopping_patience', 'dropout', 'weight_decay', 'label_smoothing', 'split_boundary', 'gradient_accumulation_steps', 'train_flip_probability', 'batch_norm_running_stats_frozen'):
++        expected = DEFAULTS[key]
++        if type(config.get(key)) is not type(expected) or config[key] != expected:
++            raise ValueError('고정 1만장 연구 설정이 다릅니다: ' + key)
++    instance = config.get('experiment_instance_id')
++    if (not isinstance(instance, str) or len(instance) != 32
++            or any(c not in '0123456789abcdef' for c in instance)):
++        raise ValueError('설치 식별자가 올바르지 않습니다.')
++    if type(config.get('gradient_accumulation_steps')) is not int or not 1 <= config['gradient_accumulation_steps'] <= 16:
++        raise ValueError('누적 미니배치 횟수가 올바르지 않습니다.')
++    if not 0 <= config.get('train_flip_probability', -1) <= 1:
++        raise ValueError('학습 전용 좌우 반전 확률이 유효하지 않습니다.')
++    if config.get('precision') != 'bf16':
++        raise ValueError('학습 정밀도는 명시한 BF16 조건이어야 합니다.')
++    for key in ('initial_weights_path', 'initial_weights_sha256', 'dataset_root'):
++        if not isinstance(config.get(key), str) or not config[key]:
++            raise ValueError('필수 설정이 없습니다: ' + key)
++    for key in ('learning_rate', 'min_learning_rate', 'min_delta', 'gradient_clip_norm'):
++        value = config.get(key)
++        if not isinstance(value, (int, float)) or isinstance(value, bool) or not 0 < float(value) < float('inf'):
++            raise ValueError('양의 유한한 설정이 필요합니다: ' + key)
++    if not 0 < config.get('scheduler_factor', 0) < 1:
++        raise ValueError('학습률 감소 비율이 유효하지 않습니다.')
++    for key in ('num_workers', 'eval_num_workers'):
++        if type(config.get(key, 0)) is not int or not 0 <= config.get(key, 0) <= 16:
++            raise ValueError('데이터 워커 설정이 유효하지 않습니다: ' + key)
++    return config
++
++
++def source_hashes(root):
++    root = Path(root)
++    paths = [root / 'run_training.py', root / 'config.json']
++    paths += sorted((root / 'src').glob('*.py'))
++    paths += sorted((root / 'tools').glob('*.py'))
++    config = read_json(root / 'config.json')
++    reference = config.get('expected_reference_manifest')
++    if reference:
++        paths.append(safe_path(root, reference))
++    return {path.relative_to(root).as_posix(): file_sha256(safe_path(root, path)) for path in paths}
++
++
++def verify_installation(root):
++    root = Path(root)
++    marker = read_json(safe_path(root, 'installation.json'))
++    if marker.get('protocol') != PROTOCOL:
++        raise ValueError('고정 1만장 설치 기록이 아닙니다.')
++    fingerprints = marker.get('code_sha256')
++    if not isinstance(fingerprints, dict) or not fingerprints:
++        raise ValueError('설치 파일 지문이 없습니다.')
++    for name, expected in fingerprints.items():
++        path = safe_path(root, name)
++        if not path.is_file() or file_sha256(path) != expected:
++            raise ValueError('설치 이후 연구 파일이 달라졌습니다: ' + name)
++    return marker
++
++
++def read_config(root, verify=True):
++    root = Path(root)
++    marker = verify_installation(root) if verify else None
++    config = validate_config(read_json(safe_path(root, 'config.json')))
++    if marker is not None and marker.get('experiment_instance_id') != config['experiment_instance_id']:
++        raise ValueError('설정과 설치 식별자가 다릅니다.')
++    return config
++
++
++def get_run_id(root, config):
++    return json_digest({'config': config, 'source_hashes': source_hashes(root)})[:16]
++
++
++def prepare_run(root, config, source_hashes=None):
++    from .state import atomic_json, now_kst
++    root = Path(root)
++    hashes = source_hashes if source_hashes is not None else globals()['source_hashes'](root)
++    run_id = json_digest({'config': config, 'source_hashes': hashes})[:16]
++    path = safe_path(root, 'work/results/run_' + run_id + '/run_metadata.json')
++    metadata = {'protocol': PROTOCOL, 'run_id': run_id,
++                'experiment_instance_id': config['experiment_instance_id'],
++                'config': config, 'source_hashes': hashes, 'pipeline': PIPELINE_IDENTITY,
++                'created_at': now_kst(), 'test_use': 'fixed generated split; model selection only by validation loss',
++                'evaluation_unit': 'generated_image_and_source_image', 'patient_grouping': False}
++    if path.exists():
++        old = read_json(path)
++        for key in ('protocol', 'run_id', 'experiment_instance_id', 'config', 'source_hashes', 'pipeline'):
++            if old.get(key) != metadata[key]:
++                raise ValueError('기존 실행과 현재 코드/설정이 다릅니다: ' + key)
++        metadata = old
++    else:
++        atomic_json(path, metadata)
++    return run_id, metadata
++
++
++def condition_binding(config, run_id, manifest, sigma, regime):
++    return {'protocol': PROTOCOL, 'experiment_instance_id': config['experiment_instance_id'],
++            'run_id': run_id, 'sigma': sigma, 'regime': regime,
++            'condition_id': f'{regime}:sigma_{sigma}',
++            'data_manifest_sha256': manifest['manifest_sha256'],
++            'plan_sha256': manifest['plan_sha256'],
++            'source_copy_manifest_sha256': manifest['source_copy_manifest_sha256'],
++            'classifier_input': 'actual_saved_png8', 'double_blur': False}
++
++
++def assert_binding(value, binding):
++    if not isinstance(value, dict) or any(value.get(k) != v for k, v in binding.items()):
++        raise ValueError('결과/체크포인트가 현재 실행·강도·데이터와 다릅니다.')
++
++
++def load_selection(root, run_id, sigma, regime='split_trainable'):
++    value = read_json(safe_path(root, f'work/results/run_{run_id}/{regime}/sigma_{sigma}_selection.json'))
++    if value.get('run_id') != run_id or value.get('sigma') != sigma or value.get('regime') != regime:
++        raise ValueError('선정 모델 기록이 요청 조건과 다릅니다.')
++    return value
+--- a/Conv1 블러 OK-NG 실험/17차/legacy/model.py
++++ b/Conv1 블러 OK-NG 실험/17차/legacy/model.py
+@@ -0,0 +1,323 @@
++"""입력 사진 블러 → 명시적 ResNet 분할점 → 기울기 반환으로 앞뒤 공동 학습."""
++
++import math
++from pathlib import Path
++import torch
++from torch import nn
++from torchvision.models import resnet50
++from .identity import PIPELINE_IDENTITY, file_sha256, REGIMES
++
++DOWNLOAD_ATTEMPTS = []
++
++
++def block_weight_downloads():
++    """명시적으로 금지한 외부 가중치 다운로드 시도는 실행 전에 오류로 기록합니다."""
++    def reject(*args, **kwargs):
++        DOWNLOAD_ATTEMPTS.append({"args": repr(args), "kwargs": repr(kwargs)})
++        raise RuntimeError("이 실험은 로컬 고정 초기 가중치만 허용합니다.")
++    torch.hub.download_url_to_file = reject
++
++
++def _dct(x):
++    n = x.shape[-1]
++    extension = torch.cat((x, x.flip(-1)), dim=-1)
++    spectrum = torch.fft.rfft(extension, dim=-1)[..., :n]
++    angle = torch.arange(n, device=x.device, dtype=x.dtype) * (-math.pi / (2 * n))
++    raw = (spectrum * torch.polar(torch.ones_like(angle), angle)).real
++    scale = torch.full((n,), math.sqrt(1 / (2 * n)), device=x.device, dtype=x.dtype)
++    scale[0] = math.sqrt(1 / (4 * n))
++    return raw * scale
++
++
++def _idct(x):
++    n = x.shape[-1]
++    scale = torch.full((n,), math.sqrt(2 * n), device=x.device, dtype=x.dtype)
++    scale[0] = math.sqrt(4 * n)
++    angle = torch.arange(n, device=x.device, dtype=x.dtype) * (math.pi / (2 * n))
++    spectrum = (x * scale) * torch.polar(torch.ones_like(angle), angle)
++    spectrum = torch.cat((spectrum, torch.zeros_like(spectrum[..., :1])), dim=-1)
++    return torch.fft.irfft(spectrum, n=2 * n, dim=-1)[..., :n]
++
++
++class GaussianDCTBlur(nn.Module):
++    def __init__(self, sigma):
++        super().__init__()
++        if not math.isfinite(float(sigma)) or sigma < 0:
++            raise ValueError("sigma는 유한한 0 이상이어야 합니다.")
++        self.sigma = float(sigma)
++        self.register_buffer("transfer", torch.empty(0), persistent=False)
++
++    def forward(self, inputs):
++        if inputs.ndim != 4 or min(inputs.shape[-2:]) < 2:
++            raise ValueError("블러 입력은 N×C×H×W이며 H,W는 2 이상이어야 합니다.")
++        if self.sigma == 0:
++            return inputs
++        original_dtype = inputs.dtype
++        x = inputs.float()
++        height, width = x.shape[-2:]
++        if self.transfer.shape != (height, width) or self.transfer.device != x.device:
++            yy = torch.arange(height, device=x.device, dtype=torch.float32) * (math.pi / height)
++            xx = torch.arange(width, device=x.device, dtype=torch.float32) * (math.pi / width)
++            self.transfer = torch.exp(-0.5 * self.sigma ** 2 * (yy[:, None].square() + xx[None, :].square()))
++        # DCT-II 반사/Neumann 경계. sigma는 크기 조정한 입력 영상 픽셀 단위입니다.
++        coefficients = _dct(_dct(x).transpose(-1, -2)).transpose(-1, -2)
++        coefficients = coefficients * self.transfer
++        result = _idct(_idct(coefficients).transpose(-1, -2)).transpose(-1, -2)
++        return result.to(original_dtype)
++
++
++class EdgeStage(nn.Module):
++    """선택한 분할점까지의 ResNet 앞단. 모듈은 앞단/후단 중 한 곳에만 등록합니다."""
++    def __init__(self, backbone, split_boundary):
++        super().__init__()
++        self.split_boundary = split_boundary
++        names = {"conv1": ("conv1",), "stem": ("conv1", "bn1", "relu", "maxpool"),
++                 "layer1": ("conv1", "bn1", "relu", "maxpool", "layer1")}[split_boundary]
++        for name in names:
++            setattr(self, name, getattr(backbone, name))
++
++    def forward(self, images):
++        x = self.conv1(images)
++        if self.split_boundary != "conv1":
++            x = self.maxpool(self.relu(self.bn1(x)))
++        if self.split_boundary == "layer1":
++            x = self.layer1(x)
++        return x
++
++
++
++def deterministic_spatial_summary(x):
++    """Per-channel spatial mean and standard deviation, avoiding adaptive pooling autograd.
++
++    Both reductions use ordinary mean so strict CUDA deterministic mode remains enabled.
++    Input [N,2048,H,W] -> [N,4096]. It replaces 11th-stage avg/max pooling;
++    the new 12th-stage must therefore be trained from scratch, not resumed.
++    """
++    pool_input = x.float()
++    spatial_mean = pool_input.mean(dim=(-2, -1))
++    centered = pool_input - spatial_mean[..., None, None]
++    spatial_std = (centered.square().mean(dim=(-2, -1)) + 1e-8).sqrt()
++    return torch.cat([spatial_mean, spatial_std], dim=1)
++
++class CloudResNet(nn.Module):
++    """선택한 분할점 다음의 분류기. 앞단과 함께 모든 파라미터를 학습합니다."""
++    def __init__(self, backbone, split_boundary):
++        super().__init__()
++        self.split_boundary = split_boundary
++        names = []
++        if split_boundary == "conv1":
++            names += ["bn1", "relu", "maxpool"]
++        if split_boundary != "layer1":
++            names += ["layer1"]
++        for name in [*names, "layer2", "layer3", "layer4"]:
++            setattr(self, name, getattr(backbone, name))
++        self.head = nn.Sequential(nn.Linear(4096, 256), nn.LayerNorm(256), nn.GELU(),
++                                  nn.Dropout(0.3), nn.Linear(256, 1))
++
++    def forward(self, features):
++        x = features
++        if self.split_boundary == "conv1":
++            x = self.maxpool(self.relu(self.bn1(x)))
++        if self.split_boundary != "layer1":
++            x = self.layer1(x)
++        x = self.layer4(self.layer3(self.layer2(x)))
++        pooled = deterministic_spatial_summary(x)
++        return self.head(pooled).squeeze(1)
++
++
++class SplitResNet50(nn.Module):
++    def __init__(self, sigma=0, pretrained=True, weights_path=None, expected_weights_sha256=None,
++                 regime="split_trainable", split_boundary="conv1"):
++        super().__init__()
++        if regime not in REGIMES:
++            raise ValueError("알 수 없는 학습 정책입니다.")
++        self.regime = regime
++        if split_boundary not in {"conv1", "stem", "layer1"}:
++            raise ValueError("분할점은 conv1, stem, layer1 중 하나여야 합니다.")
++        self.split_boundary = split_boundary
++        self.split_point = split_boundary
++        backbone = resnet50(weights=None)
++        if pretrained:
++            if weights_path is None or expected_weights_sha256 is None:
++                raise ValueError("새 학습은 고정한 로컬 ImageNet 가중치 경로와 SHA가 필요합니다.")
++            path = Path(weights_path)
++            if path.is_symlink() or file_sha256(path) != expected_weights_sha256:
++                raise ValueError("초기 ImageNet 가중치 파일이 최초 고정 SHA와 다릅니다.")
++            backbone.load_state_dict(torch.load(path, map_location="cpu", weights_only=True), strict=True)
++        self.front = EdgeStage(backbone, split_boundary)
++        self.cloud = CloudResNet(backbone, split_boundary)
++        self.blur = GaussianDCTBlur(sigma)
++        for key, value in PIPELINE_IDENTITY.items():
++            setattr(self, key, value)
++        self.register_buffer("rgb_mean", torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1))
++        self.register_buffer("rgb_std", torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1))
++
++    @property
++    def edge(self):
++        """Conv1 중간 그림용 별칭. 실제 전송 앞단 전체는 front입니다."""
++        return self.front.conv1
++
++    def encoder_state_dict(self):
++        return self.front.state_dict()
++
++    def stage_module(self, name):
++        """시각화에서 분할 위치와 무관하게 원래 ResNet 모듈을 찾습니다."""
++        if hasattr(self.front, name):
++            return getattr(self.front, name)
++        return getattr(self.cloud, name)
++
++    @property
++    def sigma(self):
++        return self.blur.sigma
++
++    @property
++    def tail(self):
++        return self.cloud
++
++    def encode_from_blurred(self, images):
++        """학습 입력은 디스크의 실제 PNG입니다. 이 경로는 블러를 다시 하지 않습니다."""
++        if images.ndim != 4 or images.shape[1] != 3:
++            raise ValueError("입력은 N×3×H×W 영상이어야 합니다.")
++        with torch.autocast(device_type=images.device.type, enabled=False):
++            normalized = (images.float() - self.rgb_mean) / self.rgb_std
++            return self.front(normalized)
++
++    def transmitted_features_from_blurred(self, images):
++        return self.encode_from_blurred(images)
++
++    def forward_from_blurred(self, images):
++        return self.cloud(self.encode_from_blurred(images))
++
++    def split_forward_from_blurred(self, images):
++        packet = self.encode_from_blurred(images)
++        wire = packet.detach().requires_grad_(torch.is_grad_enabled())
++        return self.cloud(wire), packet, wire
++
++    def encode_differentiable(self, images):
++        """사진 블러 → 정규화 → 선택한 앞단. FP32, 입력/가중치 기울기 보존."""
++        if images.ndim != 4 or images.shape[1] != 3:
++            raise ValueError("입력은 N×3×H×W 영상이어야 합니다.")
++        with torch.autocast(device_type=images.device.type, enabled=False):
++            blurred = self.blur(images.float())
++            normalized = (blurred - self.rgb_mean) / self.rgb_std
++            return self.front(normalized)
++
++    def transmitted_features(self, images):
++        """평가/공격 시 공개되는 선택 분할점의 FP32 출력. 실제 학습에는 split_forward를 사용합니다."""
++        with torch.no_grad():
++            return self.encode_differentiable(images)
++
++    def split_forward(self, images):
++        """전송 텐서의 그래프를 끊고, 후단이 돌려줄 기울기를 받는 leaf를 만듭니다."""
++        front_packet = self.encode_differentiable(images)
++        wire_packet = front_packet.detach().requires_grad_(torch.is_grad_enabled())
++        logits = self.cloud(wire_packet)
++        return logits, front_packet, wire_packet
++
++    def forward(self, images):
++        # 평가 및 일반 단일 모델 비교. split 학습은 training.backward_loss의 명시적 반환 경로입니다.
++        return self.cloud(self.encode_differentiable(images))
++
++    def monolithic_forward(self, images):
++        """동일 가중치를 분리 객체 인터페이스 없이 한 흐름으로 계산하는 대조."""
++        with torch.autocast(device_type=images.device.type, enabled=False):
++            x = self.edge((self.blur(images.float()) - self.rgb_mean) / self.rgb_std)
++            if self.split_boundary != "conv1":
++                x = self.stage_module("maxpool")(self.stage_module("relu")(self.stage_module("bn1")(x)))
++            if self.split_boundary == "layer1":
++                x = self.stage_module("layer1")(x)
++        if self.split_boundary == "conv1":
++            x = self.stage_module("maxpool")(self.stage_module("relu")(self.stage_module("bn1")(x)))
++        if self.split_boundary != "layer1":
++            x = self.stage_module("layer1")(x)
++        for name in ("layer2", "layer3", "layer4"):
++            x = self.stage_module(name)(x)
++        return self.cloud.head(deterministic_spatial_summary(x)).squeeze(1)
++
++
++def audit_forward_order(model, images):
++    """실제 분류 훅으로 사진 선블러와 선택 분할점, 단일 모델 출력 동등성을 검증합니다."""
++    if any(module.training for module in model.modules()):
++        raise ValueError("연결 검사는 eval 상태에서 수행해야 합니다.")
++    calls, seen = [], {}
++    def blur_hook(_module, _inputs, output):
++        calls.append("input_image_blur")
++        seen["blurred"] = output.detach().clone()
++    def conv_hook(_module, inputs):
++        calls.append("conv1")
++        seen["conv1_input"] = inputs[0].detach().clone()
++    def front_hook(_module, _inputs, output):
++        calls.append("front_output")
++        seen["front_packet"] = output.detach().clone()
++    def cloud_hook(_module, inputs):
++        calls.append("cloud_input")
++        seen["cloud_input"] = inputs[0].detach().clone()
++    hooks = [model.blur.register_forward_hook(blur_hook), model.edge.register_forward_pre_hook(conv_hook),
++             model.front.register_forward_hook(front_hook), model.cloud.register_forward_pre_hook(cloud_hook)]
++    try:
++        with torch.no_grad(), torch.autocast(device_type=images.device.type, enabled=False):
++            logits = model.split_forward(images)[0] if model.regime == "split_trainable" else model(images)
++    finally:
++        for hook in hooks:
++            hook.remove()
++    expected = (seen["blurred"] - model.rgb_mean) / model.rgb_std
++    if calls != ["input_image_blur", "conv1", "front_output", "cloud_input"] or not torch.equal(expected, seen["conv1_input"]):
++        raise AssertionError("실제 분류의 입력 사진 블러 → 정규화 → 선택 ResNet 앞단 순서 검증 실패")
++    if not torch.equal(seen["front_packet"], seen["cloud_input"]):
++        raise AssertionError("후단이 실제 선택 앞단의 출력을 받지 않았습니다.")
++    with torch.no_grad(), torch.autocast(device_type=images.device.type, enabled=False):
++        direct = model.monolithic_forward(images)
++    error = float((logits - direct).abs().max().item())
++    if not torch.equal(logits, direct):
++        raise AssertionError("같은 모델의 분할/단일 호출 출력이 다릅니다.")
++    return {"actual_forward_calls": calls, "conv1_input_equals_normalized_blur": True,
++            "cloud_input_equals_selected_front_output": True,
++            "split_vs_monolithic_bitwise_equal": True, "max_abs_logit_difference": error,
++            "regime": model.regime, "bn_policy": "all_trainable_during_training_eval_for_measurement",
++            "front_packet_shape": list(seen["front_packet"].shape), "front_packet_dtype": str(seen["front_packet"].dtype),
++            "forward_precision": "fp32", "split_boundary": model.split_boundary}
++
++
++def audit_materialized_forward(model, saved_png_images):
++    """이미 저장된 블러 PNG가 그대로 Conv1에 전달되고 재블러되지 않는지 실제 훅으로 확인."""
++    if any(module.training for module in model.modules()):
++        raise ValueError("저장 PNG 연결 검사는 eval 상태여야 합니다.")
++    calls, observed = [], {}
++    def forbidden_blur(*_):
++        raise AssertionError("실제 PNG를 읽은 다음 다시 블러를 적용했습니다.")
++    def conv_hook(_module, inputs):
++        calls.append('conv1')
++        observed['conv1_input'] = inputs[0].detach().clone()
++    def front_hook(_module, _inputs, result):
++        calls.append('front_output')
++        observed['front_output'] = result.detach().clone()
++    def tail_hook(_module, inputs):
++        calls.append('tail_input')
++        observed['tail_input'] = inputs[0].detach().clone()
++    hooks = [model.blur.register_forward_pre_hook(forbidden_blur),
++             model.front.conv1.register_forward_pre_hook(conv_hook),
++             model.front.register_forward_hook(front_hook), model.tail.register_forward_pre_hook(tail_hook)]
++    try:
++        with torch.no_grad(), torch.autocast(saved_png_images.device.type, enabled=False):
++            if model.regime == 'split_trainable':
++                logits = model.split_forward_from_blurred(saved_png_images)[0]
++            else:
++                logits = model.forward_from_blurred(saved_png_images)
++    finally:
++        for hook in hooks:
++            hook.remove()
++    normalized = (saved_png_images.float() - model.rgb_mean) / model.rgb_std
++    if calls != ['conv1', 'front_output', 'tail_input']:
++        raise AssertionError('저장 PNG → Conv1 → 후단의 실제 호출 순서가 다릅니다.')
++    if not torch.equal(normalized, observed['conv1_input']):
++        raise AssertionError('Conv1이 저장된 PNG와 다른 영상을 받았습니다.')
++    if not torch.equal(observed['front_output'], observed['tail_input']):
++        raise AssertionError('후단에 전송한 피처맵이 Conv1 출력과 다릅니다.')
++    with torch.no_grad(), torch.autocast(saved_png_images.device.type, enabled=False):
++        monolithic = model.forward_from_blurred(saved_png_images)
++    if not torch.equal(logits, monolithic):
++        raise AssertionError('같은 가중치의 분할 호출과 연속 호출 출력이 다릅니다.')
++    return {'input': 'actual_saved_png8', 'actual_forward_calls': calls, 'blurred_again': False,
++            'conv1_input_equals_normalized_saved_png': True, 'tail_received_actual_conv1_features': True,
++            'split_and_continuous_logits_identical': True, 'split_boundary': model.split_boundary,
++            'packet_shape': list(observed['front_output'].shape), 'packet_dtype': str(observed['front_output'].dtype)}
+--- a/Conv1 블러 OK-NG 실험/17차/rust/src/main.rs
++++ b/Conv1 블러 OK-NG 실험/17차/rust/src/main.rs
+@@ -0,0 +1,78 @@
++use std::io::{self, Read, Write};
++
++// 블러 뒤의 실제 8/4비트 전송 패킷. 개인 경로나 라벨은 패킷에 넣지 않습니다.
++fn execute(args: &[String], input: &[u8]) -> Result<Vec<u8>, String> {
++    if args.len() == 3 && args[0] == "feature-encode" {
++        let kind = match args[1].as_str() { "f32" => 1, "f16" => 2, "i8" => 3, _ => return Err("특징 dtype 오류".into()) };
++        let n: u32 = args[2].parse().map_err(|_| "특징 원소 수 오류")?;
++        validate_feature(kind, n, input)?;
++        let mut out = b"FTR1".to_vec();
++        out.push(kind);
++        out.extend(n.to_le_bytes());
++        out.extend(input);
++        Ok(out)
++    } else if args.len() == 1 && args[0] == "feature-decode" {
++        if input.len() < 9 || &input[..4] != b"FTR1" { return Err("특징 패킷 머리글 오류".into()); }
++        let n = u32::from_le_bytes(input[5..9].try_into().map_err(|_| "원소 수 오류")?);
++        validate_feature(input[4], n, &input[9..])?;
++        Ok(input[9..].to_vec())
++    } else if args.len() == 4 && args[0] == "encode" {
++        let w: u16 = args[1].parse().map_err(|_| "잘못된 너비")?;
++        let h: u16 = args[2].parse().map_err(|_| "잘못된 높이")?;
++        let bits: u8 = args[3].parse().map_err(|_| "잘못된 비트수")?;
++        if w == 0 || h == 0 || w > 512 || h > 512 || ![4, 8].contains(&bits) {
++            return Err("지원하지 않는 크기/비트수".into());
++        }
++        let n = usize::from(w) * usize::from(h);
++        if input.len() != n { return Err("픽셀 바이트 길이 불일치".into()); }
++        let mut out = b"CTB1".to_vec();
++        out.extend(w.to_le_bytes()); out.extend(h.to_le_bytes()); out.push(bits);
++        if bits == 8 { out.extend(input); }
++        else {
++            for pair in input.chunks(2) {
++                let high = ((u16::from(pair[0]) * 15 + 127) / 255) as u8;
++                let low = if pair.len() == 2 { ((u16::from(pair[1]) * 15 + 127) / 255) as u8 } else { 0 };
++                out.push(high << 4 | low);
++            }
++        }
++        Ok(out)
++    } else if args.len() == 1 && args[0] == "decode" {
++        if input.len() < 9 || &input[..4] != b"CTB1" { return Err("패킷 머리글 오류".into()); }
++        let w = u16::from_le_bytes([input[4], input[5]]);
++        let h = u16::from_le_bytes([input[6], input[7]]);
++        let bits = input[8];
++        if w == 0 || h == 0 || w > 512 || h > 512 || ![4, 8].contains(&bits) { return Err("패킷 크기/비트수 오류".into()); }
++        let n = usize::from(w) * usize::from(h);
++        let expected = if bits == 8 { n } else { n.div_ceil(2) };
++        if input.len() != 9 + expected { return Err("패킷 길이 오류".into()); }
++        if bits == 8 { return Ok(input[9..].to_vec()); }
++        if n % 2 == 1 && input[input.len()-1] & 15 != 0 { return Err("패킷 패딩 오류".into()); }
++        Ok((0..n).map(|i| { let b = input[9+i/2]; (if i%2 == 0 { b >> 4 } else { b & 15 }) * 17 }).collect())
++    } else { Err("사용법: encode 너비 높이 4|8 / decode / feature-encode f32|f16|i8 원소수 / feature-decode".into()) }
++}
++
++// shape와 INT8 scale은 Python의 전송 메타데이터에도 담고 실제 바이트 비용에 포함합니다.
++fn validate_feature(kind: u8, n: u32, payload: &[u8]) -> Result<(), String> {
++    if n == 0 || n > 32_000_000 { return Err("특징 원소 수 범위 오류".into()); }
++    let width = match kind { 1 => 4, 2 => 2, 3 => 1, _ => return Err("특징 dtype 오류".into()) };
++    if payload.len() != n as usize * width { return Err("특징 바이트 길이 불일치".into()); }
++    if kind == 1 && payload.chunks_exact(4).any(|c| !f32::from_le_bytes(c.try_into().unwrap()).is_finite()) {
++        return Err("특징 FP32 비유한값".into());
++    }
++    if kind == 2 && payload.chunks_exact(2).any(|c| u16::from_le_bytes([c[0],c[1]]) & 0x7c00 == 0x7c00) {
++        return Err("특징 FP16 비유한값".into());
++    }
++    Ok(())
++}
++
++fn main() {
++    let args: Vec<String> = std::env::args().skip(1).collect();
++    let mut input = Vec::new();
++    let feature = args.first().is_some_and(|x| x.starts_with("feature-"));
++    let limit = if feature { 128_000_010 } else { 262154 };
++    if let Err(e) = io::stdin().take(limit).read_to_end(&mut input) { eprintln!("입력 오류: {e}"); std::process::exit(2); }
++    match execute(&args, &input) {
++        Ok(out) => if let Err(e) = io::stdout().write_all(&out) { eprintln!("출력 오류: {e}"); std::process::exit(2); },
++        Err(e) => { eprintln!("{e}"); std::process::exit(2); }
++    }
++}
+--- a/Conv1 블러 OK-NG 실험/17차/tests/SCI_근거재사용_검사.py
++++ b/Conv1 블러 OK-NG 실험/17차/tests/SCI_근거재사용_검사.py
+@@ -0,0 +1,65 @@
++"""동일 소스의 실제 CPU·화면 검사 근거를 재사용하며 변경·누락은 거부합니다."""
++from pathlib import Path
++import hashlib
++import json
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++def sha(path):
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++
++def read(name):
++    return json.loads((ROOT / 'evidence' / name).read_text(encoding='utf-8'))
++
++
++def source(name, expected):
++    path = (ROOT / name).resolve(strict=True)
++    if not path.is_relative_to(ROOT) or sha(path) != expected.lower():
++        raise ValueError('검사 이후 소스 변경 또는 경로 오류: ' + name)
++
++
++def log(name, expected):
++    path = Path(name)
++    if not path.is_absolute():
++        path = ROOT / path
++    path = path.resolve(strict=True)
++    if not path.is_relative_to(ROOT / 'evidence') or sha(path) != expected.lower():
++        raise ValueError('검사 원출력 무결성 오류: ' + name)
++
++
++def main():
++    engine = read('SCI_엔진_CPU_최종검사.json')
++    if engine['exit_code'] != 0 or engine['test_count'] != 9 or not engine['unchanged']:
++        raise ValueError('SCI 엔진 검사 미완료')
++    if engine['sources_before'] != engine['sources_after']:
++        raise ValueError('엔진 검사 도중 소스 변경')
++    for name, expected in engine['sources_after'].items():
++        source(name, expected)
++    log(engine['log_path'], engine['log_sha256'])
++
++    data = read('SCI데이터_소스동결.json')
++    if data['tests']['exit_code'] != 0 or data['tests']['test_methods'] != 10:
++        raise ValueError('SCI 데이터 검사 미완료')
++    for item in data['sources']:
++        source(item['path'], item['sha256'])
++    log(data['tests']['log'], data['tests']['log_sha256'])
++
++    ui = read('SCI_화면_표시수정후_최종검사.json')
++    if not ui['unchanged'] or ui['sources_before'] != ui['sources_after'] or len(ui['checks']) != 2:
++        raise ValueError('현재 SCI 화면 검사 근거 부족')
++    for name, expected in ui['sources_after'].items():
++        source(name, expected)
++    for check in ui['checks']:
++        if check['exit_code'] != 0:
++            raise ValueError('SCI 화면 검사 실패')
++        log(check['log'], check['log_sha256'])
++    rust = read('SCI_Rust_최종검사.json')
++    source('rust/src/main.rs', rust['source_sha256'])
++    source('rust/전송엔진.exe', rust['engine_sha256'])
++    print('SCI 데이터10·엔진9·화면2 검사 소스/원출력 SHA 연결 확인. GPU·실자료 전체 준비·브라우저 검증은 별도입니다.')
++
++
++if __name__ == '__main__':
++    main()

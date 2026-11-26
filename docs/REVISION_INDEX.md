@@ -116,3 +116,20 @@
 [이번 공개 변경 기록](../docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98.md) · [전체 공개 비교](../docs/changes/2026-11-20-%EA%B0%95%EB%8F%84%EB%B3%84%EB%8F%85%EB%A6%BD%ED%95%99%EC%8A%B5%EA%B3%BC%EC%A0%9C%EC%95%88%EC%A0%90%EC%88%98-%EC%A0%84%EC%B2%B4%EB%B9%84%EA%B5%90.md)
 
 <!-- independent-privacy-publication:end -->
+
+
+## 새 SCI 준비 구현 · 실제17차
+
+| 실제 차수 | 자료 | 상세 | 비교 | 상태 |
+|---|---|---|---|---|
+| 17차 | [소스](../Conv1%20블러%20OK-NG%20실험/17차/) | [다섯 수준](revisions/conv1-okng-round17.md#user-content-reading-level-1) | [공개 파일 비교](revision-diffs/conv1-okng-round17.md) | 자료·코드 준비, GPU 미실행 |
+
+9~16차의 로컬 이력과 기존12차 실행은 보존합니다. 이번 공개 묶음은17차 SCI 구현이며, 기존 공개8차에 새 번호만 붙인 실험이 아닙니다.
+
+## 현재 코드 준비 묶음
+
+| 묶음 | 폴더 | 설명 | 비교 |
+|---|---|---|---|
+| 최종 | [공개 코드 준비본](../Conv1%20블러%20OK-NG%20실험/17차/) | [범위·미측정 상태](revisions/conv1-okng-round17.md#user-content-reading-level-5) | [전체 비교](revision-diffs/conv1-okng-round17.md) |
+
+최종은 현재17차의 코드 준비 묶음입니다. 로컬 코드ZIP에는 비공개 운영 자료가 있어 ZIP 자체는 공개하지 않으며, 검토한 소스·예제·집계 설명만 게시합니다. GPU 실험 최종 결과를 뜻하지 않습니다.
