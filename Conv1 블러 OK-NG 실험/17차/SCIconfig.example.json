@@ -59,6 +59,10 @@
     "learning_rate": 0.001,
     "seed": 20261125,
     "inverse_steps": 96,
+    "raw_initializations": [
+      "train_mean",
+      "flat_0.5"
+    ],
     "tv_alphas": [
       0.0001,
       0.001

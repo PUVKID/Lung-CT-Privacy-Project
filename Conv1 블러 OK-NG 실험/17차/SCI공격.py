@@ -141,6 +141,66 @@ def _gradient_inverse(model,target_feature,layer,mean,steps,tv):
         with torch.no_grad(): guess.clamp_(0,1)
     return guess.detach()[0,0].cpu().numpy()
 
+def _feature_forward_ste(feature,dtype):
+    """전달 정밀도의 실제 forward 값, 양자화 미분 대신 항등 STE 근사입니다."""
+    packed=FeatureCodec(dtype).transfer(feature,actual=False)
+    return packed+(feature-feature.detach())
+
+
+def _raw_gradient_inverse(model,target_feature,layer,mean,steps,tv,dtype,initializations):
+    """시험 원본 없이 전달 특징과 TV만으로 원본공간 후보를 선택합니다."""
+    if any(parameter.requires_grad for parameter in model.parameters()):
+        raise ValueError('원본공격의 source 파라미터는 frozen이어야 합니다.')
+    if not initializations or len(set(initializations))!=len(initializations):
+        raise ValueError('고정 초기값 목록 오류')
+    target_feature=target_feature.detach();candidates=[];best=None;best_image=None
+    for name in initializations:
+        if name=='train_mean': initial=np.asarray(mean,dtype=np.float32)
+        elif name=='flat_0.5': initial=np.full_like(mean,.5,dtype=np.float32)
+        else: raise ValueError('지원하지 않는 고정 초기값')
+        guess=torch.tensor(initial,device=target_feature.device)[None,None].requires_grad_(True)
+        optimizer=torch.optim.Adam([guess],lr=.03);local_best=None;local_image=None
+        # 마지막 갱신까지 포함해 관측 목적이 가장 작은 iterate를 보존합니다.
+        for iteration in range(steps+1):
+            optimizer.zero_grad(set_to_none=True)
+            feature=_feature_forward_ste(model.features_from_observed(model.blur(guess),layer),dtype)
+            mismatch=(feature-target_feature).square().mean()
+            variation=(guess[...,1:,:]-guess[...,:-1,:]).abs().mean()+(guess[...,:,1:]-guess[...,:,:-1]).abs().mean()
+            loss=mismatch+tv*variation;objective=float(loss.detach())
+            if not math.isfinite(objective): raise ValueError('원본공격 목적 비유한 값')
+            if local_best is None or objective<local_best['objective']:
+                local_best={'initialization':name,'objective':objective,'feature_mse':float(mismatch.detach()),'tv':float(variation.detach()),'iteration':iteration}
+                local_image=guess.detach()[0,0].cpu().numpy().copy()
+            if iteration<steps:
+                loss.backward();optimizer.step()
+                with torch.no_grad(): guess.clamp_(0,1)
+        candidates.append(local_best)
+        if best is None or local_best['objective']<best['objective']: best=local_best;best_image=local_image
+    return best_image,{'selected_initialization':best['initialization'],'selected_objective':best['objective'],'candidates':candidates,
+        'selection':'전달 dtype 특징 MSE + TV 가중치×원본 후보 TV만 사용; 시험 원본 접근 없음',
+        'forward':'features_from_observed(model.blur(raw_guess), layer), preblurred 우회 금지',
+        'dtype':dtype,'gradient':'dtype cast/동적 symmetric127의 forward는 FeatureCodec와 동일; backward는 항등 STE 근사이며 정확 양자화 미분 아님'}
+
+
+def _shuffle_source_labels(rows,seed):
+    """원본 단위 라벨 순열을 고정 사본에 전파하고 실제 분포를 반환합니다."""
+    originals={}
+    for row in rows:
+        source=row['source_id'];label=int(row['label'])
+        if label not in (0,1): raise ValueError('셔플 원본 이진 라벨 오류')
+        if source in originals and originals[source]!=label: raise ValueError('동일 source_id 원본 라벨 불일치')
+        originals[source]=label
+    sources=sorted(originals);labels=[originals[source] for source in sources]
+    shuffled=np.random.default_rng(seed).permutation(labels).tolist();mapping=dict(zip(sources,shuffled))
+    output=[{**row,'label':int(mapping[row['source_id']])} for row in rows]
+    counts=lambda values:{str(label):sum(value==label for value in values) for label in (0,1)}
+    return output,{'seed':seed,'source_order':'source_id 정렬','mapping':[{'source_id':source,'original_label':originals[source],'shuffled_label':mapping[source]} for source in sources],
+        'source_counts_before':counts(labels),'source_counts_after':counts(shuffled),
+        'row_counts_before':counts([row['label'] for row in rows]),'row_counts_after':counts([row['label'] for row in output]),
+        'main_training_labels_changed':0,'validation_test_labels_changed':0,
+        'scope':'source_id별 원본 라벨 고정 순열; 모든 사본 동일배정. 원본단위 분포 보존, 증강후 행 50/50 보장 없음'}
+
+
 def _linear_inverse(model,value,shape,ratio):
     weights=model.backbone.conv1.weight.detach().double();std=model.rgb_std.double()
     kernel=(weights/std.reshape(1,3,1,1)).sum(1).reshape(64,49)
@@ -173,7 +233,8 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
     photo_names=['copy_observed','mean_train','learned_decoder']+['dct_'+str(a) for a in config['reconstruction']['deblur_alphas']]
     names=photo_names if layer=='photo' else ['mean_train','learned_decoder']+[f'gradient_tv_{tv}' for tv in config['reconstruction']['tv_alphas']]
     if layer=='conv1': names += [f'linear_{ratio}:{name}' for ratio in (0.,1e-8,1e-6) for name in photo_names]
-    diagnostics=[]
+    if layer!='photo': names += [f'raw_blur_aware_tv_{tv}' for tv in config['reconstruction']['tv_alphas']]
+    diagnostics=[];raw_diagnostics=[]
     def candidates(row):
         source,target,observed=_source(row,model,layer,codec,True)
         target_array=target[0,0].cpu().numpy();observed_array=observed[0,0].cpu().numpy()
@@ -185,6 +246,8 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
         else:
             for tv in config['reconstruction']['tv_alphas']:
                 result[f'gradient_tv_{tv}']=_gradient_inverse(model,source,layer,mean,config['reconstruction']['inverse_steps'],tv)
+                result[f'raw_blur_aware_tv_{tv}'],audit=_raw_gradient_inverse(model,source,layer,mean,config['reconstruction']['inverse_steps'],tv,dtype,config['reconstruction'].get('raw_initializations',['train_mean','flat_0.5']))
+                raw_diagnostics.append({'row_id':row['id'],'tv_weight':tv,**audit})
         if layer=='conv1':
             for ratio in (0.,1e-8,1e-6):
                 inverse,audit=_linear_inverse(model,source,observed_array.shape,ratio);audit['observed_input_mse']=float(np.mean((inverse-observed_array)**2));diagnostics.append(audit)
@@ -238,6 +301,11 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
     result={'run_id':run_id,'selected_family':selected,'selection_unit':'전체 검증 평균 MSE',
         'validation_selection_by_class_metric':selections,'candidate_metrics':reports,'selected_scores':{key:selected_report[key] for key in selected_report if not key.endswith('_per_source')},
         'test':selected_report['test'],'privacy_score':selected_report['test']['privacy_error_score'],'examples':examples,'transmission':codec.report(),
+        'raw_inverse_diagnostics_per_source':raw_diagnostics,
+        'raw_inverse_summary':{'count':len(raw_diagnostics),'initializations':config['reconstruction'].get('raw_initializations',['train_mean','flat_0.5']),
+            'forward_evaluations_per_source':0 if layer=='photo' else len(config['reconstruction'].get('raw_initializations',['train_mean','flat_0.5']))*(config['reconstruction']['inverse_steps']+1)*len(config['reconstruction']['tv_alphas']),
+            'scope':'초기값별 iterate 및 초기값 선택은 전달 특징 MSE+TV만 사용; 공격군 선정은 validation만 사용. 실제 전체 실행시간 미측정'},
+        'attack_target_spaces':{'gradient_tv':'관측공간 특징 역복원, 최종 원본과 평가','raw_blur_aware_tv':'명시적 블러를 통과하는 원본공간 최적화, 최종 원본과 평가'},
         'linear_inverse_diagnostics_per_source':diagnostics,'linear_inverse_summary':{'count':len(diagnostics),'detail_location':'동일 result.json의 linear_inverse_diagnostics_per_source'},'classification_from_transmitted_features':classification,
         'score_interpretation':'복원 상대오차·구조 차이 탐색 점수이며 재식별 성공확률·안전 보장 아님','external':{}}
     for cohort in ('CSTL','Histo'):
@@ -384,9 +452,9 @@ def run_diagnostics(manifest,config,run_id,device,resume):
         estimator.fit(data['train'][0][:,mask],data['train'][1])
         coarse[name]={split:binary_report(data[split][1],estimator.decision_function(data[split][0][:,mask])) for split in ('validation','test')}
     seed_all(config['diagnostics']['shuffle_seed'],device=='cuda')
-    shuffled=[dict(row) for row in rows['train']]
-    labels=[row['label'] for row in shuffled];np.random.default_rng(config['diagnostics']['shuffle_seed']).shuffle(labels)
-    for row,label in zip(shuffled,labels): row['label']=int(label)
+    shuffled,shuffle_audit=_shuffle_source_labels(rows['train'],config['diagnostics']['shuffle_seed'])
+    labels=[row['label'] for row in shuffled]
+    save_json(folder/'label_shuffle_mapping.json',{'run_id':run_id,**shuffle_audit})
     weights=config['weights']['resnet50'];model=SCIResNet('resnet50',0,'conv1',weights['path'],weights['sha256']).to(device)
     optimizer=torch.optim.AdamW(model.parameters(),lr=config['learning_rate'],weight_decay=config['weight_decay'])
     scheduler=torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,patience=3,factor=.5)
@@ -421,7 +489,9 @@ def run_diagnostics(manifest,config,run_id,device,resume):
     precision='cuda_bf16' if device=='cuda' else 'cpu_fp32'
     shuffled_report={split:evaluate(model,rows[split],device,precision) for split in ('validation','test')}
     result={'run_id':run_id,'coarse':coarse,'label_shuffle':{'epochs':config['diagnostics']['shuffle_epochs'],'reports':shuffled_report,
-        'permutation_scope':'train 라벨만 고정 순열, validation/test의 원래 라벨 보존','label_permutation_sha256':hashlib.sha256(json.dumps(labels).encode()).hexdigest(),
+        'permutation_scope':shuffle_audit['scope'],'label_permutation_sha256':hashlib.sha256(json.dumps(labels).encode()).hexdigest(),
+        'source_label_shuffle':{key:value for key,value in shuffle_audit.items() if key!='mapping'},
+        'mapping_file':'label_shuffle_mapping.json','mapping_sha256':digest(folder/'label_shuffle_mapping.json'),'mapping_count':len(shuffle_audit['mapping']),
         'note':'고정 짧은 진단이며 주200epoch 학습과 동등한 성능 비교 아님; 결과로 강도·분할·정답을 수정하지 않음'},
         'used_for_model_or_attack_selection':False,'coarse_note':'중앙 사각형은 결절·폐 마스크가 아니며 바깥에도 결절·신체 정보가 있을 수 있음'}
     save_json(folder/'result.json',result);return result

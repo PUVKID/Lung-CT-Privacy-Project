@@ -117,11 +117,11 @@ class SCI검사(unittest.TestCase):
             runtime=Path(tmp);condition=runtime/'conditions'/'fixture';config=read_json(ROOT/'SCIconfig.json');config['image_size']=32
             rows={split:[{'id':split+str(label),'patient_id':split+str(label),'label':label,'value':.2+.6*label} for label in (0,1)] for split in ('train','validation','test','test_generated')}
             rows['external']={};model=Exposed()
-            with patch.object(engine,'image',side_effect=lambda row:np.full((32,32),row['value'],dtype=np.float32)),patch.object(attacks,'_fit',return_value=Decoder()),patch.object(attacks,'_gradient_inverse',return_value=np.full((32,32),.5,dtype=np.float32)):
+            with patch.object(engine,'image',side_effect=lambda row:np.full((32,32),row['value'],dtype=np.float32)),patch.object(attacks,'_fit',return_value=Decoder()),patch.object(attacks,'_gradient_inverse',return_value=np.full((32,32),.5,dtype=np.float32)),patch.object(attacks,'_raw_gradient_inverse',return_value=(np.full((32,32),.5,dtype=np.float32),{'selected_initialization':'fixture'})):
                 photo=attacks.attack_exposure(model,rows,config,condition/'attacks'/'photo','fixture')
                 before=digest(condition/'attacks'/'photo'/'result.json')
                 feature=attacks.attack_exposure(model,rows,config,condition/'attacks'/'stem'/'f16','fixture','stem','f16')
-            self.assertEqual(len(photo['candidate_metrics']),9);self.assertEqual(len(feature['candidate_metrics']),4)
+            self.assertEqual(len(photo['candidate_metrics']),9);self.assertEqual(len(feature['candidate_metrics']),6)
             self.assertEqual(before,digest(condition/'attacks'/'photo'/'result.json'))
             self.assertEqual(feature['classification_from_transmitted_features']['test']['total'],2)
             self.assertGreater(feature['transmission']['packet_bytes'],0)
@@ -154,6 +154,9 @@ class SCI검사(unittest.TestCase):
         from 실행 import dashboard_projection
         detailed={'run_id':'fixture','linear_inverse_diagnostics_per_source':[{'rank':49,'residual':.0001,'observed_input_mse':.00001}]*150000,'linear_inverse_summary':{'count':150000}}
         compact=dashboard_projection(detailed)
+        raw_nested={'feature':{'raw_inverse_diagnostics_per_source':[{'candidates':[{'objective':.01}]}]*2000,'raw_inverse_summary':{'count':2000}}}
+        projected=dashboard_projection(raw_nested)
+        self.assertNotIn('raw_inverse_diagnostics_per_source',projected['feature']);self.assertEqual(projected['feature']['raw_inverse_summary']['count'],2000)
         self.assertNotIn('linear_inverse_diagnostics_per_source',compact);self.assertEqual(compact['linear_inverse_summary']['count'],150000)
         self.assertGreater(len(json.dumps(detailed)),4*1024**2);self.assertLess(len(json.dumps(compact)),1024)
         with tempfile.TemporaryDirectory() as tmp:
@@ -197,5 +200,12 @@ class SCI검사(unittest.TestCase):
             self.assertEqual(set(result['coarse']),{'coarse_full','coarse_center','coarse_outer'})
             self.assertFalse(result['used_for_model_or_attack_selection']);self.assertEqual(result['label_shuffle']['epochs'],1)
             self.assertTrue((runtime/'diagnostics/shuffle_epochs/epoch_0001.pth').exists())
+            shuffle=read_json(runtime/'diagnostics/label_shuffle_mapping.json')
+            self.assertEqual(shuffle['source_counts_before'],shuffle['source_counts_after'])
+            self.assertEqual(shuffle['main_training_labels_changed'],0);self.assertEqual(shuffle['validation_test_labels_changed'],0)
+            self.assertNotIn('mapping',result['label_shuffle']['source_label_shuffle'])
+            self.assertEqual(result['label_shuffle']['mapping_count'],len(shuffle['mapping']))
+            self.assertEqual(result['label_shuffle']['mapping_sha256'],digest(runtime/'diagnostics/label_shuffle_mapping.json'))
+            self.assertEqual([[row['label'] for row in rows[split]] for split in ('train','validation','test')],[[0,1],[0,1],[0,1]])
 
 if __name__=='__main__': unittest.main(verbosity=2)
