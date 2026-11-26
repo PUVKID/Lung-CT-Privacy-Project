@@ -10,6 +10,7 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 engine=importlib.import_module('실행')
+from tests.보조.이전설정 import legacy_config,legacy_manifest_config
 attack=importlib.import_module('공격')
 feature=importlib.import_module('특징노출')
 
@@ -18,7 +19,7 @@ def checkpoint(path,actual=False,deficient=False):
     torch.set_num_threads(2)
     std=torch.tensor([.229,.224,.225]).reshape(1,3,1,1)
     if actual:
-        config=engine.read_json(ROOT/'config.json')
+        config=legacy_config()
         if engine.digest(config['initial_weights_path'])!=config['initial_weights_sha256']:
             raise ValueError('고정 초기 가중치 SHA 불일치')
         weights=torch.load(config['initial_weights_path'],map_location='cpu',weights_only=True)['conv1.weight']
@@ -79,7 +80,7 @@ class FeatureTests(unittest.TestCase):
                     packet.write_bytes(engine.encode(pixels,2,'블러_축소64_4비트'))
                     rows[split].append({'label':label,'unblurred_path':str(source),'unblurred_sha256':engine.digest(source),
                         'packet_path':str(packet),'packet_sha256':engine.digest(packet)})
-            config=engine.read_json(ROOT/'config.json')
+            config=legacy_config()
             data={'sigma':2,'profile':'블러_축소64_4비트','splits':rows}
             with patch.object(attack,'fit_decoder',return_value=torch.nn.Identity()):
                 photo=attack.run_attack(config,folder,data,'cpu',False,'feature-fixture-run')

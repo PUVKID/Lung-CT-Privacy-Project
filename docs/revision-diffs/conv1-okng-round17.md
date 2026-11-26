@@ -1,22 +1,30 @@
 # 17차 공개 변경 전체 비교
 
-기준 커밋: `594508ce2d5ec6e4484577c2730d32bf8e4e3592`. 이미 게시한 17차 SCI 준비코드의 같은 차수 후속수정입니다. 이 기준 커밋 대비 고유 원본 연결 gallery·완료 캐시 실행 검증·공격 진행 표시의 실제 전체 차이를 비교합니다. 원격의 기존 차수와 다른 사람의 변경은 보존합니다.
+기준 커밋: `1691e069d2c0dcd84d46e2a845346895d7631c8f`. 이미 게시한 17차 SCI 준비코드의 같은 차수 후속 수정입니다. 이 기준 커밋 대비 전체 검사fixture 정정·선정 모델SHA와 공격 가정의 사진 설명 연결의 실제 전체 차이를 비교합니다. 원격의 기존 차수와 다른 사람의 변경은 보존합니다.
 
 아래 diff는 새 소스·설정 예제·차수 설명·변경 기록과 기존 탐색 문서의 실제 변경을 포함합니다. 줄바꿈은 원파일 바이트를 보존합니다. 비교 문서 자신과 그 diff 조각은 자기참조 해시 순환을 피하기 위해 본문 diff 대상에서 제외하며 별도 공개 묶음 manifest에 크기·SHA를 동결합니다. 바이너리는 원파일과 크기·SHA를 대조합니다.
 
 | 전체 텍스트 비교 | 바이트 | SHA256 |
 |---|---:|---|
-| [part-01.diff](conv1-okng-round17/part-01.diff) | 67928 | `943fb2280334c768975c38494d2eb739175fec4fdff8ec228dab9947ec08ad2b` |
+| [part-01.diff](conv1-okng-round17/part-01.diff) | 97365 | `fb98b8b310b4bfa2afdb4c79c3f6d812d93458911a69433d791e5877d20a1938` |
+| [part-02.diff](conv1-okng-round17/part-02.diff) | 62641 | `5ac7ebfe268a524ee31ce8281cbfd0c3151dbffe92002f474258f9a0dd362f66` |
 
 | 실제 추가·수정 파일 | 상태 | 바이트 | SHA256 |
 |---|---|---:|---|
-| Conv1 블러 OK-NG 실험/17차/README.md | modified | 11600 | `9450816c945e2549125ef5941ada711b2fa3e7e623580c039ea913cc24655a23` |
-| Conv1 블러 OK-NG 실험/17차/SCI공격.py | modified | 44189 | `78007fb88343d0f5d3a2120533a29409dab6a22622824fd0c0aba47bc950de57` |
-| Conv1 블러 OK-NG 실험/17차/SCI실행.py | modified | 23820 | `3b0d7482c98ef745ef9de5b5a904ce8b1a850c1a603c4c4e93eae7e6a46b3d63` |
-| Conv1 블러 OK-NG 실험/17차/docs/연결공격_캐시_진행표시_수정.md | added | 1845 | `c1981311867b3454090739c0072fa4d512743f46729c63155facae508b65c9b1` |
-| Conv1 블러 OK-NG 실험/17차/tests/SCI연결_캐시_진행_검사.py | added | 3170 | `2adb35301d6244e684f573fa87c2434edd9853e72e70e9f7218baae21322f498` |
-| Conv1 블러 OK-NG 실험/17차/tests/SCI진행_API_검사.mjs | added | 1510 | `6cd13d9441fa360fc9d35bbe0d3bb327dce7f920c287a4ef9060288ddbc25858` |
-| Conv1 블러 OK-NG 실험/17차/대시보드 화면/app.js | modified | 16410 | `af2945be3e3d025a1bd071fb7655e0cb07701ef70e53171fb1fb5635b042b820` |
-| Conv1 블러 OK-NG 실험/17차/대시보드 화면/server.mjs | modified | 17335 | `b4be6816e3304116e54fc7ed0b16a05ca3c7ca17a411b4d3cc90a1d2fe466466` |
-| docs/changes/2026-11-26-17차-연결캐시진행.md | added | 983 | `26d5100cdc727b41a6e3e75b44e727cc2ab14092b6922f056f1d1eee0ad57664` |
-| docs/revisions/conv1-okng-round17.md | modified | 30426 | `d2017ea5cd9585c12d088acc521f80996f1f5f3195e98b6316d0a4a8f44a58f7` |
+| Conv1 블러 OK-NG 실험/17차/README.md | modified | 12762 | `0ef7bb3710f1b1fbe434250f8494bd0e494c4fdd3e3c0368856cf97421d81dc1` |
+| Conv1 블러 OK-NG 실험/17차/SCI공격.py | modified | 44372 | `fc01c5c49b72dcae63ecbd4b942e99136dfe1b4e0c56328badce4ea9534d90ad` |
+| Conv1 블러 OK-NG 실험/17차/tests/SCI사진설정_검사.py | added | 1739 | `9327e8507462a07298d25e1e7e44bdb3f9aa9d95d6397c971d1bf707e1e9e575` |
+| Conv1 블러 OK-NG 실험/17차/tests/engine_feature_test.py | modified | 9065 | `a3b2476070cccb8dadc27e5dc39e636db5faa02d40ec646633da010072d6d791` |
+| Conv1 블러 OK-NG 실험/17차/tests/engine_final_test.py | modified | 4763 | `e2822a1defdcad78ffd604ed1ed52861ecbb12f9bf6cf2e5809e562472684769` |
+| Conv1 블러 OK-NG 실험/17차/tests/engine_test.py | modified | 11308 | `baf52c623debdbf6574a943f86245c273a75c3bc54e9cf5f7137ea8a042e973d` |
+| Conv1 블러 OK-NG 실험/17차/tests/보조/이전설정.py | added | 1309 | `a8391c94f5a817508e5999242734450ace26708a7559e8a853ec40026fe8bebc` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/app.js | modified | 16530 | `f553a8b8b5ee47fa8d25df957e96877964d4222a4fe8f8fca9582e38e2222e73` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/tests/노출선택_합성검사.mjs | modified | 1742 | `2160124029e44c6cdf1b0977d6d16efe2f2baa16c903633d806912a3572a6455` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/tests/복원지표_합성검사.mjs | modified | 2759 | `d60f0833588d8a5f830efecfacc6d2a3108be2d3afbd896c3cb4064435d254c0` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/tests/시험구분_합성검사.mjs | modified | 2183 | `08834888b2236b35620b8c76086c475e2621ffd1c462fbac0f5f47de4fc56c0f` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/tests/실행ID_합성검사.mjs | modified | 2877 | `eb1564e56c156ef2aa619ac835353be30daf681c0466842bfc458de75fe04899` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/tests/특징노출_합성검사.mjs | modified | 2070 | `ccbdefad031bbb22ae4b2df9cdd85a1c4c36cba99400030f1fa4207f1a68dac9` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/tests/특징사진_계약검사.mjs | modified | 2431 | `a457eddaec8830379f891951e43a7a55f83d26cfd7c2fd4c46287303feea88c5` |
+| Conv1 블러 OK-NG 실험/17차/대시보드 화면/tests/합성자료_검사.mjs | modified | 2360 | `9025ae693b5a12b983624c4ad3948a6a71694618d3ffb17429fb469d197e8184` |
+| docs/changes/2026-11-27-17차-전체재검증.md | added | 1209 | `36c0b476716d4ec74271dcb128be395fbfb2ddc94c1f8f0b54e0402afa7cbacb` |
+| docs/revisions/conv1-okng-round17.md | modified | 31697 | `6ec662fcc67c58fc3ece92bf5588681a01e05b8189e8df190db3587c3f0d0cc1` |

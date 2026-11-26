@@ -3,11 +3,11 @@ import {promises as fs} from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import assert from 'node:assert/strict';
-const root=await fs.mkdtemp(path.join(os.tmpdir(),'ct17-synthetic-'));const id='sigma_000_블러만';let server;
+const root=await fs.mkdtemp(path.join(os.tmpdir(),'ct17-synthetic-'));const id='resnet50_split_trainable_conv1_sigma_000';let server;
 try{
  const dir=path.join(root,'conditions',id,'examples');await fs.mkdir(dir,{recursive:true});
- await fs.writeFile(path.join(root,'status.json'),JSON.stringify({schema:'stage17-v1',run_id:'synthetic-run',state:'synthetic',conditions:[{id,sigma:0,profile:'블러만'}]}));
- await fs.writeFile(path.join(root,'conditions',id,'dashboard.json'),JSON.stringify({run_id:'synthetic-run',classifier:{test:{accuracy:.75,correct:3,total:4,auc:.5}},examples:[{label:'OK',source:'validation',original:`conditions/${id}/examples/OK_original.png`,transmitted:'../../secret.png',settings:{sigma:0}}]}));
+ await fs.writeFile(path.join(root,'status.json'),JSON.stringify({schema:'stage17-sci-v2',protocol:'stage17-luna25-2d-patient-v2',run_id:'synthetic-run',state:'synthetic',conditions:[{id,sigma:0,profile:'블러만'}]}));
+ await fs.writeFile(path.join(root,'conditions',id,'dashboard.json'),JSON.stringify({protocol:'stage17-luna25-2d-patient-v2',run_id:'synthetic-run',classifier:{test:{accuracy:.75,correct:3,total:4,auc:.5}},examples:[{label:'OK',source:'validation',original:`conditions/${id}/examples/OK_original.png`,transmitted:'../../secret.png',settings:{sigma:0}}]}));
  await fs.writeFile(path.join(dir,'OK_original.png'),Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVR4nGNoAAAAggCBd81ytgAAAABJRU5ErkJggg==','base64'));
  server=createServer({work:root});await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${server.address().port}`;
  let r=await fetch(base+'/api/comparison');let x=await r.json();assert.equal(x.rows[0].test.correct,3);

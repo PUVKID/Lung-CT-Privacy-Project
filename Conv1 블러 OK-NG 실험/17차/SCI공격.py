@@ -441,7 +441,7 @@ def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume,prog
         low,high=float(feature.min()),float(feature.max());feature=(feature-low)/(high-low) if high>low else np.zeros_like(feature)
         entry={'label':group,'source':'validation','row_id':row['id'],'patient_id':row['patient_id'],'settings':{'sigma':model.blur.sigma,'model':model.name,'cohort':row['cohort'],
             'source_metadata':row['metadata'],'feature_map':{'layer':'conv1','aggregation':'mean_absolute_channels','normalization':'per_image_min_max','raw_min':low,'raw_max':high},
-            'feature_reconstruction':{'layer':'conv1','dtype':'f32','selected_attack':features['conv1']['precisions']['f32']['selected_family']}}}
+            'feature_reconstruction':{'layer':'conv1','dtype':'f32','selected_attack':features['conv1']['precisions']['f32']['selected_family'],'checkpoint_sha256':checkpoint['sha256'],'threat_model':'서버 내부 특징 노출 가정: 같은 선정 모델과 Conv1 FP32 전달 특징을 알고 원본을 복원하는 공격'}}}
         arrays={'original':source[0,0].cpu().numpy(),'transmitted':observed[0,0].cpu().numpy(),'feature_map':feature}
         for kind,array in arrays.items():
             path=folder/'examples'/f'{group}_{kind}.png';atomic(path,lambda p,array=array:Image.fromarray(np.rint(np.clip(array,0,1)*255).astype(np.uint8)).save(p,format='PNG'))

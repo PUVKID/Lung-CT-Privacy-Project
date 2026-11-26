@@ -9,14 +9,16 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 engine=importlib.import_module('실행')
+from tests.보조.이전설정 import legacy_config,legacy_manifest_config
 attack=importlib.import_module('공격')
 
 class EngineTests(unittest.TestCase):
     def test_all_conditions(self):
-        self.assertEqual(len(set(engine.conditions(engine.read_json(ROOT/'config.json')))),60)
-    def test_canonical_actual_manifest(self):
-        rows=engine.canonical(engine.read_json(ROOT/'config.json'))
-        self.assertEqual([len(rows[s]) for s in ('train','validation','test')],[769,164,164])
+        self.assertEqual(len(set(engine.conditions(legacy_config()))),60)
+    def test_canonical_fixture_manifest(self):
+        with legacy_manifest_config() as config:
+            rows=engine.canonical(config)
+            self.assertEqual([len(rows[s]) for s in ('train','validation','test')],[769,164,164])
     def test_balanced_sampling(self):
         rows=[{'label':0},{'label':1}]
         result=engine.train_rows(rows,3000,42)
@@ -71,7 +73,7 @@ class EngineTests(unittest.TestCase):
                 self.head=torch.nn.Linear(3,1)
             def forward_from_blurred(self,x):
                 return self.head(self.front.conv1(x).mean((-2,-1))).squeeze(1)
-        config=engine.read_json(ROOT/'config.json')
+        config=legacy_config()
         config.update(epochs=2,min_epochs=1,patience=2,samples_per_class=1,reserve_gib=0)
         config['reconstruction'].update(epochs=1,min_epochs=1,patience=1)
         with tempfile.TemporaryDirectory() as tmp:
@@ -158,16 +160,16 @@ class EngineTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             engine.validate_generated([records[0],records[0]],canonical)
     def test_fixed_2000_test_plan(self):
-        config=engine.read_json(ROOT/'config.json')
-        first=engine.fixed_test_plan(config)
-        self.assertEqual(first,engine.fixed_test_plan(config))
-        self.assertEqual(len(first['rows']),2000)
-        self.assertEqual(sum(r['label']==0 for r in first['rows']),1000)
-        self.assertEqual(sum(r['canonical'] for r in first['rows']),164)
-        engine.validate_generated(first['rows'],engine.canonical(config)['test'])
-        for row in first['rows']:
-            if row['canonical']:
-                self.assertEqual(row['fixed_transform'],{'hflip':False,'contrast':1.,'brightness':0.})
+        with legacy_manifest_config() as config:
+            first=engine.fixed_test_plan(config)
+            self.assertEqual(first,engine.fixed_test_plan(config))
+            self.assertEqual(len(first['rows']),2000)
+            self.assertEqual(sum(r['label']==0 for r in first['rows']),1000)
+            self.assertEqual(sum(r['canonical'] for r in first['rows']),164)
+            engine.validate_generated(first['rows'],engine.canonical(config)['test'])
+            for row in first['rows']:
+                if row['canonical']:
+                    self.assertEqual(row['fixed_transform'],{'hflip':False,'contrast':1.,'brightness':0.})
     def test_existing_packets_need_no_duplicate_disk_space(self):
         with tempfile.TemporaryDirectory() as tmp:
             runtime=Path(tmp)

@@ -9,6 +9,7 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 engine=importlib.import_module('실행')
+from tests.보조.이전설정 import legacy_config,legacy_manifest_config
 
 class FinalPredictionTest(unittest.TestCase):
     def test_prediction_files_and_small_best_improvement(self):
@@ -24,7 +25,7 @@ class FinalPredictionTest(unittest.TestCase):
                 self.head=torch.nn.Linear(3,1)
             def forward_from_blurred(self,x):
                 return self.head(self.front.conv1(x).mean((-2,-1))).squeeze(1)
-        config=engine.read_json(ROOT/'config.json')
+        config=legacy_config()
         config.update(epochs=2,min_epochs=1,patience=2,samples_per_class=1,reserve_gib=0)
         with tempfile.TemporaryDirectory() as temporary:
             runtime=Path(temporary)
