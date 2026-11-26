@@ -26,7 +26,7 @@
   <source media="(max-width: 600px)" srcset="assets/readme/flow-ko-light-mobile.svg" />
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/flow-ko-dark.svg" />
   <source media="(prefers-color-scheme: light)" srcset="assets/readme/flow-ko-light.svg" />
-  <img src="assets/readme/flow-ko-light.svg" alt="Lung CT Privacy Project: 폐 CT 영상 → 블러 · 블록 변환 → 분류 · 프라이버시 비교" width="100%" />
+  <img src="assets/readme/flow-ko-light.svg" alt="폐 CT 영상: CT 영상과 클래스 라벨 → 블러 · 블록 변환: 영상 변환 강도·적용 위치 비교 → 분류 · 프라이버시 비교: 분류 지표와 구조 유사도 비교" width="100%" />
 </picture>
 <!-- readme-header32:end -->
 
