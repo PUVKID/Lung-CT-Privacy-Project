@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-블러-강도별-결과-선택--공개-코드-4차"></a>
 
 # 블러 강도 별 결과 선택·공개 코드 4차

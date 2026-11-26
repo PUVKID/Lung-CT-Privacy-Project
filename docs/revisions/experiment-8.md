@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="️-조합기본--입력-blockblur100조건"></a>
 
 # 조합 기본·입력 Block →Blur100 조건

@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="️-블러엣지--입력-블러와-분리-모델"></a>
 
 # 블러엣지 · 입력 블러와 분리 모델

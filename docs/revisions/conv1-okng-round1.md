@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-conv1-블러-okng-실험-1차"></a>
 
 # Conv1 블러 OK/NG 실험 1차

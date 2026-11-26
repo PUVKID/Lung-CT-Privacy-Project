@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-블록엣지--입력-재배열과-분리-모델"></a>
 
 # 블록엣지 · 입력 재배열과 분리 모델

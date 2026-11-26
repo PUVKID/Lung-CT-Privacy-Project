@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-efficientnetv2-s-모델에서-개인정보-보호를-위한-영상-비식별화-기법의-성능-분석"></a>
 
 # EfficientNetV2-S 모델에서 개인정보 보호를 위한 영상 비식별화 기법의 성능 분석

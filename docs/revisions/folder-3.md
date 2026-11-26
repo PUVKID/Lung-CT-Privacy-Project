@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-자료-3차--privacy-score의-소규모-계산-확인"></a>
 
 # 자료 3차·Privacy Score의 소규모 계산 확인

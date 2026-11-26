@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 # 폐 CT 특징맵 시각화·공개 코드 3차
 
 <!-- reading-levels17:start -->

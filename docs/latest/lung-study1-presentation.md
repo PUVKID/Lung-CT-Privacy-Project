@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-efficientnetv2-s-비식별화-연구-하계학술대회-발표"></a>
 
 # EfficientNetV2-S 비식별화 연구 하계학술대회 발표

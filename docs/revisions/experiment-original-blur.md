@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="️-블러-1차--저장된-10조건-분류-결과"></a>
 
 # 블러 1차·저장된 10 조 건 분류 결과

@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../en/README.md)
+<!-- language-choice:end -->
+
 # 연구 단계와 논문·코드의 연결
 
 <!-- reading-levels17:start -->

@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-자료-1차--resnet50-비교-노트북의-설정-정리"></a>
 
 # 자료 1차·ResNet50 비교 노트북의 설정 정리

@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-연구-1--efficientnetv2-s와-입력-비식별화"></a>
 
 # 연구 1·EfficientNetV2-S와 입력 비식별화

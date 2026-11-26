@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-폐-ct-특징-블러-실험-1차"></a>
 
 # 폐 CT 특징 블러 실험 1차

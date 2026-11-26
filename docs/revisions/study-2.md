@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-연구-2--resnet50의-프라이버시정확도-절충"></a>
 
 # 연구 2·ResNet50의 프라이버시·정확도 절충

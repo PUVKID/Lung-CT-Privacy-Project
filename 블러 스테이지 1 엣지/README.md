@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-블러-스테이지-1-엣지"></a>
 
 # 블러 스테이지 1 엣지

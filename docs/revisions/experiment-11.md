@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="️-조합엣지--입력-100조합과-분리-모델"></a>
 
 # 조합엣지·입력 100 조합과 분리 모델

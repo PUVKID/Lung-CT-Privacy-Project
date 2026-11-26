@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-블록-2차--위치-재배열과-resnet50"></a>
 
 # 블록 2차·위치 재배열과 ResNet50

@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-stage1엣지--특징맵-자체에-블러"></a>
 
 # Stage1 엣지·특징맵 자체에 블러

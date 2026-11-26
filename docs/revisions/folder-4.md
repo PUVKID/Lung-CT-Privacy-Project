@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-자료-4차--후속-원고와-지표도표-코드"></a>
 
 # 자료 4차·후속 원고와 지표·도표 코드

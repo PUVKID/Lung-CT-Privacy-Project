@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="resnet50-기-반-폐암-ct-분류에서-block-encryptiongaussian-blur의-프라이버시-정확도-트레이드-오프-분석"></a>
 <a id="-resnet50-기반-폐암-ct-분류에서-block-encryptiongaussian-blur의-프라이버시-정확도-트레이드오프-분석"></a>
 

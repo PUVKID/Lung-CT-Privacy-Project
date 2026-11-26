@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 <a id="-특징맵-전체-구성과-대시보드--공개-코드-3차"></a>
 
 # 특징맵 전체 구성과 대시보드·공개 코드 3차

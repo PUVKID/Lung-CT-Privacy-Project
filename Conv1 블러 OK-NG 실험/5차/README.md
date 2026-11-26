@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../../en/README.md)
+<!-- language-choice:end -->
+
 # 폐 CT 특징 블러 실험·4차
 
 <!-- reading-levels17:start -->
