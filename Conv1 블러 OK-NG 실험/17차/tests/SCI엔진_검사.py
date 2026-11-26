@@ -22,7 +22,7 @@ class SCI검사(unittest.TestCase):
     def test_01_plan_patient_and_fixed_samples(self):
         config=read_json(ROOT/'SCIconfig.json');plan=engine.experiment_plan(config)
         self.assertEqual(len(plan),45);self.assertEqual(sum(r['kind']=='main' for r in plan),40)
-        self.assertEqual(len({r['id'] for r in plan}),45);self.assertEqual(config['samples_per_class'],3000)
+        self.assertEqual(len({r['id'] for r in plan}),45);self.assertEqual(config['samples_per_class'],5000)
         manifest={'splits':{s:[{'id':s+str(y),'patient_id':s+str(y),'label':y,'cohort':'LUNA25'} for y in (0,1)] for s in ('train','validation','test')}}
         self.assertEqual(engine.validate_patient_separation(manifest)['patient_overlap'],0)
         fixed=engine.fixed_test_plan(manifest,{**config,'test_samples_per_class':3})
@@ -62,7 +62,7 @@ class SCI검사(unittest.TestCase):
     def test_04_epoch_resume_and_prediction_trace(self):
         with tempfile.TemporaryDirectory() as tmp:
             runtime=Path(tmp);config=read_json(ROOT/'SCIconfig.json')
-            config.update(runtime=str(runtime),epochs=2,min_epochs=2,samples_per_class=1,test_samples_per_class=2,batch_size=2,accumulation=1,reserve_gib=0)
+            config.update(runtime=str(runtime),fixed_samples_root=str(runtime/'fixed'),validation_samples_per_class=1,epochs=2,min_epochs=2,samples_per_class=1,test_samples_per_class=2,batch_size=2,accumulation=1,reserve_gib=0)
             rows={}
             for split in ('train','validation','test'):
                 rows[split]=[]
@@ -158,10 +158,18 @@ class SCI검사(unittest.TestCase):
         self.assertGreater(len(json.dumps(detailed)),4*1024**2);self.assertLess(len(json.dumps(compact)),1024)
         with tempfile.TemporaryDirectory() as tmp:
             runtime=Path(tmp);config=read_json(ROOT/'SCIconfig.json');manifest={'splits':{'test':[{'id':str(y),'label':y,'patient_id':str(y)} for y in (0,1)]}}
-            path=runtime/'manifest.json';save_json(path,manifest);config.update(manifest=str(path),test_samples_per_class=1)
+            manifest={'splits':{split:[{'id':split+str(y),'patient_id':split+str(y),'label':y,'cohort':'LUNA25','metadata':{}} for y in (0,1)] for split in ('train','validation','test')}}
+            for split,records in manifest['splits'].items():
+                for row in records:
+                    image_path=runtime/(row['id']+'.png');Image.fromarray(np.full((32,32),40+row['label']*160,dtype=np.uint8)).save(image_path)
+                    row.update(image_path=str(image_path),image_sha256=digest(image_path))
+            path=runtime/'manifest.json';save_json(path,manifest);config.update(manifest=str(path),fixed_samples_root=str(runtime/'fixed'),samples_per_class=1,validation_samples_per_class=1,test_samples_per_class=1,image_size=32)
             with patch.object(engine,'runtime_context',return_value={'device':'cpu'}): engine.bind(config,manifest,runtime,'cpu')
-            sources=read_json(runtime/'run.json')['binding']['sources']
-            for name in ('legacy/model.py','legacy/identity.py','legacy/__init__.py'): self.assertEqual(sources[name],digest(ROOT/name))
+            binding=read_json(runtime/'run.json')['binding'];sources=binding['sources']
+            for name in ('legacy/model.py','legacy/identity.py','legacy/__init__.py','SCI고정표본.py'): self.assertEqual(sources[name],digest(ROOT/name))
+            self.assertEqual(binding['input_policy'],'fixed-copies-v1')
+            self.assertEqual(binding['fixed_base_sha256'],digest(runtime/'fixed/base/complete.json'))
+            self.assertTrue(all(r['materialized'] and Path(r['image_path']).is_file() and 'augmentation' not in r for r in read_json(runtime/'test_plan.json')['rows']))
 
     def test_09_feature_decoder_and_diagnostics_few_steps(self):
         import SCI공격 as attacks
@@ -169,9 +177,13 @@ class SCI검사(unittest.TestCase):
             def observed(self,x): return x
             def features_from_observed(self,x,layer): return torch.nn.functional.avg_pool2d(x,4).repeat(1,3,1,1)
         with tempfile.TemporaryDirectory() as tmp:
-            runtime=Path(tmp);config=read_json(ROOT/'SCIconfig.json');config.update(runtime=str(runtime),image_size=32,reserve_gib=0,samples_per_class=1,accumulation=1)
+            runtime=Path(tmp);config=read_json(ROOT/'SCIconfig.json');config.update(runtime=str(runtime),fixed_samples_root=str(runtime/'fixed'),validation_samples_per_class=1,test_samples_per_class=1,image_size=32,reserve_gib=0,samples_per_class=1,accumulation=1)
             config['reconstruction']={**config['reconstruction'],'epochs':1,'min_epochs':1};config['diagnostics']={**config['diagnostics'],'shuffle_epochs':1}
             rows={split:[{'id':split+str(label),'patient_id':split+str(label),'label':label,'value':.2+.6*label} for label in (0,1)] for split in ('train','validation','test')}
+            for split,records in rows.items():
+                for row in records:
+                    image_path=runtime/(row['id']+'.png');Image.fromarray(np.full((32,32),round(row['value']*255),dtype=np.uint8)).save(image_path)
+                    row.update(image_path=str(image_path),image_sha256=digest(image_path),cohort='LUNA25',metadata={})
             def pixels(row): return np.full((32,32),row['value'],dtype=np.float32)
             decoder_folder=runtime/'decoder'
             with patch.object(engine,'image',side_effect=pixels),patch('SCI모델.SCIResNet',Tiny):

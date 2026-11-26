@@ -1,15 +1,15 @@
 {
   "protocol": "stage17-luna25-2d-patient-v2",
-  "runtime": "./work/SCI-v2",
-  "manifest": "./work/data/SCI_manifest.json",
-  "data_status": "./work/data/SCI_준비상태.json",
+  "runtime": "/path/to/runtime17/work/SCI-v2",
+  "manifest": "/path/to/experiment17/work/data/SCI_manifest.json",
+  "data_status": "/path/to/experiment17/work/data/SCI_준비상태.json",
   "weights": {
     "resnet50": {
-      "path": "./work/weights/resnet50_initial.pth",
+      "path": "/path/to/previous12/work/weights/resnet50_initial.pth",
       "sha256": "0676ba61b6795bbe1773cffd859882e5e297624d384b6993f7c9e683e722fb8a"
     },
     "resnet18": {
-      "path": "./work/weights/resnet18-f37072fd.pth",
+      "path": "/path/to/experiment17/work/weights/resnet18-f37072fd.pth",
       "sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
     }
   },
@@ -39,7 +39,7 @@
   "image_size": 512,
   "roi_fov_mm": 50.0,
   "roi_pixel_spacing_mm": 0.09765625,
-  "samples_per_class": 3000,
+  "samples_per_class": 5000,
   "test_samples_per_class": 1000,
   "test_augmentation_seed": 20261125,
   "batch_size": 2,
@@ -93,5 +93,9 @@
   "diagnostics": {
     "shuffle_epochs": 10,
     "shuffle_seed": 20261125
-  }
+  },
+  "input_policy": "fixed-copies-v1",
+  "validation_samples_per_class": 1000,
+  "fixed_samples_root": "/path/to/experiment17/work/data/fixed_samples",
+  "fixed_blur_batch_size": 4
 }

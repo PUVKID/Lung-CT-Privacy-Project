@@ -61,9 +61,11 @@ class FeatureDecoder(nn.Module):
 
 def _source(row,model,layer,codec,actual):
     from SCI실행 import image
-    target=torch.from_numpy(image(row))[None,None].to(next(model.parameters()).device)
+    from SCI고정표본 import read_raw
+    device=next(model.parameters()).device
+    target=torch.from_numpy(read_raw(row) if row.get('materialized') else image(row))[None,None].to(device)
     with torch.no_grad():
-        observed=model.observed(target)
+        observed=torch.from_numpy(image(row))[None,None].to(device) if row.get('preblurred') else model.observed(target)
         source=observed if layer=='photo' else codec.transfer(model.features_from_observed(observed,layer),actual=actual)
     return source,target,observed
 
@@ -165,7 +167,8 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
     if (folder/'result.json').exists(): return read_json(folder/'result.json')
     codec=FeatureCodec(dtype);decoder=_fit(model,rows,layer,codec,config,folder/'decoder',run_id,resume)
     mean=np.zeros((config['image_size'],config['image_size']),dtype=np.float64)
-    for row in rows['train']: mean+=image(row)
+    from SCI고정표본 import read_raw
+    for row in rows['train']: mean+=read_raw(row) if row.get('materialized') else image(row)
     mean=(mean/len(rows['train'])).astype(np.float32)
     photo_names=['copy_observed','mean_train','learned_decoder']+['dct_'+str(a) for a in config['reconstruction']['deblur_alphas']]
     names=photo_names if layer=='photo' else ['mean_train','learned_decoder']+[f'gradient_tv_{tv}' for tv in config['reconstruction']['tv_alphas']]
@@ -194,7 +197,7 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
     if layer=='conv1':
         photo_decoder=_fit(model,rows,'photo',FeatureCodec('f32'),config,folder.parents[1]/'photo'/'decoder',run_id,True)
     measurements={};prior_errors={};selections={};classification={}
-    datasets={key:rows[key] for key in ('validation','test','test_generated') if key in rows}
+    datasets={key:rows[key] for key in ('validation','test','test_generated','validation_original') if key in rows}
     for cohort,external in rows.get('external',{}).items():
         external=external.get('rows',[]) if isinstance(external,dict) else external
         if external: datasets['external_'+cohort]=external
@@ -247,7 +250,7 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
     if 'test_generated' in selected_report: result['test_generated']=selected_report['test_generated']
     save_json(folder/'result.json',result);return result
 
-def membership(model,rows,folder):
+def membership(model,rows,folder,test_key='test'):
     from sklearn.metrics import roc_auc_score
     from SCI실행 import image
     device=next(model.parameters()).device
@@ -263,7 +266,7 @@ def membership(model,rows,folder):
                 result.append({'patient_id':row['patient_id'],'label':row['label'],'confidence':max(p,1-p),'negative_loss':-loss})
         return result
     member_val=scores([r for r in rows['train'] if r['patient_id'] in first]);member_test=scores([r for r in rows['train'] if r['patient_id'] in second])
-    nonmember_val=scores(rows['validation']);nonmember_test=scores(rows['test'])
+    nonmember_val=scores(rows['validation']);nonmember_test=scores(rows[test_key])
     if ({r['patient_id'] for r in member_val+nonmember_val}&{r['patient_id'] for r in member_test+nonmember_test}): raise ValueError('멤버십 선정·최종 환자 중복')
     def auc(members,nonmembers,name,one_class=False):
         values=members+nonmembers
@@ -299,12 +302,14 @@ def membership(model,rows,folder):
 
 def linking(model,records,layer,topk):
     from SCI실행 import image
+    from SCI고정표본 import read_raw
     if not records: return {'state':'blocked','reason':'연결 평가 원본 없음'}
     device=next(model.parameters()).device;gallery=[];query=[]
     with torch.no_grad():
         for row in records:
-            raw=torch.tensor(image(row),device=device)[None,None]
-            for collection,observed in ((gallery,raw),(query,model.observed(raw))):
+            raw=torch.tensor(read_raw(row) if row.get('materialized') else image(row),device=device)[None,None]
+            observed=torch.tensor(image(row),device=device)[None,None] if row.get('preblurred') else model.observed(raw)
+            for collection,observed in ((gallery,raw),(query,observed)):
                 vector=F.adaptive_avg_pool2d(model.features_from_observed(observed,layer),(2,2)).flatten().float().cpu().numpy()
                 collection.append(vector/max(float(np.linalg.norm(vector)),1e-20))
     gallery=np.stack(gallery);query=np.stack(query);source_counts={};patient_counts={}
@@ -327,15 +332,17 @@ def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume):
         features[layer]={'precisions':{}}
         for dtype in config['feature_dtypes']:
             features[layer]['precisions'][dtype]=attack_exposure(model,rows,config,attacks/layer/dtype,run_id,layer,dtype,resume)
-        connections[layer]={'test':linking(model,rows['test'],layer,config['connection_topk']),'external':{}}
+        connections[layer]={'test':linking(model,rows['test'],layer,config['connection_topk']),
+            'test_generated':linking(model,rows.get('test_generated',[]),layer,config['connection_topk']),'external':{}}
         for cohort in ('CSTL','Histo'):
             external=rows.get('external',{}).get(cohort,[]);external=external.get('rows',[]) if isinstance(external,dict) else external
             connections[layer]['external'][cohort]=linking(model,external,layer,config['connection_topk'])
     examples=[]
     from SCI실행 import image
     for label,group in ((0,'OK'),(1,'NG')):
-        row=next(r for r in rows['validation'] if r['label']==label);source=torch.tensor(image(row),device=device)[None,None]
-        with torch.no_grad(): observed=model.observed(source);feature=model.features_from_observed(observed,'conv1').abs().mean(1)[0].cpu().numpy()
+        row=next(r for r in rows['validation'] if r['label']==label)
+        _,source,observed=_source(row,model,'photo',FeatureCodec('f32'),False)
+        with torch.no_grad(): feature=model.features_from_observed(observed,'conv1').abs().mean(1)[0].cpu().numpy()
         low,high=float(feature.min()),float(feature.max());feature=(feature-low)/(high-low) if high>low else np.zeros_like(feature)
         entry={'label':group,'source':'validation','row_id':row['id'],'patient_id':row['patient_id'],'settings':{'sigma':model.blur.sigma,'model':model.name,'cohort':row['cohort'],
             'source_metadata':row['metadata'],'feature_map':{'layer':'conv1','aggregation':'mean_absolute_channels','normalization':'per_image_min_max','raw_min':low,'raw_max':high},
@@ -348,14 +355,15 @@ def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume):
         entry['feature_reconstructed']=next(e for e in features['conv1']['precisions']['f32']['examples'] if e['label']==group)['reconstructed']
         examples.append(entry)
     return {'attack':photo,'feature_attacks':features,'feature_attack':features['conv1']['precisions']['f32'],'linking':connections,
-            'membership':membership(model,rows,folder),'examples':examples,'packet':{'count':0,'mean_bytes':None,'reason':'사진 float 블러는 별도 네트워크 전송 실측 없음; 특징 실제 전송은 층·정밀도별 transmission 참조'},
+            'membership':membership(model,rows,folder),
+            'membership_generated':membership(model,rows,folder/'generated','test_generated') if 'test_generated' in rows else None,'examples':examples,'packet':{'count':0,'mean_bytes':None,'reason':'사진 float 블러는 별도 네트워크 전송 실측 없음; 특징 실제 전송은 층·정밀도별 transmission 참조'},
             'metric_inheritance':{'P0_M1_to_M15':None,'reason':'원래 정의를 확인하지 못해 승계 완료로 주장하지 않음; 실제 raw/상대오차/구조 점수만 보고'}}
 
 def run_diagnostics(manifest,config,run_id,device,resume):
     """주실험 선정과 분리한 고정 train-only 진단을 한 실행에서 한 번 수행합니다."""
     from SCI실행 import image,Dataset,evaluate
     from SCI모델 import SCIResNet,freeze_running_stats
-    from 실행 import train_rows
+    from SCI고정표본 import prepare_fixed,original_rows,epoch_rows
     from 지표 import binary_report
     from sklearn.pipeline import make_pipeline
     from sklearn.preprocessing import StandardScaler
@@ -365,7 +373,8 @@ def run_diagnostics(manifest,config,run_id,device,resume):
         result=read_json(folder/'result.json')
         if result['run_id']!=run_id: raise ValueError('진단 run_id 불일치')
         return result
-    rows=manifest['splits'];data={}
+    fixed=prepare_fixed(manifest,config)['splits']
+    rows={'train':fixed['train'],'validation':fixed['validation'],'test':original_rows(fixed['test'])};data={}
     for split in ('train','validation','test'):
         data[split]=(np.stack([np.asarray(Image.fromarray(np.rint(image(row)*255).astype(np.uint8)).resize((16,16),Image.Resampling.BOX),dtype=float).ravel()/255 for row in rows[split]]),np.asarray([r['label'] for r in rows[split]]))
     center=np.zeros((16,16),dtype=bool);center[4:12,4:12]=True
@@ -393,7 +402,7 @@ def run_diagnostics(manifest,config,run_id,device,resume):
     for epoch in range(start,config['diagnostics']['shuffle_epochs']):
         disk_guard(folder,int(config['reserve_gib']*1024**3)+sum(t.numel()*t.element_size() for t in model.state_dict().values())*4)
         model.train();freeze_running_stats(model);loss_sum=0.;count=0
-        selected=train_rows(shuffled,config['samples_per_class'],config['seed']+epoch)
+        selected=epoch_rows(shuffled,config['seed']+epoch)
         loader=torch.utils.data.DataLoader(Dataset(selected,True),batch_size=config['batch_size'],num_workers=0)
         optimizer.zero_grad(set_to_none=True)
         for batch,(x,y) in enumerate(loader):

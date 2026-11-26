@@ -15,7 +15,7 @@ def sha256(path):
     return h.hexdigest()
 
 class SCIResNet(nn.Module):
-    def __init__(self,name='resnet50',sigma=0,boundary='conv1',weights_path=None,weights_sha256=None,pretrained=True):
+    def __init__(self,name='resnet50',sigma=0,boundary='conv1',weights_path=None,weights_sha256=None,pretrained=True,preblurred=False):
         super().__init__()
         if name not in ('resnet50','resnet18') or boundary not in ('conv1','stem','layer1'):
             raise ValueError('지원하는 ResNet·분할 경계가 아닙니다.')
@@ -27,6 +27,7 @@ class SCIResNet(nn.Module):
             self.backbone.load_state_dict(torch.load(weights_path,map_location='cpu',weights_only=True),strict=True)
         self.backbone.fc=nn.Linear(self.backbone.fc.in_features,1)
         self.blur=GaussianDCTBlur(sigma)
+        self.preblurred=bool(preblurred)
         self.register_buffer('rgb_mean',torch.tensor([.485,.456,.406]).reshape(1,3,1,1))
         self.register_buffer('rgb_std',torch.tensor([.229,.224,.225]).reshape(1,3,1,1))
 
@@ -34,7 +35,7 @@ class SCIResNet(nn.Module):
         if raw.ndim!=4 or raw.shape[1]!=1 or not torch.isfinite(raw).all():
             raise ValueError('입력은 유한한 N×1×H×W 원본 ROI이어야 합니다.')
         with torch.autocast(device_type=raw.device.type,enabled=False):
-            return self.blur(raw.float())
+            return raw.float() if self.preblurred else self.blur(raw.float())
 
     def features_from_observed(self,observed,layer):
         if layer not in LAYERS: raise ValueError('알 수 없는 특징 층')

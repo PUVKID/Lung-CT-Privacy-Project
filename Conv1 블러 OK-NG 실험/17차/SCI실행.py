@@ -50,6 +50,9 @@ def validate_patient_separation(manifest):
     return {'patient_overlap':0,'method':'같은 환자의 혼합 라벨 결절도 같은 분할'}
 
 def image(row):
+    if row.get('materialized'):
+        from SCI고정표본 import read_observed
+        return read_observed(row)
     path=Path(row['image_path'])
     if digest(path)!=row['image_sha256']: raise ValueError('결절 ROI SHA 불일치: '+row['id'])
     with Image.open(path) as source:
@@ -70,7 +73,7 @@ class Dataset:
         import torch
         row=self.rows[index]
         pixels=image(row)
-        if self.training and random.random()<.25: pixels=pixels[:,::-1].copy()
+        if self.training and not row.get('materialized') and random.random()<.25: pixels=pixels[:,::-1].copy()
         return torch.from_numpy(pixels)[None],torch.tensor(row['label'],dtype=torch.float32)
 
 def fixed_test_plan(manifest,config):
@@ -91,14 +94,20 @@ def fixed_test_plan(manifest,config):
             'note':'동일 시험 환자·결절 계보의 보조 증강이며 독립 표본 증가가 아님'}
 
 def bind(config,manifest,runtime,device):
-    files=['SCI실행.py','SCI모델.py','SCI공격.py','SCI데이터.py','SCIconfig.json','실행.py','공격.py','특징노출.py','지표.py','전송.py','rust/전송엔진.exe','legacy/model.py','legacy/identity.py','legacy/__init__.py']
+    files=['SCI실행.py','SCI모델.py','SCI공격.py','SCI고정표본.py','SCI데이터.py','SCIconfig.json','실행.py','공격.py','특징노출.py','지표.py','전송.py','rust/전송엔진.exe','legacy/model.py','legacy/identity.py','legacy/__init__.py']
     binding={'protocol':PROTOCOL,'config':config,'manifest_sha256':digest(config['manifest']),
              'sources':{name:digest(ROOT/name) for name in files},'execution_context':runtime_context(device)}
-    plan=fixed_test_plan(manifest,config)
+    from SCI고정표본 import prepare_fixed
+    base=prepare_fixed(manifest,config)
+    plan={'protocol':PROTOCOL,'input_policy':config['input_policy'],'rows':base['splits']['test'],
+          'note':'분할 후 한 번 생성한 실제 고정 PNG 계보; 독립 환자 증가 아님'}
     plan_path=runtime/'test_plan.json'
     if plan_path.exists() and read_json(plan_path)!=plan: raise ValueError('기존 고정 시험 증강 계획 변경')
     if not plan_path.exists(): save_json(plan_path,plan)
     binding['test_plan_sha256']=digest(plan_path)
+    binding['input_policy']=config['input_policy']
+    binding['fixed_base_binding_sha256']=base['binding_sha256']
+    binding['fixed_base_sha256']=digest(Path(config['fixed_samples_root'])/'base'/'complete.json')
     path=runtime/'run.json'
     if path.exists():
         record=read_json(path)
@@ -161,7 +170,7 @@ def train_condition(config,manifest,condition,run_id,device,resume=False):
     import torch
     from SCI모델 import SCIResNet,freeze_running_stats
     from 지표 import binary_report
-    from 실행 import train_rows
+    from SCI고정표본 import prepare_fixed,prepare_sigma,original_rows,epoch_rows
     from SCI공격 import run_protection,run_diagnostics
     folder=Path(config['runtime'])/'conditions'/condition['id']
     if (folder/'result.json').exists():
@@ -170,7 +179,7 @@ def train_condition(config,manifest,condition,run_id,device,resume=False):
     folder.mkdir(parents=True,exist_ok=True)
     seed_all(config['seed'],device=='cuda')
     weights=config['weights'][condition['model']]
-    model=SCIResNet(condition['model'],condition['sigma'],condition['split_boundary'],weights['path'],weights['sha256']).to(device)
+    model=SCIResNet(condition['model'],condition['sigma'],condition['split_boundary'],weights['path'],weights['sha256'],preblurred=True).to(device)
     precision='cuda_bf16' if device=='cuda' else 'cpu_fp32'
     if device=='cuda' and not torch.cuda.is_bf16_supported(): raise RuntimeError('CUDA BF16 지원 필요')
     optimizer=torch.optim.AdamW(model.parameters(),lr=config['learning_rate'],weight_decay=config['weight_decay'])
@@ -186,12 +195,16 @@ def train_condition(config,manifest,condition,run_id,device,resume=False):
         model.load_state_dict(checkpoint['model']);optimizer.load_state_dict(checkpoint['optimizer']);scheduler.load_state_dict(checkpoint['scheduler'])
         start,best,patience_best,bad,best_epoch,history=[checkpoint[k] for k in ('epoch','best','patience_best','bad','best_epoch','history')]
         restore_rng(checkpoint['rng'])
-    rows=manifest['splits']
+    cached=prepare_sigma(prepare_fixed(manifest,config),config,condition['sigma'],manifest)
+    rows={'train':cached['train'],'validation':cached['validation'],'test':original_rows(cached['test'])}
+    generated=cached['test']
+    original_validation=original_rows(cached['validation'])
+    cached_external={cohort:cached.get('external_'+cohort,[]) for cohort in manifest.get('external',{})}
     for epoch in range(start,config['epochs']):
         if epoch>=config['min_epochs'] and bad>=config['patience']: break
         estimate=sum(t.numel()*t.element_size() for t in model.state_dict().values())*4
         disk_guard(folder,int(config['reserve_gib']*1024**3)+estimate)
-        loader=torch.utils.data.DataLoader(Dataset(train_rows(rows['train'],config['samples_per_class'],config['seed']+epoch),True),batch_size=config['batch_size'],num_workers=0)
+        loader=torch.utils.data.DataLoader(Dataset(epoch_rows(rows['train'],config['seed']+epoch),True),batch_size=config['batch_size'],num_workers=0)
         model.train();freeze_running_stats(model);optimizer.zero_grad(set_to_none=True)
         labels,logits=[],[];gradient_evidence=None
         for batch,(x,y) in enumerate(loader):
@@ -230,14 +243,14 @@ def train_condition(config,manifest,condition,run_id,device,resume=False):
     model.load_state_dict(torch.load(best_path,map_location='cpu',weights_only=False)['model']);model.eval()
     context={'run_id':run_id,'condition':condition,'checkpoint_sha256':reference['sha256']}
     classifier={'best_epoch':best_epoch,'checkpoint':reference,'test':evaluate(model,rows['test'],device,precision,folder/'predictions'/'test.json',context)}
-    generated=read_json(Path(config['runtime'])/'test_plan.json')['rows']
+    classifier['validation_original']=evaluate(model,original_validation,device,precision,folder/'predictions'/'validation_original.json',context)
     classifier['test_generated']=evaluate(model,generated,device,precision,folder/'predictions'/'test_generated.json',context)
     external={}
     for cohort in ('CSTL','Histo'):
-        external_rows=manifest.get('external',{}).get(cohort,[])
+        external_rows=cached_external.get(cohort,[])
         if isinstance(external_rows,dict): external_rows=external_rows.get('rows',[])
         external[cohort]=evaluate(model,external_rows,device,precision,folder/'predictions'/f'external_{cohort}.json',context) if external_rows else {'state':'blocked','reason':manifest.get('external_status',{}).get(cohort,{}).get('reason','외부 영상·환자계보·양성악성 주석 미확보')}
-    protection=run_protection(model,{**rows,'test_generated':generated,'external':manifest.get('external',{}),'external_status':manifest.get('external_status',{})},config,folder,run_id,reference,device,resume)
+    protection=run_protection(model,{**rows,'test_generated':generated,'validation_original':original_validation,'external':cached_external,'external_status':manifest.get('external_status',{})},config,folder,run_id,reference,device,resume)
     diagnostic=run_diagnostics(manifest,config,run_id,device,resume)
     result={**condition,'condition':condition['id'],'protocol':PROTOCOL,'run_id':run_id,'classifier':classifier,'external':external,
             **protection,'diagnostics':diagnostic,'dataset':{split:{'images':len(records),'patients':len({r['patient_id'] for r in records})} for split,records in rows.items()},
