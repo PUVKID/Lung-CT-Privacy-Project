@@ -69,7 +69,7 @@ def _source(row,model,layer,codec,actual):
         source=observed if layer=='photo' else codec.transfer(model.features_from_observed(observed,layer),actual=actual)
     return source,target,observed
 
-def _fit(model,rows,layer,codec,config,folder,run_id,resume):
+def _fit(model,rows,layer,codec,config,folder,run_id,resume,progress=None):
     rc=config['reconstruction'];seed_all(rc['seed'],next(model.parameters()).device.type=='cuda')
     source,_,_=_source(rows['train'][0],model,layer,codec,False)
     decoder=(decoder_model() if layer=='photo' else FeatureDecoder(source.shape[1],source.shape[-1],config['image_size'])).to(source.device)
@@ -91,13 +91,15 @@ def _fit(model,rows,layer,codec,config,folder,run_id,resume):
             disk_guard(folder,int(config['reserve_gib']*1024**3)+sum(p.numel()*p.element_size() for p in decoder.parameters())*4)
             decoder.train();train_loss=0.
             order=list(rows['train']);random_order=np.random.default_rng(rc['seed']+epoch).permutation(len(order))
-            for index in random_order:
+            for processed,index in enumerate(random_order,1):
                 source,target,_=_source(order[index],model,layer,codec,False)
                 optimizer.zero_grad(set_to_none=True);loss=(decoder(source)-target).square().mean();loss.backward();optimizer.step();train_loss+=float(loss)
+                if progress and (processed==1 or processed%20==0 or processed==len(order)): progress({"phase":"decoder_train","epoch":epoch+1,"processed":processed,"total":len(order)})
             decoder.eval();validation=0.
             with torch.no_grad():
-                for row in rows['validation']:
+                for processed,row in enumerate(rows['validation'],1):
                     source,target,_=_source(row,model,layer,codec,False);validation+=float((decoder(source)-target).square().mean())
+                    if progress and (processed==1 or processed%20==0 or processed==len(rows['validation'])): progress({'phase':'decoder_validation','epoch':epoch+1,'processed':processed,'total':len(rows['validation'])})
             validation/=len(rows['validation']);scheduler.step(validation)
             improved=validation<best
             if improved: best,bad=validation,0
@@ -221,11 +223,15 @@ def _linear_inverse(model,value,shape,ratio):
     return reconstruction[0,0].cpu().numpy(),{'rank':int((s>cutoff).sum()),'condition':float(s[0]/s[-1]) if s[-1]>cutoff else None,
         'rcond':1e-7,'lambda_ratio':ratio,'raw_min':float(raw.min()),'raw_max':float(raw.max()),'clipped_fraction':float(((raw<0)|(raw>1)).double().mean()),'feature_forward_mse':residual}
 
-def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',resume=False):
+def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',resume=False,progress=None):
     from SCI실행 import image
     folder.mkdir(parents=True,exist_ok=True)
-    if (folder/'result.json').exists(): return read_json(folder/'result.json')
-    codec=FeatureCodec(dtype);decoder=_fit(model,rows,layer,codec,config,folder/'decoder',run_id,resume)
+    if (folder/'result.json').exists():
+        cached=read_json(folder/'result.json')
+        if not run_id or cached.get('run_id')!=run_id: raise ValueError('공격 완료캐시 run_id 불일치')
+        if progress: progress({'phase':'cached_complete','layer':layer,'dtype':dtype})
+        return cached
+    codec=FeatureCodec(dtype);decoder=_fit(model,rows,layer,codec,config,folder/'decoder',run_id,resume,progress)
     mean=np.zeros((config['image_size'],config['image_size']),dtype=np.float64)
     from SCI고정표본 import read_raw
     for row in rows['train']: mean+=read_raw(row) if row.get('materialized') else image(row)
@@ -258,7 +264,7 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
         return target_array,result,transmitted_logit
     photo_decoder=decoder
     if layer=='conv1':
-        photo_decoder=_fit(model,rows,'photo',FeatureCodec('f32'),config,folder.parents[1]/'photo'/'decoder',run_id,True)
+        photo_decoder=_fit(model,rows,'photo',FeatureCodec('f32'),config,folder.parents[1]/'photo'/'decoder',run_id,True,progress)
     measurements={};prior_errors={};selections={};classification={}
     datasets={key:rows[key] for key in ('validation','test','test_generated','validation_original') if key in rows}
     for cohort,external in rows.get('external',{}).items():
@@ -267,10 +273,12 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
     for split,records in datasets.items():
         measurements[split]={name:[] for name in names};prior_errors[split]=[]
         classified=[]
-        for row in records:
+        for processed,row in enumerate(records,1):
+            if progress: progress({'phase':'reconstruction','split':split,'processed':processed-1,'total':len(records)})
             target,outputs,logit=candidates(row);prior_errors[split].append(float(np.mean((mean-target)**2)))
             if logit is not None: classified.append(logit)
             for name in names: measurements[split][name].append(_measure(target,outputs[name]))
+            if progress: progress({'phase':'reconstruction','split':split,'processed':processed,'total':len(records)})
         if classified:
             from 지표 import binary_report
             classification[split]=binary_report([row['label'] for row in records],classified)
@@ -318,7 +326,7 @@ def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',re
     if 'test_generated' in selected_report: result['test_generated']=selected_report['test_generated']
     save_json(folder/'result.json',result);return result
 
-def membership(model,rows,folder,test_key='test'):
+def membership(model,rows,folder,test_key='test',progress=None):
     from sklearn.metrics import roc_auc_score
     from SCI실행 import image
     device=next(model.parameters()).device
@@ -328,10 +336,11 @@ def membership(model,rows,folder,test_key='test'):
     def scores(records):
         result=[]
         with torch.no_grad():
-            for row in records:
+            for processed,row in enumerate(records,1):
                 logit=float(model(torch.tensor(image(row),device=device)[None,None])[0]);p=1/(1+math.exp(-max(-700,min(700,logit))))
                 loss=float(np.logaddexp(0,logit)-row['label']*logit)
                 result.append({'patient_id':row['patient_id'],'label':row['label'],'confidence':max(p,1-p),'negative_loss':-loss})
+                if progress and (processed==1 or processed%20==0 or processed==len(records)): progress({'phase':'membership','split':test_key,'processed':processed,'total':len(records)})
         return result
     member_val=scores([r for r in rows['train'] if r['patient_id'] in first]);member_test=scores([r for r in rows['train'] if r['patient_id'] in second])
     nonmember_val=scores(rows['validation']);nonmember_test=scores(rows[test_key])
@@ -368,43 +377,61 @@ def membership(model,rows,folder,test_key='test'):
         'weighting':'멤버 여부×건강라벨 셀 동일 가중치, 각 셀의 환자 동일 가중치, 환자내 결절 분산',
         'interpretation':'라벨·환자 가중치의 알려진 점수 공격; 높은 AUC를 cohort 차이와 분리 해석해야 하며 개인정보 유출 확률 아님'}
 
-def linking(model,records,layer,topk):
+def linking(model,records,layer,topk,progress=None):
     from SCI실행 import image
     from SCI고정표본 import read_raw
     if not records: return {'state':'blocked','reason':'연결 평가 원본 없음'}
-    device=next(model.parameters()).device;gallery=[];query=[]
+    # 원본별 gallery 하나. 증강 query는 그대로 평가하되 행 번호가 아닌 source_id로 판정합니다.
+    sources={}
+    source_id=lambda row:row.get('source_id',row['id'])
+    for row in records:
+        key=source_id(row)
+        if key in sources and sources[key]['patient_id']!=row['patient_id']: raise ValueError('연결 source_id 환자 불일치')
+        if key not in sources or row.get('canonical'): sources[key]=row
+    gallery_rows=list(sources.values());device=next(model.parameters()).device;gallery=[];query=[]
+    def vector(x):
+        values=F.adaptive_avg_pool2d(model.features_from_observed(x,layer),(2,2)).flatten().float().cpu().numpy()
+        return values/max(float(np.linalg.norm(values)),1e-20)
     with torch.no_grad():
-        for row in records:
+        for row in gallery_rows:
+            raw=torch.tensor(read_raw(row) if row.get('materialized') else image(row),device=device)[None,None]
+            gallery.append(vector(raw))
+        for processed,row in enumerate(records,1):
             raw=torch.tensor(read_raw(row) if row.get('materialized') else image(row),device=device)[None,None]
             observed=torch.tensor(image(row),device=device)[None,None] if row.get('preblurred') else model.observed(raw)
-            for collection,observed in ((gallery,raw),(query,observed)):
-                vector=F.adaptive_avg_pool2d(model.features_from_observed(observed,layer),(2,2)).flatten().float().cpu().numpy()
-                collection.append(vector/max(float(np.linalg.norm(vector)),1e-20))
+            query.append(vector(observed))
+            if progress and (processed==1 or processed%20==0 or processed==len(records)): progress({'phase':'linking','processed':processed,'total':len(records)})
     gallery=np.stack(gallery);query=np.stack(query);source_counts={};patient_counts={}
     for k in topk:
         source_correct,patient_correct=0,0
-        for index,vector in enumerate(query):
-            positions=np.argsort(-(gallery@vector),kind='stable')[:min(k,len(records))]
-            source_correct+=int(index in positions);patient_correct+=int(any(records[p]['patient_id']==records[index]['patient_id'] for p in positions))
+        for index,query_vector in enumerate(query):
+            positions=np.argsort(-(gallery@query_vector),kind='stable')[:min(k,len(gallery_rows))]
+            source_correct+=int(any(source_id(gallery_rows[p])==source_id(records[index]) for p in positions))
+            patient_correct+=int(any(gallery_rows[p]['patient_id']==records[index]['patient_id'] for p in positions))
         source_counts[str(k)]={'correct':source_correct,'total':len(records),'accuracy':source_correct/len(records)}
         patient_counts[str(k)]={'correct':patient_correct,'total':len(records),'accuracy':patient_correct/len(records)}
-    return {'topk_source':source_counts,'topk_patient':patient_counts,'count':len(records),'gallery_size':len(records),
+    return {'topk_source':source_counts,'topk_patient':patient_counts,'count':len(records),'gallery_size':len(gallery_rows),
+            'gallery_unit':'고유 source_id별 원본 대표 1개; canonical 우선',
+            'query_unit':'선택 집합의 모든 행; 증강 보조는 독립 원본 수 아님',
             'assumption':'정답 결절·환자 목록을 가진 닫힌 집합 원본 ROI gallery와 같은 출처 블러 query. 독립 현실 재식별 성능 아님'}
 
-def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume):
+
+def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume,progress=None):
     for parameter in model.parameters(): parameter.requires_grad_(False)
     model.eval();attacks=folder/'attacks'
-    photo=attack_exposure(model,rows,config,attacks/'photo',run_id,resume=resume)
+    def reporter(layer,dtype):
+        return (lambda info:progress({**info,'layer':layer,'dtype':dtype})) if progress else None
+    photo=attack_exposure(model,rows,config,attacks/'photo',run_id,resume=resume,progress=reporter('photo','f32'))
     features={};connections={}
     for layer in config['feature_layers']:
         features[layer]={'precisions':{}}
         for dtype in config['feature_dtypes']:
-            features[layer]['precisions'][dtype]=attack_exposure(model,rows,config,attacks/layer/dtype,run_id,layer,dtype,resume)
-        connections[layer]={'test':linking(model,rows['test'],layer,config['connection_topk']),
-            'test_generated':linking(model,rows.get('test_generated',[]),layer,config['connection_topk']),'external':{}}
+            features[layer]['precisions'][dtype]=attack_exposure(model,rows,config,attacks/layer/dtype,run_id,layer,dtype,resume,reporter(layer,dtype))
+        connections[layer]={'test':linking(model,rows['test'],layer,config['connection_topk'],reporter(layer,'f32')),
+            'test_generated':linking(model,rows.get('test_generated',[]),layer,config['connection_topk'],reporter(layer,'f32')),'external':{}}
         for cohort in ('CSTL','Histo'):
             external=rows.get('external',{}).get(cohort,[]);external=external.get('rows',[]) if isinstance(external,dict) else external
-            connections[layer]['external'][cohort]=linking(model,external,layer,config['connection_topk'])
+            connections[layer]['external'][cohort]=linking(model,external,layer,config['connection_topk'],reporter(layer,'f32'))
     examples=[]
     from SCI실행 import image
     for label,group in ((0,'OK'),(1,'NG')):
@@ -423,11 +450,11 @@ def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume):
         entry['feature_reconstructed']=next(e for e in features['conv1']['precisions']['f32']['examples'] if e['label']==group)['reconstructed']
         examples.append(entry)
     return {'attack':photo,'feature_attacks':features,'feature_attack':features['conv1']['precisions']['f32'],'linking':connections,
-            'membership':membership(model,rows,folder),
-            'membership_generated':membership(model,rows,folder/'generated','test_generated') if 'test_generated' in rows else None,'examples':examples,'packet':{'count':0,'mean_bytes':None,'reason':'사진 float 블러는 별도 네트워크 전송 실측 없음; 특징 실제 전송은 층·정밀도별 transmission 참조'},
+            'membership':membership(model,rows,folder,progress=progress),
+            'membership_generated':membership(model,rows,folder/'generated','test_generated',progress) if 'test_generated' in rows else None,'examples':examples,'packet':{'count':0,'mean_bytes':None,'reason':'사진 float 블러는 별도 네트워크 전송 실측 없음; 특징 실제 전송은 층·정밀도별 transmission 참조'},
             'metric_inheritance':{'P0_M1_to_M15':None,'reason':'원래 정의를 확인하지 못해 승계 완료로 주장하지 않음; 실제 raw/상대오차/구조 점수만 보고'}}
 
-def run_diagnostics(manifest,config,run_id,device,resume):
+def run_diagnostics(manifest,config,run_id,device,resume,progress=None):
     """주실험 선정과 분리한 고정 train-only 진단을 한 실행에서 한 번 수행합니다."""
     from SCI실행 import image,Dataset,evaluate
     from SCI모델 import SCIResNet,freeze_running_stats
@@ -481,6 +508,7 @@ def run_diagnostics(manifest,config,run_id,device,resume):
             (loss/divisor).backward()
             if (batch+1)%config['accumulation']==0 or batch+1==len(loader): optimizer.step();optimizer.zero_grad(set_to_none=True)
             loss_sum+=float(loss)*len(y);count+=len(y)
+            if progress and (batch==0 or (batch+1)%20==0 or batch+1==len(loader)): progress({'phase':'label_shuffle','epoch':epoch+1,'processed':count,'total':len(selected)})
         scheduler.step(loss_sum/count);history.append({'epoch':epoch+1,'training_shuffled_loss':loss_sum/count,'run_id':run_id})
         path=folder/'shuffle_epochs'/f'epoch_{epoch+1:04d}.pth'
         save_torch(path,{'run_id':run_id,'epoch':epoch+1,'model':model.state_dict(),'optimizer':optimizer.state_dict(),'scheduler':scheduler.state_dict(),

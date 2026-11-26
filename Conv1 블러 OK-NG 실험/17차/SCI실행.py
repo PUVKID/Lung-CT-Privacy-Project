@@ -126,7 +126,7 @@ def update_status(config,run_id,state,reason=None,current=None):
         if (folder/'current.json').exists():
             value=read_json(folder/'current.json')
             if value.get('run_id')==run_id:
-                item.update({k:value[k] for k in ('state','epoch','best_validation_loss') if k in value})
+                item.update({k:value[k] for k in ('state','epoch','best_validation_loss','attack_progress') if k in value})
                 for split in ('training','validation'):
                     if split in value: item[split+'_accuracy']=value[split]['accuracy']
         if (folder/'dashboard.json').exists():
@@ -136,10 +136,29 @@ def update_status(config,run_id,state,reason=None,current=None):
                             result_path=str(folder/'dashboard.json'))
         items.append(item)
     save_json(runtime/'status.json',{'schema':'stage17-sci-v2','protocol':PROTOCOL,'state':state,'reason':reason,'reasons':[] if reason is None else [reason],
-        'run_id':run_id,'updated_at':now(),'current_condition':current,'main_conditions':40,'auxiliary_conditions':5,'total_conditions':len(items),
+        'run_id':run_id,'updated_at':now(),'current_condition':current,'attack_progress':next((item.get('attack_progress') for item in items if item['id']==current),None),'main_conditions':40,'auxiliary_conditions':5,'total_conditions':len(items),
         'completed_conditions':sum(item['state']=='completed' for item in items),'conditions':items,
         'auxiliary_references':[{'model':'resnet50','split_boundary':'conv1','sigma':s,'reference':f'resnet50_split_trainable_conv1_sigma_{s:03d}'} for s in (0,32)],
         'data_status_path':config['data_status'],'limitations':['결절 중심이 제공된 분류 과제이며 결절 탐지 성능이 아님','원본 주시험과 고정 증강 보조시험은 독립적으로 표시']})
+
+def attack_progress_reporter(config,run_id,condition,min_interval=2.):
+    """실제로 처리한 수만 보고하며 분류 회차와 결과 수치는 보존합니다."""
+    import time
+    last_time=None;last_stage=None
+    def report(info):
+        nonlocal last_time,last_stage
+        stage=tuple(info.get(k) for k in ('phase','layer','dtype','split','epoch'))
+        stamp=time.monotonic()
+        if last_time is not None and stage==last_stage and stamp-last_time<min_interval and info.get('processed')!=info.get('total'): return
+        folder=Path(config['runtime'])/'conditions'/condition['id'];path=folder/'current.json'
+        value=read_json(path)
+        if value.get('run_id')!=run_id: raise ValueError('공격 진행 run_id 불일치')
+        safe={key:info[key] for key in ('phase','layer','dtype','split','epoch','processed','total') if key in info}
+        value.update(state='protecting',attack_progress=safe,updated_at=now())
+        save_json(path,value);update_status(config,run_id,'running',current=condition['id'])
+        last_time,last_stage=stamp,stage
+    return report
+
 
 def evaluate(model,rows,device,precision,path=None,context=None):
     import torch
@@ -174,7 +193,9 @@ def train_condition(config,manifest,condition,run_id,device,resume=False):
     from SCI공격 import run_protection,run_diagnostics
     folder=Path(config['runtime'])/'conditions'/condition['id']
     if (folder/'result.json').exists():
-        if not (folder/'dashboard.json').exists(): save_dashboard(folder,read_json(folder/'result.json'))
+        cached=read_json(folder/'result.json')
+        if cached.get('run_id')!=run_id or cached.get('protocol')!=PROTOCOL or cached.get('condition')!=condition['id']: raise ValueError('조건 완료캐시 run_id·프로토콜·조건 불일치')
+        save_dashboard(folder,cached)
         return
     folder.mkdir(parents=True,exist_ok=True)
     seed_all(config['seed'],device=='cuda')
@@ -250,8 +271,10 @@ def train_condition(config,manifest,condition,run_id,device,resume=False):
         external_rows=cached_external.get(cohort,[])
         if isinstance(external_rows,dict): external_rows=external_rows.get('rows',[])
         external[cohort]=evaluate(model,external_rows,device,precision,folder/'predictions'/f'external_{cohort}.json',context) if external_rows else {'state':'blocked','reason':manifest.get('external_status',{}).get(cohort,{}).get('reason','외부 영상·환자계보·양성악성 주석 미확보')}
-    protection=run_protection(model,{**rows,'test_generated':generated,'validation_original':original_validation,'external':cached_external,'external_status':manifest.get('external_status',{})},config,folder,run_id,reference,device,resume)
-    diagnostic=run_diagnostics(manifest,config,run_id,device,resume)
+    progress=attack_progress_reporter(config,run_id,condition)
+    progress({'phase':'attack_start'})
+    protection=run_protection(model,{**rows,'test_generated':generated,'validation_original':original_validation,'external':cached_external,'external_status':manifest.get('external_status',{})},config,folder,run_id,reference,device,resume,progress)
+    diagnostic=run_diagnostics(manifest,config,run_id,device,resume,progress)
     result={**condition,'condition':condition['id'],'protocol':PROTOCOL,'run_id':run_id,'classifier':classifier,'external':external,
             **protection,'diagnostics':diagnostic,'dataset':{split:{'images':len(records),'patients':len({r['patient_id'] for r in records})} for split,records in rows.items()},
             'limitations':['결절 중심이 제공된 분류이며 탐지 성능 아님','증강은 독립 환자 증가 아님','외부 고정시험은 학습·선정에 사용하지 않음']}

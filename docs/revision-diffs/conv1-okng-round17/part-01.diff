@@ -1,461 +1,461 @@
 --- a/Conv1 블러 OK-NG 실험/17차/README.md
 +++ b/Conv1 블러 OK-NG 실험/17차/README.md
-@@ -75,7 +75,7 @@
+@@ -88,3 +88,13 @@
+ ## 복원 공격·라벨 셔플·화면 평가 집합 보완
  
- ## 확인 범위
- 
--데이터10·화면2와 Rust 특징18경로의 변경없는 근거를 재사용합니다. 이번 고정표본 변경은 신규9·기존엔진9 및 후속 bind 영향1 검사를 수행했으며, 최종 독립검토의 범위로 구분합니다. 실제 LUNA25 입력 준비와 분할 간 환자·원본/영상/픽셀 해시 필드 비중복은 별도 확인했습니다. 합성 CPU 검사는 장시간 GPU 완료나 외부 성능을 입증하지 않습니다. 현재 차수는 미측정이며 수치를 만들어 채우지 않습니다.
-+현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다. 실제 LUNA25 입력 준비와 분할 간 환자·원본/영상/픽셀 해시 필드 비중복은 별도 확인했습니다. 합성 CPU 검사는 장시간 GPU 완료나 외부 성능을 입증하지 않습니다. 현재 차수는 미측정이며 수치를 만들어 채우지 않습니다.
- 
- [다섯 읽기 수준과 구현 설명](../../docs/revisions/conv1-okng-round17.md#user-content-reading-level-5) · [공개 파일 비교](../../docs/revision-diffs/conv1-okng-round17.md) · [저장소 첫 화면](../../README.md)
- 
-@@ -84,3 +84,7 @@
- 원본과 환자별 분할은 보존합니다. 시작 시 학습각5,000개·검증각1,000개·시험각1,000개, 총14,000개를 한 번 고정 생성합니다. 매 에폭 새 표집이나 랜덤증강을 하지 않습니다. 각sigma는 기본셋을 새 일반 폴더에 실제 복사하고 Gaussian을 한 번 적용합니다. 같은sigma 두모델은 동일단계자료를 재사용합니다. 앞강도의결과를다음강도에누적블러하지않습니다.
- 
- 계산용은Gaussian의float32결과TIFF이며 PNG는보기용입니다. 분류와복원공격은같은저장노출값을사용하고모델안에서다시블러하지않습니다. 추가8bit양자화로보호성능이달라지는것을피합니다. 원본검증937·원본시험873개는고정균형평가와따로보존합니다. [전체 저장·계보 설계](docs/고정표본과_강도별사본_설계.md)를 참고합니다. 대량파일생성은정식시작때실행하며이번코드수정의작은합성검사와구분합니다.
+ 블러 전 원본 후보에 Gaussian과 특징 추출·전송 정밀도 변환을 적용해 관측 특징과 맞추는 원본 공간 공격을 추가했습니다. 기존 관측 공간·DCT·학습 디코더·선형 공격은 유지하며 두 고정 초기값의 선택에 시험 정답은 사용하지 않습니다. FP16/INT8 역전파는 STE 근사입니다. 라벨 셔플은 원본 source_id 단위로 하여 사본마다 같은 라벨을 쓰고 원본/증강 후 분포를 따로 기록합니다. 원본·증강 시험, 균형·원본 검증은 API와 화면에서 각각 연결하며 없는 지표는 다른 집합 값으로 대체하지 않습니다. 연결은 float 층 특징, 멤버십은 분류 출력 평가로 전송 정밀도별 복원 공격과 구분합니다. [상세 방법](docs/복원공격과_평가집합_수정.md). 실제 GPU 성능은 아직 미측정입니다.
 +
-+## 복원 공격·라벨 셔플·화면 평가 집합 보완
++## 연결 공격·캐시·공격 진행 후속 수정
 +
-+블러 전 원본 후보에 Gaussian과 특징 추출·전송 정밀도 변환을 적용해 관측 특징과 맞추는 원본 공간 공격을 추가했습니다. 기존 관측 공간·DCT·학습 디코더·선형 공격은 유지하며 두 고정 초기값의 선택에 시험 정답은 사용하지 않습니다. FP16/INT8 역전파는 STE 근사입니다. 라벨 셔플은 원본 source_id 단위로 하여 사본마다 같은 라벨을 쓰고 원본/증강 후 분포를 따로 기록합니다. 원본·증강 시험, 균형·원본 검증은 API와 화면에서 각각 연결하며 없는 지표는 다른 집합 값으로 대체하지 않습니다. 연결은 float 층 특징, 멤버십은 분류 출력 평가로 전송 정밀도별 복원 공격과 구분합니다. [상세 방법](docs/복원공격과_평가집합_수정.md). 실제 GPU 성능은 아직 미측정입니다.
---- a/Conv1 블러 OK-NG 실험/17차/SCIconfig.example.json
-+++ b/Conv1 블러 OK-NG 실험/17차/SCIconfig.example.json
-@@ -59,6 +59,10 @@
-     "learning_rate": 0.001,
-     "seed": 20261125,
-     "inverse_steps": 96,
-+    "raw_initializations": [
-+      "train_mean",
-+      "flat_0.5"
-+    ],
-     "tv_alphas": [
-       0.0001,
-       0.001
++| 항목 | 현재 동작 | 해석 |
++|---|---|---|
++| 연결 공격 | 고유 source_id별 gallery 1개, canonical 우선; query 전체 유지 | 복사본도 같은 원본을 찾으면 정답, 증강은 독립 원본 증가 아님 |
++| 완료 캐시 | 공격은 run_id, 조건은 run_id·protocol·condition 검증 | 다르면 거부하고 원본 저장 결과 보존 |
++| 진행 표시 | 디코더·복원·연결·멤버십·셔플의 실제 처리 수 | 분류 회차·정확도와 구분, 미래 완료 수를 만들지 않음 |
++
++[수정 상세](docs/연결공격_캐시_진행표시_수정.md). 이번 변경은 CPU 신규4/API·화면 함수1, 영향 CPU8/기존 UI2 및 별도 보완검토의 범위입니다. 앞 절의 공격6/영향3/후속1 기록은 선행 수정의 근거이며 이번 소스의 전체 실행 검증이 아닙니다. 실제 GPU 전체·새 데이터 생성·브라우저 조작 검증은 별도입니다. 운영 원본README와 달리 이 공개README는 기존 공개 명령·example설정·포터블실행 안내를 보존합니다.
 --- a/Conv1 블러 OK-NG 실험/17차/SCI공격.py
 +++ b/Conv1 블러 OK-NG 실험/17차/SCI공격.py
-@@ -141,6 +141,66 @@
-         with torch.no_grad(): guess.clamp_(0,1)
-     return guess.detach()[0,0].cpu().numpy()
+@@ -69,7 +69,7 @@
+         source=observed if layer=='photo' else codec.transfer(model.features_from_observed(observed,layer),actual=actual)
+     return source,target,observed
  
-+def _feature_forward_ste(feature,dtype):
-+    """전달 정밀도의 실제 forward 값, 양자화 미분 대신 항등 STE 근사입니다."""
-+    packed=FeatureCodec(dtype).transfer(feature,actual=False)
-+    return packed+(feature-feature.detach())
-+
-+
-+def _raw_gradient_inverse(model,target_feature,layer,mean,steps,tv,dtype,initializations):
-+    """시험 원본 없이 전달 특징과 TV만으로 원본공간 후보를 선택합니다."""
-+    if any(parameter.requires_grad for parameter in model.parameters()):
-+        raise ValueError('원본공격의 source 파라미터는 frozen이어야 합니다.')
-+    if not initializations or len(set(initializations))!=len(initializations):
-+        raise ValueError('고정 초기값 목록 오류')
-+    target_feature=target_feature.detach();candidates=[];best=None;best_image=None
-+    for name in initializations:
-+        if name=='train_mean': initial=np.asarray(mean,dtype=np.float32)
-+        elif name=='flat_0.5': initial=np.full_like(mean,.5,dtype=np.float32)
-+        else: raise ValueError('지원하지 않는 고정 초기값')
-+        guess=torch.tensor(initial,device=target_feature.device)[None,None].requires_grad_(True)
-+        optimizer=torch.optim.Adam([guess],lr=.03);local_best=None;local_image=None
-+        # 마지막 갱신까지 포함해 관측 목적이 가장 작은 iterate를 보존합니다.
-+        for iteration in range(steps+1):
-+            optimizer.zero_grad(set_to_none=True)
-+            feature=_feature_forward_ste(model.features_from_observed(model.blur(guess),layer),dtype)
-+            mismatch=(feature-target_feature).square().mean()
-+            variation=(guess[...,1:,:]-guess[...,:-1,:]).abs().mean()+(guess[...,:,1:]-guess[...,:,:-1]).abs().mean()
-+            loss=mismatch+tv*variation;objective=float(loss.detach())
-+            if not math.isfinite(objective): raise ValueError('원본공격 목적 비유한 값')
-+            if local_best is None or objective<local_best['objective']:
-+                local_best={'initialization':name,'objective':objective,'feature_mse':float(mismatch.detach()),'tv':float(variation.detach()),'iteration':iteration}
-+                local_image=guess.detach()[0,0].cpu().numpy().copy()
-+            if iteration<steps:
-+                loss.backward();optimizer.step()
-+                with torch.no_grad(): guess.clamp_(0,1)
-+        candidates.append(local_best)
-+        if best is None or local_best['objective']<best['objective']: best=local_best;best_image=local_image
-+    return best_image,{'selected_initialization':best['initialization'],'selected_objective':best['objective'],'candidates':candidates,
-+        'selection':'전달 dtype 특징 MSE + TV 가중치×원본 후보 TV만 사용; 시험 원본 접근 없음',
-+        'forward':'features_from_observed(model.blur(raw_guess), layer), preblurred 우회 금지',
-+        'dtype':dtype,'gradient':'dtype cast/동적 symmetric127의 forward는 FeatureCodec와 동일; backward는 항등 STE 근사이며 정확 양자화 미분 아님'}
-+
-+
-+def _shuffle_source_labels(rows,seed):
-+    """원본 단위 라벨 순열을 고정 사본에 전파하고 실제 분포를 반환합니다."""
-+    originals={}
-+    for row in rows:
-+        source=row['source_id'];label=int(row['label'])
-+        if label not in (0,1): raise ValueError('셔플 원본 이진 라벨 오류')
-+        if source in originals and originals[source]!=label: raise ValueError('동일 source_id 원본 라벨 불일치')
-+        originals[source]=label
-+    sources=sorted(originals);labels=[originals[source] for source in sources]
-+    shuffled=np.random.default_rng(seed).permutation(labels).tolist();mapping=dict(zip(sources,shuffled))
-+    output=[{**row,'label':int(mapping[row['source_id']])} for row in rows]
-+    counts=lambda values:{str(label):sum(value==label for value in values) for label in (0,1)}
-+    return output,{'seed':seed,'source_order':'source_id 정렬','mapping':[{'source_id':source,'original_label':originals[source],'shuffled_label':mapping[source]} for source in sources],
-+        'source_counts_before':counts(labels),'source_counts_after':counts(shuffled),
-+        'row_counts_before':counts([row['label'] for row in rows]),'row_counts_after':counts([row['label'] for row in output]),
-+        'main_training_labels_changed':0,'validation_test_labels_changed':0,
-+        'scope':'source_id별 원본 라벨 고정 순열; 모든 사본 동일배정. 원본단위 분포 보존, 증강후 행 50/50 보장 없음'}
-+
-+
- def _linear_inverse(model,value,shape,ratio):
-     weights=model.backbone.conv1.weight.detach().double();std=model.rgb_std.double()
-     kernel=(weights/std.reshape(1,3,1,1)).sum(1).reshape(64,49)
-@@ -173,7 +233,8 @@
-     photo_names=['copy_observed','mean_train','learned_decoder']+['dct_'+str(a) for a in config['reconstruction']['deblur_alphas']]
-     names=photo_names if layer=='photo' else ['mean_train','learned_decoder']+[f'gradient_tv_{tv}' for tv in config['reconstruction']['tv_alphas']]
-     if layer=='conv1': names += [f'linear_{ratio}:{name}' for ratio in (0.,1e-8,1e-6) for name in photo_names]
--    diagnostics=[]
-+    if layer!='photo': names += [f'raw_blur_aware_tv_{tv}' for tv in config['reconstruction']['tv_alphas']]
-+    diagnostics=[];raw_diagnostics=[]
-     def candidates(row):
-         source,target,observed=_source(row,model,layer,codec,True)
-         target_array=target[0,0].cpu().numpy();observed_array=observed[0,0].cpu().numpy()
-@@ -185,6 +246,8 @@
-         else:
-             for tv in config['reconstruction']['tv_alphas']:
-                 result[f'gradient_tv_{tv}']=_gradient_inverse(model,source,layer,mean,config['reconstruction']['inverse_steps'],tv)
-+                result[f'raw_blur_aware_tv_{tv}'],audit=_raw_gradient_inverse(model,source,layer,mean,config['reconstruction']['inverse_steps'],tv,dtype,config['reconstruction'].get('raw_initializations',['train_mean','flat_0.5']))
-+                raw_diagnostics.append({'row_id':row['id'],'tv_weight':tv,**audit})
-         if layer=='conv1':
-             for ratio in (0.,1e-8,1e-6):
-                 inverse,audit=_linear_inverse(model,source,observed_array.shape,ratio);audit['observed_input_mse']=float(np.mean((inverse-observed_array)**2));diagnostics.append(audit)
-@@ -238,6 +301,11 @@
-     result={'run_id':run_id,'selected_family':selected,'selection_unit':'전체 검증 평균 MSE',
-         'validation_selection_by_class_metric':selections,'candidate_metrics':reports,'selected_scores':{key:selected_report[key] for key in selected_report if not key.endswith('_per_source')},
-         'test':selected_report['test'],'privacy_score':selected_report['test']['privacy_error_score'],'examples':examples,'transmission':codec.report(),
-+        'raw_inverse_diagnostics_per_source':raw_diagnostics,
-+        'raw_inverse_summary':{'count':len(raw_diagnostics),'initializations':config['reconstruction'].get('raw_initializations',['train_mean','flat_0.5']),
-+            'forward_evaluations_per_source':0 if layer=='photo' else len(config['reconstruction'].get('raw_initializations',['train_mean','flat_0.5']))*(config['reconstruction']['inverse_steps']+1)*len(config['reconstruction']['tv_alphas']),
-+            'scope':'초기값별 iterate 및 초기값 선택은 전달 특징 MSE+TV만 사용; 공격군 선정은 validation만 사용. 실제 전체 실행시간 미측정'},
-+        'attack_target_spaces':{'gradient_tv':'관측공간 특징 역복원, 최종 원본과 평가','raw_blur_aware_tv':'명시적 블러를 통과하는 원본공간 최적화, 최종 원본과 평가'},
-         'linear_inverse_diagnostics_per_source':diagnostics,'linear_inverse_summary':{'count':len(diagnostics),'detail_location':'동일 result.json의 linear_inverse_diagnostics_per_source'},'classification_from_transmitted_features':classification,
-         'score_interpretation':'복원 상대오차·구조 차이 탐색 점수이며 재식별 성공확률·안전 보장 아님','external':{}}
-     for cohort in ('CSTL','Histo'):
-@@ -384,9 +452,9 @@
-         estimator.fit(data['train'][0][:,mask],data['train'][1])
-         coarse[name]={split:binary_report(data[split][1],estimator.decision_function(data[split][0][:,mask])) for split in ('validation','test')}
-     seed_all(config['diagnostics']['shuffle_seed'],device=='cuda')
--    shuffled=[dict(row) for row in rows['train']]
--    labels=[row['label'] for row in shuffled];np.random.default_rng(config['diagnostics']['shuffle_seed']).shuffle(labels)
--    for row,label in zip(shuffled,labels): row['label']=int(label)
-+    shuffled,shuffle_audit=_shuffle_source_labels(rows['train'],config['diagnostics']['shuffle_seed'])
-+    labels=[row['label'] for row in shuffled]
-+    save_json(folder/'label_shuffle_mapping.json',{'run_id':run_id,**shuffle_audit})
-     weights=config['weights']['resnet50'];model=SCIResNet('resnet50',0,'conv1',weights['path'],weights['sha256']).to(device)
-     optimizer=torch.optim.AdamW(model.parameters(),lr=config['learning_rate'],weight_decay=config['weight_decay'])
-     scheduler=torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,patience=3,factor=.5)
-@@ -421,7 +489,9 @@
-     precision='cuda_bf16' if device=='cuda' else 'cpu_fp32'
-     shuffled_report={split:evaluate(model,rows[split],device,precision) for split in ('validation','test')}
-     result={'run_id':run_id,'coarse':coarse,'label_shuffle':{'epochs':config['diagnostics']['shuffle_epochs'],'reports':shuffled_report,
--        'permutation_scope':'train 라벨만 고정 순열, validation/test의 원래 라벨 보존','label_permutation_sha256':hashlib.sha256(json.dumps(labels).encode()).hexdigest(),
-+        'permutation_scope':shuffle_audit['scope'],'label_permutation_sha256':hashlib.sha256(json.dumps(labels).encode()).hexdigest(),
-+        'source_label_shuffle':{key:value for key,value in shuffle_audit.items() if key!='mapping'},
-+        'mapping_file':'label_shuffle_mapping.json','mapping_sha256':digest(folder/'label_shuffle_mapping.json'),'mapping_count':len(shuffle_audit['mapping']),
-         'note':'고정 짧은 진단이며 주200epoch 학습과 동등한 성능 비교 아님; 결과로 강도·분할·정답을 수정하지 않음'},
-         'used_for_model_or_attack_selection':False,'coarse_note':'중앙 사각형은 결절·폐 마스크가 아니며 바깥에도 결절·신체 정보가 있을 수 있음'}
+-def _fit(model,rows,layer,codec,config,folder,run_id,resume):
++def _fit(model,rows,layer,codec,config,folder,run_id,resume,progress=None):
+     rc=config['reconstruction'];seed_all(rc['seed'],next(model.parameters()).device.type=='cuda')
+     source,_,_=_source(rows['train'][0],model,layer,codec,False)
+     decoder=(decoder_model() if layer=='photo' else FeatureDecoder(source.shape[1],source.shape[-1],config['image_size'])).to(source.device)
+@@ -91,13 +91,15 @@
+             disk_guard(folder,int(config['reserve_gib']*1024**3)+sum(p.numel()*p.element_size() for p in decoder.parameters())*4)
+             decoder.train();train_loss=0.
+             order=list(rows['train']);random_order=np.random.default_rng(rc['seed']+epoch).permutation(len(order))
+-            for index in random_order:
++            for processed,index in enumerate(random_order,1):
+                 source,target,_=_source(order[index],model,layer,codec,False)
+                 optimizer.zero_grad(set_to_none=True);loss=(decoder(source)-target).square().mean();loss.backward();optimizer.step();train_loss+=float(loss)
++                if progress and (processed==1 or processed%20==0 or processed==len(order)): progress({"phase":"decoder_train","epoch":epoch+1,"processed":processed,"total":len(order)})
+             decoder.eval();validation=0.
+             with torch.no_grad():
+-                for row in rows['validation']:
++                for processed,row in enumerate(rows['validation'],1):
+                     source,target,_=_source(row,model,layer,codec,False);validation+=float((decoder(source)-target).square().mean())
++                    if progress and (processed==1 or processed%20==0 or processed==len(rows['validation'])): progress({'phase':'decoder_validation','epoch':epoch+1,'processed':processed,'total':len(rows['validation'])})
+             validation/=len(rows['validation']);scheduler.step(validation)
+             improved=validation<best
+             if improved: best,bad=validation,0
+@@ -221,11 +223,15 @@
+     return reconstruction[0,0].cpu().numpy(),{'rank':int((s>cutoff).sum()),'condition':float(s[0]/s[-1]) if s[-1]>cutoff else None,
+         'rcond':1e-7,'lambda_ratio':ratio,'raw_min':float(raw.min()),'raw_max':float(raw.max()),'clipped_fraction':float(((raw<0)|(raw>1)).double().mean()),'feature_forward_mse':residual}
+ 
+-def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',resume=False):
++def attack_exposure(model,rows,config,folder,run_id,layer='photo',dtype='f32',resume=False,progress=None):
+     from SCI실행 import image
+     folder.mkdir(parents=True,exist_ok=True)
+-    if (folder/'result.json').exists(): return read_json(folder/'result.json')
+-    codec=FeatureCodec(dtype);decoder=_fit(model,rows,layer,codec,config,folder/'decoder',run_id,resume)
++    if (folder/'result.json').exists():
++        cached=read_json(folder/'result.json')
++        if not run_id or cached.get('run_id')!=run_id: raise ValueError('공격 완료캐시 run_id 불일치')
++        if progress: progress({'phase':'cached_complete','layer':layer,'dtype':dtype})
++        return cached
++    codec=FeatureCodec(dtype);decoder=_fit(model,rows,layer,codec,config,folder/'decoder',run_id,resume,progress)
+     mean=np.zeros((config['image_size'],config['image_size']),dtype=np.float64)
+     from SCI고정표본 import read_raw
+     for row in rows['train']: mean+=read_raw(row) if row.get('materialized') else image(row)
+@@ -258,7 +264,7 @@
+         return target_array,result,transmitted_logit
+     photo_decoder=decoder
+     if layer=='conv1':
+-        photo_decoder=_fit(model,rows,'photo',FeatureCodec('f32'),config,folder.parents[1]/'photo'/'decoder',run_id,True)
++        photo_decoder=_fit(model,rows,'photo',FeatureCodec('f32'),config,folder.parents[1]/'photo'/'decoder',run_id,True,progress)
+     measurements={};prior_errors={};selections={};classification={}
+     datasets={key:rows[key] for key in ('validation','test','test_generated','validation_original') if key in rows}
+     for cohort,external in rows.get('external',{}).items():
+@@ -267,10 +273,12 @@
+     for split,records in datasets.items():
+         measurements[split]={name:[] for name in names};prior_errors[split]=[]
+         classified=[]
+-        for row in records:
++        for processed,row in enumerate(records,1):
++            if progress: progress({'phase':'reconstruction','split':split,'processed':processed-1,'total':len(records)})
+             target,outputs,logit=candidates(row);prior_errors[split].append(float(np.mean((mean-target)**2)))
+             if logit is not None: classified.append(logit)
+             for name in names: measurements[split][name].append(_measure(target,outputs[name]))
++            if progress: progress({'phase':'reconstruction','split':split,'processed':processed,'total':len(records)})
+         if classified:
+             from 지표 import binary_report
+             classification[split]=binary_report([row['label'] for row in records],classified)
+@@ -318,7 +326,7 @@
+     if 'test_generated' in selected_report: result['test_generated']=selected_report['test_generated']
      save_json(folder/'result.json',result);return result
---- a/Conv1 블러 OK-NG 실험/17차/config.example.json
-+++ b/Conv1 블러 OK-NG 실험/17차/config.example.json
-@@ -59,6 +59,10 @@
-     "learning_rate": 0.001,
-     "seed": 20261125,
-     "inverse_steps": 96,
-+    "raw_initializations": [
-+      "train_mean",
-+      "flat_0.5"
-+    ],
-     "tv_alphas": [
-       0.0001,
-       0.001
---- a/Conv1 블러 OK-NG 실험/17차/docs/복원공격과_평가집합_수정.md
-+++ b/Conv1 블러 OK-NG 실험/17차/docs/복원공격과_평가집합_수정.md
-@@ -0,0 +1,34 @@
-+# 복원 공격·라벨 셔플·평가 집합 연결
+ 
+-def membership(model,rows,folder,test_key='test'):
++def membership(model,rows,folder,test_key='test',progress=None):
+     from sklearn.metrics import roc_auc_score
+     from SCI실행 import image
+     device=next(model.parameters()).device
+@@ -328,10 +336,11 @@
+     def scores(records):
+         result=[]
+         with torch.no_grad():
+-            for row in records:
++            for processed,row in enumerate(records,1):
+                 logit=float(model(torch.tensor(image(row),device=device)[None,None])[0]);p=1/(1+math.exp(-max(-700,min(700,logit))))
+                 loss=float(np.logaddexp(0,logit)-row['label']*logit)
+                 result.append({'patient_id':row['patient_id'],'label':row['label'],'confidence':max(p,1-p),'negative_loss':-loss})
++                if progress and (processed==1 or processed%20==0 or processed==len(records)): progress({'phase':'membership','split':test_key,'processed':processed,'total':len(records)})
+         return result
+     member_val=scores([r for r in rows['train'] if r['patient_id'] in first]);member_test=scores([r for r in rows['train'] if r['patient_id'] in second])
+     nonmember_val=scores(rows['validation']);nonmember_test=scores(rows[test_key])
+@@ -368,43 +377,61 @@
+         'weighting':'멤버 여부×건강라벨 셀 동일 가중치, 각 셀의 환자 동일 가중치, 환자내 결절 분산',
+         'interpretation':'라벨·환자 가중치의 알려진 점수 공격; 높은 AUC를 cohort 차이와 분리 해석해야 하며 개인정보 유출 확률 아님'}
+ 
+-def linking(model,records,layer,topk):
++def linking(model,records,layer,topk,progress=None):
+     from SCI실행 import image
+     from SCI고정표본 import read_raw
+     if not records: return {'state':'blocked','reason':'연결 평가 원본 없음'}
+-    device=next(model.parameters()).device;gallery=[];query=[]
++    # 원본별 gallery 하나. 증강 query는 그대로 평가하되 행 번호가 아닌 source_id로 판정합니다.
++    sources={}
++    source_id=lambda row:row.get('source_id',row['id'])
++    for row in records:
++        key=source_id(row)
++        if key in sources and sources[key]['patient_id']!=row['patient_id']: raise ValueError('연결 source_id 환자 불일치')
++        if key not in sources or row.get('canonical'): sources[key]=row
++    gallery_rows=list(sources.values());device=next(model.parameters()).device;gallery=[];query=[]
++    def vector(x):
++        values=F.adaptive_avg_pool2d(model.features_from_observed(x,layer),(2,2)).flatten().float().cpu().numpy()
++        return values/max(float(np.linalg.norm(values)),1e-20)
+     with torch.no_grad():
+-        for row in records:
++        for row in gallery_rows:
++            raw=torch.tensor(read_raw(row) if row.get('materialized') else image(row),device=device)[None,None]
++            gallery.append(vector(raw))
++        for processed,row in enumerate(records,1):
+             raw=torch.tensor(read_raw(row) if row.get('materialized') else image(row),device=device)[None,None]
+             observed=torch.tensor(image(row),device=device)[None,None] if row.get('preblurred') else model.observed(raw)
+-            for collection,observed in ((gallery,raw),(query,observed)):
+-                vector=F.adaptive_avg_pool2d(model.features_from_observed(observed,layer),(2,2)).flatten().float().cpu().numpy()
+-                collection.append(vector/max(float(np.linalg.norm(vector)),1e-20))
++            query.append(vector(observed))
++            if progress and (processed==1 or processed%20==0 or processed==len(records)): progress({'phase':'linking','processed':processed,'total':len(records)})
+     gallery=np.stack(gallery);query=np.stack(query);source_counts={};patient_counts={}
+     for k in topk:
+         source_correct,patient_correct=0,0
+-        for index,vector in enumerate(query):
+-            positions=np.argsort(-(gallery@vector),kind='stable')[:min(k,len(records))]
+-            source_correct+=int(index in positions);patient_correct+=int(any(records[p]['patient_id']==records[index]['patient_id'] for p in positions))
++        for index,query_vector in enumerate(query):
++            positions=np.argsort(-(gallery@query_vector),kind='stable')[:min(k,len(gallery_rows))]
++            source_correct+=int(any(source_id(gallery_rows[p])==source_id(records[index]) for p in positions))
++            patient_correct+=int(any(gallery_rows[p]['patient_id']==records[index]['patient_id'] for p in positions))
+         source_counts[str(k)]={'correct':source_correct,'total':len(records),'accuracy':source_correct/len(records)}
+         patient_counts[str(k)]={'correct':patient_correct,'total':len(records),'accuracy':patient_correct/len(records)}
+-    return {'topk_source':source_counts,'topk_patient':patient_counts,'count':len(records),'gallery_size':len(records),
++    return {'topk_source':source_counts,'topk_patient':patient_counts,'count':len(records),'gallery_size':len(gallery_rows),
++            'gallery_unit':'고유 source_id별 원본 대표 1개; canonical 우선',
++            'query_unit':'선택 집합의 모든 행; 증강 보조는 독립 원본 수 아님',
+             'assumption':'정답 결절·환자 목록을 가진 닫힌 집합 원본 ROI gallery와 같은 출처 블러 query. 독립 현실 재식별 성능 아님'}
+ 
+-def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume):
 +
-+17차의 원본 자료, 환자 분할, 클래스별 고정 학습5,000·검증1,000·시험1,000개 계약은 유지합니다. 저장 공간 이전은 별도 작업이며 이 수정으로 경로·파일·학습 프로세스를 옮기지 않습니다.
++def run_protection(model,rows,config,folder,run_id,checkpoint,device,resume,progress=None):
+     for parameter in model.parameters(): parameter.requires_grad_(False)
+     model.eval();attacks=folder/'attacks'
+-    photo=attack_exposure(model,rows,config,attacks/'photo',run_id,resume=resume)
++    def reporter(layer,dtype):
++        return (lambda info:progress({**info,'layer':layer,'dtype':dtype})) if progress else None
++    photo=attack_exposure(model,rows,config,attacks/'photo',run_id,resume=resume,progress=reporter('photo','f32'))
+     features={};connections={}
+     for layer in config['feature_layers']:
+         features[layer]={'precisions':{}}
+         for dtype in config['feature_dtypes']:
+-            features[layer]['precisions'][dtype]=attack_exposure(model,rows,config,attacks/layer/dtype,run_id,layer,dtype,resume)
+-        connections[layer]={'test':linking(model,rows['test'],layer,config['connection_topk']),
+-            'test_generated':linking(model,rows.get('test_generated',[]),layer,config['connection_topk']),'external':{}}
++            features[layer]['precisions'][dtype]=attack_exposure(model,rows,config,attacks/layer/dtype,run_id,layer,dtype,resume,reporter(layer,dtype))
++        connections[layer]={'test':linking(model,rows['test'],layer,config['connection_topk'],reporter(layer,'f32')),
++            'test_generated':linking(model,rows.get('test_generated',[]),layer,config['connection_topk'],reporter(layer,'f32')),'external':{}}
+         for cohort in ('CSTL','Histo'):
+             external=rows.get('external',{}).get(cohort,[]);external=external.get('rows',[]) if isinstance(external,dict) else external
+-            connections[layer]['external'][cohort]=linking(model,external,layer,config['connection_topk'])
++            connections[layer]['external'][cohort]=linking(model,external,layer,config['connection_topk'],reporter(layer,'f32'))
+     examples=[]
+     from SCI실행 import image
+     for label,group in ((0,'OK'),(1,'NG')):
+@@ -423,11 +450,11 @@
+         entry['feature_reconstructed']=next(e for e in features['conv1']['precisions']['f32']['examples'] if e['label']==group)['reconstructed']
+         examples.append(entry)
+     return {'attack':photo,'feature_attacks':features,'feature_attack':features['conv1']['precisions']['f32'],'linking':connections,
+-            'membership':membership(model,rows,folder),
+-            'membership_generated':membership(model,rows,folder/'generated','test_generated') if 'test_generated' in rows else None,'examples':examples,'packet':{'count':0,'mean_bytes':None,'reason':'사진 float 블러는 별도 네트워크 전송 실측 없음; 특징 실제 전송은 층·정밀도별 transmission 참조'},
++            'membership':membership(model,rows,folder,progress=progress),
++            'membership_generated':membership(model,rows,folder/'generated','test_generated',progress) if 'test_generated' in rows else None,'examples':examples,'packet':{'count':0,'mean_bytes':None,'reason':'사진 float 블러는 별도 네트워크 전송 실측 없음; 특징 실제 전송은 층·정밀도별 transmission 참조'},
+             'metric_inheritance':{'P0_M1_to_M15':None,'reason':'원래 정의를 확인하지 못해 승계 완료로 주장하지 않음; 실제 raw/상대오차/구조 점수만 보고'}}
+ 
+-def run_diagnostics(manifest,config,run_id,device,resume):
++def run_diagnostics(manifest,config,run_id,device,resume,progress=None):
+     """주실험 선정과 분리한 고정 train-only 진단을 한 실행에서 한 번 수행합니다."""
+     from SCI실행 import image,Dataset,evaluate
+     from SCI모델 import SCIResNet,freeze_running_stats
+@@ -481,6 +508,7 @@
+             (loss/divisor).backward()
+             if (batch+1)%config['accumulation']==0 or batch+1==len(loader): optimizer.step();optimizer.zero_grad(set_to_none=True)
+             loss_sum+=float(loss)*len(y);count+=len(y)
++            if progress and (batch==0 or (batch+1)%20==0 or batch+1==len(loader)): progress({'phase':'label_shuffle','epoch':epoch+1,'processed':count,'total':len(selected)})
+         scheduler.step(loss_sum/count);history.append({'epoch':epoch+1,'training_shuffled_loss':loss_sum/count,'run_id':run_id})
+         path=folder/'shuffle_epochs'/f'epoch_{epoch+1:04d}.pth'
+         save_torch(path,{'run_id':run_id,'epoch':epoch+1,'model':model.state_dict(),'optimizer':optimizer.state_dict(),'scheduler':scheduler.state_dict(),
+--- a/Conv1 블러 OK-NG 실험/17차/SCI실행.py
++++ b/Conv1 블러 OK-NG 실험/17차/SCI실행.py
+@@ -126,7 +126,7 @@
+         if (folder/'current.json').exists():
+             value=read_json(folder/'current.json')
+             if value.get('run_id')==run_id:
+-                item.update({k:value[k] for k in ('state','epoch','best_validation_loss') if k in value})
++                item.update({k:value[k] for k in ('state','epoch','best_validation_loss','attack_progress') if k in value})
+                 for split in ('training','validation'):
+                     if split in value: item[split+'_accuracy']=value[split]['accuracy']
+         if (folder/'dashboard.json').exists():
+@@ -136,10 +136,29 @@
+                             result_path=str(folder/'dashboard.json'))
+         items.append(item)
+     save_json(runtime/'status.json',{'schema':'stage17-sci-v2','protocol':PROTOCOL,'state':state,'reason':reason,'reasons':[] if reason is None else [reason],
+-        'run_id':run_id,'updated_at':now(),'current_condition':current,'main_conditions':40,'auxiliary_conditions':5,'total_conditions':len(items),
++        'run_id':run_id,'updated_at':now(),'current_condition':current,'attack_progress':next((item.get('attack_progress') for item in items if item['id']==current),None),'main_conditions':40,'auxiliary_conditions':5,'total_conditions':len(items),
+         'completed_conditions':sum(item['state']=='completed' for item in items),'conditions':items,
+         'auxiliary_references':[{'model':'resnet50','split_boundary':'conv1','sigma':s,'reference':f'resnet50_split_trainable_conv1_sigma_{s:03d}'} for s in (0,32)],
+         'data_status_path':config['data_status'],'limitations':['결절 중심이 제공된 분류 과제이며 결절 탐지 성능이 아님','원본 주시험과 고정 증강 보조시험은 독립적으로 표시']})
 +
-+## 복원 공격
++def attack_progress_reporter(config,run_id,condition,min_interval=2.):
++    """실제로 처리한 수만 보고하며 분류 회차와 결과 수치는 보존합니다."""
++    import time
++    last_time=None;last_stage=None
++    def report(info):
++        nonlocal last_time,last_stage
++        stage=tuple(info.get(k) for k in ('phase','layer','dtype','split','epoch'))
++        stamp=time.monotonic()
++        if last_time is not None and stage==last_stage and stamp-last_time<min_interval and info.get('processed')!=info.get('total'): return
++        folder=Path(config['runtime'])/'conditions'/condition['id'];path=folder/'current.json'
++        value=read_json(path)
++        if value.get('run_id')!=run_id: raise ValueError('공격 진행 run_id 불일치')
++        safe={key:info[key] for key in ('phase','layer','dtype','split','epoch','processed','total') if key in info}
++        value.update(state='protecting',attack_progress=safe,updated_at=now())
++        save_json(path,value);update_status(config,run_id,'running',current=condition['id'])
++        last_time,last_stage=stamp,stage
++    return report
 +
-+기존 특징 역복원은 전달 특징과 일치하는 **블러 후 사진**을 추정하는 공격으로 보존합니다. 별도로 **블러 전 원본 후보 → 알려진 Gaussian 블러 → 특징 추출 → 전송 정밀도 변환** 경로를 거쳐 전달 특징과 맞추는 원본 공간 공격을 추가합니다.
+ 
+ def evaluate(model,rows,device,precision,path=None,context=None):
+     import torch
+@@ -174,7 +193,9 @@
+     from SCI공격 import run_protection,run_diagnostics
+     folder=Path(config['runtime'])/'conditions'/condition['id']
+     if (folder/'result.json').exists():
+-        if not (folder/'dashboard.json').exists(): save_dashboard(folder,read_json(folder/'result.json'))
++        cached=read_json(folder/'result.json')
++        if cached.get('run_id')!=run_id or cached.get('protocol')!=PROTOCOL or cached.get('condition')!=condition['id']: raise ValueError('조건 완료캐시 run_id·프로토콜·조건 불일치')
++        save_dashboard(folder,cached)
+         return
+     folder.mkdir(parents=True,exist_ok=True)
+     seed_all(config['seed'],device=='cuda')
+@@ -250,8 +271,10 @@
+         external_rows=cached_external.get(cohort,[])
+         if isinstance(external_rows,dict): external_rows=external_rows.get('rows',[])
+         external[cohort]=evaluate(model,external_rows,device,precision,folder/'predictions'/f'external_{cohort}.json',context) if external_rows else {'state':'blocked','reason':manifest.get('external_status',{}).get(cohort,{}).get('reason','외부 영상·환자계보·양성악성 주석 미확보')}
+-    protection=run_protection(model,{**rows,'test_generated':generated,'validation_original':original_validation,'external':cached_external,'external_status':manifest.get('external_status',{})},config,folder,run_id,reference,device,resume)
+-    diagnostic=run_diagnostics(manifest,config,run_id,device,resume)
++    progress=attack_progress_reporter(config,run_id,condition)
++    progress({'phase':'attack_start'})
++    protection=run_protection(model,{**rows,'test_generated':generated,'validation_original':original_validation,'external':cached_external,'external_status':manifest.get('external_status',{})},config,folder,run_id,reference,device,resume,progress)
++    diagnostic=run_diagnostics(manifest,config,run_id,device,resume,progress)
+     result={**condition,'condition':condition['id'],'protocol':PROTOCOL,'run_id':run_id,'classifier':classifier,'external':external,
+             **protection,'diagnostics':diagnostic,'dataset':{split:{'images':len(records),'patients':len({r['patient_id'] for r in records})} for split,records in rows.items()},
+             'limitations':['결절 중심이 제공된 분류이며 탐지 성능 아님','증강은 독립 환자 증가 아님','외부 고정시험은 학습·선정에 사용하지 않음']}
+--- a/Conv1 블러 OK-NG 실험/17차/docs/연결공격_캐시_진행표시_수정.md
++++ b/Conv1 블러 OK-NG 실험/17차/docs/연결공격_캐시_진행표시_수정.md
+@@ -0,0 +1,14 @@
++# 연결 공격·완료 캐시·공격 진행 표시 수정
 +
-+원본 공간 공격은 학습 평균영상과 일정 밝기 등 사전에 고정한 초기값에서 시작합니다. 같은 전달 특징과 TV 사전 목적만으로 초기값별 후보를 선택하며 시험 정답 사진의 MSE로 초기값을 고르지 않습니다. 공격군을 고르는 정책 역시 검증 집합 전용입니다. 시험 원본은 최종 복원 오차를 측정할 때만 사용합니다.
++| 항목 | 현재 동작 | 해석 |
++|---|---|---|
++| 연결 gallery | 고유 source_id마다 원본 대표 1개, canonical 우선 | 복사본이 비교 후보 수를 부풀리지 않음 |
++| 연결 정답 | Top-k의 source_id 또는 patient_id 일치 | 같은 원본의 다른 사본도 정답. 모든 query는 유지 |
++| 완료 캐시 | 복원 공격은 run_id, 조건 결과는 run_id·프로토콜·조건 확인 | 불일치·누락은 오류로 중단하고 원파일 보존 |
++| 공격 진행 | 복원모델 학습·검증, 복원 평가, 연결·멤버십·셔플의 실제 처리 수를 기록 | 분류 회차·정확도와 분리. 같은 단계는 대체로2초 간격, 완료/단계 전환 즉시 기록 |
 +
-+FP16·INT8은 실제 전송 값과 같은 전방 정밀도 변환을 사용하되, 최적화의 역전파는 STE 근사입니다. 양자화의 엄밀한 미분이나 최강 공격임을 주장하지 않습니다. 고정 반복 횟수와 초기값은 공개 설정·결과에 기록하고, 공격을 추가했다는 사실과 실제 보호 점수가 달라졌는지를 구분합니다. 원래 사진/DCT/선형 역복원/학습 디코더를 없애지 않습니다.
++증강 보조 연결 점수는 증강 query 행 기준입니다. 고유 gallery 원본 수와 query 수를 별도로 보고하며 증강이 독립 환자를 늘리지 않습니다. Top-k가 gallery 수보다 크면 실제 후보 수까지만 검색합니다. 같은 source_id의 환자 정보가 충돌하면 거부합니다.
 +
-+## 라벨 셔플 대조
++화면에는 예를 들어 `원본 복원 평가 · conv1 · f16 · test · 처리 7 / 20`이 표시됩니다. 사진 한 장의 최적화가 끝나기 전에는 완료 수를 올리지 않습니다. 이것은 경과시간/남은시간 예측이나 가상 그래프 애니메이션이 아닙니다. 복원 공격은 분류가 끝난 뒤에도 오래 걸릴 수 있습니다.
 +
-+무작위 라벨은 증강한 개별 행마다 다시 부여하지 않습니다. 학습 원본 결절의 source_id 단위로 고정 순열을 만들고 그 원본의 모든 사본에 같은 셔플 라벨을 적용합니다. 원본별 초기 라벨이 모순되면 중단합니다. 학습 원본 단위 순열은 원본 라벨 개수를 보존하지만, 사본 수가 서로 달라 증강 후 행별 클래스 비율까지 같아지는 것은 아니므로 두 분포를 따로 기록합니다.
-+
-+주실험 학습·검증·시험의 정답은 바꾸지 않습니다. 셔플은 별도 진단이며 주실험의 모델·강도·분할을 선택하는 데 사용하지 않습니다.
-+
-+## 화면에서 구분할 평가 집합
-+
-+| 선택 | 원본 결절 수 또는 생성 행수 | 화면 연결 |
-+|---|---:|---|
-+| 원본 시험 | 873 | 원본 분류·복원·연결·멤버십 |
-+| 고정 증강 시험 | 2,000 | 생성 시험의 분류·복원·연결·멤버십 |
-+| 고정 균형 검증 | 2,000 | 모델 선정과 공격 선정에 사용한 검증. 없는 연결·멤버십은 미측정 |
-+| 원본 검증 | 937 | 원본 검증 분류·복원. 없는 연결·멤버십은 미측정 |
-+
-+연결 평가는 현재 층별 float 특징의 닫힌 후보 집합 비교이며 FP16·INT8 복원 공격 선택과 별도입니다. 멤버십 역시 현재 분류 출력 기반 공격입니다. 정밀도 선택만으로 이 두 지표를 해당 전송 정밀도에서 새로 측정한 것처럼 표시하지 않습니다. 외부 코호트에 내부 증강 시험이나 검증을 대입하지 않습니다.
-+
-+원래 다크/라이트, 왼쪽 메뉴, 그래프·툴팁·사진 설명 디자인은 유지합니다. 측정하지 않은 조합은 다른 집합 값으로 대체하지 않고 미측정으로 표시합니다.
-+
-+## 검증 범위
-+
-+발견 경로에 대한 작은 합성 CPU·API 검사를 먼저 수행하고 실제 변경 소스·로그를 결합합니다. 기존 자료·Rust 등의 변경없는 검사는 반복하지 않습니다. 장기 GPU 실험, 실제 의료영상의 원본 복원 성능, 모든 공격에 대한 프라이버시 보장은 이 코드 수정 검사와 별도입니다. 12차는 계속 유지하고 17차 정식 실행은 아직 시작하지 않습니다.
---- a/Conv1 블러 OK-NG 실험/17차/tests/SCI공격_원본목표_셔플_검사.py
-+++ b/Conv1 블러 OK-NG 실험/17차/tests/SCI공격_원본목표_셔플_검사.py
-@@ -0,0 +1,68 @@
-+"""작은 CPU 합성 공격·계보 검사. 실제 의료영상 성능 검사가 아닙니다."""
-+import copy,inspect,sys,unittest
++작은 CPU 합성 재현과 API·화면 함수 검사를 사용했습니다. 실제 전체17차 학습, 실제 복원 성능, 브라우저 클릭 검증을 수행했다는 뜻은 아닙니다. 12차·자료 이동·표본수·분할·블러 강도·모델 선정 기준을 바꾸지 않습니다. 정확도를100% 미만으로 강제하지 않습니다.
+--- a/Conv1 블러 OK-NG 실험/17차/tests/SCI연결_캐시_진행_검사.py
++++ b/Conv1 블러 OK-NG 실험/17차/tests/SCI연결_캐시_진행_검사.py
+@@ -0,0 +1,50 @@
++"""연결 원본 식별·다른 run 캐시 거부·공격 진행 CPU 합성 검사."""
++import sys,json,tempfile,unittest
 +from pathlib import Path
 +from unittest.mock import patch
 +import numpy as np
 +import torch
 +sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-+import SCI공격 as attack
-+from legacy.model import GaussianDCTBlur
-+torch.set_num_threads(2)
-+
++import SCI공격 as a
++import SCI실행 as runner
 +class Tiny(torch.nn.Module):
-+    def __init__(self,sigma):
-+        super().__init__();self.weight=torch.nn.Parameter(torch.tensor(1.),requires_grad=False)
-+        self.blur=GaussianDCTBlur(sigma);self.preblurred=True
-+    def observed(self,x): raise AssertionError('원본공격은 observed 우회 금지')
-+    def features_from_observed(self,x,layer): return x*self.weight
-+
-+class 검사(unittest.TestCase):
-+    def test_raw_objective_and_frozen(self):
-+        model=Tiny(1.5);raw=torch.linspace(0,1,256).reshape(1,1,16,16)
-+        target=model.blur(raw);mean=np.full((16,16),.5,dtype=np.float32)
-+        before=model.weight.clone()
-+        result,audit=attack._raw_gradient_inverse(model,target,'conv1',mean,90,0.,'f32',['train_mean','flat_0.5'])
-+        reconstructed=torch.from_numpy(result)[None,None]
-+        self.assertLess(float((model.blur(reconstructed)-target).square().mean()),1e-4)
-+        self.assertEqual(audit['selected_objective'],min(r['objective'] for r in audit['candidates']))
-+        self.assertFalse(model.weight.requires_grad);self.assertIsNone(model.weight.grad)
-+        torch.testing.assert_close(before,model.weight)
-+        self.assertNotIn('raw_target',inspect.signature(attack._raw_gradient_inverse).parameters)
-+
-+    def test_sigma_zero_deterministic_initializations(self):
-+        model=Tiny(0);mean=np.full((8,8),.2,dtype=np.float32);target=torch.full((1,1,8,8),.5)
-+        a,first=attack._raw_gradient_inverse(model,target,'conv1',mean,0,0.,'f32',['train_mean','flat_0.5'])
-+        np.random.seed(937);torch.manual_seed(14)
-+        b,second=attack._raw_gradient_inverse(model,target,'conv1',mean,0,0.,'f32',['train_mean','flat_0.5'])
-+        np.testing.assert_array_equal(a,b);np.testing.assert_array_equal(a,np.full((8,8),.5))
-+        self.assertEqual(first,second);self.assertEqual(first['selected_initialization'],'flat_0.5')
-+
-+    def test_dtype_forward_and_gradient(self):
-+        for dtype in ('f32','f16','i8'):
-+            value=torch.tensor([-.37,.123,.98],requires_grad=True)
-+            actual=attack._feature_forward_ste(value,dtype)
-+            torch.testing.assert_close(actual,attack.FeatureCodec(dtype).transfer(value,False))
-+            actual.sum().backward();torch.testing.assert_close(value.grad,torch.ones_like(value))
-+
-+    def test_source_shuffle_preserves_source_distribution(self):
-+        rows=[{'id':str(i),'source_id':s,'label':y} for i,(s,y) in enumerate([('a',0),('a',0),('b',0),('c',1),('c',1),('c',1)])]
-+        original=copy.deepcopy(rows)
-+        result,audit=attack._shuffle_source_labels(rows,42)
-+        self.assertEqual(rows,original);self.assertEqual(audit['source_counts_before'],audit['source_counts_after'])
-+        for source in ('a','b','c'): self.assertEqual(len({r['label'] for r in result if r['source_id']==source}),1)
-+        again,_=attack._shuffle_source_labels(list(reversed(rows)),42)
-+        self.assertEqual({r['id']:r['label'] for r in result},{r['id']:r['label'] for r in again})
-+        self.assertEqual(sum(audit['row_counts_after'].values()),6)
-+
-+    def test_conflicting_source_fails(self):
-+        with self.assertRaisesRegex(ValueError,'불일치'):
-+            attack._shuffle_source_labels([{'source_id':'a','label':0},{'source_id':'a','label':1}],42)
-+
-+    def test_integration_contract(self):
-+        source=inspect.getsource(attack.attack_exposure)
-+        self.assertIn('_raw_gradient_inverse(',source);self.assertIn("if split=='validation':",source)
-+        diagnostics=inspect.getsource(attack.run_diagnostics)
-+        self.assertIn('_shuffle_source_labels(',diagnostics);self.assertIn('label_shuffle_mapping.json',diagnostics)
-+        self.assertFalse(torch.cuda.is_initialized())
-+
-+if __name__=='__main__': unittest.main(verbosity=2)
---- a/Conv1 블러 OK-NG 실험/17차/tests/SCI엔진_검사.py
-+++ b/Conv1 블러 OK-NG 실험/17차/tests/SCI엔진_검사.py
-@@ -117,11 +117,11 @@
-             runtime=Path(tmp);condition=runtime/'conditions'/'fixture';config=read_json(ROOT/'SCIconfig.json');config['image_size']=32
-             rows={split:[{'id':split+str(label),'patient_id':split+str(label),'label':label,'value':.2+.6*label} for label in (0,1)] for split in ('train','validation','test','test_generated')}
-             rows['external']={};model=Exposed()
--            with patch.object(engine,'image',side_effect=lambda row:np.full((32,32),row['value'],dtype=np.float32)),patch.object(attacks,'_fit',return_value=Decoder()),patch.object(attacks,'_gradient_inverse',return_value=np.full((32,32),.5,dtype=np.float32)):
-+            with patch.object(engine,'image',side_effect=lambda row:np.full((32,32),row['value'],dtype=np.float32)),patch.object(attacks,'_fit',return_value=Decoder()),patch.object(attacks,'_gradient_inverse',return_value=np.full((32,32),.5,dtype=np.float32)),patch.object(attacks,'_raw_gradient_inverse',return_value=(np.full((32,32),.5,dtype=np.float32),{'selected_initialization':'fixture'})):
-                 photo=attacks.attack_exposure(model,rows,config,condition/'attacks'/'photo','fixture')
-                 before=digest(condition/'attacks'/'photo'/'result.json')
-                 feature=attacks.attack_exposure(model,rows,config,condition/'attacks'/'stem'/'f16','fixture','stem','f16')
--            self.assertEqual(len(photo['candidate_metrics']),9);self.assertEqual(len(feature['candidate_metrics']),4)
-+            self.assertEqual(len(photo['candidate_metrics']),9);self.assertEqual(len(feature['candidate_metrics']),6)
-             self.assertEqual(before,digest(condition/'attacks'/'photo'/'result.json'))
-             self.assertEqual(feature['classification_from_transmitted_features']['test']['total'],2)
-             self.assertGreater(feature['transmission']['packet_bytes'],0)
-@@ -154,6 +154,9 @@
-         from 실행 import dashboard_projection
-         detailed={'run_id':'fixture','linear_inverse_diagnostics_per_source':[{'rank':49,'residual':.0001,'observed_input_mse':.00001}]*150000,'linear_inverse_summary':{'count':150000}}
-         compact=dashboard_projection(detailed)
-+        raw_nested={'feature':{'raw_inverse_diagnostics_per_source':[{'candidates':[{'objective':.01}]}]*2000,'raw_inverse_summary':{'count':2000}}}
-+        projected=dashboard_projection(raw_nested)
-+        self.assertNotIn('raw_inverse_diagnostics_per_source',projected['feature']);self.assertEqual(projected['feature']['raw_inverse_summary']['count'],2000)
-         self.assertNotIn('linear_inverse_diagnostics_per_source',compact);self.assertEqual(compact['linear_inverse_summary']['count'],150000)
-         self.assertGreater(len(json.dumps(detailed)),4*1024**2);self.assertLess(len(json.dumps(compact)),1024)
-         with tempfile.TemporaryDirectory() as tmp:
-@@ -197,5 +200,12 @@
-             self.assertEqual(set(result['coarse']),{'coarse_full','coarse_center','coarse_outer'})
-             self.assertFalse(result['used_for_model_or_attack_selection']);self.assertEqual(result['label_shuffle']['epochs'],1)
-             self.assertTrue((runtime/'diagnostics/shuffle_epochs/epoch_0001.pth').exists())
-+            shuffle=read_json(runtime/'diagnostics/label_shuffle_mapping.json')
-+            self.assertEqual(shuffle['source_counts_before'],shuffle['source_counts_after'])
-+            self.assertEqual(shuffle['main_training_labels_changed'],0);self.assertEqual(shuffle['validation_test_labels_changed'],0)
-+            self.assertNotIn('mapping',result['label_shuffle']['source_label_shuffle'])
-+            self.assertEqual(result['label_shuffle']['mapping_count'],len(shuffle['mapping']))
-+            self.assertEqual(result['label_shuffle']['mapping_sha256'],digest(runtime/'diagnostics/label_shuffle_mapping.json'))
-+            self.assertEqual([[row['label'] for row in rows[split]] for split in ('train','validation','test')],[[0,1],[0,1],[0,1]])
- 
- if __name__=='__main__': unittest.main(verbosity=2)
---- a/Conv1 블러 OK-NG 실험/17차/tests/SCI화면_평가집합_검사.mjs
-+++ b/Conv1 블러 OK-NG 실험/17차/tests/SCI화면_평가집합_검사.mjs
-@@ -0,0 +1,7 @@
++ def __init__(self): super().__init__();self.p=torch.nn.Parameter(torch.tensor(1.))
++ def observed(self,x): return x
++ def features_from_observed(self,x,layer): return x
++class Tests(unittest.TestCase):
++ def test_duplicate_sources_share_gallery_identity(self):
++  rows=[{'id':f'copy{i}','source_id':'a','patient_id':'p','materialized':True,'preblurred':True,'canonical':i==0} for i in range(4)]
++  with patch('SCI실행.image',return_value=np.ones((4,4),dtype=np.float32)),patch('SCI고정표본.read_raw',return_value=np.ones((4,4),dtype=np.float32)):
++   result=a.linking(Tiny(),rows,'conv1',[1,5])
++  self.assertEqual(result['topk_source']['1']['correct'],4)
++  self.assertEqual(result['gallery_size'],1)
++  self.assertEqual(result['count'],4)
++ def test_cache_rejects_other_or_missing_run(self):
++  with tempfile.TemporaryDirectory() as tmp:
++   for value in [{'run_id':'other'},{}]:
++    p=Path(tmp);(p/'result.json').write_text(json.dumps(value),encoding='utf-8')
++    with self.assertRaisesRegex(ValueError,'run_id'):
++     a.attack_exposure(None,{}, {},p,'current')
++   (p/'result.json').write_text(json.dumps({'run_id':'current','value':3}),encoding='utf-8')
++   self.assertEqual(a.attack_exposure(None,{}, {},p,'current')['value'],3)
++ def test_progress_preserves_classifier_epoch_and_rejects_stale(self):
++  with tempfile.TemporaryDirectory() as tmp:
++   config={'runtime':tmp,'sigmas':[],'roi_pixel_spacing_mm':.1,'data_status':'fixture'}
++   condition=runner.experiment_plan(config)[0];p=Path(tmp)/'conditions'/condition['id'];p.mkdir(parents=True)
++   (p/'current.json').write_text(json.dumps({'run_id':'r','epoch':41,'state':'classifying'}),encoding='utf-8')
++   report=runner.attack_progress_reporter(config,'r',condition,min_interval=0)
++   report({'phase':'reconstruction','layer':'conv1','dtype':'f16','processed':7,'total':20})
++   current=json.loads((p/'current.json').read_text(encoding='utf-8'))
++   status=json.loads((Path(tmp)/'status.json').read_text(encoding='utf-8'))
++   self.assertEqual(current['epoch'],41);self.assertEqual(current['state'],'protecting')
++   self.assertEqual(status['attack_progress']['processed'],7)
++   self.assertEqual(status['attack_progress']['total'],20)
++   self.assertNotIn('patient_id',status['attack_progress'])
++   (p/'current.json').write_text(json.dumps({'run_id':'other','epoch':1}),encoding='utf-8')
++   with self.assertRaisesRegex(ValueError,'run_id'): report({'phase':'done'})
++ def test_linking_progress_is_actual_count(self):
++  rows=[{'id':'a','patient_id':'p'}];events=[]
++  with patch('SCI실행.image',return_value=np.ones((4,4),dtype=np.float32)):
++   a.linking(Tiny(),rows,'conv1',[1],progress=events.append)
++  self.assertEqual(events[-1]['processed'],1);self.assertEqual(events[-1]['total'],1)
++if __name__=='__main__':unittest.main()
+--- a/Conv1 블러 OK-NG 실험/17차/tests/SCI진행_API_검사.mjs
++++ b/Conv1 블러 OK-NG 실험/17차/tests/SCI진행_API_검사.mjs
+@@ -0,0 +1,9 @@
 +import {createServer} from '../대시보드 화면/server.mjs';
 +import {promises as fs} from 'node:fs';import os from 'node:os';import path from 'node:path';import assert from 'node:assert/strict';import vm from 'node:vm';
-+const root=await fs.mkdtemp(path.join(os.tmpdir(),'sci17-eval-')),id='fixture',dir=path.join(root,'conditions',id),protocol='stage17-luna25-2d-patient-v2',server=createServer({work:root,dataRoot:root});
-+await fs.mkdir(dir,{recursive:true});const put=(p,x)=>fs.writeFile(p,JSON.stringify(x));await put(path.join(root,'status.json'),{schema:'stage17-sci-v2',protocol,run_id:'r',conditions:[{id}]});
-+const report=count=>({count,mse:.1,patient_id:'secret'});await put(path.join(dir,'dashboard.json'),{protocol,run_id:'r',classifier:{validation_original:{total:937}},attack:{candidate_metrics:{copy:{validation:report(2000),validation_original:report(937),validation_original_by_class:{OK:report(400),NG:report(537)}}}},linking:{conv1:{test:{count:873},test_generated:{count:2000,patient_id:'secret'}}},membership:{test_auc:.1,nonmember_count:873},membership_generated:{test_auc:.2,nonmember_count:2000,patient_id:'secret'}});
-+await new Promise(r=>server.listen(0,'127.0.0.1',r));try{const response=await fetch(`http://127.0.0.1:${server.address().port}/api/condition?id=${id}`);assert.equal(response.status,200);const {result}=await response.json();assert.equal(result.classifier.validation_original.total,937);assert.equal(result.attack.candidate_metrics.copy.validation_original.count,937);assert.equal(result.attack.candidate_metrics.copy.validation_original_by_class.OK.count,400);assert.equal(result.linking.conv1.test_generated.count,2000);assert.equal(result.membership_generated.nonmember_count,2000);assert.doesNotMatch(JSON.stringify(result),/secret/);
-+const src=await fs.readFile(new URL('../대시보드 화면/app.js',import.meta.url),'utf8'),line=src.split('\n').find(x=>x.startsWith('function renderPrivacy()'));const nodes={exposure:{value:'conv1'},precision:{value:'f16'},'privacy-split':{value:'test_generated'},cohort:{value:'LUNA25'},'privacy-table':{replaceChildren(){ctx.rows=[]}}};const ctx=vm.createContext({nodes,rows:[],texts:{},JSON});vm.runInContext(`let lastResult=null;function $(id){return nodes[id]}function text(id,v){texts[id]=v}function raw(x){return typeof x==='number'?String(x):'미측정'}function score(x){return typeof x==='number'?x.toFixed(1):'미측정'}function tableRow(b,r){rows.push(r)}\n${line}\nglobalThis.run=x=>{lastResult=x;renderPrivacy()}`,ctx);ctx.run(result);assert.match(ctx.texts['additional-attacks'],/2000/);assert.match(ctx.texts['additional-attacks'],/0.2/);nodes.precision.value='i8';ctx.run(result);assert.match(ctx.texts['additional-attacks'],/2000/);nodes['privacy-split'].value='test';ctx.run(result);assert.match(ctx.texts['additional-attacks'],/873/);assert.match(ctx.texts['additional-attacks'],/0.1/);nodes['privacy-split'].value='validation';ctx.run(result);assert.match(ctx.texts['additional-attacks'],/미측정/);assert.doesNotMatch(ctx.texts['additional-attacks'],/873|2000/);nodes['privacy-split'].value='validation_original';nodes.exposure.value='photo';ctx.run(result);assert.equal(ctx.rows[0][1],937);assert.match(ctx.texts['additional-attacks'],/미측정/);assert.doesNotMatch(ctx.texts['additional-attacks'],/873|2000/);console.log('평가 집합 API와 화면 동작 통과');}finally{await new Promise(r=>server.close(r));}
++const root=await fs.mkdtemp(path.join(os.tmpdir(),'sci-progress-'));const server=createServer({work:root,dataRoot:root});
++const progress={phase:'reconstruction',layer:'conv1',dtype:'f16',split:'test',processed:7,total:20,patient_id:'secret'};
++await fs.writeFile(path.join(root,'status.json'),JSON.stringify({schema:'stage17-sci-v2',protocol:'stage17-luna25-2d-patient-v2',run_id:'r',attack_progress:progress,conditions:[]}));
++await new Promise(r=>server.listen(0,'127.0.0.1',r));try{
++const data=await (await fetch(`http://127.0.0.1:${server.address().port}/api/status`)).json();assert.equal(data.attack_progress.processed,7);assert.equal(data.attack_progress.total,20);assert.doesNotMatch(JSON.stringify(data),/secret/);
++const src=await fs.readFile(new URL('../대시보드 화면/app.js',import.meta.url),'utf8');const line=src.split('\n').find(x=>x.startsWith('function attackProgressText('));const ctx=vm.createContext({});vm.runInContext(line+';globalThis.format=attackProgressText',ctx);assert.match(ctx.format(data.attack_progress),/원본 복원 평가.*conv1.*f16.*7 \/ 20/);assert.equal(ctx.format(null),'');console.log('공격 진행 API·한국어 표시 검사 통과');
++}finally{await new Promise(r=>server.close(r));await fs.rm(root,{recursive:true,force:true});}
 --- a/Conv1 블러 OK-NG 실험/17차/대시보드 화면/app.js
 +++ b/Conv1 블러 OK-NG 실험/17차/대시보드 화면/app.js
-@@ -20,8 +20,8 @@
- function metric(label,x){const d=document.createElement('div'),l=document.createElement('span'),v=document.createElement('strong'),note=document.createElement('small');l.textContent=label;v.textContent=pct(x?.accuracy);note.textContent=`원비율 ${raw(x?.accuracy)} · 정답 ${raw(x?.correct)} / ${raw(x?.total)}`;d.append(l,v,note);$('classification').append(d)}
- function tableRow(body,values){const tr=document.createElement('tr');for(const value of values){const td=document.createElement('td');td.textContent=value==null?'미측정':typeof value==='object'?JSON.stringify(value):String(value);tr.append(td)}body.append(tr)}
- function renderConditions(s){const rows=Array.isArray(s.conditions)?s.conditions:[],table=$('conditions-table'),select=$('condition'),old=select.value;table.replaceChildren();select.replaceChildren(new Option('저장된 조건 대기',''));for(const c of rows){select.add(new Option([c.model,c.regime,c.split_boundary,'σ '+c.sigma].filter(x=>x!=null).join(' · '),c.id));tableRow(table,[c.cohort||'LUNA25',c.model,c.regime,c.split_boundary,c.sigma,c.state||'대기'])}if(old&&[...select.options].some(o=>o.value===old))select.value=old;else if(rows.length)select.value=rows[0].id;if(!rows.length)tableRow(table,['LUNA25','—','—','—','—','조건 기록 대기'])}
--function renderResult(result,current,history){lastResult=result;const kind=$('test-kind').value,cohort=$('cohort').value;const c=cohort==='LUNA25'?result?.classifier:result?.external?.[cohort]?.classifier;const test=c?.[kind];const external=cohort==='LUNA25'?null:result?.external?.[cohort];text('result-notice',external?.state==='blocked'?`${cohort} 외부 시험 대기 · ${external.reason||'준비 미완료'}`:test?'저장된 평가 결과':'선택한 조건의 평가 기록 대기');$('classification').replaceChildren();metric('학습',current?.training);metric('검증',current?.validation);metric(cohort+' · '+(kind==='test'?'원본 주평가':'증강 보조'),test);const table=$('metrics-table');table.replaceChildren();const labels={accuracy:'정확도',correct:'정답 수',total:'결절 수',ok_accuracy:'OK 정확도',ng_accuracy:'NG 정확도',balanced_accuracy:'균형 정확도',auc:'ROC AUC',pr_auc:'PR AUC',sensitivity:'민감도',specificity:'특이도',precision:'정밀도',npv:'음성 예측도',f1:'F1',mcc:'MCC',brier_score:'브라이어 점수',ece_10_bins:'ECE · 10구간',wilson95:'결절 단위 Wilson 구간 · 보조',interval_degenerate:'구간 퇴화 여부',interval_degenerate_reason:'퇴화 구간 해석',confusion_matrix:'혼동행렬',patient_ci95:'환자 단위 95% 구간',n_patients:'환자 수',interval_note:'구간 설명',undefined_reasons:'정의 불가 사유'};for(const [k,label] of Object.entries(labels))tableRow(table,[label,test?.[k],test?.undefined_reasons?.[k]||'']);const h=Array.isArray(history)?history:[];graph($('plot'),h.map(x=>String(x.epoch)),[{name:'학습',color:'var(--blue)',values:h.map(x=>x.training)},{name:'검증',color:'var(--violet)',values:h.map(x=>x.validation)}],'회차');renderPrivacy();renderPhotos()}
--function renderPrivacy(){const body=$('privacy-table');body.replaceChildren();const exposure=$('exposure').value,precision=$('precision').value,split=$('privacy-split').value;const base=exposure==='photo'?lastResult?.attack:lastResult?.feature_attacks?.[exposure]?.precisions?.[precision],cohort=$('cohort').value;const data=cohort==='LUNA25'?base:base?.external?.[cohort];if(!data||data.state==='blocked'||(cohort!=='LUNA25'&&split!=='test')){text('privacy-note',`${exposure==='photo'?'사진':exposure+' 특징'} · ${precision}: ${data?.reason||'평가 기록 대기'}`);tableRow(body,['평가 기록 대기','미측정','미측정','미측정','원본 결과가 저장될 때 표시합니다.']);text('additional-attacks','연결 Top-k와 멤버십 AUC 실측 기록 대기');return}text('privacy-note','선정 공격: '+(data.selected_family||'미기록')+' · 선택 정밀도 '+precision);let n=0;for(const [name,c] of Object.entries(data.candidate_metrics||{})){for(const [label,r] of [['전체',c[split]],['OK',c[split+'_by_class']?.OK],['NG',c[split+'_by_class']?.NG]]){if(!r)continue;n++;tableRow(body,[name+' · '+label,r.count??'미측정',[raw(r.mse),raw(r.ssim),r.psnr===null&&r.psnr_infinite_count>0?'무한 포함':raw(r.psnr)].join(' / '),[score(r.privacy_error_score),score(r.privacy_structure_score)].join(' / '),`상대 원비율 ${raw(r.privacy_error_ratio_raw)} · 제한 ${r.privacy_error_clipping_applied===true?'적용':r.privacy_error_clipping_applied===false?'없음':'미기록'} · 구조 원비율 ${raw(r.privacy_structure_ratio_raw)} · 제한 ${r.privacy_structure_clipping_applied===true?'적용':r.privacy_structure_clipping_applied===false?'없음':'미기록'} · ${r.undefined_reason||'저장값'}`])}}if(!n)tableRow(body,['평가 기록 대기','미측정','미측정','미측정','선택한 조건의 기록이 없습니다.']);const link=cohort==='LUNA25'?lastResult?.linking?.[exposure]?.test:lastResult?.linking?.[exposure]?.external?.[cohort],member=cohort==='LUNA25'?lastResult?.membership:lastResult?.membership?.external?.[cohort];const parts=[];if(link)parts.push('연결 Top-k · 결절 '+JSON.stringify(link.topk_source??'미측정')+' · 환자 '+JSON.stringify(link.topk_patient??'미측정')+' · 시험 수 '+raw(link.count)+' · 비교군 '+raw(link.gallery_size));if(member)parts.push('멤버십 시험 AUC '+raw(cohort==='LUNA25'?member.test_auc:member.auc)+' · '+(member.reason||'실측 기록'));if(data.transmission)parts.push('전송 총 바이트 '+raw(data.transmission.total_bytes)+' · 양자화 MSE '+raw(data.transmission.quantization_mse));text('additional-attacks',parts.length?parts.join(' · '):'연결 Top-k와 멤버십 AUC 실측 기록 대기')}
-+function renderResult(result,current,history){lastResult=result;const kind=$('test-kind').value,cohort=$('cohort').value;const c=cohort==='LUNA25'?result?.classifier:result?.external?.[cohort]?.classifier;const test=c?.[kind];const external=cohort==='LUNA25'?null:result?.external?.[cohort];text('result-notice',external?.state==='blocked'?`${cohort} 외부 시험 대기 · ${external.reason||'준비 미완료'}`:test?'저장된 평가 결과':'선택한 조건의 평가 기록 대기');$('classification').replaceChildren();metric('학습',current?.training);metric('검증',current?.validation);metric(cohort+' · '+(kind==='test'?'원본 주평가':kind==='test_generated'?'증강 보조':'원본 검증'),test);const table=$('metrics-table');table.replaceChildren();const labels={accuracy:'정확도',correct:'정답 수',total:'결절 수',ok_accuracy:'OK 정확도',ng_accuracy:'NG 정확도',balanced_accuracy:'균형 정확도',auc:'ROC AUC',pr_auc:'PR AUC',sensitivity:'민감도',specificity:'특이도',precision:'정밀도',npv:'음성 예측도',f1:'F1',mcc:'MCC',brier_score:'브라이어 점수',ece_10_bins:'ECE · 10구간',wilson95:'결절 단위 Wilson 구간 · 보조',interval_degenerate:'구간 퇴화 여부',interval_degenerate_reason:'퇴화 구간 해석',confusion_matrix:'혼동행렬',patient_ci95:'환자 단위 95% 구간',n_patients:'환자 수',interval_note:'구간 설명',undefined_reasons:'정의 불가 사유'};for(const [k,label] of Object.entries(labels))tableRow(table,[label,test?.[k],test?.undefined_reasons?.[k]||'']);const h=Array.isArray(history)?history:[];graph($('plot'),h.map(x=>String(x.epoch)),[{name:'학습',color:'var(--blue)',values:h.map(x=>x.training)},{name:'검증',color:'var(--violet)',values:h.map(x=>x.validation)}],'회차');renderPrivacy();renderPhotos()}
-+function renderPrivacy(){const body=$('privacy-table');body.replaceChildren();const exposure=$('exposure').value,precision=$('precision').value,split=$('privacy-split').value;const base=exposure==='photo'?lastResult?.attack:lastResult?.feature_attacks?.[exposure]?.precisions?.[precision],cohort=$('cohort').value;const data=cohort==='LUNA25'?base:base?.external?.[cohort];if(!data||data.state==='blocked'||(cohort!=='LUNA25'&&split!=='test')){text('privacy-note',`${exposure==='photo'?'사진':exposure+' 특징'} · ${precision}: ${data?.reason||'평가 기록 대기'}`);tableRow(body,['평가 기록 대기','미측정','미측정','미측정','원본 결과가 저장될 때 표시합니다.']);renderAdditional();return}text('privacy-note','선정 공격: '+(data.selected_family||'미기록')+' · 선택 정밀도 '+precision);let n=0;for(const [name,c] of Object.entries(data.candidate_metrics||{})){for(const [label,r] of [['전체',c[split]],['OK',c[split+'_by_class']?.OK],['NG',c[split+'_by_class']?.NG]]){if(!r)continue;n++;tableRow(body,[name+' · '+label,r.count??'미측정',[raw(r.mse),raw(r.ssim),r.psnr===null&&r.psnr_infinite_count>0?'무한 포함':raw(r.psnr)].join(' / '),[score(r.privacy_error_score),score(r.privacy_structure_score)].join(' / '),`상대 원비율 ${raw(r.privacy_error_ratio_raw)} · 제한 ${r.privacy_error_clipping_applied===true?'적용':r.privacy_error_clipping_applied===false?'없음':'미기록'} · 구조 원비율 ${raw(r.privacy_structure_ratio_raw)} · 제한 ${r.privacy_structure_clipping_applied===true?'적용':r.privacy_structure_clipping_applied===false?'없음':'미기록'} · ${r.undefined_reason||'저장값'}`])}}if(!n)tableRow(body,['평가 기록 대기','미측정','미측정','미측정','선택한 조건의 기록이 없습니다.']);renderAdditional();function renderAdditional(){const link=cohort==='LUNA25'?lastResult?.linking?.[exposure]?.[split]:split==='test'?lastResult?.linking?.[exposure]?.external?.[cohort]:null,member=cohort==='LUNA25'?(split==='test'?lastResult?.membership:split==='test_generated'?lastResult?.membership_generated:null):split==='test'?lastResult?.membership?.external?.[cohort]:null;const parts=[];parts.push(link?'연결 Top-k · 결절 '+JSON.stringify(link.topk_source??'미측정')+' · 환자 '+JSON.stringify(link.topk_patient??'미측정')+' · 평가 수 '+raw(link.count)+' · 비교군 '+raw(link.gallery_size):'연결 미측정');parts.push(member?'멤버십 AUC '+raw(cohort==='LUNA25'?member.test_auc:member.auc)+' · 학습 포함 '+raw(member.member_count)+' · 평가 수 '+raw(member.nonmember_count):'멤버십 미측정');if(data?.transmission)parts.push('복원 공격 전송 총 바이트 '+raw(data.transmission.total_bytes)+' · 양자화 MSE '+raw(data.transmission.quantization_mse));text('additional-attacks',parts.join(' · '))}}
+@@ -24,6 +24,7 @@
+ function renderPrivacy(){const body=$('privacy-table');body.replaceChildren();const exposure=$('exposure').value,precision=$('precision').value,split=$('privacy-split').value;const base=exposure==='photo'?lastResult?.attack:lastResult?.feature_attacks?.[exposure]?.precisions?.[precision],cohort=$('cohort').value;const data=cohort==='LUNA25'?base:base?.external?.[cohort];if(!data||data.state==='blocked'||(cohort!=='LUNA25'&&split!=='test')){text('privacy-note',`${exposure==='photo'?'사진':exposure+' 특징'} · ${precision}: ${data?.reason||'평가 기록 대기'}`);tableRow(body,['평가 기록 대기','미측정','미측정','미측정','원본 결과가 저장될 때 표시합니다.']);renderAdditional();return}text('privacy-note','선정 공격: '+(data.selected_family||'미기록')+' · 선택 정밀도 '+precision);let n=0;for(const [name,c] of Object.entries(data.candidate_metrics||{})){for(const [label,r] of [['전체',c[split]],['OK',c[split+'_by_class']?.OK],['NG',c[split+'_by_class']?.NG]]){if(!r)continue;n++;tableRow(body,[name+' · '+label,r.count??'미측정',[raw(r.mse),raw(r.ssim),r.psnr===null&&r.psnr_infinite_count>0?'무한 포함':raw(r.psnr)].join(' / '),[score(r.privacy_error_score),score(r.privacy_structure_score)].join(' / '),`상대 원비율 ${raw(r.privacy_error_ratio_raw)} · 제한 ${r.privacy_error_clipping_applied===true?'적용':r.privacy_error_clipping_applied===false?'없음':'미기록'} · 구조 원비율 ${raw(r.privacy_structure_ratio_raw)} · 제한 ${r.privacy_structure_clipping_applied===true?'적용':r.privacy_structure_clipping_applied===false?'없음':'미기록'} · ${r.undefined_reason||'저장값'}`])}}if(!n)tableRow(body,['평가 기록 대기','미측정','미측정','미측정','선택한 조건의 기록이 없습니다.']);renderAdditional();function renderAdditional(){const link=cohort==='LUNA25'?lastResult?.linking?.[exposure]?.[split]:split==='test'?lastResult?.linking?.[exposure]?.external?.[cohort]:null,member=cohort==='LUNA25'?(split==='test'?lastResult?.membership:split==='test_generated'?lastResult?.membership_generated:null):split==='test'?lastResult?.membership?.external?.[cohort]:null;const parts=[];parts.push(link?'연결 Top-k · 결절 '+JSON.stringify(link.topk_source??'미측정')+' · 환자 '+JSON.stringify(link.topk_patient??'미측정')+' · 평가 수 '+raw(link.count)+' · 비교군 '+raw(link.gallery_size):'연결 미측정');parts.push(member?'멤버십 AUC '+raw(cohort==='LUNA25'?member.test_auc:member.auc)+' · 학습 포함 '+raw(member.member_count)+' · 평가 수 '+raw(member.nonmember_count):'멤버십 미측정');if(data?.transmission)parts.push('복원 공격 전송 총 바이트 '+raw(data.transmission.total_bytes)+' · 양자화 MSE '+raw(data.transmission.quantization_mse));text('additional-attacks',parts.join(' · '))}}
  function photoSettings(settings,kind){settings=settings||{};const details=[`검증 분할 · ${settings.model||'모델 미기록'} · σ ${settings.sigma??'미기록'}`],g=settings.geometry||{};if(Number.isFinite(g.fov_mm))details.push(`시야 ${g.fov_mm}mm`);if(Number.isFinite(g.output_size))details.push(`출력 ${g.output_size}px`);if(Number.isFinite(g.pixel_spacing_mm)){details.push(`간격 ${g.pixel_spacing_mm}mm/px`);if(Number.isFinite(settings.sigma))details.push(`블러 σ ${settings.sigma*g.pixel_spacing_mm}mm`)}if(kind==='reconstructed')details.push('사진 복원 공격: '+(settings.photo_selected_attack||'미기록'));if(kind==='feature_reconstructed'){const f=settings.feature_reconstruction||{};details.push('특징 복원 공격: '+(f.selected_attack||'미기록'),'계층 '+(f.layer||'미기록'),'정밀도 '+(f.dtype||'미기록'))}if(kind==='feature_map'&&settings.feature_map)details.push(settings.feature_map);return details.join(' · ')}
  let examples=[];function renderPhotos(){const grid=$('photo-grid');grid.replaceChildren();if($('cohort').value!=='LUNA25'){text('photo-note','선택한 외부 코호트의 사진 기록 대기');return}let n=0;for(const e of examples){for(const kind of e.available||[]){n++;const url='/api/image?id='+encodeURIComponent($('condition').value)+'&index='+e.index+'&kind='+kind,b=document.createElement('button'),img=document.createElement('img'),label=document.createElement('strong');b.className='gallery-card';b.type='button';img.src=url;img.alt=(e.label||'')+' · '+kind;label.textContent=img.alt;b.append(img,label);b.addEventListener('click',()=>{$('photo-large').src=url;$('photo-large').alt=img.alt;text('photo-title',img.alt);text('photo-explanation','실제 저장된 검증 사진입니다. 특징 지도는 진단 영상이 아닙니다.');text('photo-settings',photoSettings(e.settings,kind));$('photo-modal').showModal()});grid.append(b)}}text('photo-note',n?`실제 저장 사진 ${n}장 · 클릭하여 확대`:'저장된 대표 사진이 없습니다.')}
- async function refresh(){const mine=++seq;try{const [statusResponse,dataResponse]=await Promise.all(['/api/status','/api/data'].map(u=>fetch(u,{cache:'no-store'})));if(!statusResponse.ok||!dataResponse.ok)throw Error('조회 오류');const [s,d]=await Promise.all([statusResponse.json(),dataResponse.json()]);text('data-status',({waiting:'준비 상태 기록 대기',blocked:'자료 또는 주석 준비 차단',downloading:'공식 자료 다운로드 중',ready:'환자 분할 자료 준비 완료'})[d.status]||'준비 상태 확인 중');text('data-detail',[(d.reasons||[]).join(' · '),(d.download_completed||[]).length?'다운로드 완료: '+d.download_completed.join(', ')+' · 주석 확인 및 전체 준비 완료와 별개':'',d.bytes!=null?`다운로드 ${d.bytes} / ${d.expected_bytes??'미기록'} 바이트`:'',...(Object.entries(d.summary||{}).map(([k,v])=>`${k}: 결절 ${raw(v.nodules)} · 환자 ${raw(v.patients)}`))].filter(Boolean).join(' · '));if(mine!==seq)return;const nextRun=typeof s.run_id==='string'?s.run_id:null;if(shouldClosePinned(pinnedKey,currentRun,nextRun,new Set([pinnedKey])))closeTip();currentRun=nextRun;renderedKeys=new Set();lastStatus=s;renderConditions(s);text('status',s.message||'17차 데이터 준비 대기');text('updated',s.updated_at?'기록 시각 '+s.updated_at:'');text('progress',s.detail||'공식 데이터와 주석 준비를 기다립니다.');const id=$('condition').value;if(!id){examples=[];renderResult(null,null,[]);if(pinnedKey)closeTip();return}const r=await fetch('/api/condition?id='+encodeURIComponent(id),{cache:'no-store'});if(!r.ok)throw Error('조건 조회 오류');const c=await r.json();if(mine!==seq)return;examples=c.examples||[];renderResult(c.result,c.current,c.history);if(shouldClosePinned(pinnedKey,currentRun,currentRun,renderedKeys))closeTip()}catch{if(mine!==seq)return;closeTip();text('status','자료 조회 오류');text('progress','17차 상태를 읽지 못했습니다.');examples=[];renderResult(null,null,[])}}
---- a/Conv1 블러 OK-NG 실험/17차/대시보드 화면/index.html
-+++ b/Conv1 블러 OK-NG 실험/17차/대시보드 화면/index.html
-@@ -1 +1 @@
--<!doctype html><html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>폐 결절 블러와 특징 노출 실험 · 17차</title><link rel="stylesheet" href="/astryx-neutral.css"><link rel="stylesheet" href="/16.css"><link rel="stylesheet" href="/astryx-tokens.css"><link rel="stylesheet" href="/astryx-research.css"><style>.fields{display:flex;gap:14px;flex-wrap:wrap}.fields label{display:grid;gap:5px}.panel+.panel{margin-top:16px}.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.result-grid div{padding:14px;background:var(--bg);border-radius:10px}.result-grid strong{display:block;font-size:19px}.detail-table{min-width:800px}.detail-table th,.detail-table td{text-align:left;white-space:normal}.tip{position:fixed;z-index:10;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:12px;padding:14px;max-width:320px;max-height:60vh;overflow:auto;box-shadow:var(--shadow)}.chart-svg{width:100%;min-width:650px;height:auto}.chart-scroll{overflow:auto}.chart-axis{stroke:var(--line)}.chart-label{fill:var(--muted);font-size:12px}.chart-point:focus-visible{outline:none;stroke:var(--ink);stroke-width:3}.chart-line{fill:none;stroke-width:2.5}</style></head><body><header class="top"><div class="wrap top-inner"><div><div class="eyebrow">17차 · 조회 전용</div><h1>폐 결절 블러와 특징 노출 실험</h1></div><button id="theme" class="button" type="button">다크 모드로 전환</button></div></header><main class="wrap"><div class="statusline"><span id="status" class="status-badge">데이터 준비 대기</span><span id="updated" class="ages"></span></div><div class="workspace-grid"><aside class="workspace-sidebar"><div class="sidebar-title">실험 화면</div><p class="sidebar-caption">실제 저장된 진행과 결과를 확인합니다.</p><nav class="workspace-tabs" aria-label="화면 선택"><button class="workspace-tab" data-view="overview" aria-selected="true">전체 현황</button><button class="workspace-tab" data-view="results" aria-selected="false">조건별 분류</button><button class="workspace-tab" data-view="privacy" aria-selected="false">복원과 공격</button><button class="workspace-tab" data-view="history" aria-selected="false">회차 그래프</button><button class="workspace-tab" data-view="photos" aria-selected="false">사진과 특징</button></nav></aside><div class="workspace-content"><div class="panel fields"><label>데이터셋<select id="cohort"><option value="LUNA25">LUNA25 · 개발</option><option value="CSTL">CSTL · 외부 시험</option><option value="Histo">Histo · 외부 시험</option></select></label><label>실험 조건<select id="condition"><option value="">저장된 조건 대기</option></select></label></div><section class="workspace-view" id="overview"><div class="view-heading"><h2>데이터와 실험 준비</h2><p>LUNA25 원본과 공식 주석을 확인하고 환자 단위로 분할합니다.</p></div><div class="panel"><h2>현재 상태</h2><p id="progress">공식 데이터와 주석 준비를 기다립니다.</p><p class="fine-note">데이터 다운로드·주석 연결·준비 완료·학습·공격 평가는 각각 다른 단계입니다. 저장된 사실만 표시합니다.</p></div><div class="panel"><h2>공식 자료 준비</h2><p id="data-status">준비 상태 기록 대기</p><p id="data-detail" class="fine-note"></p></div><div class="panel"><h2>연구 구성</h2><p>주 비교는 ResNet50의 첫 합성곱 분할과 전체 연결을 각각 20개 블러 강도에서 독립 학습합니다. ResNet18과 분할 위치 비교는 별도 보조 실험입니다.</p><p>양성 결절은 OK, 악성 결절은 NG로 구분합니다. 환자별 분할을 사용하며 외부 시험 자료는 학습과 선정에 사용하지 않습니다.</p></div><div class="panel"><h2>시험 결과의 해석</h2><p>무증강 원본 결절과 환자 단위 구간을 주평가로 사용합니다. 고정 증강 2,000장 시험은 같은 시험 원본에서 파생한 보조 평가이며 독립 환자 2,000명이 아닙니다.</p></div></section><section class="workspace-view" id="results" hidden><div class="view-heading"><h2>조건별 분류</h2><p>모델·방식·분할 위치·블러와 시험 데이터셋을 구분합니다.</p></div><div class="panel"><label>시험 구분<select id="test-kind"><option value="test">원본 결절 · 주평가</option><option value="test_generated">고정 증강 · 보조</option></select></label><p id="result-notice" class="fine-note"></p><div id="classification" class="result-grid"></div><p class="fine-note">정확도는 소수 첫째 자리 반올림이며 원비율과 정답 수 / 분모를 함께 표시합니다. 환자 기준 신뢰구간은 저장된 경우에만 표시합니다.</p></div><div class="panel"><h2>지표</h2><div class="table-scroll"><table class="detail-table"><thead><tr><th>지표</th><th>저장값</th><th>정의 불가 사유</th></tr></thead><tbody id="metrics-table"></tbody></table></div></div><div class="panel"><h2>조건 목록</h2><div class="table-scroll"><table class="detail-table"><thead><tr><th>코호트</th><th>모델</th><th>방식</th><th>분할 위치</th><th>블러 σ</th><th>상태</th></tr></thead><tbody id="conditions-table"></tbody></table></div></div></section><section class="workspace-view" id="privacy" hidden><div class="view-heading"><h2>복원과 공격 평가</h2><p>사진과 여섯 층 특징 노출, 전송 정밀도 및 평가 종류를 구분합니다.</p></div><div class="panel"><div class="fields"><label>노출<select id="exposure"><option value="photo">사진</option><option value="conv1">Conv1</option><option value="stem">Stem</option><option value="layer1">Layer 1</option><option value="layer2">Layer 2</option><option value="layer3">Layer 3</option><option value="layer4">Layer 4</option></select></label><label>전송 정밀도<select id="precision"><option value="f32">FP32</option><option value="f16">FP16</option><option value="i8">INT8</option></select></label><label>분할<select id="privacy-split"><option value="test">원본 시험</option><option value="test_generated">고정 증강 시험</option><option value="validation">검증</option></select></label></div><p id="privacy-note" class="fine-note">실제 평가 기록을 기다립니다.</p><div class="table-scroll"><table class="detail-table"><thead><tr><th>공격·분류</th><th>상태 / 사진 수</th><th>MSE · SSIM · PSNR</th><th>상대 오차 / 구조 차이</th><th>근거와 한계</th></tr></thead><tbody id="privacy-table"></tbody></table></div><p class="fine-note">평균영상 공격의 상대 오차 점수 100은 같은 평균영상 기준과의 비교에서 생기는 기준값이며 방어 성공이 아닙니다. 복원 점수는 관측한 공격에 대한 탐색 지표이며 신원 보호 확률이나 보장이 아닙니다. 기록이 없는 공격·층·정밀도는 미측정입니다.</p></div><div class="panel"><h2>연결과 멤버십</h2><p id="additional-attacks">연결 Top-k와 멤버십 AUC 실측 기록 대기</p></div></section><section class="workspace-view" id="history" hidden><div class="view-heading"><h2>저장된 회차</h2><p>실제 저장된 학습과 검증 기록만 표시합니다.</p></div><div class="panel"><h2>학습·검증 정확도</h2><div id="plot" class="plot"><p class="empty">저장된 회차가 없습니다.</p></div></div></section><section class="workspace-view" id="photos" hidden><div class="view-heading"><h2>사진과 특징</h2><p>실제 저장된 사진과 해당 설정을 확인합니다.</p></div><div class="panel"><p id="photo-note">저장된 사진이 없습니다.</p><div id="photo-grid" class="gallery-grid"></div></div><dialog id="photo-modal" class="gallery-modal"><header><h2 id="photo-title">사진 크게 보기</h2><button id="photo-close" class="gallery-close">닫기</button></header><img id="photo-large" alt="선택한 저장 사진"><p id="photo-explanation"></p><p id="photo-settings" class="fine-note"></p></dialog></section><footer class="footer">보기 전용 · 학습 제어 없음 · 의료 진단 화면이 아닙니다.</footer></div></div></main><div id="tip" class="tip" role="tooltip" hidden></div><script src="/app.js"></script></body></html>
-+<!doctype html><html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>폐 결절 블러와 특징 노출 실험 · 17차</title><link rel="stylesheet" href="/astryx-neutral.css"><link rel="stylesheet" href="/16.css"><link rel="stylesheet" href="/astryx-tokens.css"><link rel="stylesheet" href="/astryx-research.css"><style>.fields{display:flex;gap:14px;flex-wrap:wrap}.fields label{display:grid;gap:5px}.panel+.panel{margin-top:16px}.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.result-grid div{padding:14px;background:var(--bg);border-radius:10px}.result-grid strong{display:block;font-size:19px}.detail-table{min-width:800px}.detail-table th,.detail-table td{text-align:left;white-space:normal}.tip{position:fixed;z-index:10;background:var(--paper);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:12px;padding:14px;max-width:320px;max-height:60vh;overflow:auto;box-shadow:var(--shadow)}.chart-svg{width:100%;min-width:650px;height:auto}.chart-scroll{overflow:auto}.chart-axis{stroke:var(--line)}.chart-label{fill:var(--muted);font-size:12px}.chart-point:focus-visible{outline:none;stroke:var(--ink);stroke-width:3}.chart-line{fill:none;stroke-width:2.5}</style></head><body><header class="top"><div class="wrap top-inner"><div><div class="eyebrow">17차 · 조회 전용</div><h1>폐 결절 블러와 특징 노출 실험</h1></div><button id="theme" class="button" type="button">다크 모드로 전환</button></div></header><main class="wrap"><div class="statusline"><span id="status" class="status-badge">데이터 준비 대기</span><span id="updated" class="ages"></span></div><div class="workspace-grid"><aside class="workspace-sidebar"><div class="sidebar-title">실험 화면</div><p class="sidebar-caption">실제 저장된 진행과 결과를 확인합니다.</p><nav class="workspace-tabs" aria-label="화면 선택"><button class="workspace-tab" data-view="overview" aria-selected="true">전체 현황</button><button class="workspace-tab" data-view="results" aria-selected="false">조건별 분류</button><button class="workspace-tab" data-view="privacy" aria-selected="false">복원과 공격</button><button class="workspace-tab" data-view="history" aria-selected="false">회차 그래프</button><button class="workspace-tab" data-view="photos" aria-selected="false">사진과 특징</button></nav></aside><div class="workspace-content"><div class="panel fields"><label>데이터셋<select id="cohort"><option value="LUNA25">LUNA25 · 개발</option><option value="CSTL">CSTL · 외부 시험</option><option value="Histo">Histo · 외부 시험</option></select></label><label>실험 조건<select id="condition"><option value="">저장된 조건 대기</option></select></label></div><section class="workspace-view" id="overview"><div class="view-heading"><h2>데이터와 실험 준비</h2><p>LUNA25 원본과 공식 주석을 확인하고 환자 단위로 분할합니다.</p></div><div class="panel"><h2>현재 상태</h2><p id="progress">공식 데이터와 주석 준비를 기다립니다.</p><p class="fine-note">데이터 다운로드·주석 연결·준비 완료·학습·공격 평가는 각각 다른 단계입니다. 저장된 사실만 표시합니다.</p></div><div class="panel"><h2>공식 자료 준비</h2><p id="data-status">준비 상태 기록 대기</p><p id="data-detail" class="fine-note"></p></div><div class="panel"><h2>연구 구성</h2><p>주 비교는 ResNet50의 첫 합성곱 분할과 전체 연결을 각각 20개 블러 강도에서 독립 학습합니다. ResNet18과 분할 위치 비교는 별도 보조 실험입니다.</p><p>양성 결절은 OK, 악성 결절은 NG로 구분합니다. 환자별 분할을 사용하며 외부 시험 자료는 학습과 선정에 사용하지 않습니다.</p></div><div class="panel"><h2>시험 결과의 해석</h2><p>무증강 원본 결절과 환자 단위 구간을 주평가로 사용합니다. 고정 증강 2,000장 시험은 같은 시험 원본에서 파생한 보조 평가이며 독립 환자 2,000명이 아닙니다.</p></div></section><section class="workspace-view" id="results" hidden><div class="view-heading"><h2>조건별 분류</h2><p>모델·방식·분할 위치·블러와 시험 데이터셋을 구분합니다.</p></div><div class="panel"><label>시험 구분<select id="test-kind"><option value="test">원본 결절 · 주평가</option><option value="test_generated">고정 증강 · 보조</option><option value="validation_original">원본 검증</option></select></label><p id="result-notice" class="fine-note"></p><div id="classification" class="result-grid"></div><p class="fine-note">정확도는 소수 첫째 자리 반올림이며 원비율과 정답 수 / 분모를 함께 표시합니다. 환자 기준 신뢰구간은 저장된 경우에만 표시합니다.</p></div><div class="panel"><h2>지표</h2><div class="table-scroll"><table class="detail-table"><thead><tr><th>지표</th><th>저장값</th><th>정의 불가 사유</th></tr></thead><tbody id="metrics-table"></tbody></table></div></div><div class="panel"><h2>조건 목록</h2><div class="table-scroll"><table class="detail-table"><thead><tr><th>코호트</th><th>모델</th><th>방식</th><th>분할 위치</th><th>블러 σ</th><th>상태</th></tr></thead><tbody id="conditions-table"></tbody></table></div></div></section><section class="workspace-view" id="privacy" hidden><div class="view-heading"><h2>복원과 공격 평가</h2><p>사진과 여섯 층 특징 노출, 전송 정밀도 및 평가 종류를 구분합니다.</p></div><div class="panel"><div class="fields"><label>노출<select id="exposure"><option value="photo">사진</option><option value="conv1">Conv1</option><option value="stem">Stem</option><option value="layer1">Layer 1</option><option value="layer2">Layer 2</option><option value="layer3">Layer 3</option><option value="layer4">Layer 4</option></select></label><label>복원 공격 정밀도<select id="precision"><option value="f32">FP32</option><option value="f16">FP16</option><option value="i8">INT8</option></select></label><label>분할<select id="privacy-split"><option value="test">원본 시험</option><option value="test_generated">고정 증강 시험</option><option value="validation">균형 검증</option><option value="validation_original">원본 검증</option></select></label></div><p id="privacy-note" class="fine-note">실제 평가 기록을 기다립니다.</p><div class="table-scroll"><table class="detail-table"><thead><tr><th>공격·분류</th><th>상태 / 사진 수</th><th>MSE · SSIM · PSNR</th><th>상대 오차 / 구조 차이</th><th>근거와 한계</th></tr></thead><tbody id="privacy-table"></tbody></table></div><p class="fine-note">평균영상 공격의 상대 오차 점수 100은 같은 평균영상 기준과의 비교에서 생기는 기준값이며 방어 성공이 아닙니다. 복원 점수는 관측한 공격에 대한 탐색 지표이며 신원 보호 확률이나 보장이 아닙니다. 기록이 없는 공격·층·정밀도는 미측정입니다.</p></div><div class="panel"><h2>연결과 멤버십</h2><p class="fine-note">연결은 선택한 층의 float 특징을 사용하고 멤버십은 분류 출력을 사용합니다. 복원 공격의 정밀도 선택과 별개입니다.</p><p id="additional-attacks">연결 Top-k와 멤버십 AUC 실측 기록 대기</p></div></section><section class="workspace-view" id="history" hidden><div class="view-heading"><h2>저장된 회차</h2><p>실제 저장된 학습과 검증 기록만 표시합니다.</p></div><div class="panel"><h2>학습·검증 정확도</h2><div id="plot" class="plot"><p class="empty">저장된 회차가 없습니다.</p></div></div></section><section class="workspace-view" id="photos" hidden><div class="view-heading"><h2>사진과 특징</h2><p>실제 저장된 사진과 해당 설정을 확인합니다.</p></div><div class="panel"><p id="photo-note">저장된 사진이 없습니다.</p><div id="photo-grid" class="gallery-grid"></div></div><dialog id="photo-modal" class="gallery-modal"><header><h2 id="photo-title">사진 크게 보기</h2><button id="photo-close" class="gallery-close">닫기</button></header><img id="photo-large" alt="선택한 저장 사진"><p id="photo-explanation"></p><p id="photo-settings" class="fine-note"></p></dialog></section><footer class="footer">보기 전용 · 학습 제어 없음 · 의료 진단 화면이 아닙니다.</footer></div></div></main><div id="tip" class="tip" role="tooltip" hidden></div><script src="/app.js"></script></body></html>
+-async function refresh(){const mine=++seq;try{const [statusResponse,dataResponse]=await Promise.all(['/api/status','/api/data'].map(u=>fetch(u,{cache:'no-store'})));if(!statusResponse.ok||!dataResponse.ok)throw Error('조회 오류');const [s,d]=await Promise.all([statusResponse.json(),dataResponse.json()]);text('data-status',({waiting:'준비 상태 기록 대기',blocked:'자료 또는 주석 준비 차단',downloading:'공식 자료 다운로드 중',ready:'환자 분할 자료 준비 완료'})[d.status]||'준비 상태 확인 중');text('data-detail',[(d.reasons||[]).join(' · '),(d.download_completed||[]).length?'다운로드 완료: '+d.download_completed.join(', ')+' · 주석 확인 및 전체 준비 완료와 별개':'',d.bytes!=null?`다운로드 ${d.bytes} / ${d.expected_bytes??'미기록'} 바이트`:'',...(Object.entries(d.summary||{}).map(([k,v])=>`${k}: 결절 ${raw(v.nodules)} · 환자 ${raw(v.patients)}`))].filter(Boolean).join(' · '));if(mine!==seq)return;const nextRun=typeof s.run_id==='string'?s.run_id:null;if(shouldClosePinned(pinnedKey,currentRun,nextRun,new Set([pinnedKey])))closeTip();currentRun=nextRun;renderedKeys=new Set();lastStatus=s;renderConditions(s);text('status',s.message||'17차 데이터 준비 대기');text('updated',s.updated_at?'기록 시각 '+s.updated_at:'');text('progress',s.detail||'공식 데이터와 주석 준비를 기다립니다.');const id=$('condition').value;if(!id){examples=[];renderResult(null,null,[]);if(pinnedKey)closeTip();return}const r=await fetch('/api/condition?id='+encodeURIComponent(id),{cache:'no-store'});if(!r.ok)throw Error('조건 조회 오류');const c=await r.json();if(mine!==seq)return;examples=c.examples||[];renderResult(c.result,c.current,c.history);if(shouldClosePinned(pinnedKey,currentRun,currentRun,renderedKeys))closeTip()}catch{if(mine!==seq)return;closeTip();text('status','자료 조회 오류');text('progress','17차 상태를 읽지 못했습니다.');examples=[];renderResult(null,null,[])}}
++function attackProgressText(p){if(!p)return '';const names={attack_start:'복원 공격 준비',decoder_train:'복원 모델 학습',decoder_validation:'복원 모델 검증',reconstruction:'원본 복원 평가',linking:'원본 연결 평가',membership:'학습 포함 여부 평가',label_shuffle:'라벨 셔플 진단',cached_complete:'저장된 공격 결과 확인'};return [names[p.phase]||'공격 평가',p.layer?({'photo':'사진'}[p.layer]||p.layer):'',p.dtype||'',p.split||'',Number.isInteger(p.epoch)?`공격 회차 ${p.epoch}`:'',Number.isFinite(p.processed)&&Number.isFinite(p.total)?`처리 ${p.processed} / ${p.total}`:''].filter(Boolean).join(' · ')}
++async function refresh(){const mine=++seq;try{const [statusResponse,dataResponse]=await Promise.all(['/api/status','/api/data'].map(u=>fetch(u,{cache:'no-store'})));if(!statusResponse.ok||!dataResponse.ok)throw Error('조회 오류');const [s,d]=await Promise.all([statusResponse.json(),dataResponse.json()]);text('data-status',({waiting:'준비 상태 기록 대기',blocked:'자료 또는 주석 준비 차단',downloading:'공식 자료 다운로드 중',ready:'환자 분할 자료 준비 완료'})[d.status]||'준비 상태 확인 중');text('data-detail',[(d.reasons||[]).join(' · '),(d.download_completed||[]).length?'다운로드 완료: '+d.download_completed.join(', ')+' · 주석 확인 및 전체 준비 완료와 별개':'',d.bytes!=null?`다운로드 ${d.bytes} / ${d.expected_bytes??'미기록'} 바이트`:'',...(Object.entries(d.summary||{}).map(([k,v])=>`${k}: 결절 ${raw(v.nodules)} · 환자 ${raw(v.patients)}`))].filter(Boolean).join(' · '));if(mine!==seq)return;const nextRun=typeof s.run_id==='string'?s.run_id:null;if(shouldClosePinned(pinnedKey,currentRun,nextRun,new Set([pinnedKey])))closeTip();currentRun=nextRun;renderedKeys=new Set();lastStatus=s;renderConditions(s);text('status',s.message||'17차 데이터 준비 대기');text('updated',s.updated_at?'기록 시각 '+s.updated_at:'');text('progress',attackProgressText(s.attack_progress)||s.detail||'공식 데이터와 주석 준비를 기다립니다.');const id=$('condition').value;if(!id){examples=[];renderResult(null,null,[]);if(pinnedKey)closeTip();return}const r=await fetch('/api/condition?id='+encodeURIComponent(id),{cache:'no-store'});if(!r.ok)throw Error('조건 조회 오류');const c=await r.json();if(mine!==seq)return;examples=c.examples||[];renderResult(c.result,c.current,c.history);if(shouldClosePinned(pinnedKey,currentRun,currentRun,renderedKeys))closeTip()}catch{if(mine!==seq)return;closeTip();text('status','자료 조회 오류');text('progress','17차 상태를 읽지 못했습니다.');examples=[];renderResult(null,null,[])}}
+ for(const id of ['condition','cohort','test-kind'])$(id).addEventListener('change',()=>{closeTip();refresh()});for(const id of ['exposure','precision','privacy-split'])$(id).addEventListener('change',renderPrivacy);for(const b of document.querySelectorAll('[data-view]'))b.addEventListener('click',()=>{closeTip();for(const x of document.querySelectorAll('[data-view]'))x.setAttribute('aria-selected',String(x===b));for(const x of document.querySelectorAll('.workspace-view'))x.hidden=x.id!==b.dataset.view});$('photo-close').addEventListener('click',()=>$('photo-modal').close());
+ function theme(dark){document.documentElement.dataset.theme=dark?'dark':'light';$('theme').textContent=dark?'라이트 모드로 전환':'다크 모드로 전환';$('theme').setAttribute('aria-pressed',String(dark));try{localStorage.setItem('ct17-theme',dark?'dark':'light')}catch{}}let saved='light';try{saved=localStorage.getItem('ct17-theme')||'light'}catch{}theme(saved==='dark');$('theme').addEventListener('click',()=>theme(document.documentElement.dataset.theme!=='dark'));refresh();setInterval(refresh,30000);
 --- a/Conv1 블러 OK-NG 실험/17차/대시보드 화면/server.mjs
 +++ b/Conv1 블러 OK-NG 실험/17차/대시보드 화면/server.mjs
-@@ -40,7 +40,7 @@
+@@ -36,7 +36,8 @@
+ async function json(parts){const b=await safeFile(parts);return b?JSON.parse(b.toString('utf8')):null}
+ async function status(){const x=await json(['status.json']);if(!x)return null;if(x.schema!=='stage17-sci-v2'||x.protocol!==protocol)throw Error('형식 오류');return x}
+ const cleanAccuracy=x=>x&&Object.fromEntries(['accuracy','correct','total','ok_accuracy','ng_accuracy','sensitivity','specificity','balanced_accuracy','auc','pr_auc','precision','npv','f1','mcc','brier_score','ece_10_bins','confusion_matrix','wilson95','accuracy_ci95_group','n_similarity_groups','patient_ci95','n_patients','group_bootstrap_draws','interval_note','interval_degenerate','interval_degenerate_reason','undefined_reasons'].filter(k=>Object.hasOwn(x,k)).map(k=>[k,x[k]]));
+-const cleanEpoch=x=>x&&({epoch:x.epoch,training:cleanAccuracy(x.training),validation:cleanAccuracy(x.validation)});
++const cleanProgress=x=>x&&Object.fromEntries(['phase','layer','dtype','split','epoch','processed','total'].filter(k=>Object.hasOwn(x,k)&&(typeof x[k]==='number'&&Number.isFinite(x[k])||typeof x[k]==='string'&&/^[A-Za-z0-9_.-]{1,60}$/.test(x[k]))).map(k=>[k,x[k]]));
++const cleanEpoch=x=>x&&({epoch:x.epoch,attack_progress:cleanProgress(x.attack_progress),training:cleanAccuracy(x.training),validation:cleanAccuracy(x.validation)});
  const sameRun=(value,runId)=>typeof runId==='string'&&runId.trim()!==''&&value?.run_id===runId;
  async function condition(id,runId){const [current,history,result]=await Promise.all(['current.json','history.json','dashboard.json'].map(n=>json(['conditions',id,n])));return {current:sameRun(current,runId)?cleanEpoch(current):null,history:Array.isArray(history)?history.filter(h=>sameRun(h,runId)).map(cleanEpoch):[],result:sameRun(result,runId)&&result?.protocol===protocol?result:null}}
  const cleanReport=x=>x&&Object.fromEntries(['mse','ssim','psnr','count','mean_baseline_mse','privacy_error_ratio_raw','privacy_error_ratio_clipped','privacy_error_score','privacy_error_clipping_applied','privacy_structure_ratio_raw','privacy_structure_ratio_clipped','privacy_structure_score','privacy_structure_clipping_applied','undefined_reason','psnr_infinite_count'].filter(k=>Object.hasOwn(x,k)).map(k=>[k,x[k]]));
--const cleanAttack=(a,withExternal=true)=>{if(!a)return null;const candidates={};for(const [family,x] of Object.entries(a.candidate_metrics||{})){if(!/^[A-Za-z0-9_.:-]+$/.test(family))continue;candidates[family]={validation:cleanReport(x.validation),validation_by_class:{OK:cleanReport(x.validation_by_class?.OK),NG:cleanReport(x.validation_by_class?.NG)},test_generated:cleanReport(x.test_generated),test_generated_by_class:{OK:cleanReport(x.test_generated_by_class?.OK),NG:cleanReport(x.test_generated_by_class?.NG)},test:cleanReport(x.test),test_by_class:{OK:cleanReport(x.test_by_class?.OK),NG:cleanReport(x.test_by_class?.NG)}}}const observed={};for(const k of ['overall','OK','NG']){const x=a.posthoc_strongest_observed?.[k];if(x)observed[k]={family:x.family,privacy_error_score:x.privacy_error_score}}return {selected_family:a.selected_family,validation_mse:a.validation_mse,privacy_ratio_raw:a.privacy_ratio_raw,privacy_ratio_clipped:a.privacy_ratio_clipped,undefined_reason:a.undefined_reason,test:cleanReport(a.test),candidate_metrics:candidates,posthoc_strongest_observed:observed,external:withExternal?Object.fromEntries(['CSTL','Histo'].map(k=>[k,cleanAttack(a.external?.[k],false)])):undefined,state:a.state,reason:typeof a.reason==='string'&&!/[\\/]/.test(a.reason)?a.reason:null}};
-+const cleanAttack=(a,withExternal=true)=>{if(!a)return null;const candidates={};for(const [family,x] of Object.entries(a.candidate_metrics||{})){if(!/^[A-Za-z0-9_.:-]+$/.test(family))continue;candidates[family]={validation_original:cleanReport(x.validation_original),validation_original_by_class:{OK:cleanReport(x.validation_original_by_class?.OK),NG:cleanReport(x.validation_original_by_class?.NG)},validation:cleanReport(x.validation),validation_by_class:{OK:cleanReport(x.validation_by_class?.OK),NG:cleanReport(x.validation_by_class?.NG)},test_generated:cleanReport(x.test_generated),test_generated_by_class:{OK:cleanReport(x.test_generated_by_class?.OK),NG:cleanReport(x.test_generated_by_class?.NG)},test:cleanReport(x.test),test_by_class:{OK:cleanReport(x.test_by_class?.OK),NG:cleanReport(x.test_by_class?.NG)}}}const observed={};for(const k of ['overall','OK','NG']){const x=a.posthoc_strongest_observed?.[k];if(x)observed[k]={family:x.family,privacy_error_score:x.privacy_error_score}}return {selected_family:a.selected_family,validation_mse:a.validation_mse,privacy_ratio_raw:a.privacy_ratio_raw,privacy_ratio_clipped:a.privacy_ratio_clipped,undefined_reason:a.undefined_reason,test:cleanReport(a.test),candidate_metrics:candidates,posthoc_strongest_observed:observed,external:withExternal?Object.fromEntries(['CSTL','Histo'].map(k=>[k,cleanAttack(a.external?.[k],false)])):undefined,state:a.state,reason:typeof a.reason==='string'&&!/[\\/]/.test(a.reason)?a.reason:null}};
- const safeExamples=(result,id)=>{
-  if(!Array.isArray(result?.examples))return [];
-  return result.examples.map((e,i)=>{
-@@ -79,7 +79,7 @@
+@@ -75,11 +76,11 @@
+ return http.createServer(async(req,res)=>{res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','no-referrer');const send=(code,data,type='application/json; charset=utf-8')=>{res.writeHead(code,{'Content-Type':type});res.end(req.method==='HEAD'?undefined:typeof data==='string'||Buffer.isBuffer(data)?data:JSON.stringify(data));};try{
+ if(!/^(127\.0\.0\.1|localhost)(:\d+)?$/.test(req.headers.host||''))return send(403,{error:'로컬 전용'});if(!['GET','HEAD'].includes(req.method))return send(405,{error:'조회 전용'});const u=new URL(req.url,'http://127.0.0.1');
+ if(u.pathname==='/api/data'){try{const root=path.resolve(dataRoot),file=path.join(root,'SCI_준비상태.json');if((await fs.lstat(root)).isSymbolicLink()||(await fs.lstat(file)).isSymbolicLink())throw Error('연결 경로');const info=await fs.stat(file);if(!info.isFile()||info.size>1024*1024)throw Error('크기 오류');const d=JSON.parse((await fs.readFile(file)).toString('utf8'));if(d.protocol!==protocol)throw Error('형식 오류');const cleanReason=x=>typeof x==='string'&&!/[\\/]/.test(x)?x:'상세 확인 필요';const summary={};for(const k of ['train','validation','test','CSTL','Histo']){const v=d.summary?.[k];if(v)summary[k]={nodules:v.nodules,patients:v.patients,labels:v.labels}}return send(200,{status:d.status,updated_at:d.updated_at,reasons:Array.isArray(d.reasons)?d.reasons.map(cleanReason):[],summary,bytes:d.bytes,expected_bytes:d.expected_bytes,download_completed:Array.isArray(d.download_completed)?d.download_completed.filter(x=>['annotations','nodule-blocks','external-classification','full-ct'].includes(x)):[]});}catch(e){if(e.code==='ENOENT')return send(200,{status:'waiting',reasons:[]});return send(500,{error:'데이터 준비 상태를 읽지 못했습니다.'})}}
+-if(u.pathname==='/api/status'){const x=await status();if(!x)return send(200,{state:'준비 대기',message:'공식 데이터와 주석 준비 대기',conditions:[]});return send(200,{run_id:x.run_id,state:x.state,message:({blocked:'데이터 준비 차단',prepared:'데이터 준비 완료',running:'실험 진행 중',idle:'실험 대기'})[x.state]||'상태 확인 중',detail:typeof x.reason==='string'&&!/[\\/]/.test(x.reason)?x.reason:'실제 데이터·주석·학습 상태를 확인합니다.',updated_at:x.updated_at,completed_conditions:x.completed_conditions,total_conditions:x.total_conditions,conditions:Array.isArray(x.conditions)?x.conditions.filter(c=>validId(c.id)).map(({id,sigma,model,regime,split_boundary,cohort,kind,state,epoch})=>({id,sigma,model,regime,split_boundary,cohort,kind,state,epoch})):[]});}
++if(u.pathname==='/api/status'){const x=await status();if(!x)return send(200,{state:'준비 대기',message:'공식 데이터와 주석 준비 대기',conditions:[]});return send(200,{run_id:x.run_id,state:x.state,message:({blocked:'데이터 준비 차단',prepared:'데이터 준비 완료',running:'실험 진행 중',idle:'실험 대기'})[x.state]||'상태 확인 중',detail:typeof x.reason==='string'&&!/[\\/]/.test(x.reason)?x.reason:'실제 데이터·주석·학습 상태를 확인합니다.',updated_at:x.updated_at,attack_progress:cleanProgress(x.attack_progress),completed_conditions:x.completed_conditions,total_conditions:x.total_conditions,conditions:Array.isArray(x.conditions)?x.conditions.filter(c=>validId(c.id)).map(({id,sigma,model,regime,split_boundary,cohort,kind,state,epoch})=>({id,sigma,model,regime,split_boundary,cohort,kind,state,epoch})):[]});}
  if(u.pathname==='/api/comparison'){const x=await status();const list=Array.isArray(x?.conditions)?x.conditions.filter(c=>validId(c.id)):[];const rows=[];for(const c of list){const candidate=await json(['conditions',c.id,'dashboard.json']);const r=sameRun(candidate,x?.run_id)&&candidate?.protocol===protocol?candidate:null;rows.push({id:c.id,sigma:c.sigma,profile:c.profile,test:cleanAccuracy(r?.classifier?.test)??null,test_generated:cleanAccuracy(r?.classifier?.test_generated)??null})}const finalStatus=await status();if(typeof x?.run_id==='string'&&x.run_id.trim()!==''&&!sameRun({run_id:finalStatus?.run_id},x.run_id))return send(200,{rows:[]});return send(200,{rows});}
  if(u.pathname==='/api/condition'||u.pathname==='/api/image'){const id=u.searchParams.get('id');if(!validId(id))return send(400,{error:'조건 오류'});const x=await status();if(!x?.conditions?.some(c=>c.id===id))return u.pathname==='/api/condition'?send(200,{current:null,history:[],result:null,examples:[]}):send(404,{error:'등록되지 않은 조건'});const {current,history,result}=await condition(id,x.run_id);const examples=safeExamples(result,id);
  if(u.pathname==='/api/image'){const i=Number(u.searchParams.get('index')),kind=u.searchParams.get('kind');if(!Number.isInteger(i)||i<0||!examples[i]?.available.includes(kind))return send(404,{error:'등록되지 않은 사진'});const parts=result.examples[i][kind].split('/');const b=await safeFile(parts,16*1024*1024);if(!validPng(b))return send(404,{error:'PNG 사진을 확인할 수 없습니다.'});const latest=await status();if(!sameRun({run_id:latest?.run_id},x.run_id))return send(404,{error:'실행이 변경되었습니다.'});return send(200,b,'image/png');}
--const latest=await status();if(!sameRun({run_id:latest?.run_id},x.run_id))return send(200,{current:null,history:[],examples:[],result_pending:true,result:null});return send(200,{current,history,examples,result_pending:!result,result:result&&{classifier:{test:cleanAccuracy(result.classifier?.test),test_generated:cleanAccuracy(result.classifier?.test_generated)},attack:cleanAttack(result.attack),feature_attacks:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>[k,{precisions:Object.fromEntries(['f32','f16','i8'].map(d=>{const leaf=result.feature_attacks?.[k]?.precisions?.[d];return [d,leaf?{...cleanAttack(leaf),transmission:leaf.transmission&&Object.fromEntries(['dtype','packet_bytes','sidecar_bytes','total_bytes','count','mean_total_bytes','quantization_mse'].filter(key=>Object.hasOwn(leaf.transmission,key)).map(key=>[key,leaf.transmission[key]]))}:null]}))}])),linking:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>{const cleanLink=x=>x&&Object.fromEntries(['topk_source','topk_patient','count','gallery_size','state','reason','assumption'].filter(key=>Object.hasOwn(x,key)).map(key=>[key,x[key]]));return [k,{test:cleanLink(result.linking?.[k]?.test),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,cleanLink(result.linking?.[k]?.external?.[c])]))}]})),membership:result.membership&&{...Object.fromEntries(['selected_score','validation_auc','test_auc','member_count','nonmember_count','reason'].filter(key=>Object.hasOwn(result.membership,key)).map(key=>[key,result.membership[key]])),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,result.membership.external?.[c]&&Object.fromEntries(['auc','reason','interpretation'].filter(key=>Object.hasOwn(result.membership.external[c],key)).map(key=>[key,result.membership.external[c][key]]))]))},external:Object.fromEntries(['CSTL','Histo'].map(k=>[k,result.external?.[k]?.state?{state:result.external[k].state,reason:typeof result.external[k].reason==='string'&&!/[\\/]/.test(result.external[k].reason)?result.external[k].reason:'자료 준비 미완료'}:{classifier:{test:cleanAccuracy(result.external?.[k]?.test||result.external?.[k]),test_generated:cleanAccuracy(result.external?.[k]?.test_generated)}}])),packet:{mean_bytes:result.packet?.mean_bytes,total_bytes:result.packet?.total_bytes,encode_seconds:result.packet?.encode_seconds}}});}
-+const latest=await status();if(!sameRun({run_id:latest?.run_id},x.run_id))return send(200,{current:null,history:[],examples:[],result_pending:true,result:null});return send(200,{current,history,examples,result_pending:!result,result:result&&{classifier:{validation_original:cleanAccuracy(result.classifier?.validation_original),test:cleanAccuracy(result.classifier?.test),test_generated:cleanAccuracy(result.classifier?.test_generated)},attack:cleanAttack(result.attack),feature_attacks:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>[k,{precisions:Object.fromEntries(['f32','f16','i8'].map(d=>{const leaf=result.feature_attacks?.[k]?.precisions?.[d];return [d,leaf?{...cleanAttack(leaf),transmission:leaf.transmission&&Object.fromEntries(['dtype','packet_bytes','sidecar_bytes','total_bytes','count','mean_total_bytes','quantization_mse'].filter(key=>Object.hasOwn(leaf.transmission,key)).map(key=>[key,leaf.transmission[key]]))}:null]}))}])),linking:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>{const cleanLink=x=>x&&Object.fromEntries(['topk_source','topk_patient','count','gallery_size','state','reason','assumption'].filter(key=>Object.hasOwn(x,key)).map(key=>[key,x[key]]));return [k,{test:cleanLink(result.linking?.[k]?.test),test_generated:cleanLink(result.linking?.[k]?.test_generated),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,cleanLink(result.linking?.[k]?.external?.[c])]))}]})),membership_generated:result.membership_generated&&Object.fromEntries(['selected_score','validation_auc','test_auc','member_count','nonmember_count'].filter(key=>Object.hasOwn(result.membership_generated,key)).map(key=>[key,result.membership_generated[key]])),membership:result.membership&&{...Object.fromEntries(['selected_score','validation_auc','test_auc','member_count','nonmember_count','reason'].filter(key=>Object.hasOwn(result.membership,key)).map(key=>[key,result.membership[key]])),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,result.membership.external?.[c]&&Object.fromEntries(['auc','reason','interpretation'].filter(key=>Object.hasOwn(result.membership.external[c],key)).map(key=>[key,result.membership.external[c][key]]))]))},external:Object.fromEntries(['CSTL','Histo'].map(k=>[k,result.external?.[k]?.state?{state:result.external[k].state,reason:typeof result.external[k].reason==='string'&&!/[\\/]/.test(result.external[k].reason)?result.external[k].reason:'자료 준비 미완료'}:{classifier:{test:cleanAccuracy(result.external?.[k]?.test||result.external?.[k]),test_generated:cleanAccuracy(result.external?.[k]?.test_generated)}}])),packet:{mean_bytes:result.packet?.mean_bytes,total_bytes:result.packet?.total_bytes,encode_seconds:result.packet?.encode_seconds}}});}
+-const latest=await status();if(!sameRun({run_id:latest?.run_id},x.run_id))return send(200,{current:null,history:[],examples:[],result_pending:true,result:null});return send(200,{current,history,examples,result_pending:!result,result:result&&{classifier:{validation_original:cleanAccuracy(result.classifier?.validation_original),test:cleanAccuracy(result.classifier?.test),test_generated:cleanAccuracy(result.classifier?.test_generated)},attack:cleanAttack(result.attack),feature_attacks:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>[k,{precisions:Object.fromEntries(['f32','f16','i8'].map(d=>{const leaf=result.feature_attacks?.[k]?.precisions?.[d];return [d,leaf?{...cleanAttack(leaf),transmission:leaf.transmission&&Object.fromEntries(['dtype','packet_bytes','sidecar_bytes','total_bytes','count','mean_total_bytes','quantization_mse'].filter(key=>Object.hasOwn(leaf.transmission,key)).map(key=>[key,leaf.transmission[key]]))}:null]}))}])),linking:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>{const cleanLink=x=>x&&Object.fromEntries(['topk_source','topk_patient','count','gallery_size','state','reason','assumption'].filter(key=>Object.hasOwn(x,key)).map(key=>[key,x[key]]));return [k,{test:cleanLink(result.linking?.[k]?.test),test_generated:cleanLink(result.linking?.[k]?.test_generated),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,cleanLink(result.linking?.[k]?.external?.[c])]))}]})),membership_generated:result.membership_generated&&Object.fromEntries(['selected_score','validation_auc','test_auc','member_count','nonmember_count'].filter(key=>Object.hasOwn(result.membership_generated,key)).map(key=>[key,result.membership_generated[key]])),membership:result.membership&&{...Object.fromEntries(['selected_score','validation_auc','test_auc','member_count','nonmember_count','reason'].filter(key=>Object.hasOwn(result.membership,key)).map(key=>[key,result.membership[key]])),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,result.membership.external?.[c]&&Object.fromEntries(['auc','reason','interpretation'].filter(key=>Object.hasOwn(result.membership.external[c],key)).map(key=>[key,result.membership.external[c][key]]))]))},external:Object.fromEntries(['CSTL','Histo'].map(k=>[k,result.external?.[k]?.state?{state:result.external[k].state,reason:typeof result.external[k].reason==='string'&&!/[\\/]/.test(result.external[k].reason)?result.external[k].reason:'자료 준비 미완료'}:{classifier:{test:cleanAccuracy(result.external?.[k]?.test||result.external?.[k]),test_generated:cleanAccuracy(result.external?.[k]?.test_generated)}}])),packet:{mean_bytes:result.packet?.mean_bytes,total_bytes:result.packet?.total_bytes,encode_seconds:result.packet?.encode_seconds}}});}
++const latest=await status();if(!sameRun({run_id:latest?.run_id},x.run_id))return send(200,{current:null,history:[],examples:[],result_pending:true,result:null});return send(200,{current,history,examples,result_pending:!result,result:result&&{classifier:{validation_original:cleanAccuracy(result.classifier?.validation_original),test:cleanAccuracy(result.classifier?.test),test_generated:cleanAccuracy(result.classifier?.test_generated)},attack:cleanAttack(result.attack),feature_attacks:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>[k,{precisions:Object.fromEntries(['f32','f16','i8'].map(d=>{const leaf=result.feature_attacks?.[k]?.precisions?.[d];return [d,leaf?{...cleanAttack(leaf),transmission:leaf.transmission&&Object.fromEntries(['dtype','packet_bytes','sidecar_bytes','total_bytes','count','mean_total_bytes','quantization_mse'].filter(key=>Object.hasOwn(leaf.transmission,key)).map(key=>[key,leaf.transmission[key]]))}:null]}))}])),linking:Object.fromEntries(['conv1','stem','layer1','layer2','layer3','layer4'].map(k=>{const cleanLink=x=>x&&Object.fromEntries(['topk_source','topk_patient','count','gallery_size','gallery_unit','query_unit','state','reason','assumption'].filter(key=>Object.hasOwn(x,key)).map(key=>[key,x[key]]));return [k,{test:cleanLink(result.linking?.[k]?.test),test_generated:cleanLink(result.linking?.[k]?.test_generated),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,cleanLink(result.linking?.[k]?.external?.[c])]))}]})),membership_generated:result.membership_generated&&Object.fromEntries(['selected_score','validation_auc','test_auc','member_count','nonmember_count'].filter(key=>Object.hasOwn(result.membership_generated,key)).map(key=>[key,result.membership_generated[key]])),membership:result.membership&&{...Object.fromEntries(['selected_score','validation_auc','test_auc','member_count','nonmember_count','reason'].filter(key=>Object.hasOwn(result.membership,key)).map(key=>[key,result.membership[key]])),external:Object.fromEntries(['CSTL','Histo'].map(c=>[c,result.membership.external?.[c]&&Object.fromEntries(['auc','reason','interpretation'].filter(key=>Object.hasOwn(result.membership.external[c],key)).map(key=>[key,result.membership.external[c][key]]))]))},external:Object.fromEntries(['CSTL','Histo'].map(k=>[k,result.external?.[k]?.state?{state:result.external[k].state,reason:typeof result.external[k].reason==='string'&&!/[\\/]/.test(result.external[k].reason)?result.external[k].reason:'자료 준비 미완료'}:{classifier:{test:cleanAccuracy(result.external?.[k]?.test||result.external?.[k]),test_generated:cleanAccuracy(result.external?.[k]?.test_generated)}}])),packet:{mean_bytes:result.packet?.mean_bytes,total_bytes:result.packet?.total_bytes,encode_seconds:result.packet?.encode_seconds}}});}
  let file=asset.get(u.pathname);if(!file&&/^\/fonts\/[A-Za-z0-9_.-]+$/.test(u.pathname))file=u.pathname.slice(1);if(!file)return send(404,{error:'없는 주소'});const buf=await fs.readFile(path.join(here,file));const ext=path.extname(file);return send(200,buf,ext==='.html'?'text/html; charset=utf-8':ext==='.js'?'text/javascript; charset=utf-8':ext==='.css'?'text/css; charset=utf-8':'font/ttf');
  }catch{return send(500,{error:'17차 자료를 읽지 못했습니다.'});}})}
  if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){const server=createServer();server.on('error',e=>{console.error(e.message);process.exitCode=1});server.listen(8788,'127.0.0.1',()=>console.log('17차 조회 http://127.0.0.1:8788/'));}
---- a/docs/changes/2026-11-26-17차-공격과평가연결.md
-+++ b/docs/changes/2026-11-26-17차-공격과평가연결.md
-@@ -0,0 +1,11 @@
-+# 17차 복원 공격·셔플·평가 연결 수정
+--- a/docs/changes/2026-11-26-17차-연결캐시진행.md
++++ b/docs/changes/2026-11-26-17차-연결캐시진행.md
+@@ -0,0 +1,9 @@
++# 17차 연결 공격·완료 캐시·실제 진행 표시 후속 수정
 +
-+[LEVEL1부터 읽기](../revisions/conv1-okng-round17.md#user-content-reading-level-1) · [전체 차이](../revision-diffs/conv1-okng-round17.md)
-+
-+| 수정 | 의미 | 검증 범위 |
++| 수정 | 동작 | 검증 범위 |
 +|---|---|---|
-+| 원본 공간 공격 | 알려진 블러·특징·dtype forward를 포함한 원본 추정, STE 근사 | 작은 CPU 목표·초기값 선택·파라미터 불변 검사 |
-+| 원본별 라벨 셔플 | source_id별 정답을 모든 증강 사본에 전파 | 일관성·원본 분포·원자료 불변 검사 |
-+| 평가 집합 표시 | 원본/증강 및 검증을 해당 API·화면 값으로 연결 | 합성 HTTP·DOM와 관련 회귀 검사 |
++| 연결 공격 | 고유 source_id gallery와 원본 단위 정답 판정; canonical 우선 | 같은 원본4사본 합성사례, gallery1/query4 |
++| 완료 결과 | run_id 불일치/누락 거부, 조건 결과의 프로토콜·조건도 확인 | 잘못된 실행과 현재 실행 합성 캐시 |
++| 공격 진행 | 디코더·복원·연결·멤버십·셔플 실제 처리 수를 API와 화면에 표시 | CPU 상태 갱신, HTTP와 화면 함수 |
 +
-+저장 공간 이전은 별도 사용자 작업이므로 이번 코드 수정에서 변경하지 않았습니다. 원본 환자 분할·고정5000/1000/1000과12차학습은 유지합니다. 17차 GPU·장기 공격 성능은 미측정이며 측정 수치를 만들어 넣지 않습니다. 비공개 영상·환자별 행/예측·가중치·운영 근거는 공개하지 않습니다.
++분류 정확도·블러 강도·분할·표본수는 유지했습니다. 신규 CPU4·API/화면1과 영향 CPU8·기존 UI2가 통과했습니다. 실제17차 전체 학습·복원 성능·브라우저 조작 검증은 별도입니다. 증강 query는 독립 환자가 아니며 gallery 수와 query 수를 구분합니다. 소스/설명 변경이며 새 릴리스·Docker 변경은 없습니다.
 --- a/docs/revisions/conv1-okng-round17.md
 +++ b/docs/revisions/conv1-okng-round17.md
-@@ -8,6 +8,8 @@
- <summary>LEVEL 1 · Beginner</summary>
- 
- <a id="reading-level-1"></a>
-+
-+원래 사진을 되찾는 공격도 더해 봅니다. 원본 후보를 흐리게 하고 같은 특징이 나오는지 맞추므로, 흐린 사진까지만 찾는 공격과 구분합니다. 같은 원본에서 늘린 사진에는 셔플 진단의 정답도 같게 붙입니다. 화면의 원본 시험·늘린 시험·검증을 바꾸면 그 집합의 수치만 보여 주며 없으면 미측정이라고 씁니다.
- 
- ## LEVEL 1 - Beginner
- 
-@@ -46,6 +48,8 @@
- 
- <a id="reading-level-2"></a>
- 
-+기존 공격은 남기고 블러 전 원본을 추정하는 두 초기값의 공격을 추가했습니다. 어느 초기값이 좋은지는 전달 특징과 TV 목적만으로 고르며 시험 정답으로 고르지 않습니다. 셔플 라벨은 원본별로 고정하고 사본에 전파합니다. 원본 시험873·증강 시험2000·원본 검증937·균형 검증2000을 API와 화면에서 구분합니다.
-+
- ## LEVEL 2 - Explorer
- 
- 고정 기본셋14,000행은 환자분할뒤각클래스학습5,000/검증1,000/시험1,000으로한번만만듭니다. 단계마다실제사본을만들어그강도의blur를한번적용하므로구성차이와누적블러를통제합니다. 고정검증2000행손실이선정기준이고원본검증937행은별도보고입니다. float32TIFF는분류·공격공유입력,PNG는미리보기이며원본873시험과생성2000시험은독립환자수로합치지않습니다.
-@@ -68,7 +72,7 @@
+@@ -72,7 +72,7 @@
  
  공식자료.json→download→extract→prepare로 자료를 준비하고, 가중치전체SHA와 Rust 빌드를 확인해 SCI실행--prepare에 연결합니다. [명령과 화면 경로 설정](../../Conv1%20블러%20OK-NG%20실험/17차/README.md#준비와-실행)을 확인합니다. 실행 파일·영상·환자 목록은 저장소에 없습니다. Histo는 픽셀→XML결절→공식serial로306장88serial을 연결했으나 물리 HU/50mm가 아닌128px BMP crop입니다. 모호한2장은 제외, CSTL은 대응 미완료로 보류합니다. 병원 출처가 다르다고 자연인 중복 없음까지 증명하지 않습니다.
  
--단서진단은 중앙/주변/거친 정보와 train-only 라벨셔플을 따로 비교합니다. 주변 조직 단서가 완전히 제거됐다고 주장하지 않습니다. 데이터10·화면2·Rust18경로의 변경없는 근거를 재사용하고, 고정표본 변경에는 신규9·기존엔진9 및 최종bind1 검사를 수행했으며, GPU 측정은 아직 없습니다. 12차40조건 종료 후에만17차 실행합니다. 대시보드의 메뉴·테마·강도별 실제 그래프·사진 설명은 미측정과 결과를 구분합니다. 정확도100%를 피하려고 결과나 분할을 바꾸지 않습니다. 결절 위치 제공 분류, 단일 분할과 정해진 공격군의 탐색 연구이며 임상·DP 보장은 아닙니다.
-+단서진단은 중앙/주변/거친 정보와 train-only 라벨셔플을 따로 비교합니다. 주변 조직 단서가 완전히 제거됐다고 주장하지 않습니다. 현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다.  GPU 측정은 아직 없습니다. 12차40조건 종료 후에만17차 실행합니다. 대시보드의 메뉴·테마·강도별 실제 그래프·사진 설명은 미측정과 결과를 구분합니다. 정확도100%를 피하려고 결과나 분할을 바꾸지 않습니다. 결절 위치 제공 분류, 단일 분할과 정해진 공격군의 탐색 연구이며 임상·DP 보장은 아닙니다.
+-단서진단은 중앙/주변/거친 정보와 train-only 라벨셔플을 따로 비교합니다. 주변 조직 단서가 완전히 제거됐다고 주장하지 않습니다. 현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다.  GPU 측정은 아직 없습니다. 12차40조건 종료 후에만17차 실행합니다. 대시보드의 메뉴·테마·강도별 실제 그래프·사진 설명은 미측정과 결과를 구분합니다. 정확도100%를 피하려고 결과나 분할을 바꾸지 않습니다. 결절 위치 제공 분류, 단일 분할과 정해진 공격군의 탐색 연구이며 임상·DP 보장은 아닙니다.
++단서진단은 중앙/주변/거친 정보와 train-only 라벨셔플을 따로 비교합니다. 주변 조직 단서가 완전히 제거됐다고 주장하지 않습니다. 앞선 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다.  GPU 측정은 아직 없습니다. 12차40조건 종료 후에만17차 실행합니다. 대시보드의 메뉴·테마·강도별 실제 그래프·사진 설명은 미측정과 결과를 구분합니다. 정확도100%를 피하려고 결과나 분할을 바꾸지 않습니다. 결절 위치 제공 분류, 단일 분할과 정해진 공격군의 탐색 연구이며 임상·DP 보장은 아닙니다.
  
  [같은 수준 프로젝트](../읽기안내/레벨2.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨2.md)
  
-@@ -78,6 +82,8 @@
- <summary>LEVEL 3 · Practitioner</summary>
- 
- <a id="reading-level-3"></a>
-+
-+raw-space 역복원은 raw_guess→Gaussian→특징→dtype 전방 값을 전달 특징에 맞춥니다. train_mean/flat_0.5 초기값과 iterate는 관측 목적과 TV만으로 선택하며 공격군 선정은 validation 전용입니다. dtype 역전파는 STE 근사입니다. 원본 source_id 순열을 사본에 전파하고 원본 분포/증강 후 행 분포를 저장합니다. 선택한 평가 집합에 연결·멤버십이 없으면 다른 시험 값으로 채우지 않습니다.
- 
- ## LEVEL 3 - Practitioner
- 
-@@ -101,7 +107,7 @@
+@@ -107,7 +107,7 @@
  
  Histo306장88공식serial은 pixel/XML 중심128px→512 BMP 밝기crop이며50mm/HU의 외부 복제가 아닙니다. 다중serial동일픽셀2장은 사전 제외했습니다. CSTL은 환자/결절 대응까지 준비되지 않아 보류입니다. 외부자료의 재학습·분할선정에 시험결과를 쓰지 않습니다. 공식ID 내 분할과 해시 점검은 병원간 자연인 동일성 증명이 아닙니다.
  
--현재 준비된 자료와 기존 데이터10/엔진9/UI2/Rust18경로 증거를 재사용하며 GPU성능·장기복구는 미측정입니다. 대시보드는 실제run/강도/에폭/사진을 연결하고 대기와미정의를 표시합니다. 임상사용·자동검출·형식적 개인정보 보호를 증명하지 않습니다. 결과표를 낮추려고 오답을 만들지 않습니다.
-+현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다.  GPU성능·장기복구는 미측정입니다. 대시보드는 실제run/강도/에폭/사진을 연결하고 대기와미정의를 표시합니다. 임상사용·자동검출·형식적 개인정보 보호를 증명하지 않습니다. 결과표를 낮추려고 오답을 만들지 않습니다.
+-현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다.  GPU성능·장기복구는 미측정입니다. 대시보드는 실제run/강도/에폭/사진을 연결하고 대기와미정의를 표시합니다. 임상사용·자동검출·형식적 개인정보 보호를 증명하지 않습니다. 결과표를 낮추려고 오답을 만들지 않습니다.
++앞선 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다.  GPU성능·장기복구는 미측정입니다. 대시보드는 실제run/강도/에폭/사진을 연결하고 대기와미정의를 표시합니다. 임상사용·자동검출·형식적 개인정보 보호를 증명하지 않습니다. 결과표를 낮추려고 오답을 만들지 않습니다.
  
  [같은 수준 프로젝트](../읽기안내/레벨3.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨3.md)
  
-@@ -111,6 +117,8 @@
- <summary>LEVEL 4 · Advanced</summary>
- 
- <a id="reading-level-4"></a>
-+
-+기존 observed-space 후보에 raw_blur_aware_tv 공격군을 추가했습니다. preblurred 우회 대신 model.blur(raw_guess)를 명시하고 dtype forward는 FeatureCodec와 일치시킵니다. float/양자화의 역전파 STE와 최종 관측 목적 기반 선택은 원본 GT와 분리합니다. 셔플 source 매핑 전체는 비공개 파일로 보존하고 화면에는 집계만 냅니다. API의 validation_original/test_generated 및 membership_generated 연결을 추가해 평가 분모 혼용을 제거했습니다.
- 
- ## LEVEL 4 - Advanced
- 
-@@ -132,7 +140,7 @@
+@@ -140,7 +140,7 @@
  
  사진공격9개와6층×3정밀도특징공격은 train학습·val선정·test보고를지킵니다. Top-1/5/10연결과 membershipAUC는복원오차와다른위협입니다. 보호오차점수100clip(MSEattack/MSEprior,0,1), 구조점수100clip(1−SSIM,0,1)의raw·clipflag·null사유를보존합니다. MSEprior는학습평균영상기준이며0분모를임의값으로대체하지않습니다. class별값과환자군집95%구간,정답수/분모가해석단위입니다. 단서진단central/peripheral/coarse와train-only labelshuffle은 주변단서·암기가능성의대조일뿐 완전제거보장이아닙니다.
  
--Histo는분류영상의픽셀→공식2D/XML→CSV/3D환자serial사슬로306/88을연결했고2모호사례를사전제외했습니다. legacy-2d-intensity와128pxcenter crop은물리HU/50mm와다른도메인입니다. CSTL은대응미완료로blocked입니다. 자연인교차기관중복이나임상외적타당성은별도입니다. 현재GPU결과는없고데이터10/UI2/Rust18의영향없는근거를재사용하고이번고정표본변경에는신규9·기존9와최종bind1검사를별도로수행했습니다. 변경없는코드의기존근거는재사용하고 이번고정표본코드변경은신규9·기존9와최종bind1검사및별도독립검토로확인하며비공개영상/예측/가중치/운영기록은공개하지않습니다.
-+Histo는분류영상의픽셀→공식2D/XML→CSV/3D환자serial사슬로306/88을연결했고2모호사례를사전제외했습니다. legacy-2d-intensity와128pxcenter crop은물리HU/50mm와다른도메인입니다. CSTL은대응미완료로blocked입니다. 자연인교차기관중복이나임상외적타당성은별도입니다. 현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다. 현재GPU결과는없고 비공개영상/예측/가중치/운영기록은공개하지않습니다.
+-Histo는분류영상의픽셀→공식2D/XML→CSV/3D환자serial사슬로306/88을연결했고2모호사례를사전제외했습니다. legacy-2d-intensity와128pxcenter crop은물리HU/50mm와다른도메인입니다. CSTL은대응미완료로blocked입니다. 자연인교차기관중복이나임상외적타당성은별도입니다. 현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다. 현재GPU결과는없고 비공개영상/예측/가중치/운영기록은공개하지않습니다.
++Histo는분류영상의픽셀→공식2D/XML→CSV/3D환자serial사슬로306/88을연결했고2모호사례를사전제외했습니다. legacy-2d-intensity와128pxcenter crop은물리HU/50mm와다른도메인입니다. CSTL은대응미완료로blocked입니다. 자연인교차기관중복이나임상외적타당성은별도입니다. 앞선 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다. 현재GPU결과는없고 비공개영상/예측/가중치/운영기록은공개하지않습니다.
  
  [같은 수준 프로젝트](../읽기안내/레벨4.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨4.md)
  
-@@ -142,6 +150,8 @@
- <summary>LEVEL 5 · Expert</summary>
- 
- <a id="reading-level-5"></a>
-+
-+새 공격의 변수는 raw ROI이며 목적은 ||Q_d(f_l(B_sigma(x)))-z||²+lambda·TV(x)입니다. Q_d forward의 dtype/동적 scale은 전달 경로와 같고 gradient는 identity STE 근사입니다. 고정 두 starts 및 모든 iterate 중 관측 목적 최소를 선택하고 원본 test MSE는 최종 평가에만 사용합니다. source_id 단위 라벨 순열은 원본 라벨 빈도를 보존하며 복제 가중치 때문에 증강 후 행 빈도 보존은 주장하지 않습니다. 평가 API는 original/generated와 validation/original_validation을 명시적으로 구분합니다. linking float-layer와 membership output threat를 dtype별복원으로 확대하지 않습니다.
- 
- ## LEVEL 5 - Expert
- 
-@@ -168,7 +178,7 @@
+@@ -178,9 +178,23 @@
  
  Histo306/88serial은픽셀대조·XMLbbox중심·CSV index/3Dfolder연결검토후128px→512BMPcrop으로준비됐으며다중serial동일픽셀2건은결과전제외했습니다. 물리geometry불가를명시해LUNA의50mm/HU와동일화하지않습니다. CSTL환자·결절대응은현재blocked이며외부결과는없습니다. 기관출처는자연인전역ID가아닙니다. 중앙/주변/거친단서·train라벨셔플진단은내적오염근거를늘리지만병원단서·라벨오류·단일분할·ROI제공·임상외적타당성을모두제거하지못합니다.
  
--데이터10/UI2/Rust18과주자료준비의변경없는증거를재사용하며이번고정표본변경은신규9·기존9와최종bind1검사및별도독립검토범위입니다. 합성CPU검사와실제장기GPU완료/공격최적성은별도입니다. 현재단계는준비이며실측결과·논문원고를만들어채우지않았습니다. 공개범위는소스/예제/집계설명으로영상·행별목록/예측·가중치·비공개로그를포함하지않습니다. 다크/라이트·sidebar·실제epoch/강도그래프·사진설명은현재run만표시하고정의불가·준비대기를구분합니다.
-+현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다. 합성CPU검사와실제장기GPU완료/공격최적성은별도입니다. 현재단계는준비이며실측결과·논문원고를만들어채우지않았습니다. 공개범위는소스/예제/집계설명으로영상·행별목록/예측·가중치·비공개로그를포함하지않습니다. 다크/라이트·sidebar·실제epoch/강도그래프·사진설명은현재run만표시하고정의불가·준비대기를구분합니다.
+-현재 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다. 합성CPU검사와실제장기GPU완료/공격최적성은별도입니다. 현재단계는준비이며실측결과·논문원고를만들어채우지않았습니다. 공개범위는소스/예제/집계설명으로영상·행별목록/예측·가중치·비공개로그를포함하지않습니다. 다크/라이트·sidebar·실제epoch/강도그래프·사진설명은현재run만표시하고정의불가·준비대기를구분합니다.
++앞선 공격·셔플 수리는 신규6·영향3·최종진단1 검사로, 화면 변경은 신규1·관련2 검사로 확인했습니다. 독립 검토에서는 실제 ResNet50의6층×3정밀도 원본공격 경계를 축소 CPU로 확인했습니다. 변경없는 데이터10·Rust18 근거는 재사용하며 과거 엔진9/UI2와 고정표본9·bind1은 선행 범위로 구분합니다. 합성CPU검사와실제장기GPU완료/공격최적성은별도입니다. 현재단계는준비이며실측결과·논문원고를만들어채우지않았습니다. 공개범위는소스/예제/집계설명으로영상·행별목록/예측·가중치·비공개로그를포함하지않습니다. 다크/라이트·sidebar·실제epoch/강도그래프·사진설명은현재run만표시하고정의불가·준비대기를구분합니다.
  
  [같은 수준 프로젝트](../읽기안내/레벨5.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨5.md)
  
+ </details>
+ 
++
++## 연결 공격·저장 결과·진행 표시 후속
++
++| 수준 | 추가 동작과 한계 |
++|---|---|
++| LEVEL 1 - Beginner | 같은 사진의 복사본을 찾아도 정답으로 셉니다. 공격 중 실제 처리 사진 수가 보이며, 아직 처리하지 않은 수를 만들지 않습니다. |
++| LEVEL 2 - Intermediate | 원본 gallery와 증강 query를 구분하고, 다른 실행에서 저장한 결과는 읽지 않습니다. 복원 진행은 분류 회차와 별도로 보입니다. |
++| LEVEL 3 - Advanced | gallery는 고유 source_id 하나/canonical 우선, query는 원래 집합 전체입니다. 캐시 run_id와 조건 프로토콜을 확인하며 단계별 실제 완료 수를 API로 제공합니다. |
++| LEVEL 4 - Professional | 연결 점수 분모는 query 행 수, gallery_size는 고유 원본 수입니다. 동일 원본의 환자 충돌을 거부합니다. 진행 보고는 대체로2초 간격으로 제한하며 분류 정확도·체크포인트는 보존합니다. |
++| LEVEL 5 - Expert | source_id Top-k membership으로 positional-index false negative를 제거했습니다. 공격 결과는 run_id, 조건 결과는 protocol/condition까지 검증합니다. 콜백은 디코더 train/validation·reconstruction·linking·membership·shuffle 실제 처리 수만 보고합니다. CPU4/API1 및 영향CPU8/UI2 검증이며 GPU 전체·실브라우저를 검증했다는 뜻은 아닙니다. |
++
++[수정 동작 상세](../../Conv1%20블러%20OK-NG%20실험/17차/docs/연결공격_캐시_진행표시_수정.md)
++
++앞선 공격·셔플 수리의 검사 근거와 이번 연결·캐시·진행 표시 검사는 구분합니다. 이번3건의 검사 범위는 바로 위 후속 표와 수정 상세를 참조합니다.
